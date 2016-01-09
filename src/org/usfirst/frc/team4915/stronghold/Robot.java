@@ -1,13 +1,12 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
-import org.usfirst.frc.team4915.stronghold.commands.ExampleCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.ExampleSubsystem;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc.team4915.stronghold.commands.ExampleCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,8 +17,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static OI oi;
+    public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+    public static OI oi;
 
     Command autonomousCommand;
 
@@ -27,54 +26,66 @@ public class Robot extends IterativeRobot {
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
+    @Override
     public void robotInit() {
-		oi = new OI();
+        oi = new OI();
         // instantiate the command used for the autonomous period
-        autonomousCommand = new ExampleCommand();
+        this.autonomousCommand = new ExampleCommand();
     }
-	
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
 
+    @Override
+    public void disabledPeriodic() {
+        Scheduler.getInstance().run();
+    }
+
+    @Override
     public void autonomousInit() {
         // schedule the autonomous command (example)
-        if (autonomousCommand != null) autonomousCommand.start();
+        if (this.autonomousCommand != null) {
+            this.autonomousCommand.start();
+        }
     }
 
     /**
      * This function is called periodically during autonomous
      */
+    @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
     }
 
+    @Override
     public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
+        // This makes sure that the autonomous stops running when
+        // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (autonomousCommand != null) autonomousCommand.cancel();
+        if (this.autonomousCommand != null) {
+            this.autonomousCommand.cancel();
+        }
     }
 
     /**
-     * This function is called when the disabled button is hit.
-     * You can use it to reset subsystems before shutting down.
+     * This function is called when the disabled button is hit. You can use it
+     * to reset subsystems before shutting down.
      */
-    public void disabledInit(){
+    @Override
+    public void disabledInit() {
 
     }
 
     /**
      * This function is called periodically during operator control
      */
+    @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
     }
-    
+
     /**
      * This function is called periodically during test mode
      */
+    @Override
     public void testPeriodic() {
         LiveWindow.run();
     }
