@@ -4,9 +4,6 @@ package org.usfirst.frc.team4915.stronghold.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-/**
- *
- */
 public class ExampleCommand extends Command {
 
     public ExampleCommand() {
