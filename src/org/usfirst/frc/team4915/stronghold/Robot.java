@@ -1,12 +1,13 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
+import org.usfirst.frc.team4915.stronghold.commands.ExampleCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.ExampleSubsystem;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc.team4915.stronghold.commands.ExampleCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
