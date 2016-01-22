@@ -30,6 +30,7 @@
 .texlipse
 /out/
 Session.vim
+UNKNOWN-VERSION
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
 atlassian-ide-plugin.xml
@@ -38,6 +39,7 @@ build/
 com_crashlytics_export_strings.xml
 crashlytics-build.properties
 crashlytics.properties
+dist
 fabric.properties
 gradle-app.setting
 hs_err_pid*
