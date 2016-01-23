@@ -9,10 +9,6 @@ import edu.wpi.first.wpilibj.CANTalon;
  * floating around.
  */
 public class RobotMap {
-    // For example to map the left and right motors, you could define the
-    // following variables to use with your drivetrain subsystem.
-    // public static int leftMotor = 1;
-    // public static int rightMotor = 2;
 
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
@@ -30,4 +26,15 @@ public class RobotMap {
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
  
+    public static final int INTAKE_LEFT_MOTOR_PORT = 0;
+    public static final int INTAKE_RIGHT_MOTOR_PORT = 0;
+    public static final int LAUNCHER_LEFT_MOTOR_PORT = 0;
+    public static final int LAUNCHER_RIGHT_MOTOR_PORT = 0;
+    // not actual port values
+
+    public static CANTalon intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_PORT);
+    public static CANTalon intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_PORT);
+    public static CANTalon launcherLeftMotor = new CANTalon(LAUNCHER_LEFT_MOTOR_PORT);
+    public static CANTalon launcherRightMotor = new CANTalon(LAUNCHER_RIGHT_MOTOR_PORT);
+
 }
