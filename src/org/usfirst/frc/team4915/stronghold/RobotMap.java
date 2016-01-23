@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class RobotMap {
 
@@ -24,11 +27,21 @@ public class RobotMap {
     public static final int INTAKE_RIGHT_MOTOR_PORT = 0;
     public static final int LAUNCHER_LEFT_MOTOR_PORT = 0;
     public static final int LAUNCHER_RIGHT_MOTOR_PORT = 0;
+
+    public static final int BOULDER_SWITCH_PORT = 0;
+
+    public static final int LAUNCHER_SOLENOID_PORT = 0;
+    public static final int LAUNCHER_COMPRESSER_PORT = 0;
     // not actual port values
 
     public static CANTalon intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_PORT);
     public static CANTalon intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_PORT);
     public static CANTalon launcherLeftMotor = new CANTalon(LAUNCHER_LEFT_MOTOR_PORT);
     public static CANTalon launcherRightMotor = new CANTalon(LAUNCHER_RIGHT_MOTOR_PORT);
+
+    public static DigitalInput boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
+
+    public static Solenoid launcherSolenoid = new Solenoid(LAUNCHER_SOLENOID_PORT);
+    public static Compressor launcherCompresser = new Compressor(LAUNCHER_COMPRESSER_PORT);
 
 }
