@@ -2,10 +2,12 @@ package org.usfirst.frc.team4915.stronghold.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 
-public class Intake_Launcher extends Subsystem {
+public class IntakeLauncher extends Subsystem {
 
     // Ranges -1 to 1, negative values are reverse direction
     // Negative speed indicates a wheel spinning inwards and positive speed
@@ -27,6 +29,14 @@ public class Intake_Launcher extends Subsystem {
     public CANTalon launcherLeftMotor = RobotMap.launcherLeftMotor;
     public CANTalon launcherRightMotor = RobotMap.launcherRightMotor;
 
+    // limitswitch in the back of the basket that tells the robot when the
+    // boulder is secure
+    public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
+
+    // this solenoid activates the pneumatic compressor that pushes the boulder
+    // into the launcher flywheels
+    public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
+
     protected void initDefaultCommand() {
 
     }
@@ -47,7 +57,7 @@ public class Intake_Launcher extends Subsystem {
         intakeRightMotor.set(LAUNCH_SPEED);
     }
 
-    // Stops flywheels
+    // stops the flywheels
     public void setSpeedAbort() {
         intakeLeftMotor.changeControlMode(TalonControlMode.Speed);
         intakeRightMotor.changeControlMode(TalonControlMode.Speed);
@@ -63,7 +73,17 @@ public class Intake_Launcher extends Subsystem {
         launcherLeftMotor.set(height);
     }
 
+    // pneumatically extends the arm to shove the boulder into the launch
+    // flywheels
+    public void punchBall() {
+        launcherSolenoid.set(true);
+    }
+
+    // brings back the launch cylinder so it doesn't get in the way
+    public void retractCylinder() {
+        launcherSolenoid.set(false);
+    }
+
     // Might be a good idea to add a way to control the elevator with a joystick
     // in the future
-
 }
