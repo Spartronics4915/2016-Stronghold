@@ -1,14 +1,19 @@
 
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class ExampleCommand extends Command {
+public class ArcadeDrive extends Command {
 
-    public ExampleCommand() {
+    public Joystick joystickDrive;
+    private double joystickX;
+    private double joystickY;
+
+    public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.exampleSubsystem);
+        requires(Robot.driveTrain);
     }
 
     // Called just before this Command runs the first time
@@ -19,6 +24,7 @@ public class ExampleCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.driveTrain.arcadeDrive(Robot.oi.driveStick);
     }
 
     // Make this return true when this Command no longer needs to run execute()
