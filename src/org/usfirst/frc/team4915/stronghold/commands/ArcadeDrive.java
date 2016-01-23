@@ -24,6 +24,16 @@ public class ArcadeDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        joystickDrive = Robot.oi.getJoystickDrive();
+        joystickX = joystickDrive.getAxis(Joystick.AxisType.kX);
+        joystickY = joystickDrive.getAxis(Joystick.AxisType.kY);
+        Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
+        if ((Math.abs(joystickX) < 0.075) && (Math.abs(joystickY) < 0.075)) {
+            Robot.driveTrain.stop();
+        } else {
+            Robot.driveTrain.arcadeDrive(joystickDrive);
+        }
+
     }
 
     // Make this return true when this Command no longer needs to run execute()

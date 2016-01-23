@@ -27,7 +27,7 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void robotInit() {
-        oi = new OI();
+        oi = new OI(null);
         // instantiate the command used for the autonomous period
 
     }
