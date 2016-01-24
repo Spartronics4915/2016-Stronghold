@@ -10,6 +10,7 @@ public class ArcadeDrive extends Command {
     public Joystick joystickDrive;
     private double joystickX;
     private double joystickY;
+    private double joystickZ;
 
     public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -28,10 +29,17 @@ public class ArcadeDrive extends Command {
         
         joystickX = joystickDrive.getAxis(Joystick.AxisType.kX);
         joystickY = joystickDrive.getAxis(Joystick.AxisType.kY);
+        joystickZ = joystickDrive.getAxis(Joystick.AxisType.kZ);
        
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
+        //Sees if the joystick is in the middle aka stop
         if ((Math.abs(joystickX) < 0.075) && (Math.abs(joystickY) < 0.075)) {
-            Robot.driveTrain.stop();
+            if(Math.abs(joystickZ) < 0.075){
+                Robot.driveTrain.stop();
+            }
+            else{
+                Robot.driveTrain.twistDrive(joystickDrive);
+            }
         } else {
             Robot.driveTrain.arcadeDrive(joystickDrive);
         }

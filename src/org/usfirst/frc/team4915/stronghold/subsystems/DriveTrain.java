@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -43,6 +44,10 @@ public class DriveTrain extends Subsystem {
     public void arcadeDrive(Joystick stick) {
         // TODO Auto-generated method stub
         robotDrive.arcadeDrive(stick);
+    }
+    
+    public void twistDrive(Joystick stick){
+        robotDrive.arcadeDrive(stick, Joystick.AxisType.kY.value, stick, Joystick.AxisType.kZ.value);
     }
 
     public void stop() {
