@@ -38,10 +38,8 @@ public class OI {
     // create new joystick
     public Joystick driveStick;
 
-    public OI(Joystick joystickDrive) {
+    public OI() {
         driveStick = new Joystick(0);
-        joystickDrive = new Joystick(1);
-
     }
 
     public Joystick getJoystickDrive() {

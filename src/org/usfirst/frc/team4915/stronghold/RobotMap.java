@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -30,4 +31,10 @@ public class RobotMap {
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
  
+    public static DoubleSolenoid leftDoubleSolenoid;
+    public static DoubleSolenoid rightDoubleSolenoid;
+    //these are two double solenoids, one for each side. They control
+    //the gearbox and help switch between the two speeds
+    
+    
 }

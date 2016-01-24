@@ -32,11 +32,14 @@ public class ArcadeDrive extends Command {
         joystickZ = joystickDrive.getAxis(Joystick.AxisType.kZ);
        
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-        //Sees if the joystick is in the middle aka stop
+        //checks where the joystick is
         if ((Math.abs(joystickX) < 0.075) && (Math.abs(joystickY) < 0.075)) {
+            
             if(Math.abs(joystickZ) < 0.075){
+                //all in the middle (x,y,z), stops
                 Robot.driveTrain.stop();
             }
+            //x and y is in middle but z is twisted
             else{
                 Robot.driveTrain.twistDrive(joystickDrive);
             }
