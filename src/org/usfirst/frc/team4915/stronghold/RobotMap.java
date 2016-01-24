@@ -20,14 +20,14 @@ public class RobotMap {
     // public static int rangefinderModule = 1;
 
     // Define channels for the motors
-    public static final int driveTrainLeftBackMotor = 21;
-    public static final int driveTrainRightBackMotor = 23;
-    public static final int driveTrainLeftFrontMotor = 20;
-    public static final int driveTrainRightFrontMotor = 22;
-    // connecting the motors to the channels
+    public static final int driveTrainLeftBackMotor = 11;
+    public static final int driveTrainRightBackMotor = 13;	// inverted 
+    public static final int driveTrainLeftFrontMotor = 10;
+    public static final int driveTrainRightFrontMotor = 12;
+
     public static final CANTalon leftBackMotor = new CANTalon(driveTrainLeftBackMotor);
     public static final CANTalon rightBackMotor = new CANTalon(driveTrainRightBackMotor);
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
-
+ 
 }

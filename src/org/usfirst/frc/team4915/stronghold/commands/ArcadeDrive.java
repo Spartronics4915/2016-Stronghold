@@ -25,8 +25,10 @@ public class ArcadeDrive extends Command {
     @Override
     protected void execute() {
         joystickDrive = Robot.oi.getJoystickDrive();
+        
         joystickX = joystickDrive.getAxis(Joystick.AxisType.kX);
         joystickY = joystickDrive.getAxis(Joystick.AxisType.kY);
+       
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
         if ((Math.abs(joystickX) < 0.075) && (Math.abs(joystickY) < 0.075)) {
             Robot.driveTrain.stop();
