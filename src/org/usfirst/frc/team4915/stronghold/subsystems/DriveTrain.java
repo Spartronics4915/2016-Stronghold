@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
@@ -18,8 +19,12 @@ public class DriveTrain extends Subsystem {
     public double joystickThrottle;
     DoubleSolenoid rightDoubleSolenoid = RobotMap.rightDoubleSolenoid;
     DoubleSolenoid leftDoubleSolenoid = RobotMap.leftDoubleSolenoid;
-
-
+    //For Gyro
+    public static Gyro gyro = RobotMap.gyro;
+    public double deltaGyro = 0;
+    public double gyroHeading = 0;
+    public double startingAngle = 0;
+    
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -45,11 +50,13 @@ public class DriveTrain extends Subsystem {
     }
 
     public void arcadeDrive(Joystick stick) {
+        Robot.driveTrain.trackGyro();
         // TODO Auto-generated method stub
         robotDrive.arcadeDrive(stick);
     }
     
     public void twistDrive(Joystick stick){
+        Robot.driveTrain.trackGyro();
         robotDrive.arcadeDrive(stick, Joystick.AxisType.kY.value, stick, Joystick.AxisType.kZ.value);
     }
     public void lowSpeedMode(){
@@ -71,5 +78,14 @@ public class DriveTrain extends Subsystem {
         robotDrive.arcadeDrive(0, 0);
         rightDoubleSolenoid.set(DoubleSolenoid.Value.kOff);
         leftDoubleSolenoid.set(DoubleSolenoid.Value.kOff);
+    }
+    public void calibrateGyro(){
+        gyro.reset();
+    }
+    
+    //Methods for Gyro
+    public double trackGyro(){
+        gyroHeading = -gyro.getAngle() + startingAngle;
+        return gyroHeading;
     }
 }

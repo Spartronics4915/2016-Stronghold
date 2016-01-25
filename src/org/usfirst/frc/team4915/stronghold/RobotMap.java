@@ -1,7 +1,9 @@
 package org.usfirst.frc.team4915.stronghold;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -35,6 +37,12 @@ public class RobotMap {
     public static DoubleSolenoid rightDoubleSolenoid;
     //these are two double solenoids, one for each side. They control
     //the gearbox and help switch between the two speeds
+    
+    public final static int GYRO_PORT = 0;
+    //gyro instantiation
+    public final static Gyro gyro = new AnalogGyro(GYRO_PORT);
+   
+    
     
     
 }
