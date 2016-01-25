@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -13,9 +14,12 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class DriveTrain extends Subsystem {
 
-    RobotDrive robotDrive = new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
+    public RobotDrive robotDrive = new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
     DoubleSolenoid rightDoubleSolenoid = RobotMap.rightDoubleSolenoid;
     DoubleSolenoid leftDoubleSolenoid = RobotMap.leftDoubleSolenoid;
@@ -24,6 +28,8 @@ public class DriveTrain extends Subsystem {
     public double deltaGyro = 0;
     public double gyroHeading = 0;
     public double startingAngle = 0;
+    //motors
+    public static List<CANTalon> motors = Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     
     @Override
     public void initDefaultCommand() {
@@ -44,14 +50,12 @@ public class DriveTrain extends Subsystem {
     }
 
     private void setMaxOutput(double topSpeed) {
-        // TODO Auto-generated method stub
         robotDrive.setMaxOutput(topSpeed);	
  
     }
 
     public void arcadeDrive(Joystick stick) {
         Robot.driveTrain.trackGyro();
-        // TODO Auto-generated method stub
         robotDrive.arcadeDrive(stick);
     }
     
@@ -74,7 +78,6 @@ public class DriveTrain extends Subsystem {
     }
 
     public void stop() {
-        // TODO Auto-generated method stub
         robotDrive.arcadeDrive(0, 0);
         rightDoubleSolenoid.set(DoubleSolenoid.Value.kOff);
         leftDoubleSolenoid.set(DoubleSolenoid.Value.kOff);
@@ -87,5 +90,9 @@ public class DriveTrain extends Subsystem {
     public double trackGyro(){
         gyroHeading = -gyro.getAngle() + startingAngle;
         return gyroHeading;
+    }
+    
+    public void driveStraight(double speed){
+        robotDrive.arcadeDrive(speed, 0);
     }
 }
