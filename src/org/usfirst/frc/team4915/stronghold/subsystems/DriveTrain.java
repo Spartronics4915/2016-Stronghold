@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
@@ -15,14 +14,13 @@ public class DriveTrain extends Subsystem {
     RobotDrive robotDrive = new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
 
-
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-    	System.out.println("INFO: Initializing the ArcadeDrive");
+        System.out.println("INFO: Initializing the ArcadeDrive");
         setDefaultCommand(new ArcadeDrive());
 
-       	robotDrive.setSafetyEnabled(true);
+        robotDrive.setSafetyEnabled(true);
     }
 
     public double modifyThrottle() {
@@ -36,8 +34,8 @@ public class DriveTrain extends Subsystem {
 
     private void setMaxOutput(double topSpeed) {
         // TODO Auto-generated method stub
-        robotDrive.setMaxOutput(topSpeed);	
- 
+        robotDrive.setMaxOutput(topSpeed);
+
     }
 
     public void arcadeDrive(Joystick stick) {

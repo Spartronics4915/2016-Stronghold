@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.LaunchBallCommandGroup;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -35,12 +38,30 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
-    // create new joystick
+    // constants
+    public static final int LAUNCHER_STICK_PORT = 0;
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = 0;
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 0;
+
+    // create new joysticks
     public Joystick driveStick;
+    public Joystick launcherStick;
+
+    // creates new buttons
+    public JoystickButton launchBallButton;
+    public JoystickButton intakeBallButton;
 
     public OI(Joystick joystickDrive) {
         driveStick = new Joystick(0);
         joystickDrive = new Joystick(1);
+
+        launcherStick = new Joystick(LAUNCHER_STICK_PORT);
+        intakeBallButton = new JoystickButton(launcherStick, INTAKE_BALL_BUTTON_NUMBER);
+        launchBallButton = new JoystickButton(launcherStick, LAUNCH_BALL_BUTTON_NUMBER);
+
+        // binds commands to buttons
+        intakeBallButton.whenPressed(new IntakeBallCommandGroup());
+        launchBallButton.whenPressed(new LaunchBallCommandGroup());
 
     }
 

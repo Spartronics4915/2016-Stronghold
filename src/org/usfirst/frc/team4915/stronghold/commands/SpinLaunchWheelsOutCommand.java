@@ -3,14 +3,14 @@ package org.usfirst.frc.team4915.stronghold.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class RetractPunchingArmCommand extends Command {
+public class SpinLaunchWheelsOutCommand extends Command {
 
-    public RetractPunchingArmCommand() {
+    public SpinLaunchWheelsOutCommand() {
         requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.retractCylinder();
+        Robot.intakeLauncher.setSpeedAbort();
     }
 
     protected void execute() {

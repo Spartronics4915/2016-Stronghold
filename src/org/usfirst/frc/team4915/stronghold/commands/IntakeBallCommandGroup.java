@@ -1,0 +1,11 @@
+package org.usfirst.frc.team4915.stronghold.commands;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
+
+public class IntakeBallCommandGroup extends CommandGroup {
+
+    public IntakeBallCommandGroup() {
+        addSequential(new IntakeBallCommand());
+        addSequential(new StopWheelsCommand());
+    }
+}

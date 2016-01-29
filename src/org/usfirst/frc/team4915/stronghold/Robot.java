@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -17,6 +18,7 @@ import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 public class Robot extends IterativeRobot {
 
     public static final DriveTrain driveTrain = new DriveTrain();
+    public static final IntakeLauncher intakeLauncher = new IntakeLauncher();
     public static OI oi;
 
     Command autonomousCommand;

@@ -3,14 +3,14 @@ package org.usfirst.frc.team4915.stronghold.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class StopWheelsCommand extends Command {
+public class ExtendLauncherCylinderCommand extends Command {
 
-    public StopWheelsCommand() {
+    public ExtendLauncherCylinderCommand() {
         requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.setSpeedAbort();
+        Robot.intakeLauncher.punchBall();
     }
 
     protected void execute() {
