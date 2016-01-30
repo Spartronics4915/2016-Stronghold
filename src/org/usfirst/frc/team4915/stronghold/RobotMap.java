@@ -14,7 +14,7 @@ public class RobotMap {
 
     // Define channels for the motors
     public static final int driveTrainLeftBackMotor = 11;
-    public static final int driveTrainRightBackMotor = 13;	// inverted 
+    public static final int driveTrainRightBackMotor = 13; // inverted
     public static final int driveTrainLeftFrontMotor = 10;
     public static final int driveTrainRightFrontMotor = 12;
 
@@ -22,7 +22,7 @@ public class RobotMap {
     public static final CANTalon rightBackMotor = new CANTalon(driveTrainRightBackMotor);
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
- 
+
     public static final int INTAKE_LEFT_MOTOR_PORT = 0;
     public static final int INTAKE_RIGHT_MOTOR_PORT = 0;
     public static final int LAUNCHER_LEFT_MOTOR_PORT = 0;

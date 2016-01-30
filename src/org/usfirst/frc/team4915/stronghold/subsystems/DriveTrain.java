@@ -20,12 +20,12 @@ public class DriveTrain extends Subsystem {
         System.out.println("INFO: Initializing the ArcadeDrive");
         setDefaultCommand(new ArcadeDrive());
 
-        robotDrive.setSafetyEnabled(true);
+        this.robotDrive.setSafetyEnabled(true);
     }
 
     public double modifyThrottle() {
         double modifiedThrottle = 0.40 * (1.0 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
-        if (modifiedThrottle != joystickThrottle) {
+        if (modifiedThrottle != this.joystickThrottle) {
             SmartDashboard.putNumber("Throttle: ", modifiedThrottle);
         }
         setMaxOutput(modifiedThrottle);
@@ -34,17 +34,17 @@ public class DriveTrain extends Subsystem {
 
     private void setMaxOutput(double topSpeed) {
         // TODO Auto-generated method stub
-        robotDrive.setMaxOutput(topSpeed);
+        this.robotDrive.setMaxOutput(topSpeed);
 
     }
 
     public void arcadeDrive(Joystick stick) {
         // TODO Auto-generated method stub
-        robotDrive.arcadeDrive(stick);
+        this.robotDrive.arcadeDrive(stick);
     }
 
     public void stop() {
         // TODO Auto-generated method stub
-        robotDrive.arcadeDrive(0, 0);
+        this.robotDrive.arcadeDrive(0, 0);
     }
 }

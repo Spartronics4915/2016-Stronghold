@@ -2,7 +2,10 @@ package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc.team4915.stronghold.commands.*;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.SetElevatorHeightCommand;
+import org.usfirst.frc.team4915.stronghold.commands.ToggleLauncherClosedLoopControlCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -55,24 +58,24 @@ public class OI {
     public JoystickButton moveElevatorButton;
 
     public OI(Joystick joystickDrive) {
-        driveStick = new Joystick(0);
+        this.driveStick = new Joystick(0);
         joystickDrive = new Joystick(1);
 
-        launcherStick = new Joystick(LAUNCHER_STICK_PORT);
-        intakeBallButton = new JoystickButton(launcherStick, INTAKE_BALL_BUTTON_NUMBER);
-        launchBallButton = new JoystickButton(launcherStick, LAUNCH_BALL_BUTTON_NUMBER);
-        toggleLauncherClosedLoopControlButton = new JoystickButton(launcherStick, TOGGLE_LAUNCHER_CLOSED_LOOP_CONTROL_BUTTON_NUMBER);
-        moveElevatorButton = new JoystickButton(launcherStick, MOVE_ELEVATOR_BUTTON_NUMBER);
-        
+        this.launcherStick = new Joystick(LAUNCHER_STICK_PORT);
+        this.intakeBallButton = new JoystickButton(this.launcherStick, INTAKE_BALL_BUTTON_NUMBER);
+        this.launchBallButton = new JoystickButton(this.launcherStick, LAUNCH_BALL_BUTTON_NUMBER);
+        this.toggleLauncherClosedLoopControlButton = new JoystickButton(this.launcherStick, TOGGLE_LAUNCHER_CLOSED_LOOP_CONTROL_BUTTON_NUMBER);
+        this.moveElevatorButton = new JoystickButton(this.launcherStick, MOVE_ELEVATOR_BUTTON_NUMBER);
+
         // binds commands to buttons
-        intakeBallButton.whenPressed(new IntakeBallCommandGroup());
-        launchBallButton.whenPressed(new LaunchBallCommandGroup());
-        toggleLauncherClosedLoopControlButton.whenPressed(new ToggleLauncherClosedLoopControlCommand());
-        moveElevatorButton.whileHeld(new SetElevatorHeightCommand(launcherStick));
+        this.intakeBallButton.whenPressed(new IntakeBallCommandGroup());
+        this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
+        this.toggleLauncherClosedLoopControlButton.whenPressed(new ToggleLauncherClosedLoopControlCommand());
+        this.moveElevatorButton.whileHeld(new SetElevatorHeightCommand(this.launcherStick));
     }
 
     public Joystick getJoystickDrive() {
-        return driveStick;
+        return this.driveStick;
     }
 
 }

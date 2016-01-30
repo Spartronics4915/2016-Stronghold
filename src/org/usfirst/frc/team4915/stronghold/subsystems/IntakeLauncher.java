@@ -42,67 +42,68 @@ public class IntakeLauncher extends Subsystem {
     public Compressor launcherCompressor = RobotMap.launcherCompressor;
 
     public IntakeLauncher() {
-        launcherLeftMotor.changeControlMode(TalonControlMode.Speed);
-        launcherRightMotor.changeControlMode(TalonControlMode.Speed);
-        launcherLeftMotor.set(ELEVATOR_SPEED);
-        launcherRightMotor.set(ELEVATOR_SPEED);
+        this.launcherLeftMotor.changeControlMode(TalonControlMode.Speed);
+        this.launcherRightMotor.changeControlMode(TalonControlMode.Speed);
+        this.launcherLeftMotor.set(ELEVATOR_SPEED);
+        this.launcherRightMotor.set(ELEVATOR_SPEED);
     }
-    
+
+    @Override
     protected void initDefaultCommand() {
 
     }
 
     // Sets the speed on the flywheels to suck in the boulder
     public void setSpeedIntake() {
-        intakeLeftMotor.changeControlMode(TalonControlMode.Speed);
-        intakeRightMotor.changeControlMode(TalonControlMode.Speed);
-        intakeLeftMotor.set(INTAKE_SPEED);
-        intakeRightMotor.set(INTAKE_SPEED);
+        this.intakeLeftMotor.changeControlMode(TalonControlMode.Speed);
+        this.intakeRightMotor.changeControlMode(TalonControlMode.Speed);
+        this.intakeLeftMotor.set(INTAKE_SPEED);
+        this.intakeRightMotor.set(INTAKE_SPEED);
     }
 
     // Sets the speed on the flywheels to launch the boulder
     public void setSpeedLaunch() {
-        intakeLeftMotor.changeControlMode(TalonControlMode.Speed);
-        intakeRightMotor.changeControlMode(TalonControlMode.Speed);
-        intakeLeftMotor.set(LAUNCH_SPEED);
-        intakeRightMotor.set(LAUNCH_SPEED);
+        this.intakeLeftMotor.changeControlMode(TalonControlMode.Speed);
+        this.intakeRightMotor.changeControlMode(TalonControlMode.Speed);
+        this.intakeLeftMotor.set(LAUNCH_SPEED);
+        this.intakeRightMotor.set(LAUNCH_SPEED);
     }
 
     // stops the flywheels
     public void setSpeedAbort() {
-        intakeLeftMotor.changeControlMode(TalonControlMode.Speed);
-        intakeRightMotor.changeControlMode(TalonControlMode.Speed);
-        intakeLeftMotor.set(ZERO_SPEED);
-        intakeRightMotor.set(ZERO_SPEED);
+        this.intakeLeftMotor.changeControlMode(TalonControlMode.Speed);
+        this.intakeRightMotor.changeControlMode(TalonControlMode.Speed);
+        this.intakeLeftMotor.set(ZERO_SPEED);
+        this.intakeRightMotor.set(ZERO_SPEED);
     }
 
     // Sets the angle of the elevation motors
     public void setElevatorHeightWithJoystick(Joystick joystick) {
         double height = joystick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE;
         if (height >= ELEVATOR_MIN_HEIGHT && height <= ELEVATOR_MAX_HEIGHT) {
-            launcherRightMotor.changeControlMode(TalonControlMode.Position);
-            launcherLeftMotor.changeControlMode(TalonControlMode.Position);
-            launcherRightMotor.set(height);
-            launcherLeftMotor.set(height);
+            this.launcherRightMotor.changeControlMode(TalonControlMode.Position);
+            this.launcherLeftMotor.changeControlMode(TalonControlMode.Position);
+            this.launcherRightMotor.set(height);
+            this.launcherLeftMotor.set(height);
         }
     }
 
     // pneumatically extends the arm to shove the boulder into the launch
     // flywheels
     public void punchBall() {
-        launcherSolenoid.set(true);
+        this.launcherSolenoid.set(true);
     }
 
     // brings back the launch cylinder so it doesn't get in the way
     public void retractCylinder() {
-        launcherSolenoid.set(false);
+        this.launcherSolenoid.set(false);
     }
-    
+
     public void toggleLauncherClosedLoopControl() {
-        if (launcherCompressor.getClosedLoopControl()) {
-            launcherCompressor.setClosedLoopControl(false);
+        if (this.launcherCompressor.getClosedLoopControl()) {
+            this.launcherCompressor.setClosedLoopControl(false);
         } else {
-            launcherCompressor.setClosedLoopControl(true);
+            this.launcherCompressor.setClosedLoopControl(true);
         }
     }
 }

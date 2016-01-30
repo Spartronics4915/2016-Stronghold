@@ -7,28 +7,33 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 public class SetElevatorHeightCommand extends Command {
 
     private Joystick joystick;
-    
+
     public SetElevatorHeightCommand(Joystick joystick) {
         requires(Robot.intakeLauncher);
         this.joystick = joystick;
     }
 
+    @Override
     protected void initialize() {
-        Robot.intakeLauncher.setElevatorHeightWithJoystick(joystick);
+
     }
 
+    @Override
     protected void execute() {
-
+        Robot.intakeLauncher.setElevatorHeightWithJoystick(this.joystick);
     }
 
+    @Override
     protected boolean isFinished() {
         return false;
     }
 
+    @Override
     protected void end() {
 
     }
 
+    @Override
     protected void interrupted() {
         end();
     }

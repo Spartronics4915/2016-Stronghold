@@ -12,23 +12,28 @@ public class IntakeBallCommand extends Command {
         requires(Robot.intakeLauncher);
     }
 
+    @Override
     protected void initialize() {
-        intake_launcher.setSpeedIntake();
+        this.intake_launcher.setSpeedIntake();
     }
 
+    @Override
     protected void execute() {
 
     }
 
+    @Override
     protected boolean isFinished() {
         // ends once the ball is in the basket and presses the limit switch
-        return intake_launcher.boulderSwitch.get();
+        return this.intake_launcher.boulderSwitch.get();
     }
 
+    @Override
     protected void end() {
 
     }
 
+    @Override
     protected void interrupted() {
         end();
     }
