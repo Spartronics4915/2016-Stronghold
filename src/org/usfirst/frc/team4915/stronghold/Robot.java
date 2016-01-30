@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 
 /**
@@ -28,9 +27,9 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void robotInit() {
-        oi = new OI();
+        oi = new OI(null);
         // instantiate the command used for the autonomous period
-        this.autonomousCommand = new ArcadeDrive();
+
     }
 
     @Override

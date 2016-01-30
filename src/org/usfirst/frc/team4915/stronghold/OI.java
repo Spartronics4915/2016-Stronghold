@@ -35,10 +35,17 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
+    // create new joystick
     public Joystick driveStick;
 
-    public OI() {
+    public OI(Joystick joystickDrive) {
         driveStick = new Joystick(0);
+        joystickDrive = new Joystick(1);
 
     }
+
+    public Joystick getJoystickDrive() {
+        return driveStick;
+    }
+
 }

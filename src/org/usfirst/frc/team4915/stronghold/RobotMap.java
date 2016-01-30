@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4915.stronghold;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.CANTalon;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -19,15 +18,16 @@ public class RobotMap {
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;
     // public static int rangefinderModule = 1;
-    public static int driveTrainLeftFrontMotor = 10;
-    public static int driveTrainRightFrontMotor = 12;
-    public static int driveTrainRightBackMotor = 13;
-    public static int driveTrainLeftBackMotor = 11;
-    // defining motor channels
-    public static RobotDrive driveTrainRobotDrive;
 
-    public static DoubleSolenoid leftDoubleSolenoid;
-    public static DoubleSolenoid rightDoubleSolenoid;
-    // there are two double solenoids, one for each side. They control the
-    // gearbox and help switch between the two speeds
+    // Define channels for the motors
+    public static final int driveTrainLeftBackMotor = 11;
+    public static final int driveTrainRightBackMotor = 13;	// inverted 
+    public static final int driveTrainLeftFrontMotor = 10;
+    public static final int driveTrainRightFrontMotor = 12;
+
+    public static final CANTalon leftBackMotor = new CANTalon(driveTrainLeftBackMotor);
+    public static final CANTalon rightBackMotor = new CANTalon(driveTrainRightBackMotor);
+    public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
+    public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
+ 
 }
