@@ -2,6 +2,7 @@ package org.usfirst.frc.team4915.stronghold.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -36,6 +37,7 @@ public class IntakeLauncher extends Subsystem {
     // this solenoid activates the pneumatic compressor that pushes the boulder
     // into the launcher flywheels
     public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
+    public Compressor launcherCompressor = RobotMap.launcherCompressor;
 
     protected void initDefaultCommand() {
 
@@ -82,6 +84,14 @@ public class IntakeLauncher extends Subsystem {
     // brings back the launch cylinder so it doesn't get in the way
     public void retractCylinder() {
         launcherSolenoid.set(false);
+    }
+    
+    public void toggleLauncherClosedLoopControl() {
+        if (launcherCompressor.getClosedLoopControl()) {
+            launcherCompressor.setClosedLoopControl(false);
+        } else {
+            launcherCompressor.setClosedLoopControl(true);
+        }
     }
 
     // Might be a good idea to add a way to control the elevator with a joystick

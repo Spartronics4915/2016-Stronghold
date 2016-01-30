@@ -42,6 +42,7 @@ public class OI {
     public static final int LAUNCHER_STICK_PORT = 0;
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 0;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 0;
+    public static final int TOGGLE_LAUNCHER_CLOSED_LOOP_CONTROL_BUTTON_NUMBER = 0;
 
     // create new joysticks
     public Joystick driveStick;
@@ -50,6 +51,7 @@ public class OI {
     // creates new buttons
     public JoystickButton launchBallButton;
     public JoystickButton intakeBallButton;
+    public JoystickButton toggleLauncherClosedLoopControlButton;
 
     public OI(Joystick joystickDrive) {
         driveStick = new Joystick(0);
@@ -58,6 +60,7 @@ public class OI {
         launcherStick = new Joystick(LAUNCHER_STICK_PORT);
         intakeBallButton = new JoystickButton(launcherStick, INTAKE_BALL_BUTTON_NUMBER);
         launchBallButton = new JoystickButton(launcherStick, LAUNCH_BALL_BUTTON_NUMBER);
+        toggleLauncherClosedLoopControlButton = new JoystickButton(launcherStick, TOGGLE_LAUNCHER_CLOSED_LOOP_CONTROL_BUTTON_NUMBER);
 
         // binds commands to buttons
         intakeBallButton.whenPressed(new IntakeBallCommandGroup());
