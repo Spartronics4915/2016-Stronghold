@@ -1,19 +1,20 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class SetElevatorHeightCommand extends Command {
 
-    private double height;
-
-    public SetElevatorHeightCommand(double height) {
+    private Joystick joystick;
+    
+    public SetElevatorHeightCommand(Joystick joystick) {
         requires(Robot.intakeLauncher);
-        this.height = height;
+        this.joystick = joystick;
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.setElevatorHeight(height);
+        Robot.intakeLauncher.setElevatorHeightWithJoystick(joystick);
     }
 
     protected void execute() {
@@ -21,7 +22,7 @@ public class SetElevatorHeightCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     protected void end() {

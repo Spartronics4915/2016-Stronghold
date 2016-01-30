@@ -2,8 +2,7 @@ package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -43,6 +42,7 @@ public class OI {
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 0;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 0;
     public static final int TOGGLE_LAUNCHER_CLOSED_LOOP_CONTROL_BUTTON_NUMBER = 0;
+    public static final int MOVE_ELEVATOR_BUTTON_NUMBER = 0;
 
     // create new joysticks
     public Joystick driveStick;
@@ -52,6 +52,7 @@ public class OI {
     public JoystickButton launchBallButton;
     public JoystickButton intakeBallButton;
     public JoystickButton toggleLauncherClosedLoopControlButton;
+    public JoystickButton moveElevatorButton;
 
     public OI(Joystick joystickDrive) {
         driveStick = new Joystick(0);
@@ -61,11 +62,13 @@ public class OI {
         intakeBallButton = new JoystickButton(launcherStick, INTAKE_BALL_BUTTON_NUMBER);
         launchBallButton = new JoystickButton(launcherStick, LAUNCH_BALL_BUTTON_NUMBER);
         toggleLauncherClosedLoopControlButton = new JoystickButton(launcherStick, TOGGLE_LAUNCHER_CLOSED_LOOP_CONTROL_BUTTON_NUMBER);
-
+        moveElevatorButton = new JoystickButton(launcherStick, MOVE_ELEVATOR_BUTTON_NUMBER);
+        
         // binds commands to buttons
         intakeBallButton.whenPressed(new IntakeBallCommandGroup());
         launchBallButton.whenPressed(new LaunchBallCommandGroup());
-
+        toggleLauncherClosedLoopControlButton.whenPressed(new ToggleLauncherClosedLoopControlCommand());
+        moveElevatorButton.whileHeld(new SetElevatorHeightCommand(launcherStick));
     }
 
     public Joystick getJoystickDrive() {

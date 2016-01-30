@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
@@ -19,6 +20,7 @@ public class IntakeLauncher extends Subsystem {
     public static final double ELEVATOR_SPEED = 0.25;
     public static final double ELEVATOR_MAX_HEIGHT = 0.0;
     public static final double ELEVATOR_MIN_HEIGHT = 0.0;
+    public static final double JOYSTICK_SCALE = 1.0;
 
     // left and right are determined when standing behind the robot
 
@@ -39,6 +41,13 @@ public class IntakeLauncher extends Subsystem {
     public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
     public Compressor launcherCompressor = RobotMap.launcherCompressor;
 
+    public IntakeLauncher() {
+        launcherLeftMotor.changeControlMode(TalonControlMode.Speed);
+        launcherRightMotor.changeControlMode(TalonControlMode.Speed);
+        launcherLeftMotor.set(ELEVATOR_SPEED);
+        launcherRightMotor.set(ELEVATOR_SPEED);
+    }
+    
     protected void initDefaultCommand() {
 
     }
@@ -68,11 +77,14 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // Sets the angle of the elevation motors
-    public void setElevatorHeight(double height) {
-        launcherRightMotor.changeControlMode(TalonControlMode.Position);
-        launcherLeftMotor.changeControlMode(TalonControlMode.Position);
-        launcherRightMotor.set(height);
-        launcherLeftMotor.set(height);
+    public void setElevatorHeightWithJoystick(Joystick joystick) {
+        double height = joystick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE;
+        if (height >= ELEVATOR_MIN_HEIGHT && height <= ELEVATOR_MAX_HEIGHT) {
+            launcherRightMotor.changeControlMode(TalonControlMode.Position);
+            launcherLeftMotor.changeControlMode(TalonControlMode.Position);
+            launcherRightMotor.set(height);
+            launcherLeftMotor.set(height);
+        }
     }
 
     // pneumatically extends the arm to shove the boulder into the launch
@@ -93,7 +105,4 @@ public class IntakeLauncher extends Subsystem {
             launcherCompressor.setClosedLoopControl(true);
         }
     }
-
-    // Might be a good idea to add a way to control the elevator with a joystick
-    // in the future
 }
