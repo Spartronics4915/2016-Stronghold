@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
@@ -10,19 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoveStraightPositionModeCommand extends Command {
+
     public static List<CANTalon> motors = Robot.driveTrain.motors;
     public double inputDistance;
     public double inputSpeed;
     private DriveTrain driveTrain = Robot.driveTrain;
     private List<Double> desiredTicksValue;
+    private double driveStraightValue = 0.7;
 
     public MoveStraightPositionModeCommand(double inputDistance, double inputSpeed) {
 
-        requires(driveTrain);
+        requires(this.driveTrain);
 
         System.out.println("***MoveStraightPositionModeCommand inputDistance: " + inputDistance + "*******");
         System.out.println("***MoveStraightPositionModeCommand inputSpeed: " + inputSpeed + "*******");
-        
 
         this.inputDistance = inputDistance;
         this.inputSpeed = inputSpeed;
@@ -35,12 +35,11 @@ public class MoveStraightPositionModeCommand extends Command {
     /**
      * This initializes the variables for the distance calculator.
      */
+    @Override
     protected void initialize() {
-        desiredTicksValue = new ArrayList<Double>();
+        this.desiredTicksValue = new ArrayList<Double>();
 
-        double ticksToMove = inputDistance * 12 * 1000 / (14 * Math.PI);
-
-        
+        double ticksToMove = this.inputDistance * 12 * 1000 / (14 * Math.PI);
 
         for (int i = 0; i < motors.size(); i++) {
             CANTalon motor = motors.get(i);
@@ -51,10 +50,9 @@ public class MoveStraightPositionModeCommand extends Command {
                 // right motors are inverted
                 endValue = startingTickValue - ticksToMove;
             }
-            System.out.println("!!!!!!!!!" + inputSpeed + "!!!!!!!!!!!");
-           
+            System.out.println("!!!!!!!!!" + this.inputSpeed + "!!!!!!!!!!!");
 
-            desiredTicksValue.add(endValue);
+            this.desiredTicksValue.add(endValue);
         }
     }
 
@@ -64,45 +62,44 @@ public class MoveStraightPositionModeCommand extends Command {
      */
 
     // Called repeatedly when this Command is scheduled to run
+    @Override
     protected void execute() {
-
-        System.out.println("+++++++++" + inputSpeed + "++++++++");
-
-        if (inputDistance < 0) {
-            //driveTrain.driveStraight(inputSpeed);
-            driveTrain.driveStraight(.7);
+        System.out.println("+++++++++" + this.inputSpeed + "++++++++");
+        if (this.inputDistance < 0) {
+            this.driveTrain.driveStraight(this.driveStraightValue);
         } else {
-            //driveTrain.driveStraight(-inputSpeed);
-            driveTrain.driveStraight(-.7);
+            this.driveTrain.driveStraight(-this.driveStraightValue);
         }
     }
 
     // Make this return true when this Command no longer needs to run execute()
+    @Override
     protected boolean isFinished() {
-        // checking to see if the front motors have finished regardless of driving direction
-        // checking to see if the front motors have finished (regardless of what direction the robot is driving)
-        if (inputDistance > 0)
+        // checking to see if the front motors have finished regardless of
+        // driving direction
+        if (this.inputDistance > 0) {
             return isMotorFinished(0) || isMotorFinished(2);
-        else
+        } else {
             return isMotorFinished(1) || isMotorFinished(3);
+        }
     }
 
     private boolean isMotorFinished(int i) {
         boolean finished = false;
         double currentPosition = motors.get(i).getPosition();
 
-        double desiredPosition = desiredTicksValue.get(i);
+        double desiredPosition = this.desiredTicksValue.get(i);
         System.out.println("Motor " + i + ": current position: " + currentPosition + ", desired position " + desiredPosition);
 
         if (i >= 2) {
             // right motors are inverted
-            if (inputDistance < 0) {
+            if (this.inputDistance < 0) {
                 finished = currentPosition >= desiredPosition;
             } else {
                 finished = currentPosition <= desiredPosition;
             }
         } else {
-            if (inputDistance < 0) {
+            if (this.inputDistance < 0) {
                 finished = currentPosition <= desiredPosition;
             } else {
                 finished = currentPosition >= desiredPosition;
@@ -113,12 +110,14 @@ public class MoveStraightPositionModeCommand extends Command {
     }
 
     // Called once after isFinished returns true
+    @Override
     protected void end() {
-        driveTrain.robotDrive.stopMotor();
+        this.driveTrain.robotDrive.stopMotor();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
+    @Override
     protected void interrupted() {
         end();
     }

@@ -25,26 +25,26 @@ public class ArcadeDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        joystickDrive = Robot.oi.getJoystickDrive();
-        
-        joystickX = joystickDrive.getAxis(Joystick.AxisType.kX);
-        joystickY = joystickDrive.getAxis(Joystick.AxisType.kY);
-        joystickZ = joystickDrive.getAxis(Joystick.AxisType.kZ);
-       
+        this.joystickDrive = Robot.oi.getJoystickDrive();
+
+        this.joystickX = this.joystickDrive.getAxis(Joystick.AxisType.kX);
+        this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
+        this.joystickZ = this.joystickDrive.getAxis(Joystick.AxisType.kZ);
+
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-        //checks where the joystick is
-        if ((Math.abs(joystickX) < 0.075) && (Math.abs(joystickY) < 0.075)) {
-            
-            if(Math.abs(joystickZ) < 0.075){
-                //all in the middle (x,y,z), stops
+        // checks where the joystick is
+        if ((Math.abs(this.joystickX) < 0.075) && (Math.abs(this.joystickY) < 0.075)) {
+
+            if (Math.abs(this.joystickZ) < 0.075) {
+                // all in the middle (x,y,z), stops
                 Robot.driveTrain.stop();
             }
-            //x and y is in middle but z is twisted
-            else{
-                Robot.driveTrain.twistDrive(joystickDrive);
+            // x and y is in middle but z is twisted
+            else {
+                Robot.driveTrain.twistDrive(this.joystickDrive);
             }
         } else {
-            Robot.driveTrain.arcadeDrive(joystickDrive);
+            Robot.driveTrain.arcadeDrive(this.joystickDrive);
         }
 
     }

@@ -16,7 +16,7 @@ import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
  */
 public class Robot extends IterativeRobot {
 
-    public static final DriveTrain driveTrain = new DriveTrain();
+    public static DriveTrain driveTrain;
     public static OI oi;
 
     Command autonomousCommand;
@@ -28,6 +28,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
         oi = new OI();
+        driveTrain = new DriveTrain();
         // instantiate the command used for the autonomous period
 
     }
