@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

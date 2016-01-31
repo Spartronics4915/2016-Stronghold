@@ -1,10 +1,12 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class ExtendLauncherCylinderCommand extends Command {
 
+    // this command extends the cylinder that pushes the boulder into the
+    // flywheels
     public ExtendLauncherCylinderCommand() {
         requires(Robot.intakeLauncher);
     }
@@ -26,7 +28,7 @@ public class ExtendLauncherCylinderCommand extends Command {
 
     @Override
     protected void end() {
-
+        isFinished();
     }
 
     @Override

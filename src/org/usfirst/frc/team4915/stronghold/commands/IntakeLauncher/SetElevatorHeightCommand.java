@@ -1,27 +1,31 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class StopWheelsCommand extends Command {
+public class SetElevatorHeightCommand extends Command {
 
-    public StopWheelsCommand() {
+    double targetHeight;
+
+    // this command sets the angle of the launcher
+    public SetElevatorHeightCommand(double targetHeight, double currentHeight) {
         requires(Robot.intakeLauncher);
+        this.targetHeight = targetHeight;
     }
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.setSpeedAbort();
+
     }
 
     @Override
     protected void execute() {
-
+        Robot.intakeLauncher.changeElevatorHeight(targetHeight);
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     @Override

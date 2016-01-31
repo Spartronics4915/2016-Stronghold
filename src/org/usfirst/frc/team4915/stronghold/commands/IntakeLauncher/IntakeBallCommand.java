@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
@@ -8,6 +8,7 @@ public class IntakeBallCommand extends Command {
 
     IntakeLauncher intake_launcher = Robot.intakeLauncher;
 
+    // this command spins the intake flywheels inward to retrieve the ball
     public IntakeBallCommand() {
         requires(Robot.intakeLauncher);
     }

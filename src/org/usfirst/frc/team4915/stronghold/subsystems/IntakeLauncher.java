@@ -4,31 +4,35 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SetElevatorHeightCommand;
 
 public class IntakeLauncher extends Subsystem {
 
     // Ranges -1 to 1, negative values are reverse direction
     // Negative speed indicates a wheel spinning inwards and positive speed
     // indicates a wheel spinning outwards.
-    public static final double INTAKE_SPEED = -0.5;
-    public static final double LAUNCH_SPEED = 1.0;
-    public static final double ZERO_SPEED = 0.0;
-    public static final double ELEVATOR_SPEED = 0.25;
-    public static final double ELEVATOR_MAX_HEIGHT = 0.0;
-    public static final double ELEVATOR_MIN_HEIGHT = 0.0;
-    public static final double JOYSTICK_SCALE = 1.0;
+    // Numbers are not correct
+    private static final double INTAKE_SPEED = -0.5;
+    private static final double LAUNCH_SPEED = 1.0;
+    private static final double ZERO_SPEED = 0.0;
+    private static final double ELEVATOR_SPEED = 0.15;
+    private static final double JOYSTICK_SCALE = 1.0;
+    private static final double ELEVATOR_MARGIN_OF_ERROR = .1;
+    public static final double ELEVATOR_MIN_HEIGHT = 0;
 
     // left and right are determined when standing behind the robot
 
-    // These motors collect and shoot the ball
+    // These motors control flywheels that collect and shoot the ball
     public CANTalon intakeLeftMotor = RobotMap.intakeLeftMotor;
     public CANTalon intakeRightMotor = RobotMap.intakeRightMotor;
 
-    // These motors elevate the launcher for shooting
+    // These motors adjust the angle of the launcher for shooting
     public CANTalon launcherLeftMotor = RobotMap.launcherLeftMotor;
     public CANTalon launcherRightMotor = RobotMap.launcherRightMotor;
 
@@ -36,21 +40,22 @@ public class IntakeLauncher extends Subsystem {
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
+    // limitswitches that tell when the launcher is at the maximum or minumum
+    // height
+    public DigitalInput launcherBottomSwitch = RobotMap.launcherBottomSwitch;
+    public DigitalInput launcherTopSwitch = RobotMap.launcherTopSwitch;
+
+    // encoder that detects the angle the launcher is at
+    public Encoder launcherAngleEncoder = RobotMap.launcherAngleEndoder;
+
     // this solenoid activates the pneumatic compressor that pushes the boulder
     // into the launcher flywheels
     public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
     public Compressor launcherCompressor = RobotMap.launcherCompressor;
 
-    public IntakeLauncher() {
-        this.launcherLeftMotor.changeControlMode(TalonControlMode.Speed);
-        this.launcherRightMotor.changeControlMode(TalonControlMode.Speed);
-        this.launcherLeftMotor.set(ELEVATOR_SPEED);
-        this.launcherRightMotor.set(ELEVATOR_SPEED);
-    }
-
     @Override
     protected void initDefaultCommand() {
-
+        setDefaultCommand(new SetElevatorHeightCommand(Robot.oi.launcherStick.getAxis(AxisType.kY) * JOYSTICK_SCALE, launcherAngleEncoder.get()));
     }
 
     // Sets the speed on the flywheels to suck in the boulder
@@ -78,13 +83,29 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // Sets the angle of the elevation motors
-    public void setElevatorHeightWithJoystick(Joystick joystick) {
-        double height = joystick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE;
-        if (height >= ELEVATOR_MIN_HEIGHT && height <= ELEVATOR_MAX_HEIGHT) {
-            this.launcherRightMotor.changeControlMode(TalonControlMode.Position);
-            this.launcherLeftMotor.changeControlMode(TalonControlMode.Position);
-            this.launcherRightMotor.set(height);
-            this.launcherLeftMotor.set(height);
+    // If the current angle is not within acceptable paramaters then set the
+    // speed to move towards the intended angle
+    // if either limiting limitswitch has been pressed or the target angle has
+    // been reached stop the elevator from moving
+    public void changeElevatorHeight(double targetHeight) {
+        if (!launcherBottomSwitch.get() && !launcherTopSwitch.get()) {
+            if (Math.abs(launcherAngleEncoder.get() - targetHeight) <= ELEVATOR_MARGIN_OF_ERROR) {
+                this.launcherRightMotor.changeControlMode(TalonControlMode.Speed);
+                this.launcherLeftMotor.changeControlMode(TalonControlMode.Speed);
+                if (launcherAngleEncoder.get() > targetHeight) {
+                    launcherRightMotor.set(ELEVATOR_SPEED);
+                    launcherLeftMotor.set(ELEVATOR_SPEED);
+                } else {
+                    launcherRightMotor.set(-ELEVATOR_SPEED);
+                    launcherLeftMotor.set(-ELEVATOR_SPEED);
+                }
+            } else {
+                launcherRightMotor.set(ZERO_SPEED);
+                launcherLeftMotor.set(ZERO_SPEED);
+            }
+        } else {
+            launcherRightMotor.set(ZERO_SPEED);
+            launcherLeftMotor.set(ZERO_SPEED);
         }
     }
 
@@ -105,5 +126,9 @@ public class IntakeLauncher extends Subsystem {
         } else {
             this.launcherCompressor.setClosedLoopControl(true);
         }
+    }
+
+    public void zeroLauncherEncoder() {
+        launcherAngleEncoder.reset();
     }
 }

@@ -1,17 +1,18 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class ToggleLauncherClosedLoopControlCommand extends Command {
+public class StopWheelsCommand extends Command {
 
-    public ToggleLauncherClosedLoopControlCommand() {
+    // this command stops the intake flywheels
+    public StopWheelsCommand() {
         requires(Robot.intakeLauncher);
     }
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.retractCylinder();
+        Robot.intakeLauncher.setSpeedAbort();
     }
 
     @Override
@@ -26,7 +27,7 @@ public class ToggleLauncherClosedLoopControlCommand extends Command {
 
     @Override
     protected void end() {
-
+        isFinished();
     }
 
     @Override

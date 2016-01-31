@@ -1,31 +1,28 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class SetElevatorHeightCommand extends Command {
+public class ToggleLauncherClosedLoopControlCommand extends Command {
 
-    private Joystick joystick;
-
-    public SetElevatorHeightCommand(Joystick joystick) {
+    // this command toggles closed loop control on the launcher compressor
+    public ToggleLauncherClosedLoopControlCommand() {
         requires(Robot.intakeLauncher);
-        this.joystick = joystick;
     }
 
     @Override
     protected void initialize() {
-
+        Robot.intakeLauncher.retractCylinder();
     }
 
     @Override
     protected void execute() {
-        Robot.intakeLauncher.setElevatorHeightWithJoystick(this.joystick);
+
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override

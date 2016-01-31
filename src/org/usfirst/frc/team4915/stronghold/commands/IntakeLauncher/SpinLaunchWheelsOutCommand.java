@@ -1,17 +1,19 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class RetractLauncherCylinderCommand extends Command {
+public class SpinLaunchWheelsOutCommand extends Command {
 
-    public RetractLauncherCylinderCommand() {
+    // this command spins the launch wheels outwards so they will launch the
+    // ball
+    public SpinLaunchWheelsOutCommand() {
         requires(Robot.intakeLauncher);
     }
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.retractCylinder();
+        Robot.intakeLauncher.setSpeedLaunch();
     }
 
     @Override

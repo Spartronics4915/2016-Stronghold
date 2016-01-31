@@ -2,10 +2,9 @@ package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.SetElevatorHeightCommand;
-import org.usfirst.frc.team4915.stronghold.commands.ToggleLauncherClosedLoopControlCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ToggleLauncherClosedLoopControlCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -40,38 +39,40 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
-    // constants
-    public static final int LAUNCHER_STICK_PORT = 0;
-    public static final int LAUNCH_BALL_BUTTON_NUMBER = 0;
-    public static final int INTAKE_BALL_BUTTON_NUMBER = 0;
-    public static final int TOGGLE_LAUNCHER_CLOSED_LOOP_CONTROL_BUTTON_NUMBER = 0;
-    public static final int MOVE_ELEVATOR_BUTTON_NUMBER = 0;
+    // constants, need to talk to electrical to figure out correct port values
+    public static final int LAUNCHER_STICK_PORT = -1;
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = -1;
+    public static final int INTAKE_BALL_BUTTON_NUMBER = -1;
+    public static final int TOGGLE_LAUNCHER_CLOSED_LOOP_CONTROL_BUTTON_NUMBER = -1;
 
     // create new joysticks
     public Joystick driveStick;
     public Joystick launcherStick;
 
     // creates new buttons
+    // launchBall triggers a command group with commands that ultimately will
+    // shoot the ball
+    // grabBall triggers a command groupt with commands that will get the ball
+    // into the basket
+    // toggleLauncherClosedLoopControl toggles auto-refill for the launcher
+    // compressor
     public JoystickButton launchBallButton;
-    public JoystickButton intakeBallButton;
+    public JoystickButton grabBallButton;
     public JoystickButton toggleLauncherClosedLoopControlButton;
-    public JoystickButton moveElevatorButton;
 
     public OI(Joystick joystickDrive) {
         this.driveStick = new Joystick(0);
         joystickDrive = new Joystick(1);
 
         this.launcherStick = new Joystick(LAUNCHER_STICK_PORT);
-        this.intakeBallButton = new JoystickButton(this.launcherStick, INTAKE_BALL_BUTTON_NUMBER);
+        this.grabBallButton = new JoystickButton(this.launcherStick, INTAKE_BALL_BUTTON_NUMBER);
         this.launchBallButton = new JoystickButton(this.launcherStick, LAUNCH_BALL_BUTTON_NUMBER);
         this.toggleLauncherClosedLoopControlButton = new JoystickButton(this.launcherStick, TOGGLE_LAUNCHER_CLOSED_LOOP_CONTROL_BUTTON_NUMBER);
-        this.moveElevatorButton = new JoystickButton(this.launcherStick, MOVE_ELEVATOR_BUTTON_NUMBER);
 
         // binds commands to buttons
-        this.intakeBallButton.whenPressed(new IntakeBallCommandGroup());
+        this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
         this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
         this.toggleLauncherClosedLoopControlButton.whenPressed(new ToggleLauncherClosedLoopControlCommand());
-        this.moveElevatorButton.whileHeld(new SetElevatorHeightCommand(this.launcherStick));
     }
 
     public Joystick getJoystickDrive() {
