@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -38,14 +39,13 @@ public class OI {
     // create new joystick
     public Joystick driveStick;
 
-    public OI(Joystick joystickDrive) {
-        driveStick = new Joystick(0);
-        joystickDrive = new Joystick(1);
-
+    public OI() {
+        this.driveStick = new Joystick(0);
+        SmartDashboard.putString("ArcadeDrive", "INFO: Initializing the ArcadeDrive");
     }
 
     public Joystick getJoystickDrive() {
-        return driveStick;
+        return this.driveStick;
     }
 
 }
