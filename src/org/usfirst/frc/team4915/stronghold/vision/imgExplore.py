@@ -16,11 +16,13 @@ import os.path
 import sys, getopt
 import common
 import numpy as np
+from os.pat import expanduser
 
 from multiprocessing.pool import ThreadPool
 from collections import deque
 
-fnpat = '/home/knx32542/Downloads/RealFullField/%d.jpg'
+# fnpat = '/home/knx32542/Downloads/RealFullField/%d.jpg'
+fnpat = expanduser("~/RealFullField/%d.jpg")
 
 def main():
     opts, args = getopt.getopt(sys.argv[1:], '', ['video='])
