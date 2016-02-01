@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -29,5 +30,14 @@ public class RobotMap {
     public static final CANTalon rightBackMotor = new CANTalon(driveTrainRightBackMotor);
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
- 
+    
+    public static final int SOLENOID_CHANNEL_PRIMARY= 0;
+    public static final int SOLENOID_CHANNEL_SECONDARY= 1;
+    //public static final int RIGHT_SOLENOID_CHANNEL_PRIMARY= 2;
+    //public static final int RIGHT_SOLENOID_CHANNEL_SECONDARY= 3;
+    
+    public static final DoubleSolenoid doubleSolenoid= new DoubleSolenoid 
+                                (SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
+    //public static final DoubleSolenoid rightDoubleSolenoid= new DoubleSolenoid
+                          //(RIGHT_SOLENOID_CHANNEL_PRIMARY, RIGHT_SOLENOID_CHANNEL_SECONDARY);
 }
