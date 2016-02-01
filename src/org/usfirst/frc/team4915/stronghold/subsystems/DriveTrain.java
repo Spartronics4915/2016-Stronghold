@@ -16,15 +16,15 @@ import java.util.List;
 
 public class DriveTrain extends Subsystem {
 
-    public static RobotDrive robotDrive = new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
+    public static RobotDrive robotDrive =
+            new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
-    // DoubleSolenoid rightDoubleSolenoid = RobotMap.rightDoubleSolenoid;
-    // DoubleSolenoid leftDoubleSolenoid = RobotMap.leftDoubleSolenoid;
     // For Gyro
     public static Gyro gyro = RobotMap.gyro;
     public double deltaGyro = 0;
     public double gyroHeading = 0;
     public double startingAngle = 0;
+
     // motors
     public static List<CANTalon> motors =
             Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
@@ -63,24 +63,8 @@ public class DriveTrain extends Subsystem {
         this.robotDrive.arcadeDrive(stick, Joystick.AxisType.kY.value, stick, Joystick.AxisType.kZ.value);
     }
 
-    public void lowSpeedMode() {
-        // switches the gears from high speed to low speed
-        // or turns the gears on and goes to low speed moe
-        // rightDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-        // leftDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-    }
-
-    public void highSpeedMode() {
-        // switches the gears from low speed to high speed
-        // or turns the gears on and goes to high speed mode
-        // rightDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
-        // leftDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
-    }
-
     public void stop() {
         this.robotDrive.arcadeDrive(0, 0);
-        // rightDoubleSolenoid.set(DoubleSolenoid.Value.kOff);
-        // leftDoubleSolenoid.set(DoubleSolenoid.Value.kOff);
     }
 
     public void calibrateGyro() {
@@ -90,12 +74,20 @@ public class DriveTrain extends Subsystem {
     // Methods for Gyro
     public double trackGyro() {
         this.gyroHeading = -gyro.getAngle() + this.startingAngle;
-        System.out.println("Gyro Angle: " + gyro.getAngle() );
+        System.out.println("Gyro Angle: " + gyro.getAngle());
         System.out.println("Gyro heading:" + this.gyroHeading);
         return this.gyroHeading;
     }
 
     public void driveStraight(double speed) {
         this.robotDrive.arcadeDrive(speed, 0);
+    }
+
+    public void turn(boolean left) {
+        if (left) {
+            robotDrive.arcadeDrive(0, -.5);
+        } else {
+            robotDrive.arcadeDrive(0, -.5);
+        }
     }
 }

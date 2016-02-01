@@ -2,6 +2,7 @@ package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
@@ -31,17 +32,9 @@ public class RobotMap {
     public static final CANTalon rightBackMotor = new CANTalon(driveTrainRightBackMotor);
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
-    // solenoid
-    // public static DoubleSolenoid leftDoubleSolenoid;
-    // public static DoubleSolenoid rightDoubleSolenoid;
-    // these are two double solenoids, one for each side. They control
-    // the gearbox and help switch between the two speeds
 
     public final static int GYRO_PORT = 0;
     // gyro instantiation
     public final static Gyro gyro = new AnalogGyro(GYRO_PORT);
-    // encoder class
-    // public static Encoder encoderLeft = new Encoder(0, 0);
-    // public static Encoder encoderRight = new Encoder(0, 0);
 
 }
