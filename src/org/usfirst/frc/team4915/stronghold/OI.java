@@ -52,7 +52,7 @@ public class OI {
     // creates new buttons
     // launchBall triggers a command group with commands that ultimately will
     // shoot the ball
-    // grabBall triggers a command groupt with commands that will get the ball
+    // grabBall triggers a command group with commands that will get the ball
     // into the basket
     // toggleLauncherClosedLoopControl toggles auto-refill for the launcher
     // compressor

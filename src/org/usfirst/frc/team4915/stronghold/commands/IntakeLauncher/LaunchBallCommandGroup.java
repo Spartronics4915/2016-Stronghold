@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.WaitCommand;
 
 public class LaunchBallCommandGroup extends CommandGroup {
 
