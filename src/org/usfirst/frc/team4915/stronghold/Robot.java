@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
-import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,7 +19,6 @@ public class Robot extends IterativeRobot {
 
     public static final DriveTrain driveTrain = new DriveTrain();
     public static final IntakeLauncher intakeLauncher = new IntakeLauncher();
-    public static final Scaler scaler = new Scaler();
     public static OI oi;
 
     Command autonomousCommand;
