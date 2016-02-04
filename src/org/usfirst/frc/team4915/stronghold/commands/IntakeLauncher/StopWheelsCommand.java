@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class StopWheelsCommand extends Command {
@@ -17,7 +18,8 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void execute() {
-
+        SmartDashboard.putString("Intake Flywheels", "Right: " + Double.toString(Robot.intakeLauncher.getIntakeRightMotor().getSpeed()) + " Left: "
+                + Double.toString(Robot.intakeLauncher.getIntakeLeftMotor().getSpeed()));
     }
 
     @Override
