@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
@@ -17,6 +18,7 @@ import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
  */
 public class Robot extends IterativeRobot {
 
+    public static SmartDashboard smartDashboard = new SmartDashboard();
     public static final DriveTrain driveTrain = new DriveTrain();
     public static final IntakeLauncher intakeLauncher = new IntakeLauncher();
     public static OI oi;

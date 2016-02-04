@@ -5,9 +5,11 @@ import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SetElevatorHeightCommand;
@@ -18,13 +20,15 @@ public class IntakeLauncher extends Subsystem {
     // Negative speed indicates a wheel spinning inwards and positive speed
     // indicates a wheel spinning outwards.
     // Numbers are not correct
-    private static final double INTAKE_SPEED = -0.5;
-    private static final double LAUNCH_SPEED = 1.0;
-    private static final double ZERO_SPEED = 0.0;
-    private static final double ELEVATOR_SPEED = 0.15;
-    private static final double JOYSTICK_SCALE = 1.0;
-    private static final double ELEVATOR_MARGIN_OF_ERROR = .1;
-    public static final double ELEVATOR_MIN_HEIGHT = 0;
+    private static final double INTAKE_SPEED = -0.5; //TODO
+    private static final double LAUNCH_SPEED = 1.0; //TODO
+    private static final double ZERO_SPEED = 0.0; //TODO
+    private static final double JOYSTICK_SCALE = 1.0; //TODO
+    public static final double ELEVATOR_MIN_HEIGHT = 0; //TODO
+
+    public Joystick aimStick = Robot.oi.aimStick;
+    
+    public SmartDashboard smartDashboard = Robot.smartDashboard;
 
     // left and right are determined when standing behind the robot
 
@@ -32,9 +36,8 @@ public class IntakeLauncher extends Subsystem {
     public CANTalon intakeLeftMotor = RobotMap.intakeLeftMotor;
     public CANTalon intakeRightMotor = RobotMap.intakeRightMotor;
 
-    // These motors adjust the angle of the launcher for shooting
-    public CANTalon launcherLeftMotor = RobotMap.launcherLeftMotor;
-    public CANTalon launcherRightMotor = RobotMap.launcherRightMotor;
+    // This motor adjust the angle of the launcher for shooting
+    public CANTalon aimMotor = RobotMap.aimMotor;
 
     // limitswitch in the back of the basket that tells the robot when the
     // boulder is secure
@@ -45,17 +48,13 @@ public class IntakeLauncher extends Subsystem {
     public DigitalInput launcherBottomSwitch = RobotMap.launcherBottomSwitch;
     public DigitalInput launcherTopSwitch = RobotMap.launcherTopSwitch;
 
-    // encoder that detects the angle the launcher is at
-    public Encoder launcherAngleEncoder = RobotMap.launcherAngleEndoder;
-
     // this solenoid activates the pneumatic compressor that pushes the boulder
     // into the launcher flywheels
     public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
-    public Compressor launcherCompressor = RobotMap.launcherCompressor;
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new SetElevatorHeightCommand(Robot.oi.launcherStick.getAxis(AxisType.kY) * JOYSTICK_SCALE, launcherAngleEncoder.get()));
+        setDefaultCommand(new SetElevatorHeightCommand(aimStick.getAxis(Joystick.AxisType.kY)));
     }
 
     // Sets the speed on the flywheels to suck in the boulder
@@ -87,25 +86,12 @@ public class IntakeLauncher extends Subsystem {
     // speed to move towards the intended angle
     // if either limiting limitswitch has been pressed or the target angle has
     // been reached stop the elevator from moving
-    public void changeElevatorHeight(double targetHeight) {
+    public void changeElevatorHeight(double speed) {
         if (!launcherBottomSwitch.get() && !launcherTopSwitch.get()) {
-            if (Math.abs(launcherAngleEncoder.get() - targetHeight) <= ELEVATOR_MARGIN_OF_ERROR) {
-                this.launcherRightMotor.changeControlMode(TalonControlMode.Speed);
-                this.launcherLeftMotor.changeControlMode(TalonControlMode.Speed);
-                if (launcherAngleEncoder.get() > targetHeight) {
-                    launcherRightMotor.set(ELEVATOR_SPEED);
-                    launcherLeftMotor.set(ELEVATOR_SPEED);
-                } else {
-                    launcherRightMotor.set(-ELEVATOR_SPEED);
-                    launcherLeftMotor.set(-ELEVATOR_SPEED);
-                }
-            } else {
-                launcherRightMotor.set(ZERO_SPEED);
-                launcherLeftMotor.set(ZERO_SPEED);
-            }
+            aimMotor.changeControlMode(TalonControlMode.Speed);
+            aimMotor.set(speed * JOYSTICK_SCALE);
         } else {
-            launcherRightMotor.set(ZERO_SPEED);
-            launcherLeftMotor.set(ZERO_SPEED);
+            aimMotor.set(ZERO_SPEED);
         }
     }
 
@@ -120,15 +106,23 @@ public class IntakeLauncher extends Subsystem {
         this.launcherSolenoid.set(false);
     }
 
-    public void toggleLauncherClosedLoopControl() {
-        if (this.launcherCompressor.getClosedLoopControl()) {
-            this.launcherCompressor.setClosedLoopControl(false);
-        } else {
-            this.launcherCompressor.setClosedLoopControl(true);
-        }
+    public CANTalon getIntakeLeftMotor() {
+        return intakeLeftMotor;
     }
 
-    public void zeroLauncherEncoder() {
-        launcherAngleEncoder.reset();
+    public CANTalon getIntakeRightMotor() {
+        return intakeRightMotor;
+    }
+
+    public CANTalon getLauncherAimMotor() {
+        return aimMotor;
+    }
+
+    public DigitalInput getBoulderSwitch() {
+        return boulderSwitch;
+    }
+
+    public Solenoid getLauncherSolenoid() {
+        return launcherSolenoid;
     }
 }

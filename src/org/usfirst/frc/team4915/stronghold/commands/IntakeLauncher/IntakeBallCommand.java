@@ -1,12 +1,10 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
 public class IntakeBallCommand extends Command {
-
-    IntakeLauncher intake_launcher = Robot.intakeLauncher;
 
     // this command spins the intake flywheels inward to retrieve the ball
     public IntakeBallCommand() {
@@ -15,18 +13,21 @@ public class IntakeBallCommand extends Command {
 
     @Override
     protected void initialize() {
-        this.intake_launcher.setSpeedIntake();
+        Robot.intakeLauncher.setSpeedIntake();
     }
 
     @Override
     protected void execute() {
-
+        SmartDashboard.putString("Intake Flywheels", "Right: " + Double.toString(Robot.intakeLauncher.getIntakeRightMotor().getSpeed()) + " Left: "
+                + Double.toString(Robot.intakeLauncher.getIntakeLeftMotor().getSpeed()));
     }
 
     @Override
     protected boolean isFinished() {
         // ends once the ball is in the basket and presses the limit switch
-        return this.intake_launcher.boulderSwitch.get();
+        SmartDashboard.putBoolean("Boulder in Basket", Robot.intakeLauncher.boulderSwitch.get());
+        return Robot.intakeLauncher.boulderSwitch.get();
+        
     }
 
     @Override
