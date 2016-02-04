@@ -1,2 +1,9 @@
 * Vision
 The vision division.
+* Goals
+** ✔ DONE Learn how to use network tables
+** ☛ TODO make a java class to read network tables for the robot
+** [0/3] Smart Dashboard
+*** ☛ TODO Hello World button
+*** ☛ TODO read FPS from network table
+*** ☛ TODO Profit
