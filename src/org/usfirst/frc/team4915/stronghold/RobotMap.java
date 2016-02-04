@@ -2,12 +2,13 @@ package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.RobotDrive.MotorType;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class RobotMap {
     // If you are using multiple modules, make sure to define both the port
@@ -60,5 +61,15 @@ public class RobotMap {
     public static DigitalInput launcherBottomSwitch = new DigitalInput(LAUNCHER_BOTTOM_SWITCH_PORT);
 
     public static Solenoid launcherSolenoid = new Solenoid(LAUNCHER_SOLENOID_PORT);
+
+    public static final int SOLENOID_CHANNEL_PRIMARY= 0;
+    public static final int SOLENOID_CHANNEL_SECONDARY= 1;
+    //public static final int RIGHT_SOLENOID_CHANNEL_PRIMARY= 2;
+    //public static final int RIGHT_SOLENOID_CHANNEL_SECONDARY= 3;
+    
+    public static final DoubleSolenoid doubleSolenoid= new DoubleSolenoid 
+                                (SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
+    //public static final DoubleSolenoid rightDoubleSolenoid= new DoubleSolenoid
+                          //(RIGHT_SOLENOID_CHANNEL_PRIMARY, RIGHT_SOLENOID_CHANNEL_SECONDARY);
 
 }
