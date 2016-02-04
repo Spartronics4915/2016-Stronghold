@@ -23,25 +23,20 @@ public class RobotMap {
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
 
-    public static final int INTAKE_LEFT_MOTOR_PORT = -1;
-    public static final int INTAKE_RIGHT_MOTOR_PORT = -1;
-    public static final int LAUNCHER_LEFT_MOTOR_PORT = -1;
-    public static final int LAUNCHER_RIGHT_MOTOR_PORT = -1;
+    public static final int INTAKE_LEFT_MOTOR_PORT = -1; //TODO
+    public static final int INTAKE_RIGHT_MOTOR_PORT = -1; //TODO
+    public static final int LAUNCHER_LEFT_MOTOR_PORT = -1; //TODO
+    public static final int LAUNCHER_RIGHT_MOTOR_PORT = -1; //TODO
 
-    public static final int BOULDER_SWITCH_PORT = -1;
-    public static final int LAUNCHER_BOTTOM_SWITCH_PORT = -1;
-    public static final int LAUNCHER_TOP_SWITCH_PORT = -1;
+    public static final int BOULDER_SWITCH_PORT = -1; //TODO
+    public static final int LAUNCHER_BOTTOM_SWITCH_PORT = -1; //TODO
+    public static final int LAUNCHER_TOP_SWITCH_PORT = -1; //TODO
 
-    public static final int LAUNCHER_ANGLE_ENCODER_PORT_1 = -1;
-    public static final int LAUNCHER_ANGLE_ENCODER_PORT_2 = -1;
+    public static final int LAUNCHER_ANGLE_ENCODER_PORT_1 = -1; //TODO
+    public static final int LAUNCHER_ANGLE_ENCODER_PORT_2 = -1; //TODO
 
-    public static final int LAUNCHER_SOLENOID_PORT = -1;
-    public static final int LAUNCHER_COMPRESSOR_PORT = -1;
-
-    public static final int SCALER_RIGHT_WINCH_MOTOR_PORT = -1;
-    public static final int SCALER_LEFT_WINCH_MOTOR_PORT = -1;
-    public static final int SCALER_ARM_RIGHT_MOTOR_PORT = -1;
-    public static final int SCALER_ARM_LEFT_MOTOR_PORT = -1;
+    public static final int LAUNCHER_SOLENOID_PORT = -1; //TODO
+    public static final int LAUNCHER_COMPRESSOR_PORT = -1; //TODO
     // not actual port values
 
     public static CANTalon intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_PORT);
@@ -57,9 +52,4 @@ public class RobotMap {
 
     public static Solenoid launcherSolenoid = new Solenoid(LAUNCHER_SOLENOID_PORT);
     public static Compressor launcherCompressor = new Compressor(LAUNCHER_COMPRESSOR_PORT);
-
-    public static CANTalon scalerRightWinchMotor = new CANTalon(SCALER_RIGHT_WINCH_MOTOR_PORT);
-    public static CANTalon scalerLeftWinchMotor = new CANTalon(SCALER_LEFT_WINCH_MOTOR_PORT);
-    public static CANTalon scalerArmRightMotor = new CANTalon(SCALER_ARM_RIGHT_MOTOR_PORT);
-    public static CANTalon scalerArmLeftMotor = new CANTalon(SCALER_ARM_LEFT_MOTOR_PORT);
 }
