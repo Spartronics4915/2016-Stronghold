@@ -1,7 +1,10 @@
 package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -36,12 +39,34 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
-    // create new joystick
+    // constants, need to talk to electrical to figure out correct port values
+    public static final int LAUNCHER_STICK_PORT = -1; // TODO
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = -1; // TODO
+    public static final int INTAKE_BALL_BUTTON_NUMBER = -1; // TODO
+
+    // create new joysticks
     public Joystick driveStick;
+    public Joystick aimStick;
+
+    // creates new buttons
+    // launchBall triggers a command group with commands that ultimately will
+    // shoot the ball
+    // grabBall triggers a command group with commands that will get the ball
+    // into the basket
+    public JoystickButton launchBallButton;
+    public JoystickButton grabBallButton;
 
     public OI() {
         this.driveStick = new Joystick(0);
         SmartDashboard.putString("ArcadeDrive", "INFO: Initializing the ArcadeDrive");
+
+        this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
+        this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
+        this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
+
+        // binds commands to buttons
+        this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
+        this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
     }
 
     public Joystick getJoystickDrive() {

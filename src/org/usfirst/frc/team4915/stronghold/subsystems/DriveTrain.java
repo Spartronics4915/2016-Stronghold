@@ -50,7 +50,6 @@ public class DriveTrain extends Subsystem {
 
     private void setMaxOutput(double topSpeed) {
         this.robotDrive.setMaxOutput(topSpeed);
-
     }
 
     public void arcadeDrive(Joystick stick) {
@@ -90,4 +89,5 @@ public class DriveTrain extends Subsystem {
             robotDrive.arcadeDrive(0, -.5);
         }
     }
+
 }
