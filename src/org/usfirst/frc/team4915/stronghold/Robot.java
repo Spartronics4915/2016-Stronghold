@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         oi = new OI();
         driveTrain = new DriveTrain();
-        autonomousCommand = new MoveStraightPositionModeCommand(70);
+        autonomousCommand = new MoveStraightPositionModeCommand(30); //in inches
         // instantiate the command used for the autonomous period
 
     }

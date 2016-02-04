@@ -33,9 +33,9 @@ public class ArcadeDrive extends Command {
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
         // checks where the joystick is
-        if ((Math.abs(this.joystickX) < 0.075) && (Math.abs(this.joystickY) < 0.075)) {
+        if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
 
-            if (Math.abs(this.joystickZ) < 0.075) {
+            if (Math.abs(this.joystickZ) < Math.abs(0.075)) {
                 // all in the middle (x,y,z), stops
                 Robot.driveTrain.stop();
             }
