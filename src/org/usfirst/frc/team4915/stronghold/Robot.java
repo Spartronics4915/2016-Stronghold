@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 
 /**
@@ -18,7 +19,6 @@ public class Robot extends IterativeRobot {
 
     public static DriveTrain driveTrain;
     public static OI oi;
-
     Command autonomousCommand;
 
     /**
@@ -29,6 +29,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         oi = new OI();
         driveTrain = new DriveTrain();
+        autonomousCommand = new MoveStraightPositionModeCommand(30); //in inches
         // instantiate the command used for the autonomous period
 
     }
