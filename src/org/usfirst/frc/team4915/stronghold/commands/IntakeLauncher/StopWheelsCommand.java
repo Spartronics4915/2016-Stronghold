@@ -32,7 +32,7 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void interrupted() {
-        end();
+
     }
 
 }

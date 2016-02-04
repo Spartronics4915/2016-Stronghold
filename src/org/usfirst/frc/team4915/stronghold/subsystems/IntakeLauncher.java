@@ -17,14 +17,14 @@ public class IntakeLauncher extends Subsystem {
     // Negative speed indicates a wheel spinning inwards and positive speed
     // indicates a wheel spinning outwards.
     // Numbers are not correct
-    private static final double INTAKE_SPEED = -0.5; //TODO
-    private static final double LAUNCH_SPEED = 1.0; //TODO
-    private static final double ZERO_SPEED = 0.0; //TODO
-    private static final double JOYSTICK_SCALE = 1.0; //TODO
-    public static final double ELEVATOR_MIN_HEIGHT = 0; //TODO
+    private static final double INTAKE_SPEED = -0.5; // TODO
+    private static final double LAUNCH_SPEED = 1.0; // TODO
+    private static final double ZERO_SPEED = 0.0; // TODO
+    private static final double JOYSTICK_SCALE = 1.0; // TODO
+    public static final double ELEVATOR_MIN_HEIGHT = 0; // TODO
 
     public Joystick aimStick = Robot.oi.aimStick;
-    
+
     public SmartDashboard smartDashboard = Robot.smartDashboard;
 
     // left and right are determined when standing behind the robot

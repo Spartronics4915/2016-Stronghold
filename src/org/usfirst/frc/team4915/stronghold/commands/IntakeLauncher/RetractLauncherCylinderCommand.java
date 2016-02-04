@@ -32,7 +32,7 @@ public class RetractLauncherCylinderCommand extends Command {
 
     @Override
     protected void interrupted() {
-        end();
+        
     }
 
 }

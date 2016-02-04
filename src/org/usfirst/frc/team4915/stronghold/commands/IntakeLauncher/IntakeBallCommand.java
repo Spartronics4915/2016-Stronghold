@@ -27,7 +27,7 @@ public class IntakeBallCommand extends Command {
         // ends once the ball is in the basket and presses the limit switch
         SmartDashboard.putBoolean("Boulder in Basket", Robot.intakeLauncher.boulderSwitch.get());
         return Robot.intakeLauncher.boulderSwitch.get();
-        
+
     }
 
     @Override
@@ -37,7 +37,7 @@ public class IntakeBallCommand extends Command {
 
     @Override
     protected void interrupted() {
-        end();
+        
     }
 
 }

@@ -39,9 +39,9 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
     // constants, need to talk to electrical to figure out correct port values
-    public static final int LAUNCHER_STICK_PORT = -1; //TODO   
-    public static final int LAUNCH_BALL_BUTTON_NUMBER = -1; //TODO
-    public static final int INTAKE_BALL_BUTTON_NUMBER = -1; //TODO
+    public static final int LAUNCHER_STICK_PORT = -1; // TODO
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = -1; // TODO
+    public static final int INTAKE_BALL_BUTTON_NUMBER = -1; // TODO
 
     // create new joysticks
     public Joystick driveStick;
@@ -52,8 +52,6 @@ public class OI {
     // shoot the ball
     // grabBall triggers a command group with commands that will get the ball
     // into the basket
-    // toggleLauncherClosedLoopControl toggles auto-refill for the launcher
-    // compressor
     public JoystickButton launchBallButton;
     public JoystickButton grabBallButton;
 
@@ -64,7 +62,7 @@ public class OI {
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
         this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
         this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
-   
+
         // binds commands to buttons
         this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
         this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
