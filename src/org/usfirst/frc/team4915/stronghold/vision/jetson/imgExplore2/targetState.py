@@ -78,7 +78,7 @@ class TargetState:
             self.m_visTab.putInt("TargetClass", kp.class_id)
 
     def pixelToAngle(self, pt):
-        x = self.m_fov[0] * (pt[0] - self.center[0]) / self.res[0];
-        y = self.m_fov[1] * (pt[1] - self.center[1]) / self.res[1];
+        x = self.m_fov[0] * (pt[0] - self.m_center[0]) / self.m_res[0];
+        y = self.m_fov[1] * (pt[1] - self.m_center[1]) / self.m_res[1];
         return (x,y)
 
