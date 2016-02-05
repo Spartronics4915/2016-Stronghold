@@ -25,6 +25,7 @@ class TargetState:
         ar = self.m_res[0] / float(self.m_res[1])
         self.m_fov = (54., 54. / ar)  # full angles
         self.m_center = (self.m_res[0]/2, self.m_res[1]/2)
+        self.m_visTab.putInt("TargetsAcquired", 0)
 
     # a key-point sorter:
     #   We wish to find the most relevant keypoints.
@@ -47,6 +48,9 @@ class TargetState:
         else:
             return 1
     
+    def SetFPS(self, fps):
+        self.m_visTab.putInt("FPS", fps)
+
     def NewLines(self, lines):
         return lines
 
@@ -70,7 +74,7 @@ class TargetState:
             self.m_visTab.putInt("TargetsAcquired", 0)
         else:
             theta = self.pixelToAngle(kp.pt)
-            self.m_visTab.putInt("TargetAcquired", 1)
+            self.m_visTab.putInt("TargetsAcquired", 1)
             self.m_visTab.putInt("TargetX", int(.5+theta[0]))
             self.m_visTab.putInt("TargetY", int(.5++theta[1]))
             self.m_visTab.putNumber("TargetSize", int(.5+kp.size))
