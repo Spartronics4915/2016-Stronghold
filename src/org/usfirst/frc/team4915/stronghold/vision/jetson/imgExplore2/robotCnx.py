@@ -26,10 +26,9 @@ class RobotCnx:
             NetworkTable.setClientMode()
             NetworkTable.initialize()
 
-            self.smartDashboard = NetworkTable.getTable("SmartDashboard")
+            self.visTable = NetworkTable.getTable("Vision")
             self.connectionListener = ConnectionListener()
-            self.smartDashboard.addConnectionListener(self.connectionListener)
-            self.visTable = self.smartDashboard.getSubTable("vision")
+            self.visTable.addConnectionListener(self.connectionListener)
             self.visTable.addTableListener(self.visValueChanged)
             self.targetState = targetState.TargetState(self.visTable)
 
@@ -47,7 +46,7 @@ class RobotCnx:
     def Shutdown(self):
         self.SetFPS(0)
         self.visTable.removeTableListener(self.visValueChanged)
-        self.smartDashboard.removeConnectionListener(self.connectionListener)
+        self.visTable.removeConnectionListener(self.connectionListener)
 
     def NewKeypoints(self, kplist):
         return self.targetState.NewKeypoints(kplist)

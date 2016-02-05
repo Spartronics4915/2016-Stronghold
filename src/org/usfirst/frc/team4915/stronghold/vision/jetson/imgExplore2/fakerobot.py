@@ -14,8 +14,7 @@ logging.basicConfig(level=logging.DEBUG)
 def visValueChanged(table, key, value, isNew):
     print("<robot>: %15s: %s" % (key, value))
 
-sd = NetworkTable.getTable("SmartDashboard")
-vis = sd.getSubTable("vision")
+vis = NetworkTable.getTable("Vision")
 vis.addTableListener(visValueChanged)
 
 i = 0
