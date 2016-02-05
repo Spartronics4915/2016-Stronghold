@@ -3,13 +3,7 @@
 #   manages our connection to the robot
 #
 # # SmartDashboard/vision:  the vision subtable for communications with 
-#  Robot & Driver
-#       FPS: 0 means inactive
-#       DriverRequest: "reset"
-#       TargetAcquired: 0 or 1
-#       TargetLocationX:
-#       TargetLocationY:
-#       TargetDistance:
+#  Robot & Driver.  See targetState.py for details of the table contents.
 
 
 from networktables import NetworkTable
@@ -26,7 +20,8 @@ class RobotCnx:
             NetworkTable.setClientMode()
             NetworkTable.initialize()
 
-            self.visTable = NetworkTable.getTable("Vision")
+            self.sd = NetworkTable.getTable("SmartDashboard")
+            self.visTable = self.sd.getSubTable("Vision")
             self.connectionListener = ConnectionListener()
             self.visTable.addConnectionListener(self.connectionListener)
             self.visTable.addTableListener(self.visValueChanged)
@@ -41,10 +36,10 @@ class RobotCnx:
         return self.targetState
 
     def SetFPS(self, fps):
-        self.visTable.putInt("FPS", fps)
+        self.targetState.SetFPS(fps)
 
     def Shutdown(self):
-        self.SetFPS(0)
+        self.targetState.SetFPS(0)
         self.visTable.removeTableListener(self.visValueChanged)
         self.visTable.removeConnectionListener(self.connectionListener)
 

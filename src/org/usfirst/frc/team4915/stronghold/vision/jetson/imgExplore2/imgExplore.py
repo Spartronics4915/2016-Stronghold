@@ -208,12 +208,13 @@ class App:
                 vsrc = None
                 exit(1)
             else:
-                w = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
-                h = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)
-                self.putNotice("video is %dx%d" % (w, h))
-                if 0:
-                    vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, w)
-                    vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, h)
+                ret1 = vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 1280)
+                ret2 = vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 720)
+                print(ret1, ret2)
+                if 1:
+                    w = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
+                    h = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)
+                    print("video res: %d %d" % (w,h))
         else:
             vsrc = None
 
