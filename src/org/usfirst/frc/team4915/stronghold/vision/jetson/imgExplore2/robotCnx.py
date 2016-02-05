@@ -20,7 +20,8 @@ class RobotCnx:
             NetworkTable.setClientMode()
             NetworkTable.initialize()
 
-            self.visTable = NetworkTable.getTable("Vision")
+            self.sd = NetworkTable.getTable("SmartDashboard")
+            self.visTable = self.sd.getSubTable("Vision")
             self.connectionListener = ConnectionListener()
             self.visTable.addConnectionListener(self.connectionListener)
             self.visTable.addTableListener(self.visValueChanged)

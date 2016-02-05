@@ -19,7 +19,8 @@ def visValueChanged(table, key, value, isNew):
     visTable[key] = value
     dirty = True
 
-vis = NetworkTable.getTable("Vision")
+sd = NetworkTable.getTable("SmartDashboard")
+vis = sd.getSubTable("Vision")
 vis.addTableListener(visValueChanged)
 
 i = 0

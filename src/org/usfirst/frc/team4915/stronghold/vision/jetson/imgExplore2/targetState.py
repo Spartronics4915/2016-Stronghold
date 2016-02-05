@@ -25,6 +25,7 @@ class TargetState:
         ar = self.m_res[0] / float(self.m_res[1])
         self.m_fov = (54., 54. / ar)  # full angles
         self.m_center = (self.m_res[0]/2, self.m_res[1]/2)
+        self.m_visTab.putString("~TYPE~", "Vision")
         self.m_visTab.putInt("TargetsAcquired", 0)
 
     # a key-point sorter:
