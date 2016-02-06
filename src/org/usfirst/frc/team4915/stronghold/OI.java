@@ -2,8 +2,7 @@ package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -54,6 +53,7 @@ public class OI {
     // into the basket
     public JoystickButton launchBallButton;
     public JoystickButton grabBallButton;
+    public JoystickButton autoAimButton;
 
     public OI(Joystick joystickDrive) {
         this.driveStick = new Joystick(0);
@@ -63,9 +63,10 @@ public class OI {
         this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
         this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
 
-        // binds commands to buttons
+        // binds commands to buttons, autoAim is commented for now because we don't know what the position will be
         this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
         this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
+        //this.autoAimButton.whenPressed(new AutoAimCommand(position));
     }
 
     public Joystick getJoystickDrive() {
