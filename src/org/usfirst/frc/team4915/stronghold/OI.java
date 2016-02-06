@@ -1,5 +1,5 @@
 package org.usfirst.frc.team4915.stronghold;
-
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -38,10 +38,13 @@ public class OI {
 
     // create new joystick
     public Joystick driveStick;
+   
 
     public OI() {
         this.driveStick = new Joystick(0);
         SmartDashboard.putString("ArcadeDrive", "INFO: Initializing the ArcadeDrive");
+        
+        SmartDashboard.putData(VisionState.getInstance());
     }
 
     public Joystick getJoystickDrive() {
