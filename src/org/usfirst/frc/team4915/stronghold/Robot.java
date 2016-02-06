@@ -5,7 +5,10 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -16,9 +19,10 @@ import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
  */
 public class Robot extends IterativeRobot {
 
+    public static SmartDashboard smartDashboard = new SmartDashboard();
     public static final DriveTrain driveTrain = new DriveTrain();
+    public static final IntakeLauncher intakeLauncher = new IntakeLauncher();
     public static OI oi;
-
     Command autonomousCommand;
 
     /**
@@ -27,7 +31,8 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void robotInit() {
-        oi = new OI(null);
+        oi = new OI();
+        autonomousCommand = new MoveStraightPositionModeCommand(30); //in inches
         // instantiate the command used for the autonomous period
 
     }
