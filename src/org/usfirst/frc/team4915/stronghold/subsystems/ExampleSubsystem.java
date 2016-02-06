@@ -2,8 +2,9 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import 
 
-public class ExampleSubsystem extends Subsystem {
+class ExampleSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
