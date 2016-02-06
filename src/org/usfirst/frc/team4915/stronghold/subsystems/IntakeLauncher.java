@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
@@ -17,11 +17,12 @@ public class IntakeLauncher extends Subsystem {
     // Negative speed indicates a wheel spinning inwards and positive speed
     // indicates a wheel spinning outwards.
     // Numbers are not correct
-    private static final double INTAKE_SPEED = -0.5; // TODO
-    private static final double LAUNCH_SPEED = 1.0; // TODO
-    private static final double ZERO_SPEED = 0.0; // TODO
+    private static final double INTAKE_SPEED = -1.0;
+    private static final double LAUNCH_SPEED = 1.0;
+    private static final double ZERO_SPEED = 0.0;
     private static final double JOYSTICK_SCALE = 1.0; // TODO
-    public static final double ELEVATOR_MIN_HEIGHT = 0; // TODO
+    private static final double LAUNCHER_SERVO_NEUTRAL_POSITION = 0.0; // TODO
+    private static final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0; // TODO
 
     public Joystick aimStick = Robot.oi.aimStick;
 
@@ -45,9 +46,7 @@ public class IntakeLauncher extends Subsystem {
     public DigitalInput launcherBottomSwitch = RobotMap.launcherBottomSwitch;
     public DigitalInput launcherTopSwitch = RobotMap.launcherTopSwitch;
 
-    // this solenoid activates the pneumatic compressor that pushes the boulder
-    // into the launcher flywheels
-    public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
+    public Servo launcherServo = RobotMap.launcherServo;
 
     @Override
     protected void initDefaultCommand() {
@@ -78,11 +77,7 @@ public class IntakeLauncher extends Subsystem {
         this.intakeRightMotor.set(ZERO_SPEED);
     }
 
-    // Sets the angle of the elevation motors
-    // If the current angle is not within acceptable paramaters then set the
-    // speed to move towards the intended angle
-    // if either limiting limitswitch has been pressed or the target angle has
-    // been reached stop the elevator from moving
+    // moves the elevator, joystick angle determines speed
     public void changeElevatorHeight(double speed) {
         if (!launcherBottomSwitch.get() && !launcherTopSwitch.get()) {
             aimMotor.changeControlMode(TalonControlMode.Speed);
@@ -92,15 +87,12 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
-    // pneumatically extends the arm to shove the boulder into the launch
-    // flywheels
-    public void punchBall() {
-        this.launcherSolenoid.set(true);
+    public void activateLaunchServo() {
+        launcherServo.set(LAUNCHER_SERVO_LAUNCH_POSITION);
     }
 
-    // brings back the launch cylinder so it doesn't get in the way
-    public void retractCylinder() {
-        this.launcherSolenoid.set(false);
+    public void retractLaunchServo() {
+        launcherServo.set(LAUNCHER_SERVO_NEUTRAL_POSITION);
     }
 
     public CANTalon getIntakeLeftMotor() {
@@ -117,9 +109,5 @@ public class IntakeLauncher extends Subsystem {
 
     public DigitalInput getBoulderSwitch() {
         return boulderSwitch;
-    }
-
-    public Solenoid getLauncherSolenoid() {
-        return launcherSolenoid;
     }
 }
