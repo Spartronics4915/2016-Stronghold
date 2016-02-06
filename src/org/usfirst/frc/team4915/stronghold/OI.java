@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.usfirst.frc.team4915.stronghold.commands.highSpeedMode;
+import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -36,12 +39,18 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
     // create new joystick
+    
     public Joystick driveStick;
+    public JoystickButton speedUpButton= new JoystickButton(driveStick, 4);
+    public JoystickButton slowDownButton= new JoystickButton(driveStick, 3);
 
+    
+    
     public OI(Joystick joystickDrive) {
         driveStick = new Joystick(0);
         joystickDrive = new Joystick(1);
-
+        speedUpButton.whenPressed(new highSpeedMode());
+        slowDownButton.whenPressed(new lowSpeedMode());
     }
 
     public Joystick getJoystickDrive() {

@@ -40,4 +40,5 @@ public class RobotMap {
                                 (SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
     //public static final DoubleSolenoid rightDoubleSolenoid= new DoubleSolenoid
                           //(RIGHT_SOLENOID_CHANNEL_PRIMARY, RIGHT_SOLENOID_CHANNEL_SECONDARY);
+    
 }
