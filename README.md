@@ -24,7 +24,7 @@ Development Setup
         1. `$ git clone https://github.com/USERNAME/2016-Stronghold.git ~/workspace/2016-Stronghold`
         1. Choose `General` -> `Existing Projects into Workspace`
         1. `Select root directory`: `Home/workspace/2016-Stronghold`
-1. `Window` -> `Preferences` -> `Java` -> `...`
+1. `Window` -> `Preferences` -> `Java` -> `Code Style`
     1. Clean Up
     1. Formatter
     1. Organize Imports
