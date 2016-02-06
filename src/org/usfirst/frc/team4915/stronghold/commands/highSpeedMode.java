@@ -4,11 +4,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 
-
 public class highSpeedMode extends Command {
 
-    DoubleSolenoid doubleSolenoid= RobotMap.doubleSolenoid;
-    //DoubleSolenoid leftDoubleSolenoid= RobotMap.leftDoubleSolenoid;
+    DoubleSolenoid doubleSolenoid = RobotMap.doubleSolenoid;
+    // DoubleSolenoid leftDoubleSolenoid= RobotMap.leftDoubleSolenoid;
 
     @Override
     protected void initialize() {
@@ -19,11 +18,11 @@ public class highSpeedMode extends Command {
     @Override
     protected void execute() {
         // TODO Auto-generated method stub
-        //switches the gears from low speed to high speed
-        //or turns the gears on and goes to high speed mode
+        // switches the gears from low speed to high speed
+        // or turns the gears on and goes to high speed mode
         System.out.println("Entering high speed mode");
         doubleSolenoid.set(DoubleSolenoid.Value.kForward);
-        //leftDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
+        // leftDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
         System.out.println("Leaving high speed mode");
     }
 

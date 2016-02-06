@@ -39,13 +39,11 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
     // create new joystick
-    
-    public Joystick driveStick;
-    public JoystickButton speedUpButton= new JoystickButton(driveStick, 4);
-    public JoystickButton slowDownButton= new JoystickButton(driveStick, 3);
 
-    
-    
+    public Joystick driveStick;
+    public JoystickButton speedUpButton = new JoystickButton(driveStick, 4);
+    public JoystickButton slowDownButton = new JoystickButton(driveStick, 3);
+
     public OI(Joystick joystickDrive) {
         driveStick = new Joystick(0);
         joystickDrive = new Joystick(1);

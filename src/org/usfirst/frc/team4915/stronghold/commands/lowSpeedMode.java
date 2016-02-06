@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 
 public class lowSpeedMode extends Command {
-    
-    DoubleSolenoid doubleSolenoid= RobotMap.doubleSolenoid;
+
+    DoubleSolenoid doubleSolenoid = RobotMap.doubleSolenoid;
 
     @Override
     protected void initialize() {

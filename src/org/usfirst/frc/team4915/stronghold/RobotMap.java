@@ -22,7 +22,7 @@ public class RobotMap {
 
     // Define channels for the motors
     public static final int driveTrainLeftBackMotor = 11;
-    public static final int driveTrainRightBackMotor = 13;	// inverted 
+    public static final int driveTrainRightBackMotor = 13; // inverted
     public static final int driveTrainLeftFrontMotor = 10;
     public static final int driveTrainRightFrontMotor = 12;
 
@@ -30,15 +30,15 @@ public class RobotMap {
     public static final CANTalon rightBackMotor = new CANTalon(driveTrainRightBackMotor);
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
-    
-    public static final int SOLENOID_CHANNEL_PRIMARY= 0;
-    public static final int SOLENOID_CHANNEL_SECONDARY= 1;
-    //public static final int RIGHT_SOLENOID_CHANNEL_PRIMARY= 2;
-    //public static final int RIGHT_SOLENOID_CHANNEL_SECONDARY= 3;
-    
-    public static final DoubleSolenoid doubleSolenoid= new DoubleSolenoid 
-                                (SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
-    //public static final DoubleSolenoid rightDoubleSolenoid= new DoubleSolenoid
-                          //(RIGHT_SOLENOID_CHANNEL_PRIMARY, RIGHT_SOLENOID_CHANNEL_SECONDARY);
-    
+
+    public static final int SOLENOID_CHANNEL_PRIMARY = 0;
+    public static final int SOLENOID_CHANNEL_SECONDARY = 1;
+    // public static final int RIGHT_SOLENOID_CHANNEL_PRIMARY= 2;
+    // public static final int RIGHT_SOLENOID_CHANNEL_SECONDARY= 3;
+
+    public static final DoubleSolenoid doubleSolenoid = new DoubleSolenoid(SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
+    // public static final DoubleSolenoid rightDoubleSolenoid= new
+    // DoubleSolenoid
+    // (RIGHT_SOLENOID_CHANNEL_PRIMARY, RIGHT_SOLENOID_CHANNEL_SECONDARY);
+
 }
