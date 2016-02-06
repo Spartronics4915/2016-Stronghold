@@ -1,16 +1,16 @@
 package org.usfirst.frc.team4915.stronghold;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -42,6 +42,8 @@ public class OI {
     public OI() {
         this.driveStick = new Joystick(0);
         SmartDashboard.putString("ArcadeDrive", "INFO: Initializing the ArcadeDrive");
+        
+        SmartDashboard.putData(VisionState.getInstance());
 
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
         this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
@@ -66,7 +68,6 @@ public class OI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public Joystick getJoystickDrive() {
