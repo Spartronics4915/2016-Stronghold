@@ -20,7 +20,7 @@ public class SetLauncherHeightCommand extends Command {
 
     @Override
     protected void execute() {
-        Robot.intakeLauncher.moveLauncherWithJoystick(speed);
+        Robot.intakeLauncher.moveLauncher(speed);
     }
 
     @Override
