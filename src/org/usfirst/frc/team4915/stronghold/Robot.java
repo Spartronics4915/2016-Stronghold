@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -91,6 +92,6 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void testPeriodic() {
-        LiveWindow.run();
+        System.out.println(RobotMap.imu.isSensorPresent());
     }
 }

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
     // If you are using multiple modules, make sure to define both the port
@@ -38,6 +39,9 @@ public class RobotMap {
     public final static int GYRO_PORT = 0;
     // gyro instantiation
     public final static Gyro gyro = new AnalogGyro(GYRO_PORT);
+    
+    public static BNO055 imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
+                                BNO055.vector_type_t.VECTOR_EULER);
 
     private static final int INTAKE_LEFT_MOTOR_PORT = -1; // TODO
     private static final int INTAKE_RIGHT_MOTOR_PORT = -1; //TODO
