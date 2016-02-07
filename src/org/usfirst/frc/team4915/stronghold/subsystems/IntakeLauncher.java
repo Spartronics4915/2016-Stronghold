@@ -28,8 +28,6 @@ public class IntakeLauncher extends Subsystem {
     private static final double LAUNCHER_MIN_HEIGHT = 0; // TODO
     private static final double LAUNCHER_MAX_HEIGHT = 0; // TODO
 
-    private boolean autoAim = false;
-
     public Joystick aimStick = Robot.oi.getJoystickAimStick();
 
     // left and right are determined when standing behind the robot
@@ -126,9 +124,5 @@ public class IntakeLauncher extends Subsystem {
 
     public DigitalInput getBoulderSwitch() {
         return boulderSwitch;
-    }
-    
-    public boolean getAutoAim() {
-        return autoAim;
     }
 }

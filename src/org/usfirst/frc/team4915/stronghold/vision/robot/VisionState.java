@@ -18,7 +18,7 @@ public class VisionState implements NamedSendable {
 		return s_instance;
 	}
 
-	public String DriverRequest;
+	public boolean AutoAimEnabled = false;
 	public int FPS = 0;
 	public int TargetsAcquired = 0;
 	public int TargetX = 0;
@@ -40,8 +40,6 @@ public class VisionState implements NamedSendable {
 			if (key.equals("~TYPE~")) {
 				return;
 			}
-			else if (key.equals("DriverRequest"))
-				s_instance.DriverRequest = (String) value;
 			else {
 				//System.out.println(key + " " + value);
 				double num = (Double) value;
@@ -86,7 +84,7 @@ public class VisionState implements NamedSendable {
 		this.m_table = subtable;
 		m_table.addTableListenerEx(m_listener, ITable.NOTIFY_NEW | ITable.NOTIFY_IMMEDIATE);
 
-		this.DriverRequest = m_table.getString("DriverRequest", "init");
+		this.AutoAimEnabled = m_table.getBoolean("AutoAimEnabled", false);
 		this.FPS = (int) m_table.getNumber("FPS", 0.);
 		this.TargetsAcquired = (int) m_table.getNumber("TargetsAcquired", 0);
 		this.TargetX = (int) m_table.getNumber("TargetX", 0);
