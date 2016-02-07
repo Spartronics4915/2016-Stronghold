@@ -24,6 +24,8 @@ public class IntakeLauncher extends Subsystem {
     private static final double LAUNCHER_SERVO_NEUTRAL_POSITION = 0.0; // TODO
     private static final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0; // TODO
     private static final double AIM_MOTOR_INCREMENT = 0; // TODO
+    private static final double LAUNCHER_MIN_HEIGHT = 0; // TODO
+    private static final double LAUNCHER_MAX_HEIGHT = 0; // TODO
 
     private boolean autoAim = false;
 
@@ -81,7 +83,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // moves the launcher, joystick angle determines speed
-    public void changeLauncherHeight(double speed) {
+    public void moveLauncherWithJoystick(double speed) {
         if (!autoAim) {
             if (!launcherBottomSwitch.get() && !launcherTopSwitch.get()) {
                 aimMotor.changeControlMode(TalonControlMode.Speed);
@@ -95,8 +97,10 @@ public class IntakeLauncher extends Subsystem {
     // changes the launcher height by a small value
     // direction is either 1 or -1
     public void incrementLauncherHeight(int direction) {
-        aimMotor.changeControlMode(TalonControlMode.Position);
-        aimMotor.set(aimMotor.getPosition() + (AIM_MOTOR_INCREMENT * direction));
+        if (!autoAim) {
+            aimMotor.changeControlMode(TalonControlMode.Position);
+            aimMotor.set(aimMotor.getPosition() + (AIM_MOTOR_INCREMENT * direction));
+        }
     }
 
     public void activateLaunchServo() {
@@ -107,9 +111,8 @@ public class IntakeLauncher extends Subsystem {
         launcherServo.set(LAUNCHER_SERVO_NEUTRAL_POSITION);
     }
 
-    // takes a parameter generated from auto aiming and sets the launcher to
-    // that parameter
-    // if auto aim is on already turns it off
+    // toggles auto aim
+    // joystick only works while auto aim is off
     public void AutoAim() {
         if (autoAim) {
             autoAim = false;
@@ -119,8 +122,10 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void setLauncherHeightCommand(double position) {
-        aimMotor.changeControlMode(TalonControlMode.Position);
-        aimMotor.set(position);
+        if (position < LAUNCHER_MAX_HEIGHT && position > LAUNCHER_MIN_HEIGHT) {
+            aimMotor.changeControlMode(TalonControlMode.Position);
+            aimMotor.set(position);
+        }
     }
 
     public CANTalon getIntakeLeftMotor() {

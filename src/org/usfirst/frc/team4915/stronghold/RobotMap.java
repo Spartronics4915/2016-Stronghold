@@ -23,19 +23,22 @@ public class RobotMap {
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
 
-    private static final int INTAKE_LEFT_MOTOR_PORT = -1; // TODO
-    private static final int INTAKE_RIGHT_MOTOR_PORT = -1; // TODO
-    private static final int AIM_MOTOR_PORT = -1; // TODO
+    private static final int INTAKE_LEFT_MOTOR_PORT = 7000; // TODO
+    private static final int INTAKE_RIGHT_MOTOR_PORT = 7000; // TODO
+    private static final int AIM_MOTOR_PORT = 7000; // TODO
 
-    private static final int BOULDER_SWITCH_PORT = -1; // TODO
-    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = -1; // TODO
-    private static final int LAUNCHER_TOP_SWITCH_PORT = -1; // TODO
+    private static final int BOULDER_SWITCH_PORT = 7000; // TODO
+    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = 7000; // TODO
+    private static final int LAUNCHER_TOP_SWITCH_PORT = 7000; // TODO
 
-    private static final int LAUNCHER_SERVO_PORT = -1; // TODO
+    private static final int LAUNCHER_SERVO_PORT = 7000; // TODO
     // not actual port values
 
     private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 99999999.99; // TODO
     private static final double AIM_MOTOR_REVERSE_SOFT_LIMIT = 99999999.99; // TODO
+    private static final double AIM_MOTOR_P = 0; //TODO
+    private static final double AIM_MOTOR_I = 0; //TODO
+    private static final double AIM_MOTOR_D = 0; //TODO
 
     public static CANTalon intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_PORT);
     public static CANTalon intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_PORT);
@@ -56,5 +59,7 @@ public class RobotMap {
         aimMotor.enableReverseSoftLimit(true);
         aimMotor.ConfigFwdLimitSwitchNormallyOpen(true);
         aimMotor.ConfigRevLimitSwitchNormallyOpen(true);
+        aimMotor.setPID(AIM_MOTOR_P, AIM_MOTOR_I, AIM_MOTOR_D);
+        aimMotor.enableControl();
     }
 }

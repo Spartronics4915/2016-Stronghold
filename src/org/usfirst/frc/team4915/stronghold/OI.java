@@ -2,9 +2,7 @@ package org.usfirst.frc.team4915.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoAimCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -40,9 +38,15 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
     // constants, need to talk to electrical to figure out correct port values
-    public static final int LAUNCHER_STICK_PORT = -1; // TODO
-    public static final int LAUNCH_BALL_BUTTON_NUMBER = -1; // TODO
-    public static final int INTAKE_BALL_BUTTON_NUMBER = -1; // TODO
+    public static final int LAUNCHER_STICK_PORT = 7000; // TODO
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = 1; 
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 2; 
+    public static final int AUTO_AIM_BUTTON_NUMBER = 11; 
+    public static final int LAUNCHER_UP_BUTTON_NUMBER = 7; 
+    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6; 
+
+    public static final int UP_DIRECTION = 1;
+    public static final int DOWN_DIRECTION = UP_DIRECTION * -1;
 
     // create new joysticks
     public Joystick driveStick;
@@ -56,6 +60,8 @@ public class OI {
     public JoystickButton launchBallButton;
     public JoystickButton grabBallButton;
     public JoystickButton autoAimButton;
+    public JoystickButton launcherUpButton;
+    public JoystickButton launcherDownButton;
 
     public OI(Joystick joystickDrive) {
         this.driveStick = new Joystick(0);
@@ -64,12 +70,17 @@ public class OI {
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
         this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
         this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
+        this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
+        this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
+        this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
 
         // binds commands to buttons, autoAim is commented for now because we
         // don't know what the position will be
         this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
         this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
         this.autoAimButton.whenPressed(new AutoAimCommand());
+        this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
+        this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
     }
 
     public Joystick getJoystickDrive() {
