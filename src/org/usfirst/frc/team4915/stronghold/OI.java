@@ -6,7 +6,7 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoAimCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -32,10 +32,11 @@ public class OI {
     // FIXME: IntakeLauncher button values
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2; 
     public static final int INTAKE_BALL_BUTTON_NUMBER = 3; 
-    public static final int LAUNCH_AUTOAIM_BUTTON_NUMBER = 4;
+    public static final int AUTO_AIM_BUTTON_NUMBER = 4;
 
     public JoystickButton launchBallButton; // triggers a command group to shoot the ball
     public JoystickButton grabBallButton;   // triggers a command group to get the ball into the basket
+    
     public JoystickButton autoAimButton;
 
     public OI() {
@@ -55,11 +56,9 @@ public class OI {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
             this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
-            this.autoAimButton = new JoystickButton(this.aimStick, LAUNCH_AUTOAIM_BUTTON_NUMBER);
 
             this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
             this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-            this.autoAimButton.whenPressed(new AutoAimCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
         
@@ -69,6 +68,9 @@ public class OI {
 
         if (ModuleManager.VISION_MODULE_ON) {
             SmartDashboard.putData(VisionState.getInstance());
+            this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
+            this.autoAimButton.whenPressed(new AutoAimControlCommand());
+            System.out.println("ModuleManager initialized: Vision");
         }
         
         /* 
