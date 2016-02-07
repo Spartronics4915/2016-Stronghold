@@ -1,8 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import org.usfirst.frc.team4915.stronghold.RobotMap;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4915.stronghold.RobotMap;
 
 public class highSpeedMode extends Command {
 

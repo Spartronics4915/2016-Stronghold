@@ -1,13 +1,14 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
+import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot

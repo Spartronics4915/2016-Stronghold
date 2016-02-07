@@ -1,14 +1,8 @@
 package org.usfirst.frc.team4915.stronghold;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.highSpeedMode;
-import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
 
 
 /**
