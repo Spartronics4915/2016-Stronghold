@@ -7,6 +7,7 @@ import java.util.jar.Manifest;
 
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -43,6 +44,8 @@ public class OI {
         this.driveStick = new Joystick(0);
         SmartDashboard.putString("ArcadeDrive", "INFO: Initializing the ArcadeDrive");
 
+        SmartDashboard.putData(VisionState.getInstance());
+        
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
         this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
         this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
