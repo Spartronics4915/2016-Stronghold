@@ -111,7 +111,7 @@ public class IntakeLauncher extends Subsystem {
 
     // toggles auto aim
     // joystick only works while auto aim is off
-    public void AutoAim() {
+    public void toggleAutoAim() {
         if (autoAim) {
             autoAim = false;
         } else {
@@ -119,11 +119,8 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
-    public void setLauncherHeightCommand(double position) {
-        if (position < LAUNCHER_MAX_HEIGHT && position > LAUNCHER_MIN_HEIGHT) {
-            aimMotor.changeControlMode(TalonControlMode.Position);
-            aimMotor.set(position);
-        }
+    public void autoAimLauncher() {
+            
     }
 
     public CANTalon getIntakeLeftMotor() {
@@ -140,5 +137,9 @@ public class IntakeLauncher extends Subsystem {
 
     public DigitalInput getBoulderSwitch() {
         return boulderSwitch;
+    }
+    
+    public boolean getAutoAim() {
+        return autoAim;
     }
 }
