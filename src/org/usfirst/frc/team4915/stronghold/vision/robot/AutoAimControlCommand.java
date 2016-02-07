@@ -1,40 +1,38 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.vision.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-public class AutoTargetMode extends Command{
+public class AutoAimControlCommand extends Command{
 
 	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
-		
+		VisionState vs = VisionState.getInstance();
+		vs.AutoAimEnabled = !vs.AutoAimEnabled;
 	}
 
 	@Override
 	protected void execute() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("The state of AutoAimEnabled has changed");
 	}
 
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
-		
+		// Do nothing
 	}
 
 	@Override
 	protected void interrupted() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 }
