@@ -31,25 +31,32 @@ public class RobotMap {
     public final static int GYRO_PORT = 0;
     public static Gyro gyro;
 
-    /* IntakeLauncher specific constants - Initialization takes place in RobotMapInit() */ 
-    /* FIXME: Initialize IntakeLauncher's ports */ 
-    private static final int INTAKE_LEFT_MOTOR_PORT = 10; 
-    private static final int INTAKE_RIGHT_MOTOR_PORT = 11; 
-    private static final int AIM_MOTOR_PORT = 12; 
-    private static final int LAUNCHER_SERVO_PORT = 13; 
-    
     public static CANTalon  intakeLeftMotor;
     public static CANTalon  intakeRightMotor;
     public static CANTalon  aimMotor;
     public static Servo     launcherServo;
 
+    private static final int PLACEHOLDER_NUMBER = 69;
+    
+    /* IntakeLauncher specific constants - Initialization takes place in RobotMapInit() */ 
+    /* FIXME: Initialize IntakeLauncher's ports */ 
+    
+    private static final int INTAKE_LEFT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int INTAKE_RIGHT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int AIM_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+
+    private static final int BOULDER_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_TOP_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+
+    private static final int LAUNCHER_SERVO_PORT = PLACEHOLDER_NUMBER; // TODO
+    // not actual port values
+
     private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 99999999.99; // TODO
     private static final double AIM_MOTOR_REVERSE_SOFT_LIMIT = 99999999.99; // TODO
-
-    /* FIXME: to delete as switch connects to Talon's directly */
-    private static final int BOULDER_SWITCH_PORT = 20; 
-    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = 21;
-    private static final int LAUNCHER_TOP_SWITCH_PORT = 22; 
+    private static final double AIM_MOTOR_P = 0; //TODO
+    private static final double AIM_MOTOR_I = 0; //TODO
+    private static final double AIM_MOTOR_D = 0; //TODO
 
     /* FIXME: to delete as the switches connect directly to Talon */
     public static DigitalInput boulderSwitch;
