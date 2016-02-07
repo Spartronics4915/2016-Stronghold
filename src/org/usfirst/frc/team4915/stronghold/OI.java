@@ -11,8 +11,8 @@ import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.highSpeedMode;
-import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
+import org.usfirst.frc.team4915.stronghold.commands.HighSpeedModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.LowSpeedModeCommand;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -31,8 +31,10 @@ public class OI {
     
     // FIXME: IntakeLauncher button values
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2; 
-    public static final int INTAKE_BALL_BUTTON_NUMBER = 3; 
-    public static final int LAUNCH_AUTOAIM_BUTTON_NUMBER = 4;
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 5; 
+    public static final int LAUNCH_AUTOAIM_BUTTON_NUMBER = 6;
+    public static final int HIGH_SPEED_DRIVE_BUTTON= 4;
+    public static final int LOW_SPEED_DRIVE_BUTTON= 3;
 
     public JoystickButton launchBallButton; // triggers a command group to shoot the ball
     public JoystickButton grabBallButton;   // triggers a command group to get the ball into the basket
@@ -44,11 +46,15 @@ public class OI {
         
         // Bind module commands to buttons
         if (ModuleManager.DRIVE_MODULE_ON) {
-            this.speedUpButton = new JoystickButton(driveStick, 4);
-            this.slowDownButton = new JoystickButton(driveStick, 3);
+            this.speedUpButton = new JoystickButton(driveStick, HIGH_SPEED_DRIVE_BUTTON);
+            this.slowDownButton = new JoystickButton(driveStick, LOW_SPEED_DRIVE_BUTTON);
 
-            this.speedUpButton.whenPressed(new highSpeedMode());
-            this.slowDownButton.whenPressed(new lowSpeedMode());
+            this.speedUpButton.whenPressed(new HighSpeedModeCommand());
+            this.slowDownButton.whenPressed(new LowSpeedModeCommand());
+            
+            SmartDashboard.putData("High speed mode- extending pneumatic", new HighSpeedModeCommand());
+            SmartDashboard.putData("Low speed mode- detracting pneumatic", new LowSpeedModeCommand());
+            
             System.out.println("ModuleManager OI initialized: TODO DriveTrain");    // TODO: OI init DriveTrain
         }
         

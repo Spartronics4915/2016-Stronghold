@@ -2,7 +2,6 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -29,7 +28,6 @@ public class DriveTrain extends Subsystem {
     public double deltaGyro = 0;
     public double gyroHeading = 0;
     public double startingAngle = 0;
-    DoubleSolenoid doubleSolenoid= RobotMap.doubleSolenoid;
     //DoubleSolenoid leftDoubleSolenoid= RobotMap.leftDoubleSolenoid;
 
     // motors
