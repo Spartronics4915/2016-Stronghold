@@ -7,7 +7,6 @@ import java.util.jar.Manifest;
 
 import org.usfirst.frc.team4915.stronghold.commands.highSpeedMode;
 import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoAimCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
@@ -119,7 +118,6 @@ public class OI {
         // don't know what the position will be
         this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
         this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-        this.autoAimButton.whenPressed(new AutoAimCommand());
         this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
         this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
     }
