@@ -3,12 +3,12 @@ package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class SetElevatorHeightCommand extends Command {
+public class SetLauncherHeightCommand extends Command {
 
     double speed;
 
     // this command sets the angle of the launcher
-    public SetElevatorHeightCommand(double speed) {
+    public SetLauncherHeightCommand(double speed) {
         requires(Robot.intakeLauncher);
         this.speed = speed;
     }
@@ -20,7 +20,7 @@ public class SetElevatorHeightCommand extends Command {
 
     @Override
     protected void execute() {
-        Robot.intakeLauncher.changeElevatorHeight(speed);
+        Robot.intakeLauncher.moveLauncherWithJoystick(speed);
     }
 
     @Override

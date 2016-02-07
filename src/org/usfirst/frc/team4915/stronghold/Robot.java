@@ -20,9 +20,8 @@ import org.usfirst.frc.team4915.stronghold.utils.BNO055;
  */
 public class Robot extends IterativeRobot {
 
-    public static SmartDashboard smartDashboard = new SmartDashboard();
-    public static final DriveTrain driveTrain = new DriveTrain();
-    public static final IntakeLauncher intakeLauncher = new IntakeLauncher();
+    public static DriveTrain driveTrain;
+    public static IntakeLauncher intakeLauncher;
     public static OI oi;
     Command autonomousCommand;
 
@@ -32,10 +31,24 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void robotInit() {
-        oi = new OI();
-        autonomousCommand = new MoveStraightPositionModeCommand(30); //in inches
-        // instantiate the command used for the autonomous period
+        RobotMap.init();        // 1. Initialize RobotMap prior to initializing modules
+        
+        // 2. conditionally create the modules
+        if (ModuleManager.DRIVE_MODULE_ON) {
+            driveTrain = new DriveTrain();
+            System.out.println("ModuleManager initialized: DriveTrain");
+        }
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+            intakeLauncher = new IntakeLauncher();
+            SmartDashboard.putString("Module Manager", "IntakeLauncher Initialized");
+            System.out.println("ModuleManager initialized: IntakeLauncher");
+        }
+        if (ModuleManager.GYRO_MODULE_ON) {
+            SmartDashboard.putString("Module Manager", "FIX GYRO INITIALIZATION!");
+            System.out.println("ModuleManager TODO: Initialize Gyro!");  
+        }
 
+        oi = new OI();      // 3. Construct OI after subsystems created
     }
 
     @Override
@@ -45,7 +58,8 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-        // schedule the autonomous command (example)
+        // schedule the autonomous command
+        autonomousCommand = new MoveStraightPositionModeCommand(30);    // in inches
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }
