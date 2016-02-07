@@ -19,9 +19,10 @@ public class DriveTrain extends Subsystem {
 
     /* FIXME: add RobotDrive initialization and feedback system w/ encoders to RobotMap or DriveTrain constructor */
 
-    /* FIXME: the instantiation doesn't follow RobotDrive method parameters */
+    // RobotDrive instantiation needs to follow: rearleft, frontleft, rearright, frontright
     public static RobotDrive robotDrive =
-            new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
+            new RobotDrive(RobotMap.leftBackMotor, RobotMap.leftFrontMotor, RobotMap.rightBackMotor, RobotMap.rightFrontMotor);
+            // new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
     
     // TODO: instead of the analogGyro, we'll be using IMU
@@ -37,6 +38,14 @@ public class DriveTrain extends Subsystem {
     public static List<CANTalon> motors =
             Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
 
+    public DriveTrain() {
+        // initialize the encoders to Zero
+        RobotMap.leftBackMotor.setEncPosition(0);
+        RobotMap.rightFrontMotor.setEncPosition(0);
+        RobotMap.leftFrontMotor.setEncPosition(0);
+        RobotMap.rightBackMotor.setEncPosition(0);
+    }
+    
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -63,6 +72,10 @@ public class DriveTrain extends Subsystem {
     public void arcadeDrive(Joystick stick) {
         Robot.driveTrain.trackGyro();
         this.robotDrive.arcadeDrive(stick);
+        System.out.println("encoder leftBack: " + RobotMap.leftBackMotor.getPosition() + 
+                            "encoder rightFront: " + RobotMap.rightFrontMotor.getPosition() +
+                            "encoder leftFront: " + RobotMap.leftFrontMotor.getPosition() +
+                            "encoder rightBack: " + RobotMap.rightBackMotor.getPosition());
     }
 
     public void twistDrive(Joystick stick) {
