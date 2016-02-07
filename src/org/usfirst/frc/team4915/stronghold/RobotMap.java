@@ -23,15 +23,17 @@ public class RobotMap {
     public static final CANTalon leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
     public static final CANTalon rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
 
-    private static final int INTAKE_LEFT_MOTOR_PORT = 7000; // TODO
-    private static final int INTAKE_RIGHT_MOTOR_PORT = 7000; // TODO
-    private static final int AIM_MOTOR_PORT = 7000; // TODO
+    private static final int PLACEHOLDER_NUMBER = 69;
+    
+    private static final int INTAKE_LEFT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int INTAKE_RIGHT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int AIM_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
 
-    private static final int BOULDER_SWITCH_PORT = 7000; // TODO
-    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = 7000; // TODO
-    private static final int LAUNCHER_TOP_SWITCH_PORT = 7000; // TODO
+    private static final int BOULDER_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_TOP_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
 
-    private static final int LAUNCHER_SERVO_PORT = 7000; // TODO
+    private static final int LAUNCHER_SERVO_PORT = PLACEHOLDER_NUMBER; // TODO
     // not actual port values
 
     private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 99999999.99; // TODO
