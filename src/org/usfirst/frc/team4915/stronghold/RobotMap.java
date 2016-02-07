@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class RobotMap {
     // Define channels for the drive train motors
-    public static final int driveTrainRightBackMotor = 10;
-    public static final int driveTrainRightFrontMotor = 11;
-    public static final int driveTrainLeftBackMotor = 12;
-    public static final int driveTrainLeftFrontMotor = 13;
+    public static final int driveTrainRightBackMotor = 13;  // inverted
+    public static final int driveTrainRightFrontMotor = 12;
+    public static final int driveTrainLeftBackMotor = 11;
+    public static final int driveTrainLeftFrontMotor = 10;
 
     public static CANTalon leftBackMotor; 
     public static CANTalon rightBackMotor; 

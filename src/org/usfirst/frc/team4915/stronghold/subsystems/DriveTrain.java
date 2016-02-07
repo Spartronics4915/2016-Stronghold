@@ -115,5 +115,4 @@ public class DriveTrain extends Subsystem {
         //leftDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
         System.out.println("Leaving high speed mode");
     }
-
 }

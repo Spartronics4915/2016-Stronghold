@@ -11,6 +11,8 @@ import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.highSpeedMode;
+import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -23,6 +25,10 @@ public class OI {
     public static final int DRIVE_STICK_PORT = 0; 
     public static final int LAUNCHER_STICK_PORT = 1; 
 
+    // Drive train two speed controls
+    public JoystickButton speedUpButton;
+    public JoystickButton slowDownButton;
+    
     // FIXME: IntakeLauncher button values
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2; 
     public static final int INTAKE_BALL_BUTTON_NUMBER = 3; 
@@ -36,6 +42,11 @@ public class OI {
         
         // Bind module commands to buttons
         if (ModuleManager.DRIVE_MODULE_ON) {
+            this.speedUpButton = new JoystickButton(driveStick, 4);
+            this.slowDownButton = new JoystickButton(driveStick, 3);
+
+            this.speedUpButton.whenPressed(new highSpeedMode());
+            this.slowDownButton.whenPressed(new lowSpeedMode());
             System.out.println("ModuleManager OI initialized: TODO DriveTrain");    // TODO: OI init DriveTrain
         }
         
