@@ -4,16 +4,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+
+import org.usfirst.frc.team4915.stronghold.commands.highSpeedMode;
+import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoAimCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.highSpeedMode;
-import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -28,9 +31,6 @@ public class OI {
     // Drive train two speed controls
     public JoystickButton speedUpButton;
     public JoystickButton slowDownButton;
-    
-    // FIXME: IntakeLauncher button values
-    public static final int LAUNCH_AUTOAIM_BUTTON_NUMBER = 4;
 
     // constants, need to talk to electrical to figure out correct port values
     public static final int PLACEHOLDER_NUMBER = 69;
@@ -72,11 +72,9 @@ public class OI {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
             this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
-            this.autoAimButton = new JoystickButton(this.aimStick, LAUNCH_AUTOAIM_BUTTON_NUMBER);
 
             this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
             this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-            this.autoAimButton.whenPressed(new AutoAimCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
         
@@ -86,6 +84,9 @@ public class OI {
 
         if (ModuleManager.VISION_MODULE_ON) {
             SmartDashboard.putData(VisionState.getInstance());
+            this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
+            this.autoAimButton.whenPressed(new AutoAimControlCommand());
+            System.out.println("ModuleManager initialized: Vision");
         }
         
         /* 
