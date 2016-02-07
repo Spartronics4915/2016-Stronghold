@@ -69,5 +69,4 @@ public class RobotMap {
                           //(RIGHT_SOLENOID_CHANNEL_PRIMARY, RIGHT_SOLENOID_CHANNEL_SECONDARY);
 
     public static Servo launcherServo = new Servo(LAUNCHER_SERVO_PORT);
-
 }

@@ -32,11 +32,11 @@ public class DriveTrain extends Subsystem {
     public static List<CANTalon> motors =
             Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
 
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         System.out.println("INFO: Initializing the ArcadeDrive");
-
         setDefaultCommand(new ArcadeDrive());
 
         this.robotDrive.setSafetyEnabled(true);
@@ -52,7 +52,8 @@ public class DriveTrain extends Subsystem {
     }
 
     private void setMaxOutput(double topSpeed) {
-        this.robotDrive.setMaxOutput(topSpeed);
+        // TODO Auto-generated method stub
+        robotDrive.setMaxOutput(topSpeed);
     }
 
     public void arcadeDrive(Joystick stick) {
@@ -92,22 +93,4 @@ public class DriveTrain extends Subsystem {
             robotDrive.arcadeDrive(0, -.5);
         }
     }
-
-    public void lowSpeedMode() {
-        //switches the gears from high speed to low speed
-        //or turns the gears on and goes to low speed mode
-        System.out.println("Entering low speed mode");
-        doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-        //leftDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-        System.out.println("Leaving low speed mode");
-    }
-    public void highSpeedMode() {
-        //switches the gears from low speed to high speed
-        //or turns the gears on and goes to high speed mode
-        System.out.println("Entering high speed mode");
-        doubleSolenoid.set(DoubleSolenoid.Value.kForward);
-        //leftDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
-        System.out.println("Leaving high speed mode");
-    }
-
 }

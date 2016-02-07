@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -21,7 +19,6 @@ public class Robot extends IterativeRobot {
 
     public static SmartDashboard smartDashboard = new SmartDashboard();
     public static final DriveTrain driveTrain = new DriveTrain();
-    public static final IntakeLauncher intakeLauncher = new IntakeLauncher();
     public static OI oi;
     Command autonomousCommand;
 
