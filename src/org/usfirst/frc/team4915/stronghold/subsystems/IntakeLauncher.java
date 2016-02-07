@@ -24,9 +24,7 @@ public class IntakeLauncher extends Subsystem {
     private static final double LAUNCHER_SERVO_NEUTRAL_POSITION = 0.0; // TODO
     private static final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0; // TODO
 
-    public Joystick aimStick = Robot.oi.aimStick;
-
-    public SmartDashboard smartDashboard = Robot.smartDashboard;
+    public Joystick aimStick = Robot.oi.getJoystickAimStick();
 
     // left and right are determined when standing behind the robot
 

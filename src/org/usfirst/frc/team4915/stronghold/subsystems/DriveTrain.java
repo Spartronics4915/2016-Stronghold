@@ -17,6 +17,8 @@ import java.util.List;
 
 public class DriveTrain extends Subsystem {
 
+    /* FIXME: add RobotDrive initialization and feedback system w/ encoders */
+
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;

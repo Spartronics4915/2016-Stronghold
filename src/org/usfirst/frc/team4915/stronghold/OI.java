@@ -8,7 +8,6 @@ import java.util.jar.Manifest;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,42 +17,48 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * driver station and the robot code.
  */
 public class OI {
-
-    // Start the command when the button is released and let it run the command
-    // until it is finished as determined by it's isFinished method.
-    // button.whenReleased(new ExampleCommand());
-
-    // constants, need to talk to electrical to figure out correct port values
-    public static final int LAUNCHER_STICK_PORT = -1; // TODO
-    public static final int LAUNCH_BALL_BUTTON_NUMBER = -1; // TODO
-    public static final int INTAKE_BALL_BUTTON_NUMBER = -1; // TODO
-
-    // create new joysticks
+    // create  joysticks for driving and aiming the launcher
     public Joystick driveStick;
     public Joystick aimStick;
+    public static final int DRIVE_STICK_PORT = 0; 
+    public static final int LAUNCHER_STICK_PORT = 1; 
 
-    // creates new buttons
-    // launchBall triggers a command group with commands that ultimately will
-    // shoot the ball
-    // grabBall triggers a command group with commands that will get the ball
-    // into the basket
-    public JoystickButton launchBallButton;
-    public JoystickButton grabBallButton;
+    // FIXME: IntakeLauncher button values
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = 2; 
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 3; 
+
+    public JoystickButton launchBallButton; // triggers a command group to shoot the ball
+    public JoystickButton grabBallButton;   // triggers a command group to get the ball into the basket
 
     public OI() {
-        this.driveStick = new Joystick(0);
-        SmartDashboard.putString("ArcadeDrive", "INFO: Initializing the ArcadeDrive");
-
-        SmartDashboard.putData(VisionState.getInstance());
-        
+        this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
-        this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
-        this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
+        
+        // Bind module commands to buttons
+        if (ModuleManager.DRIVE_MODULE_ON) {
+            System.out.println("ModuleManager OI initialized: TODO DriveTrain");    // TODO: OI init DriveTrain
+        }
+        
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+            this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
+            this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
 
-        // binds commands to buttons
-        this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
-        this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
+            this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
+            this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
+            System.out.println("ModuleManager initialized: IntakeLauncher");
+        }
+        
+        if (ModuleManager.GYRO_MODULE_ON) {
+            System.out.println("ModuleManager OI TODO: Initialize Gyro!");          // TODO: OI init Gyro
+        }
 
+        if (ModuleManager.VISION_MODULE_ON) {
+            SmartDashboard.putData(VisionState.getInstance());
+        }
+        
+        /* 
+         * VERSION STRING!! 
+         */
         try (InputStream manifest = getClass().getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF")) {
             Attributes attributes = new Manifest(manifest).getMainAttributes();
 
@@ -74,5 +79,8 @@ public class OI {
     public Joystick getJoystickDrive() {
         return this.driveStick;
     }
-
+    
+    public Joystick getJoystickAimStick() {
+        return this.aimStick;
+    }
 }
