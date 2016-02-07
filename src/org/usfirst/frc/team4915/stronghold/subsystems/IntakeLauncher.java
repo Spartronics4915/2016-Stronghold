@@ -27,9 +27,7 @@ public class IntakeLauncher extends Subsystem {
 
     private boolean autoAim = false;
 
-    public Joystick aimStick = Robot.oi.aimStick;
-
-    public SmartDashboard smartDashboard = Robot.smartDashboard;
+    public Joystick aimStick = Robot.oi.getJoystickAimStick();
 
     // left and right are determined when standing behind the robot
 

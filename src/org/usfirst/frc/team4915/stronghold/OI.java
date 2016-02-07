@@ -1,79 +1,101 @@
 package org.usfirst.frc.team4915.stronghold;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoAimCommand;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoAimCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.highSpeedMode;
+import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
 
 /**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
+ * This class handles the "operator interface", or the interactions between the
+ * driver station and the robot code.
  */
 public class OI {
-    //// CREATING BUTTONS
-    // One type of button is a joystick button which is any button on a
-    // joystick.
-    // You create one by telling it which joystick it's on and which button
-    // number it is.
-    // Joystick stick = new Joystick(port);
-    // Button button = new JoystickButton(stick, buttonNumber);
-
-    // There are a few additional built in buttons you can use. Additionally,
-    // by subclassing Button you can create custom triggers and bind those to
-    // commands the same as any other Button.
-
-    //// TRIGGERING COMMANDS WITH BUTTONS
-    // Once you have a button, it's trivial to bind it to a button in one of
-    // three ways:
-
-    // Start the command when the button is pressed and let it run the command
-    // until it is finished as determined by it's isFinished method.
-    // button.whenPressed(new ExampleCommand());
-
-    // Run the command while the button is being held down and interrupt it once
-    // the button is released.
-    // button.whileHeld(new ExampleCommand());
-
-    // Start the command when the button is released and let it run the command
-    // until it is finished as determined by it's isFinished method.
-    // button.whenReleased(new ExampleCommand());
-
-    // constants, need to talk to electrical to figure out correct port values
-    public static final int LAUNCHER_STICK_PORT = -1; // TODO
-    public static final int LAUNCH_BALL_BUTTON_NUMBER = -1; // TODO
-    public static final int INTAKE_BALL_BUTTON_NUMBER = -1; // TODO
-
-    // create new joysticks
+    // create  joysticks for driving and aiming the launcher
     public Joystick driveStick;
     public Joystick aimStick;
+    public static final int DRIVE_STICK_PORT = 0; 
+    public static final int LAUNCHER_STICK_PORT = 1; 
 
-    // creates new buttons
-    // launchBall triggers a command group with commands that ultimately will
-    // shoot the ball
-    // grabBall triggers a command group with commands that will get the ball
-    // into the basket
-    public JoystickButton launchBallButton;
-    public JoystickButton grabBallButton;
+    // Drive train two speed controls
+    public JoystickButton speedUpButton;
+    public JoystickButton slowDownButton;
+    
+    // FIXME: IntakeLauncher button values
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = 2; 
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 3; 
+    public static final int LAUNCH_AUTOAIM_BUTTON_NUMBER = 4;
+
+    public JoystickButton launchBallButton; // triggers a command group to shoot the ball
+    public JoystickButton grabBallButton;   // triggers a command group to get the ball into the basket
     public JoystickButton autoAimButton;
 
-    public OI(Joystick joystickDrive) {
-        this.driveStick = new Joystick(0);
-        joystickDrive = new Joystick(1);
-
+    public OI() {
+        this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
-        this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
-        this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
+        
+        // Bind module commands to buttons
+        if (ModuleManager.DRIVE_MODULE_ON) {
+            this.speedUpButton = new JoystickButton(driveStick, 4);
+            this.slowDownButton = new JoystickButton(driveStick, 3);
 
-        // binds commands to buttons, autoAim is commented for now because we
-        // don't know what the position will be
-        this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
-        this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-        this.autoAimButton.whenPressed(new AutoAimCommand());
+            this.speedUpButton.whenPressed(new highSpeedMode());
+            this.slowDownButton.whenPressed(new lowSpeedMode());
+            System.out.println("ModuleManager OI initialized: TODO DriveTrain");    // TODO: OI init DriveTrain
+        }
+        
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+            this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
+            this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
+            this.autoAimButton = new JoystickButton(this.aimStick, LAUNCH_AUTOAIM_BUTTON_NUMBER);
+
+            this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
+            this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
+            this.autoAimButton.whenPressed(new AutoAimCommand());
+            System.out.println("ModuleManager initialized: IntakeLauncher");
+        }
+        
+        if (ModuleManager.GYRO_MODULE_ON) {
+            System.out.println("ModuleManager OI TODO: Initialize Gyro!");          // TODO: OI init Gyro
+        }
+
+        if (ModuleManager.VISION_MODULE_ON) {
+            SmartDashboard.putData(VisionState.getInstance());
+        }
+        
+        /* 
+         * VERSION STRING!! 
+         */
+        try (InputStream manifest = getClass().getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF")) {
+            Attributes attributes = new Manifest(manifest).getMainAttributes();
+
+            /* Print the attributes into form fields on the dashboard */
+            SmartDashboard.putString("Code Version", attributes.getValue("Code-Version"));
+            SmartDashboard.putString("Built At", attributes.getValue("Built-At"));
+            SmartDashboard.putString("Built By", attributes.getValue("Built-By"));
+
+            /* And print the attributes into the log. */
+            System.out.println("Code Version: " + attributes.getValue("Code-Version"));
+            System.out.println("Built At: " + attributes.getValue("Built-At"));
+            System.out.println("Built By: " + attributes.getValue("Built-By"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Joystick getJoystickDrive() {
         return this.driveStick;
     }
-
+    
+    public Joystick getJoystickAimStick() {
+        return this.aimStick;
+    }
 }
