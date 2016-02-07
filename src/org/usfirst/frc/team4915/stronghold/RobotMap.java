@@ -18,8 +18,6 @@ public class RobotMap {
     
     public static final int driveTrainLeftBackMotor = 11;
     public static final int driveTrainLeftFrontMotor = 10;
-    
-    
 
     public static CANTalon leftBackMotor; 
     public static CANTalon rightBackMotor; 

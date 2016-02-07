@@ -17,6 +17,8 @@ import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.HighSpeedModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.LowSpeedModeCommand;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -31,15 +33,21 @@ public class OI {
     // Drive train two speed controls
     public JoystickButton speedUpButton;
     public JoystickButton slowDownButton;
+    
+    public static final int HIGH_SPEED_DRIVE_BUTTON= 4;
+    public static final int LOW_SPEED_DRIVE_BUTTON= 3;
+    
+    // FIXME: IntakeLauncher button values
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = 2; 
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 5; 
+    public static final int LAUNCH_AUTOAIM_BUTTON_NUMBER = 6;
 
     // constants, need to talk to electrical to figure out correct port values
     public static final int PLACEHOLDER_NUMBER = 69;
     public static final int LAUNCHER_STICK_PORT = PLACEHOLDER_NUMBER; // TODO
-    public static final int LAUNCH_BALL_BUTTON_NUMBER = 1; 
-    public static final int INTAKE_BALL_BUTTON_NUMBER = 2; 
     public static final int AUTO_AIM_BUTTON_NUMBER = 11; 
     public static final int LAUNCHER_UP_BUTTON_NUMBER = 7; 
-    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6; 
+    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 8; 
 
     public static final int UP_DIRECTION = 1;
     public static final int DOWN_DIRECTION = UP_DIRECTION * -1;
@@ -61,11 +69,15 @@ public class OI {
         
         // Bind module commands to buttons
         if (ModuleManager.DRIVE_MODULE_ON) {
-            this.speedUpButton = new JoystickButton(driveStick, 4);
-            this.slowDownButton = new JoystickButton(driveStick, 3);
+            this.speedUpButton = new JoystickButton(driveStick, HIGH_SPEED_DRIVE_BUTTON);
+            this.slowDownButton = new JoystickButton(driveStick, LOW_SPEED_DRIVE_BUTTON);
 
-            this.speedUpButton.whenPressed(new highSpeedMode());
-            this.slowDownButton.whenPressed(new lowSpeedMode());
+            this.speedUpButton.whenPressed(new HighSpeedModeCommand());
+            this.slowDownButton.whenPressed(new LowSpeedModeCommand());
+            
+            SmartDashboard.putData("High speed mode- extending pneumatic", new HighSpeedModeCommand());
+            SmartDashboard.putData("Low speed mode- detracting pneumatic", new LowSpeedModeCommand());
+            
             System.out.println("ModuleManager OI initialized: TODO DriveTrain");    // TODO: OI init DriveTrain
         }
         
