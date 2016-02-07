@@ -6,7 +6,6 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoAimCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 import edu.wpi.first.wpilibj.Joystick;
@@ -33,6 +32,7 @@ public class OI {
     public static final int LAUNCH_AUTOAIM_BUTTON_NUMBER = 4;
 
     // constants, need to talk to electrical to figure out correct port values
+    // buttons are now correct until we decide to change them
     public static final int PLACEHOLDER_NUMBER = 69;
     public static final int LAUNCHER_STICK_PORT = PLACEHOLDER_NUMBER; // TODO
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1; 
@@ -76,7 +76,7 @@ public class OI {
 
             this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
             this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-            this.autoAimButton.whenPressed(new AutoAimCommand());
+            //this.autoAimButton.whenPressed(new AutoAimCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
         
@@ -113,12 +113,10 @@ public class OI {
         this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
         this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
         this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
-
-        // binds commands to buttons, autoAim is commented for now because we
-        // don't know what the position will be
+        
         this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
         this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-        this.autoAimButton.whenPressed(new AutoAimCommand());
+        //this.autoAimButton.whenPressed(new AutoAimCommand());
         this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
         this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
     }

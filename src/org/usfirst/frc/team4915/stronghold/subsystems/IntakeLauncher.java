@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SetLauncherHeightCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class IntakeLauncher extends Subsystem {
 
@@ -81,7 +82,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // moves the launcher, joystick angle determines speed
-    public void moveLauncherWithJoystick(double speed) {
+    public void moveLauncher(double speed) {
         if (!autoAim) {
             if (!launcherBottomSwitch.get() && !launcherTopSwitch.get()) {
                 aimMotor.changeControlMode(TalonControlMode.Speed);
@@ -89,6 +90,8 @@ public class IntakeLauncher extends Subsystem {
             } else {
                 aimMotor.set(ZERO_SPEED);
             }
+        } else {
+            
         }
     }
 
@@ -107,20 +110,6 @@ public class IntakeLauncher extends Subsystem {
 
     public void retractLaunchServo() {
         launcherServo.set(LAUNCHER_SERVO_NEUTRAL_POSITION);
-    }
-
-    // toggles auto aim
-    // joystick only works while auto aim is off
-    public void toggleAutoAim() {
-        if (autoAim) {
-            autoAim = false;
-        } else {
-            autoAim = true;
-        }
-    }
-
-    public void autoAimLauncher() {
-            
     }
 
     public CANTalon getIntakeLeftMotor() {
