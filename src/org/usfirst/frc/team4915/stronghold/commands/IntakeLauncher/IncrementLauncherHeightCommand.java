@@ -6,7 +6,7 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 public class IncrementLauncherHeightCommand extends Command {
 
     private int direction;
-    
+
     public IncrementLauncherHeightCommand(int direction) {
         requires(Robot.intakeLauncher);
         this.direction = direction;
@@ -17,7 +17,7 @@ public class IncrementLauncherHeightCommand extends Command {
     }
 
     protected void execute() {
-    
+
     }
 
     protected boolean isFinished() {
@@ -25,10 +25,10 @@ public class IncrementLauncherHeightCommand extends Command {
     }
 
     protected void end() {
-    
+
     }
 
     protected void interrupted() {
-    
+
     }
 }
