@@ -10,7 +10,7 @@ public class AutoAimCommand extends Command {
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.AutoAim();
+        Robot.intakeLauncher.toggleAutoAim();
     }
 
     protected void execute() {
@@ -18,7 +18,7 @@ public class AutoAimCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return !Robot.oi.autoAimButton.get();
+        return !Robot.intakeLauncher.getAutoAim();
     }
 
     protected void end() {

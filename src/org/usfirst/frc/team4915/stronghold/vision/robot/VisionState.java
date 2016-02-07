@@ -35,24 +35,30 @@ public class VisionState implements NamedSendable {
 			 * All numbers are stored as doubles in the network tables, event
 			 * those posted as int, float.
 			 */
-			if (key == "DriverRequest")
+			//System.out.println();
+			System.out.println(key + " " + value + " " + value.getClass().getName());
+			if (key.equals("~TYPE~")) {
+				return;
+			}
+			else if (key.equals("DriverRequest"))
 				s_instance.DriverRequest = (String) value;
 			else {
-				double num = ((Double) value).doubleValue();
+				//System.out.println(key + " " + value);
+				double num = (Double) value;
 				int ival = (int) num;
-				if (key == "FPS")
+				if (key.equals("FPS"))
 					s_instance.FPS = ival;
-				else if (key == "TargetsAcquired")
+				else if (key.equals("TargetsAcquired"))
 					s_instance.TargetsAcquired = ival;
-				else if (key == "TargetX")
+				else if (key.equals("TargetX"))
 					s_instance.TargetX = ival;
-				else if (key == "TargetY")
+				else if (key.equals("TargetY"))
 					s_instance.TargetY = ival;
-				else if (key == "TargetSize")
+				else if (key.equals("TargetSize"))
 					s_instance.TargetSize = ival;
-				else if (key == "TargetResponse")
+				else if (key.equals("TargetResponse"))
 					s_instance.TargetResponse = num;
-				else if (key == "TargetClass")
+				else if (key.equals("TargetClass"))
 					s_instance.TargetClass = ival;
 			}
 		}
