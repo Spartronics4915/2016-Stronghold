@@ -7,15 +7,19 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class RobotMap {
     // Define channels for the drive train motors
-    public static final int driveTrainRightBackMotor = 13;  // inverted
+    public static final int driveTrainRightBackMotor = 13;  
     public static final int driveTrainRightFrontMotor = 12;
+    
     public static final int driveTrainLeftBackMotor = 11;
     public static final int driveTrainLeftFrontMotor = 10;
+    
+    
 
     public static CANTalon leftBackMotor; 
     public static CANTalon rightBackMotor; 
@@ -79,6 +83,15 @@ public class RobotMap {
              * 3. on motors w/ encoders set feedbackdevice to quadEncoder
              * 4. optional: if driving jerky, set PID values
              */
+            
+            //follower mode for right side
+            
+            rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            rightBackMotor.set(rightFrontMotor.getDeviceID());
+            //follow mode for left side
+            leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            leftBackMotor.set(leftFrontMotor.getDeviceID());
+            
         
             System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
         }
