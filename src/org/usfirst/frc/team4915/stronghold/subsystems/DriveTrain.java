@@ -17,9 +17,14 @@ import java.util.List;
 
 public class DriveTrain extends Subsystem {
 
+    /* FIXME: add RobotDrive initialization and feedback system w/ encoders to RobotMap or DriveTrain constructor */
+
+    /* FIXME: the instantiation doesn't follow RobotDrive method parameters */
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
+    
+    // TODO: instead of the analogGyro, we'll be using IMU
     // For Gyro
     public static Gyro gyro = RobotMap.gyro;
     public double deltaGyro = 0;
@@ -62,6 +67,7 @@ public class DriveTrain extends Subsystem {
 
     public void twistDrive(Joystick stick) {
         Robot.driveTrain.trackGyro();
+        /* FIXME: should use rotate values rather than twist values 1 to -1 -- check the motor mapping correctness*/
         this.robotDrive.arcadeDrive(stick, Joystick.AxisType.kY.value, stick, Joystick.AxisType.kZ.value);
     }
 
@@ -109,5 +115,4 @@ public class DriveTrain extends Subsystem {
         //leftDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
         System.out.println("Leaving high speed mode");
     }
-
 }
