@@ -14,7 +14,7 @@ public class MoveStraightPositionModeCommand extends Command {
     public double inputDistanceInches;
     private DriveTrain driveTrain = Robot.driveTrain;
     private List<Double> desiredTicksValue;
-    private double driveStraightValue =  0.7;
+    private double driveStraightValue = 0.7;
 
     public MoveStraightPositionModeCommand(double inputDistanceInches) {
 
@@ -38,16 +38,23 @@ public class MoveStraightPositionModeCommand extends Command {
         this.desiredTicksValue = new ArrayList<Double>();
 
         double ticksToMove = (this.inputDistanceInches * 256 * 4) / (14 * Math.PI);
-        
-        double startingTickValue = motors.get(0).getPosition();
-        
+
+        double startingTickValue;
+        double endValue;
         // get the starting encoder value
         // move motors and read new encoder value
-  
-            double endValue = startingTickValue + ticksToMove;
+        for (int i = 0; i < motors.size(); i++) {
+
+            startingTickValue = motors.get(i).getPosition();
+            endValue = startingTickValue + ticksToMove;
+            // The right motors run in the opposite direction
+            if (i >= 2) {
+                endValue = startingTickValue - ticksToMove;
+            }
             this.desiredTicksValue.add(endValue);
+
         }
-    
+    }
 
     /**
      * This uses the wheel circumference and the number of rotations to compute
@@ -79,7 +86,7 @@ public class MoveStraightPositionModeCommand extends Command {
     private boolean isMotorFinished(int i) {
         boolean finished = false;
         double desiredPosition = this.desiredTicksValue.get(i);
-        
+
         if (i >= 2) {
             double currentPosition = motors.get(i).getPosition();
             System.out.println("Motor " + i + ": current position: " + currentPosition + ", desired position " + desiredPosition);
