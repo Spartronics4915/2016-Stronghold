@@ -1,0 +1,67 @@
+***************
+*** 1,12 ****
+  
+  package org.usfirst.frc.team4915.stronghold.subsystems;
+  
+- import edu.wpi.first.wpilibj.DoubleSolenoid;
+  import edu.wpi.first.wpilibj.Joystick;
+  import edu.wpi.first.wpilibj.RobotDrive;
+  import edu.wpi.first.wpilibj.command.Subsystem;
+  import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+- 
+  import org.usfirst.frc.team4915.stronghold.Robot;
+  import org.usfirst.frc.team4915.stronghold.RobotMap;
+  import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
+--- 1,10 ----
+  
+  package org.usfirst.frc.team4915.stronghold.subsystems;
+  
+  import edu.wpi.first.wpilibj.Joystick;
+  import edu.wpi.first.wpilibj.RobotDrive;
+  import edu.wpi.first.wpilibj.command.Subsystem;
+  import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+  import org.usfirst.frc.team4915.stronghold.Robot;
+  import org.usfirst.frc.team4915.stronghold.RobotMap;
+  import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
+***************
+*** 19,28 ****
+      @Override
+      public void initDefaultCommand() {
+          // Set the default command for a subsystem here.
+-     	System.out.println("INFO: Initializing the ArcadeDrive");
+          setDefaultCommand(new ArcadeDrive());
+  
+-        	robotDrive.setSafetyEnabled(true);
+      }
+  
+      public double modifyThrottle() {
+--- 17,26 ----
+      @Override
+      public void initDefaultCommand() {
+          // Set the default command for a subsystem here.
++         System.out.println("INFO: Initializing the ArcadeDrive");
+          setDefaultCommand(new ArcadeDrive());
+  
++         robotDrive.setSafetyEnabled(true);
+      }
+  
+      public double modifyThrottle() {
+***************
+*** 36,43 ****
+  
+      private void setMaxOutput(double topSpeed) {
+          // TODO Auto-generated method stub
+-         robotDrive.setMaxOutput(topSpeed);	
+-  
+      }
+  
+      public void arcadeDrive(Joystick stick) {
+--- 34,41 ----
+  
+      private void setMaxOutput(double topSpeed) {
+          // TODO Auto-generated method stub
++         robotDrive.setMaxOutput(topSpeed);
++ 
+      }
+  
+      public void arcadeDrive(Joystick stick) {
