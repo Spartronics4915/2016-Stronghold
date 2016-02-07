@@ -110,14 +110,17 @@ public class IntakeLauncher extends Subsystem {
     // takes a parameter generated from auto aiming and sets the launcher to
     // that parameter
     // if auto aim is on already turns it off
-    public void AutoAim(double position) {
+    public void AutoAim() {
         if (autoAim) {
             autoAim = false;
         } else {
             autoAim = true;
-            aimMotor.changeControlMode(TalonControlMode.Position);
-            aimMotor.set(position); // may need to be multiplied by something
         }
+    }
+
+    public void setLauncherHeightCommand(double position) {
+        aimMotor.changeControlMode(TalonControlMode.Position);
+        aimMotor.set(position);
     }
 
     public CANTalon getIntakeLeftMotor() {

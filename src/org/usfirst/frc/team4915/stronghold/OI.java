@@ -66,7 +66,7 @@ public class OI {
         // binds commands to buttons, autoAim is commented for now because we don't know what the position will be
         this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
         this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-        //this.autoAimButton.whenPressed(new AutoAimCommand(position));
+        this.autoAimButton.whenPressed(new AutoAimCommand());
     }
 
     public Joystick getJoystickDrive() {

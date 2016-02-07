@@ -4,16 +4,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class AutoAimCommand extends Command {
-
-    int position;
     
-    public AutoAimCommand(int position) {
+    public AutoAimCommand() {
         requires(Robot.intakeLauncher);
-        this.position = position;
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.AutoAim(position);
+        Robot.intakeLauncher.AutoAim();
     }
 
     protected void execute() {
@@ -21,7 +18,7 @@ public class AutoAimCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return true;
+        return !Robot.oi.autoAimButton.get();
     }
 
     protected void end() {
