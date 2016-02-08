@@ -98,7 +98,7 @@ public class RobotMap {
             leftBackMotor.set(leftFrontMotor.getDeviceID());
             
         
-            System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
+            System.out.println("ModuleManager RobotMap Initialize: Talon's in follower mode");
         }
         
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {

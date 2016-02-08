@@ -117,6 +117,7 @@ public class OI {
             e.printStackTrace();
         }
 
+        // FIXME: move these to ModuleManager.INTAKELAUNCHER_MODULE_ON section above
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
         this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
         this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
