@@ -7,13 +7,15 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class RobotMap {
     // Define channels for the drive train motors
-    public static final int driveTrainRightBackMotor = 13;  // inverted
+    public static final int driveTrainRightBackMotor = 13;  
     public static final int driveTrainRightFrontMotor = 12;
+    
     public static final int driveTrainLeftBackMotor = 11;
     public static final int driveTrainLeftFrontMotor = 10;
 
@@ -31,25 +33,32 @@ public class RobotMap {
     public final static int GYRO_PORT = 0;
     public static Gyro gyro;
 
-    /* IntakeLauncher specific constants - Initialization takes place in RobotMapInit() */ 
-    /* FIXME: Initialize IntakeLauncher's ports */ 
-    private static final int INTAKE_LEFT_MOTOR_PORT = 10; 
-    private static final int INTAKE_RIGHT_MOTOR_PORT = 11; 
-    private static final int AIM_MOTOR_PORT = 12; 
-    private static final int LAUNCHER_SERVO_PORT = 13; 
-    
     public static CANTalon  intakeLeftMotor;
     public static CANTalon  intakeRightMotor;
     public static CANTalon  aimMotor;
     public static Servo     launcherServo;
 
+    private static final int PLACEHOLDER_NUMBER = 69;
+    
+    /* IntakeLauncher specific constants - Initialization takes place in RobotMapInit() */ 
+    /* FIXME: Initialize IntakeLauncher's ports */ 
+    
+    private static final int INTAKE_LEFT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int INTAKE_RIGHT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int AIM_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+
+    private static final int BOULDER_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_TOP_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+
+    private static final int LAUNCHER_SERVO_PORT = PLACEHOLDER_NUMBER; // TODO
+    // not actual port values
+
     private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 99999999.99; // TODO
     private static final double AIM_MOTOR_REVERSE_SOFT_LIMIT = 99999999.99; // TODO
-
-    /* FIXME: to delete as switch connects to Talon's directly */
-    private static final int BOULDER_SWITCH_PORT = 20; 
-    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = 21;
-    private static final int LAUNCHER_TOP_SWITCH_PORT = 22; 
+    private static final double AIM_MOTOR_P = 0; //TODO
+    private static final double AIM_MOTOR_I = 0; //TODO
+    private static final double AIM_MOTOR_D = 0; //TODO
 
     /* FIXME: to delete as the switches connect directly to Talon */
     public static DigitalInput boulderSwitch;
@@ -79,8 +88,17 @@ public class RobotMap {
              * 3. on motors w/ encoders set feedbackdevice to quadEncoder
              * 4. optional: if driving jerky, set PID values
              */
+            
+            //follower mode for right side
+            
+            rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            rightBackMotor.set(rightFrontMotor.getDeviceID());
+            //follow mode for left side
+            leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            leftBackMotor.set(leftFrontMotor.getDeviceID());
+            
         
-            System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
+            System.out.println("ModuleManager RobotMap Initialize: Talon's in follower mode");
         }
         
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
