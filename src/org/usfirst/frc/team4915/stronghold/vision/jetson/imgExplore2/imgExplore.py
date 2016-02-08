@@ -48,6 +48,9 @@ class App:
         self.latency = common.StatValue()   
         self.frameT = common.StatValue() 
         self.lastFrameTime = common.clock()
+        self.lastStashTime = 0
+        self.stashFilename = "imgServer.home/currentImage.jpg"
+        self.stashParams = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
         self.zeros = (0,0,0,0,0,0)
 
         self.indent = ' ' * 50
@@ -248,8 +251,8 @@ class App:
                                             (self, self.mainImg.copy(), t))
                     self.pending.append(task)
 
-                ret = self.checkKey(1, self.cmode, self.index, self.values)
-                done,self.update,self.cmode,self.index,self.values,msg=ret
+                done,self.update,self.cmode,self.index,self.values,msg = \
+                    self.checkKey(1, self.cmode, self.index, self.values)
 
                 if msg:
                     self.putStatus(msg)
@@ -301,8 +304,9 @@ class App:
 
                     self.lastFn = fn
 
-                ret = self.checkKey(10, self.cmode, self.index, self.values)
-                done,self.update,self.cmode,self.index,self.values,msg = ret
+                done,self.update,self.cmode,self.index,self.values,msg = \
+                    self.checkKey(10, self.cmode, self.index, self.values)
+
                 if msg:
                     self.putStatus(msg)
 
@@ -320,18 +324,22 @@ class App:
         #   debugv:  display, fakerobot, video
         parser = argparse.ArgumentParser()
         parser.add_argument("-c", "--cannedimages",
-                            help="use canned images instead of video", 
-                            action='store_true')
+                help="use canned images instead of video", 
+                action='store_true')
         parser.add_argument("-n", "--nodisplay",
-                            help="disable display of images to screen",
-                            action='store_true')
+                help="disable display of images to screen",
+                action='store_true')
         parser.add_argument("-f", "--fakerobot",
-                            help="connect to fake robot on localhost", 
-                            action='store_true')
+                help="connect to fake robot on localhost", 
+                action='store_true')
         parser.add_argument("-a", "--algorithm",
-                            default=0,
-                            type=int,
-                            help="select an algorithm between 0 and 6")
+                default=0,
+                type=int,
+                help="select an algorithm between 0 and 6")
+        parser.add_argument("-s", "--stashinterval",
+                default=0,
+                type=int,
+                help="specifies the tim einterval between image stashes (0 means off)")
         return parser.parse_args()
 
     def simpleThreshold(self, frame, vals=None):
@@ -540,6 +548,12 @@ class App:
                                 maxLevel=maxlevel)
                 
             cv2.imshow("img", frame)
+
+        if self.args.stashinterval != 0 and \
+           (common.clock() - self.lastStashTime) > .1:
+           cv2.imwrite(self.stashFilename, frame, self.stashParams)
+           self.lastStashTime = common.clock()
+            
 
 
     def getCmode(self, num):
