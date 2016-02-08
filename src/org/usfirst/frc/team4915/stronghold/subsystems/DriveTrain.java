@@ -16,17 +16,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DriveTrain extends Subsystem {
-    /*
-     * FIXME: add RobotDrive initialization and feedback system w/ encoders to
-     * RobotMap or DriveTrain constructor
-     */
-
-    /* FIXME: the instantiation doesn't follow RobotDrive method parameters */
+    // Constructor for SpeedControllers: frontLeftMotor, rearLeftMotor, frontRightMotor,  rearRightMotor
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
     
-    // TODO: instead of the analogGyro, we'll be using IMU
     // For Gyro
     public static Gyro gyro = RobotMap.gyro;
     public double deltaGyro = 0;
@@ -44,6 +38,10 @@ public class DriveTrain extends Subsystem {
 
         setDefaultCommand(new ArcadeDrive());
 
+        /* FIXME: robotDrive static field access
+         * instead of:          this.robotDrive.setSafetyEnabled(true);
+         * do (remove this):    robotDrive.setSafetyEnabled(true)
+         */ 
         this.robotDrive.setSafetyEnabled(true);
         //inverting motors
         this.robotDrive.setInvertedMotor(MotorType.kFrontLeft, true);
@@ -76,14 +74,13 @@ public class DriveTrain extends Subsystem {
     public void arcadeDrive(Joystick stick) {
         Robot.driveTrain.trackGyro();
         this.robotDrive.arcadeDrive(stick);
-      //checking to see the encoder values
+        //checking to see the encoder values
         //this can be removed later. Used to debug
         if (motors.size() > 0){
             for (int i = 0; i < motors.size(); i++){
                 System.out.println("The encoder value of motor " + i + " is " + motors.get(i).getEncPosition());
             }
         }
-
     }
 
     public void twistDrive(Joystick stick) {

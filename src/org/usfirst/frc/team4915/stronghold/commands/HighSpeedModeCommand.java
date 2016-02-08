@@ -19,7 +19,7 @@ public class HighSpeedModeCommand extends Command {
 
     @Override
     protected void execute() {
-      
+        // initialize() ran the command - nothing more needed
     }
 
     @Override
@@ -29,12 +29,12 @@ public class HighSpeedModeCommand extends Command {
 
     @Override
     protected void end() {
-
+        // FIXME: call isFinished() to ensure scheduler properly ends/cleans the command
     }
 
     @Override
     protected void interrupted() {
-
+        // FIXME: call end() to ensure scheduler properly ends/cleans the command
     }
 
 }
