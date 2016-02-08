@@ -1,4 +1,4 @@
-    package org.usfirst.frc.team4915.stronghold;
+package org.usfirst.frc.team4915.stronghold;
 
 /* 
  * ModuleManager supports conditional compiling for the robot code

@@ -21,10 +21,9 @@ public class DriveTrain extends Subsystem {
      * RobotMap or DriveTrain constructor
      */
 
-    // RobotDrive instantiation needs to follow: rearleft, frontleft, rearright, frontright
+    /* FIXME: the instantiation doesn't follow RobotDrive method parameters */
     public static RobotDrive robotDrive =
-            new RobotDrive(RobotMap.leftBackMotor, RobotMap.leftFrontMotor, RobotMap.rightBackMotor, RobotMap.rightFrontMotor);
-            // new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
+            new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
     
     // TODO: instead of the analogGyro, we'll be using IMU
@@ -38,14 +37,6 @@ public class DriveTrain extends Subsystem {
     public static List<CANTalon> motors =
             Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
 
-    public DriveTrain() {
-        // initialize the encoders to Zero
-        RobotMap.leftBackMotor.setEncPosition(0);
-        RobotMap.rightFrontMotor.setEncPosition(0);
-        RobotMap.leftFrontMotor.setEncPosition(0);
-        RobotMap.rightBackMotor.setEncPosition(0);
-    }
-    
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
