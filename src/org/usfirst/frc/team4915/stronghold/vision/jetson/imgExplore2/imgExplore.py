@@ -228,12 +228,11 @@ class App:
                 self.latency.update(common.clock() - t0)
                 self.robotCnx.SetFPS(int(1/self.frameT.value))
 
-                if not self.args.nodisplay:
-                    self.drawStr(frame, (20, 20), 
-                        "latency       : %.1f ms" % (self.latency.value*1000))
-                    self.drawStr(frame, (20, 40), 
-                        "frame interval: %.1f ms" % (self.frameT.value*1000))
-                    self.showImg(frame, keypoints, lines, contours)
+                self.drawStr(frame, (20, 20), 
+                    "latency       : %.1f ms" % (self.latency.value*1000))
+                self.drawStr(frame, (20, 40), 
+                    "frame interval: %.1f ms" % (self.frameT.value*1000))
+                self.showImg(frame, keypoints, lines, contours)
 
             if vsrc:
                 # Here we have a video source... Capture the image in the 
@@ -338,8 +337,8 @@ class App:
                 help="select an algorithm between 0 and 6")
         parser.add_argument("-s", "--stashinterval",
                 default=0,
-                type=int,
-                help="specifies the tim einterval between image stashes (0 means off)")
+                type=float,
+                help="specifies the time interval between image stashes (0 means off)")
         return parser.parse_args()
 
     def simpleThreshold(self, frame, vals=None):
@@ -550,11 +549,9 @@ class App:
             cv2.imshow("img", frame)
 
         if self.args.stashinterval != 0 and \
-           (common.clock() - self.lastStashTime) > .1:
+           (common.clock() - self.lastStashTime) > self.args.stashinterval:
            cv2.imwrite(self.stashFilename, frame, self.stashParams)
            self.lastStashTime = common.clock()
-            
-
 
     def getCmode(self, num):
         return self.cmodelist[num]

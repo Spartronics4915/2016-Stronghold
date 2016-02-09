@@ -1,0 +1,12 @@
+#!/bin/bash -f
+visdir="$HOME/2016-Stronghold/src/org/usfirst/frc/team4915/stronghold/vision/jetson/imgExplore2"
+if [ -d $visdir ] ; then
+   cd $visdir
+   echo "starting imgServer.py"
+   ./imgServer.py >& /var/tmp/imgServer.log &
+
+   echo "starting imgExplore.py"
+   python ./imgExplore.py --stashinterval 1 --nodisplay &
+else
+   echo "can't find $visdir"
+fi
