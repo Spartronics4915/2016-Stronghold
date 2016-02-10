@@ -174,7 +174,10 @@ class App:
 
     # -----------------------------------------------------------------
     def Run(self):
-        print("\n\nkeys:\n" \
+        if self.args.nodisplay:
+            print("\nimgExplore: running in nodisplay mode (keys inactive)")
+        else:
+            print("\n\nkeys:\n" \
       "  ESC: exit\n\n" \
       "  c: rgb\n" \
       "  r: red\n" \

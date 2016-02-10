@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 
 import os
+import shutil
 import SimpleHTTPServer
 import SocketServer
-PORT = 8000
+PORT = 5810 # R60, viii contrains port usage.
 
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
 httpd = SocketServer.TCPServer(("", PORT), Handler)
 
-os.chdir("imgServer.home")
+homedir = "/var/tmp/imgServer.home"
+shutil.copytree("imgServer.home", homedir)
+os.chdir(homedir)
 httpd.serve_forever()
