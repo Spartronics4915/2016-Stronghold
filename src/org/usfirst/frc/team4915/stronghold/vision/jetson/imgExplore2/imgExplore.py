@@ -49,7 +49,7 @@ class App:
         self.frameT = common.StatValue() 
         self.lastFrameTime = common.clock()
         self.lastStashTime = 0
-        self.stashFilename = "imgServer.home/currentImage.jpg"
+        self.stashFilename = "/var/tmp/imgServer.home/currentImage.jpg"
         self.stashParams = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
         self.zeros = (0,0,0,0,0,0)
 
@@ -519,40 +519,43 @@ class App:
         return frame, t0, keypoints, lines, contours
 
     def showImg(self, frame, keypoints, lines, contours):
-        if not self.args.nodisplay:
-            if keypoints:
-                frame = cv2.drawKeypoints(frame, [keypoints[0]],
-                                   np.array([]),
-                                   (0,0,255), 
-                                   cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS) 
-                if len(keypoints) > 1:
-                    frame = cv2.drawKeypoints(frame, keypoints[1:],
-                                   np.array([]),
-                                   (255,205,25), 
-                                   cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS) 
-            if lines != None:
-                for l in lines[0]:
-                    cv2.line(frame, (l[0], l[1]), (l[2], l[3]), (20,255,255))
+        if self.args.nodisplay and self.args.stashinterval == 0:
+            return
 
-            if contours != None:
-                contours0,hier = contours
-                cindex = self.values[3] # if -1, all are drawn
-                maxlevel = self.values[4]
-                if len(contours0) <= cindex:
-                    self.putNotice("reset contour id")
-                    values[3] = -1
-                    cindex = -1
-                cv2.drawContours(frame, contours0, cindex,
+        if keypoints:
+            frame = cv2.drawKeypoints(frame, [keypoints[0]],
+                               np.array([]),
+                               (0,0,255), 
+                               cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS) 
+            if len(keypoints) > 1:
+                frame = cv2.drawKeypoints(frame, keypoints[1:],
+                               np.array([]),
+                               (255,205,25), 
+                               cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS) 
+        if lines != None:
+            for l in lines[0]:
+                cv2.line(frame, (l[0], l[1]), (l[2], l[3]), (20,255,255))
+
+        if contours != None:
+            contours0,hier = contours
+            cindex = self.values[3] # if -1, all are drawn
+            maxlevel = self.values[4]
+            if len(contours0) <= cindex:
+                self.putNotice("reset contour id")
+                values[3] = -1
+                cindex = -1
+            cv2.drawContours(frame, contours0, cindex,
                                 (128,255,255), 
                                 thickness=1, 
                                 lineType=cv2.CV_AA,
                                 hierarchy=hier, 
                                 maxLevel=maxlevel)
                 
-            cv2.imshow("img", frame)
+        if not self.args.nodisplay:
+           cv2.imshow("img", frame)
 
         if self.args.stashinterval != 0 and \
-           (common.clock() - self.lastStashTime) > self.args.stashinterval:
+            (common.clock() - self.lastStashTime) > self.args.stashinterval:
            cv2.imwrite(self.stashFilename, frame, self.stashParams)
            self.lastStashTime = common.clock()
 

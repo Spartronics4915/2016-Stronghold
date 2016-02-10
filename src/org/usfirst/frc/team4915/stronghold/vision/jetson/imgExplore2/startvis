@@ -6,7 +6,7 @@ if [ -d $visdir ] ; then
    ./imgServer.py >& /var/tmp/imgServer.log &
 
    echo "starting imgExplore.py"
-   python ./imgExplore.py --stashinterval 1 --nodisplay &
+   python ./imgExplore.py --algorithm 5 --stashinterval 1 --nodisplay &
 else
    echo "can't find $visdir"
 fi

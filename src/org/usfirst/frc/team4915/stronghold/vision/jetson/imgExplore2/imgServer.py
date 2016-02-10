@@ -5,11 +5,22 @@ import shutil
 import SimpleHTTPServer
 import SocketServer
 PORT = 5810 # R60, viii contrains port usage.
+homedir = "/var/tmp/imgServer.home"
 
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
 httpd = SocketServer.TCPServer(("", PORT), Handler)
+print("imgServer is serving %s on port %d"%(homedir, PORT))
 
-homedir = "/var/tmp/imgServer.home"
-shutil.copytree("imgServer.home", homedir)
+try:
+    shutil.copytree("imgServer.home", homedir)
+
+except:
+    pass
+
 os.chdir(homedir)
-httpd.serve_forever()
+
+while True:
+    try:
+        httpd.serve_forever()
+    except:
+        print("problem starting server")
