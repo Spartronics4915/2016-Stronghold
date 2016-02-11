@@ -18,8 +18,6 @@ public class RobotMap {
     
     public static final int driveTrainLeftBackMotor = 11;
     public static final int driveTrainLeftFrontMotor = 10;
-    
-    
 
     public static CANTalon leftBackMotor; 
     public static CANTalon rightBackMotor; 
@@ -100,7 +98,7 @@ public class RobotMap {
             leftBackMotor.set(leftFrontMotor.getDeviceID());
             
         
-            System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
+            System.out.println("ModuleManager RobotMap Initialize: Talon's in follower mode");
         }
         
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {

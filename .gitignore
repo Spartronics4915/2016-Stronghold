@@ -10,6 +10,8 @@
 *.tmp
 *.un~
 *.war
+*.pyc
+*.DS_Store
 *~
 *~.nib
 .buildpath
