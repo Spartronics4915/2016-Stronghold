@@ -51,8 +51,8 @@ class RobotCnx:
 
     @staticmethod
     def visValueChanged(table, key, value, isNew):
-        if key == 'DriverRequest':
-            print("visVal: '%s':%s new:%s" % (key, value, isNew))
+        #This is where we can be woken up if the driver station (or robot) wants to talk to us
+        pass
 
 class ConnectionListener:
     def __init__(self):
