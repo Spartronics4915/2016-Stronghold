@@ -1,5 +1,3 @@
-package org.usfirst.frc.team4915.stronghold.vision.robot;
-
 import edu.wpi.first.wpilibj.NamedSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
