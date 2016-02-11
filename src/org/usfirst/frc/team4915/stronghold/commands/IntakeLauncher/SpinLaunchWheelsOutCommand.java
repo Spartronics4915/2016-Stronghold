@@ -14,18 +14,19 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.setSpeedLaunch();
+
     }
 
     @Override
     protected void execute() {
+        Robot.intakeLauncher.setSpeedLaunch();
         SmartDashboard.putString("Intake Flywheels", "Right: " + Double.toString(Robot.intakeLauncher.getIntakeRightMotor().getSpeed()) + " Left: "
                 + Double.toString(Robot.intakeLauncher.getIntakeLeftMotor().getSpeed()));
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     @Override
@@ -35,6 +36,6 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void interrupted() {
-
+        end();
     }
 }

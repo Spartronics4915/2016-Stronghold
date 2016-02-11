@@ -14,7 +14,7 @@ public class MoveStraightPositionModeCommand extends Command {
     public double inputDistanceInches;
     private DriveTrain driveTrain = Robot.driveTrain;
     private List<Double> desiredTicksValue;
-    private double driveStraightValue =  0.7;
+    private double driveStraightValue = 0.7;
 
     public MoveStraightPositionModeCommand(double inputDistanceInches) {
 
@@ -37,17 +37,24 @@ public class MoveStraightPositionModeCommand extends Command {
     protected void initialize() {
         this.desiredTicksValue = new ArrayList<Double>();
 
+        //double ticksToMove = this.inputDistanceInches * 1000 / (14 * Math.PI);
         double ticksToMove = (this.inputDistanceInches * 256 * 4) / (14 * Math.PI);
-        
-        double startingTickValue = motors.get(0).getPosition();
+
+        //double startingTickValue;
+        //double endValue;
+        //reset encoders
         
         // get the starting encoder value
         // move motors and read new encoder value
-  
-            double endValue = startingTickValue + ticksToMove;
-            this.desiredTicksValue.add(endValue);
+        for (int i = 0; i < motors.size(); i++) {
+            motors.get(i).setEncPosition(0);
+            System.out.println("motor " + i + " reset to " + motors.get(i).getEncPosition());
+            // All the motors are inverted/backwards. The ticks are moving down
+            // when moving forward
+            this.desiredTicksValue.add(ticksToMove);
+
         }
-    
+    }
 
     /**
      * This uses the wheel circumference and the number of rotations to compute
@@ -67,38 +74,24 @@ public class MoveStraightPositionModeCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        // checking to see if the front motors have finished regardless of
-        // driving direction
-        if (this.inputDistanceInches > 0) {
-            return isMotorFinished(1) || isMotorFinished(3);
-        } else {
-            return isMotorFinished(0) || isMotorFinished(2);
-        }
+        // Checking if all the motors have reached the desired tick values
+        return isMotorFinished(0) || isMotorFinished(1) || isMotorFinished(2) || isMotorFinished(3);
     }
 
     private boolean isMotorFinished(int i) {
         boolean finished = false;
         double desiredPosition = this.desiredTicksValue.get(i);
-        
-        if (i >= 2) {
-            double currentPosition = motors.get(i).getPosition();
-            System.out.println("Motor " + i + ": current position: " + currentPosition + ", desired position " + desiredPosition);
 
-            // right motors are inverted
-            if (this.inputDistanceInches < 0) {
-                finished = currentPosition >= desiredPosition;
-            } else {
-                finished = currentPosition <= desiredPosition;
-            }
+        double currentPosition = motors.get(i).getEncPosition();
+        System.out.println("Motor " + i + ": current position: " + currentPosition + ", desired position " + desiredPosition);
+
+        // All motors are inverted
+        if (this.inputDistanceInches < 0) {
+            finished = currentPosition <= desiredPosition;
         } else {
-            double currentPosition = motors.get(i).getPosition();
-            System.out.println("Motor " + i + ": current position: " + currentPosition + ", desired position " + desiredPosition);
-            if (this.inputDistanceInches < 0) {
-                finished = currentPosition <= desiredPosition;
-            } else {
-                finished = currentPosition >= desiredPosition;
-            }
+            finished = currentPosition >= desiredPosition;
         }
+
         return finished;
 
     }
