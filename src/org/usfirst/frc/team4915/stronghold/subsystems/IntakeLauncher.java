@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SetLauncherHeightCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class IntakeLauncher extends Subsystem {
 
@@ -17,17 +18,16 @@ public class IntakeLauncher extends Subsystem {
     // Negative speed indicates a wheel spinning inwards and positive speed
     // indicates a wheel spinning outwards.
     // Numbers are not correct
-    private static final double INTAKE_SPEED = -1.0;
-    private static final double LAUNCH_SPEED = 1.0;
-    private static final double ZERO_SPEED = 0.0;
-    private static final double JOYSTICK_SCALE = 1.0; // TODO
-    private static final double LAUNCHER_SERVO_NEUTRAL_POSITION = 0.0; // TODO
-    private static final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0; // TODO
-    private static final double AIM_MOTOR_INCREMENT = 0; // TODO
-    private static final double LAUNCHER_MIN_HEIGHT = 0; // TODO
-    private static final double LAUNCHER_MAX_HEIGHT = 0; // TODO
-
-    private boolean autoAim = false;
+    private final double INTAKE_SPEED = -1.0;
+    private final double LAUNCH_SPEED = 1.0;
+    private final double ZERO_SPEED = 0.0;
+    private final double JOYSTICK_SCALE = 1.0; // TODO
+    private final double ENCODER_SCALE = .31;
+    private final double LAUNCHER_SERVO_NEUTRAL_POSITION = 0.0; // TODO
+    private final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0; // TODO
+    private final double AIM_MOTOR_INCREMENT = .1; // TODO
+    private final double LAUNCHER_MIN_HEIGHT = 0; // TODO
+    private final double LAUNCHER_MAX_HEIGHT = 0; // TODO
 
     public Joystick aimStick = Robot.oi.getJoystickAimStick();
 
@@ -53,7 +53,7 @@ public class IntakeLauncher extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new SetLauncherHeightCommand(aimStick.getAxis(Joystick.AxisType.kY)));
+        setDefaultCommand(new SetLauncherHeightCommand());
     }
 
     // Sets the speed on the flywheels to suck in the boulder
@@ -81,21 +81,27 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // moves the launcher, joystick angle determines speed
-    public void moveLauncherWithJoystick(double speed) {
-        if (!autoAim) {
+    public void moveLauncher() {
+        if (!VisionState.getInstance().AutoAimEnabled) {
             if (!launcherBottomSwitch.get() && !launcherTopSwitch.get()) {
                 aimMotor.changeControlMode(TalonControlMode.Speed);
-                aimMotor.set(speed * JOYSTICK_SCALE);
+                aimMotor.set(aimStick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE);
             } else {
                 aimMotor.set(ZERO_SPEED);
             }
+        } else {
+            if (VisionState.getInstance().TargetY > LAUNCHER_MIN_HEIGHT || VisionState.getInstance().TargetY < LAUNCHER_MAX_HEIGHT) {
+                SmartDashboard.putBoolean("Auto-aim target out of range", true);
+                aimMotor.changeControlMode(TalonControlMode.Position);
+                aimMotor.set(VisionState.getInstance().TargetY * ENCODER_SCALE);
+            } 
         }
     }
 
     // changes the launcher height by a small value
     // direction is either 1 or -1
     public void incrementLauncherHeight(int direction) {
-        if (!autoAim) {
+        if (!VisionState.getInstance().AutoAimEnabled) {
             aimMotor.changeControlMode(TalonControlMode.Position);
             aimMotor.set(aimMotor.getPosition() + (AIM_MOTOR_INCREMENT * direction));
         }
@@ -107,20 +113,6 @@ public class IntakeLauncher extends Subsystem {
 
     public void retractLaunchServo() {
         launcherServo.set(LAUNCHER_SERVO_NEUTRAL_POSITION);
-    }
-
-    // toggles auto aim
-    // joystick only works while auto aim is off
-    public void toggleAutoAim() {
-        if (autoAim) {
-            autoAim = false;
-        } else {
-            autoAim = true;
-        }
-    }
-
-    public void autoAimLauncher() {
-            
     }
 
     public CANTalon getIntakeLeftMotor() {
@@ -137,9 +129,5 @@ public class IntakeLauncher extends Subsystem {
 
     public DigitalInput getBoulderSwitch() {
         return boulderSwitch;
-    }
-    
-    public boolean getAutoAim() {
-        return autoAim;
     }
 }
