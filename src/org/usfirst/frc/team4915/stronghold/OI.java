@@ -38,11 +38,9 @@ public class OI {
     // FIXME: IntakeLauncher button values
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2; 
     public static final int INTAKE_BALL_BUTTON_NUMBER = 5; 
-    public static final int LAUNCH_AUTOAIM_BUTTON_NUMBER = 6;
 
     // constants, need to talk to electrical to figure out correct port values
-    public static final int PLACEHOLDER_NUMBER = 69;
-    public static final int LAUNCHER_STICK_PORT = PLACEHOLDER_NUMBER; // TODO
+    public static final int LAUNCHER_STICK_PORT = 1;
     public static final int AUTO_AIM_BUTTON_NUMBER = 11; 
     public static final int LAUNCHER_UP_BUTTON_NUMBER = 7; 
     public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 8; 
@@ -85,6 +83,9 @@ public class OI {
 
             this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
             this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
+            
+            this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
+            this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
         
@@ -117,21 +118,7 @@ public class OI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // FIXME: move these to ModuleManager.INTAKELAUNCHER_MODULE_ON section above
-        this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
-        this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
-        this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
-        this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
-        this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
-        this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
-
-        // binds commands to buttons, autoAim is commented for now because we
-        // don't know what the position will be
-        this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
-        this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-        this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
-        this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
+        
     }
 
     public Joystick getJoystickDrive() {
