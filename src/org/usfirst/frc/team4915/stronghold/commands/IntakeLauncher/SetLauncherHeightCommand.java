@@ -5,12 +5,9 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class SetLauncherHeightCommand extends Command {
 
-    double speed;
-
     // this command sets the angle of the launcher
-    public SetLauncherHeightCommand(double speed) {
+    public SetLauncherHeightCommand() {
         requires(Robot.intakeLauncher);
-        this.speed = speed;
     }
 
     @Override
@@ -20,7 +17,7 @@ public class SetLauncherHeightCommand extends Command {
 
     @Override
     protected void execute() {
-        Robot.intakeLauncher.moveLauncher(speed);
+        Robot.intakeLauncher.moveLauncher();
     }
 
     @Override

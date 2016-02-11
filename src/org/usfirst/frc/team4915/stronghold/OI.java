@@ -20,7 +20,8 @@ import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
  * driver station and the robot code.
  */
 public class OI {
-    // create  joysticks for driving and aiming the launcher
+
+    // create joysticks for driving and aiming the launcher
     public Joystick driveStick;
     public Joystick aimStick;
     public static final int DRIVE_STICK_PORT = 0;
@@ -28,19 +29,16 @@ public class OI {
     // Drive train two speed controls
     public JoystickButton speedUpButton;
     public JoystickButton slowDownButton;
-    
-    // FIXME: IntakeLauncher button values
-    public static final int LAUNCH_AUTOAIM_BUTTON_NUMBER = 4;
 
     // constants, need to talk to electrical to figure out correct port values
     // buttons are now correct until we decide to change them
     public static final int PLACEHOLDER_NUMBER = 69;
     public static final int LAUNCHER_STICK_PORT = PLACEHOLDER_NUMBER; // TODO
-    public static final int LAUNCH_BALL_BUTTON_NUMBER = 1; 
-    public static final int INTAKE_BALL_BUTTON_NUMBER = 2; 
-    public static final int AUTO_AIM_BUTTON_NUMBER = 11; 
-    public static final int LAUNCHER_UP_BUTTON_NUMBER = 7; 
-    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6; 
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 2;
+    public static final int AUTO_AIM_BUTTON_NUMBER = 11;
+    public static final int LAUNCHER_UP_BUTTON_NUMBER = 7;
+    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6;
 
     public static final int UP_DIRECTION = 1;
     public static final int DOWN_DIRECTION = UP_DIRECTION * -1;
@@ -59,7 +57,7 @@ public class OI {
     public OI() {
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
-        
+
         // Bind module commands to buttons
         if (ModuleManager.DRIVE_MODULE_ON) {
             this.speedUpButton = new JoystickButton(driveStick, 4);
@@ -67,9 +65,12 @@ public class OI {
 
             this.speedUpButton.whenPressed(new highSpeedMode());
             this.slowDownButton.whenPressed(new lowSpeedMode());
-            System.out.println("ModuleManager OI initialized: TODO DriveTrain");    // TODO: OI init DriveTrain
+            System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
+                                                                                 // OI
+                                                                                 // init
+                                                                                 // DriveTrain
         }
-        
+
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
             this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
@@ -77,24 +78,27 @@ public class OI {
             this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
             this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
             this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
-            
+
             this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
             this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
             this.autoAimButton.whenPressed(new AutoAimControlCommand());
             this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
             this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
         }
-        
+
         if (ModuleManager.GYRO_MODULE_ON) {
-            System.out.println("ModuleManager OI TODO: Initialize Gyro!");          // TODO: OI init Gyro
+            System.out.println("ModuleManager OI TODO: Initialize Gyro!"); // TODO:
+                                                                           // OI
+                                                                           // init
+                                                                           // Gyro
         }
 
         if (ModuleManager.VISION_MODULE_ON) {
             SmartDashboard.putData(VisionState.getInstance());
         }
-        
-        /* 
-         * VERSION STRING!! 
+
+        /*
+         * VERSION STRING!!
          */
         try (InputStream manifest = getClass().getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF")) {
             Attributes attributes = new Manifest(manifest).getMainAttributes();
@@ -116,7 +120,7 @@ public class OI {
     public Joystick getJoystickDrive() {
         return this.driveStick;
     }
-    
+
     public Joystick getJoystickAimStick() {
         return this.aimStick;
     }
