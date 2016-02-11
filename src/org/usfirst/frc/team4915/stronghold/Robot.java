@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
@@ -23,6 +24,7 @@ public class Robot extends IterativeRobot {
     public static DriveTrain driveTrain;
     public static IntakeLauncher intakeLauncher;
     public static OI oi;
+    public static GearShift gearShift;
     Command autonomousCommand;
 
     /**
@@ -36,6 +38,7 @@ public class Robot extends IterativeRobot {
         // 2. conditionally create the modules
         if (ModuleManager.DRIVE_MODULE_ON) {
             driveTrain = new DriveTrain();
+            gearShift= new GearShift();
             System.out.println("ModuleManager initialized: DriveTrain");
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
