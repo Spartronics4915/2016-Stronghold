@@ -39,8 +39,8 @@ public class OI {
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 2;
     public static final int AUTO_AIM_BUTTON_NUMBER = 11;
-    public static final int LAUNCHER_UP_BUTTON_NUMBER = 7;
-    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6;
+    public static final int LAUNCHER_UP_BUTTON_NUMBER = 6;
+    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 7;
 
 
     public static final int UP_DIRECTION = 1;

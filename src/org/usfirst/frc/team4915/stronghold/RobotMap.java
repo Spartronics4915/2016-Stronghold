@@ -4,10 +4,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
@@ -39,8 +36,6 @@ public class RobotMap {
     public static CANTalon  intakeRightMotor;
     public static CANTalon  aimMotor;
     public static Servo     launcherServo;
-
-    private static final int PLACEHOLDER_NUMBER = 69;
     
     /* IntakeLauncher specific constants - Initialization takes place in RobotMapInit() */ 
     /* FIXME: Initialize IntakeLauncher's ports */ 
@@ -49,9 +44,9 @@ public class RobotMap {
     private static final int INTAKE_RIGHT_MOTOR_ID = 15; 
     private static final int AIM_MOTOR_ID = 16; 
 
-    private static final int BOULDER_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
-    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
-    private static final int LAUNCHER_TOP_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int BOULDER_SWITCH_PORT = 0; // TODO
+    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = 1; // TODO
+    private static final int LAUNCHER_TOP_SWITCH_PORT = 2; // TODO
 
     private static final int LAUNCHER_SERVO_PORT = 17; 
     // not actual port values
