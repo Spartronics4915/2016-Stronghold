@@ -30,10 +30,8 @@ public class OI {
     public JoystickButton speedUpButton;
     public JoystickButton slowDownButton;
 
-    // constants, need to talk to electrical to figure out correct port values
     // buttons are now correct until we decide to change them
-    public static final int PLACEHOLDER_NUMBER = 69;
-    public static final int LAUNCHER_STICK_PORT = PLACEHOLDER_NUMBER; // TODO
+    public static final int LAUNCHER_STICK_PORT = 1;
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 2;
     public static final int AUTO_AIM_BUTTON_NUMBER = 11;
