@@ -13,11 +13,12 @@ public class IntakeBallCommand extends Command {
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.setSpeedIntake();
+       
     }
 
     @Override
     protected void execute() {
+        Robot.intakeLauncher.setSpeedIntake();
         //reports the speed of the motor as it increases
         SmartDashboard.putString("Intake Flywheels", "Right: " + Double.toString(Robot.intakeLauncher.getIntakeRightMotor().getSpeed()) + " Left: "
                 + Double.toString(Robot.intakeLauncher.getIntakeLeftMotor().getSpeed()));
