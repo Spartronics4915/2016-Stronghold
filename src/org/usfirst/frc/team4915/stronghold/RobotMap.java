@@ -83,12 +83,11 @@ public class RobotMap {
              * 3. on motors w/ encoders set feedbackdevice to quadEncoder
              * 4. optional: if driving jerky, set PID values
              */
-            
+            //THe back motors are the follower motors
             //follower mode for right side
-            
             rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
             rightBackMotor.set(rightFrontMotor.getDeviceID());
-            //follow mode for left side
+            //follower mode for left side
             leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
             leftBackMotor.set(leftFrontMotor.getDeviceID());
             

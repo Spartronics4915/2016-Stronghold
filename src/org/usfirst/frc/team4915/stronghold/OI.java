@@ -1,5 +1,4 @@
 package org.usfirst.frc.team4915.stronghold;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
