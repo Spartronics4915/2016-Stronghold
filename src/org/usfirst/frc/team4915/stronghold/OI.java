@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import org.usfirst.frc.team4915.stronghold.commands.highSpeedMode;
-import org.usfirst.frc.team4915.stronghold.commands.lowSpeedMode;
+import org.usfirst.frc.team4915.stronghold.commands.HighSpeedMode;
+import org.usfirst.frc.team4915.stronghold.commands.LowSpeedMode;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoAimCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
