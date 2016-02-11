@@ -78,13 +78,11 @@ public class OI {
             this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
             this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
             this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
-            this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
             this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
             this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
 
             this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
             this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-			this.autoAimButton.whenPressed(new AutoAimControlCommand());
             this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
             this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
             System.out.println("ModuleManager initialized: IntakeLauncher");
@@ -99,6 +97,9 @@ public class OI {
 
         if (ModuleManager.VISION_MODULE_ON) {
             SmartDashboard.putData(VisionState.getInstance());
+            this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
+            this.autoAimButton.whenPressed(new AutoAimControlCommand());
+            System.out.println("ModuleManager OI: Initialize Vision!");
         }
 
         /*
