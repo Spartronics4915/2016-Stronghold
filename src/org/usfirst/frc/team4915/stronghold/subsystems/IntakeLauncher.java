@@ -27,7 +27,7 @@ public class IntakeLauncher extends Subsystem {
     private final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0; // TODO
     private final double AIM_MOTOR_INCREMENT = .1; // TODO
     private final double LAUNCHER_MIN_HEIGHT = 0; // TODO
-    private final double LAUNCHER_MAX_HEIGHT = 0; // TODO
+    private final double LAUNCHER_MAX_HEIGHT = 1000; // TODO
 
     public Joystick aimStick = Robot.oi.getJoystickAimStick();
 
