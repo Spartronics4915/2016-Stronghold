@@ -104,7 +104,7 @@ public class RobotMap {
         }
         
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            intakeLeftMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
+            intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_ID);
             intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
             aimMotor = new CANTalon(AIM_MOTOR_ID);
             launcherServo = new Servo(LAUNCHER_SERVO_ID);
