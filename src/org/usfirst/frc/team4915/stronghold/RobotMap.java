@@ -45,30 +45,26 @@ public class RobotMap {
     /* IntakeLauncher specific constants - Initialization takes place in RobotMapInit() */ 
     /* FIXME: Initialize IntakeLauncher's ports */ 
     
-    private static final int INTAKE_LEFT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
-    private static final int INTAKE_RIGHT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
-    private static final int AIM_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int INTAKE_LEFT_MOTOR_ID = 14; 
+    private static final int INTAKE_RIGHT_MOTOR_ID = 15; 
+    private static final int AIM_MOTOR_ID = 16; 
 
     private static final int BOULDER_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
     private static final int LAUNCHER_BOTTOM_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
     private static final int LAUNCHER_TOP_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
 
-    private static final int LAUNCHER_SERVO_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_SERVO_PORT = 17; 
     // not actual port values
 
-    private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 99999999.99; // TODO
-    private static final double AIM_MOTOR_REVERSE_SOFT_LIMIT = 99999999.99; // TODO
+    private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 1.0;
+    private static final double AIM_MOTOR_REVERSE_SOFT_LIMIT = 0.0; 
     private static final double AIM_MOTOR_P = 0; //TODO
     private static final double AIM_MOTOR_I = 0; //TODO
     private static final double AIM_MOTOR_D = 0; //TODO
 
-    /* FIXME: to delete as the switches connect directly to Talon */
     public static DigitalInput boulderSwitch;
     public static DigitalInput launcherTopSwitch;
     public static DigitalInput launcherBottomSwitch;
-
-    /* FIXME: to delete as the encoder connect directly to Talon */
-    public static Encoder aimEncoder;
     
     /* 
      * Initialize the various robot modules
@@ -104,21 +100,14 @@ public class RobotMap {
         }
         
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_PORT);
-            intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_PORT);
-            aimMotor = new CANTalon(AIM_MOTOR_PORT);
+            intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_ID);
+            intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
+            aimMotor = new CANTalon(AIM_MOTOR_ID);
             launcherServo = new Servo(LAUNCHER_SERVO_PORT);
-            // TODO: Initialize intakelauncher motors here, such as limit switches and encoders
-            System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
-            
-            /* FIXME: to delete as the switches connect directly to Talon */
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
             launcherTopSwitch = new DigitalInput(LAUNCHER_TOP_SWITCH_PORT);
             launcherBottomSwitch = new DigitalInput(LAUNCHER_BOTTOM_SWITCH_PORT);
-
-            /* FIXME: to delete as the encoder connect directly to Talon */
-            aimEncoder = new Encoder(LAUNCHER_BOTTOM_SWITCH_PORT, LAUNCHER_TOP_SWITCH_PORT, 
-                                     false, Encoder.EncodingType.k4X);
+            System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
             
             // setup the motor
             aimMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);

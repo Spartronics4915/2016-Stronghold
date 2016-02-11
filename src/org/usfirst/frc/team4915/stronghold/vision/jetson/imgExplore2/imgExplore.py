@@ -48,6 +48,9 @@ class App:
         self.latency = common.StatValue()   
         self.frameT = common.StatValue() 
         self.lastFrameTime = common.clock()
+        self.lastStashTime = 0
+        self.stashFilename = "/var/tmp/imgServer.home/currentImage.jpg"
+        self.stashParams = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
         self.zeros = (0,0,0,0,0,0)
 
         self.indent = ' ' * 50
@@ -171,7 +174,10 @@ class App:
 
     # -----------------------------------------------------------------
     def Run(self):
-        print("\n\nkeys:\n" \
+        if self.args.nodisplay:
+            print("\nimgExplore: running in nodisplay mode (keys inactive)")
+        else:
+            print("\n\nkeys:\n" \
       "  ESC: exit\n\n" \
       "  c: rgb\n" \
       "  r: red\n" \
@@ -208,12 +214,13 @@ class App:
                 vsrc = None
                 exit(1)
             else:
-                w = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
-                h = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)
-                self.putNotice("video is %dx%d" % (w, h))
-                if 0:
-                    vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, w)
-                    vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, h)
+                ret1 = vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 1280)
+                ret2 = vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 720)
+                print(ret1, ret2)
+                if 1:
+                    w = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
+                    h = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)
+                    print("video res: %d %d" % (w,h))
         else:
             vsrc = None
 
@@ -224,12 +231,11 @@ class App:
                 self.latency.update(common.clock() - t0)
                 self.robotCnx.SetFPS(int(1/self.frameT.value))
 
-                if not self.args.nodisplay:
-                    self.drawStr(frame, (20, 20), 
-                        "latency       : %.1f ms" % (self.latency.value*1000))
-                    self.drawStr(frame, (20, 40), 
-                        "frame interval: %.1f ms" % (self.frameT.value*1000))
-                    self.showImg(frame, keypoints, lines, contours)
+                self.drawStr(frame, (20, 20), 
+                    "latency       : %.1f ms" % (self.latency.value*1000))
+                self.drawStr(frame, (20, 40), 
+                    "frame interval: %.1f ms" % (self.frameT.value*1000))
+                self.showImg(frame, keypoints, lines, contours)
 
             if vsrc:
                 # Here we have a video source... Capture the image in the 
@@ -247,8 +253,8 @@ class App:
                                             (self, self.mainImg.copy(), t))
                     self.pending.append(task)
 
-                ret = self.checkKey(1, self.cmode, self.index, self.values)
-                done,self.update,self.cmode,self.index,self.values,msg=ret
+                done,self.update,self.cmode,self.index,self.values,msg = \
+                    self.checkKey(1, self.cmode, self.index, self.values)
 
                 if msg:
                     self.putStatus(msg)
@@ -300,8 +306,9 @@ class App:
 
                     self.lastFn = fn
 
-                ret = self.checkKey(10, self.cmode, self.index, self.values)
-                done,self.update,self.cmode,self.index,self.values,msg = ret
+                done,self.update,self.cmode,self.index,self.values,msg = \
+                    self.checkKey(10, self.cmode, self.index, self.values)
+
                 if msg:
                     self.putStatus(msg)
 
@@ -319,18 +326,22 @@ class App:
         #   debugv:  display, fakerobot, video
         parser = argparse.ArgumentParser()
         parser.add_argument("-c", "--cannedimages",
-                            help="use canned images instead of video", 
-                            action='store_true')
+                help="use canned images instead of video", 
+                action='store_true')
         parser.add_argument("-n", "--nodisplay",
-                            help="disable display of images to screen",
-                            action='store_true')
+                help="disable display of images to screen",
+                action='store_true')
         parser.add_argument("-f", "--fakerobot",
-                            help="connect to fake robot on localhost", 
-                            action='store_true')
+                help="connect to fake robot on localhost", 
+                action='store_true')
         parser.add_argument("-a", "--algorithm",
-                            default=0,
-                            type=int,
-                            help="select an algorithm between 0 and 6")
+                default=0,
+                type=int,
+                help="select an algorithm between 0 and 6")
+        parser.add_argument("-s", "--stashinterval",
+                default=0,
+                type=float,
+                help="specifies the time interval between image stashes (0 means off)")
         return parser.parse_args()
 
     def simpleThreshold(self, frame, vals=None):
@@ -508,38 +519,45 @@ class App:
         return frame, t0, keypoints, lines, contours
 
     def showImg(self, frame, keypoints, lines, contours):
-        if not self.args.nodisplay:
-            if keypoints:
-                frame = cv2.drawKeypoints(frame, [keypoints[0]],
-                                   np.array([]),
-                                   (0,0,255), 
-                                   cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS) 
-                if len(keypoints) > 1:
-                    frame = cv2.drawKeypoints(frame, keypoints[1:],
-                                   np.array([]),
-                                   (255,205,25), 
-                                   cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS) 
-            if lines != None:
-                for l in lines[0]:
-                    cv2.line(frame, (l[0], l[1]), (l[2], l[3]), (20,255,255))
+        if self.args.nodisplay and self.args.stashinterval == 0:
+            return
 
-            if contours != None:
-                contours0,hier = contours
-                cindex = self.values[3] # if -1, all are drawn
-                maxlevel = self.values[4]
-                if len(contours0) <= cindex:
-                    self.putNotice("reset contour id")
-                    values[3] = -1
-                    cindex = -1
-                cv2.drawContours(frame, contours0, cindex,
+        if keypoints:
+            frame = cv2.drawKeypoints(frame, [keypoints[0]],
+                               np.array([]),
+                               (0,0,255), 
+                               cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS) 
+            if len(keypoints) > 1:
+                frame = cv2.drawKeypoints(frame, keypoints[1:],
+                               np.array([]),
+                               (255,205,25), 
+                               cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS) 
+        if lines != None:
+            for l in lines[0]:
+                cv2.line(frame, (l[0], l[1]), (l[2], l[3]), (20,255,255))
+
+        if contours != None:
+            contours0,hier = contours
+            cindex = self.values[3] # if -1, all are drawn
+            maxlevel = self.values[4]
+            if len(contours0) <= cindex:
+                self.putNotice("reset contour id")
+                values[3] = -1
+                cindex = -1
+            cv2.drawContours(frame, contours0, cindex,
                                 (128,255,255), 
                                 thickness=1, 
                                 lineType=cv2.CV_AA,
                                 hierarchy=hier, 
                                 maxLevel=maxlevel)
                 
-            cv2.imshow("img", frame)
+        if not self.args.nodisplay:
+           cv2.imshow("img", frame)
 
+        if self.args.stashinterval != 0 and \
+            (common.clock() - self.lastStashTime) > self.args.stashinterval:
+           cv2.imwrite(self.stashFilename, frame, self.stashParams)
+           self.lastStashTime = common.clock()
 
     def getCmode(self, num):
         return self.cmodelist[num]
