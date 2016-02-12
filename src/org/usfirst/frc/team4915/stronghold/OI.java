@@ -1,20 +1,20 @@
 package org.usfirst.frc.team4915.stronghold;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import org.usfirst.frc.team4915.stronghold.commands.HighSpeedModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.LowSpeedModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.HighSpeedModeCommand;
-import org.usfirst.frc.team4915.stronghold.commands.LowSpeedModeCommand;
 
 /**
  * This class handles the "operator interface", or the interactions between the
