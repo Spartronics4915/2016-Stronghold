@@ -16,6 +16,7 @@ import sys, traceback
 import argparse
 import numpy as np
 import math
+import daemon
 from multiprocessing.pool import ThreadPool
 from collections import deque
 
@@ -26,6 +27,13 @@ import common
 class App:
     def __init__(self):
         self.args = self.parseArgs()
+        if self.args.daemonize:
+            with daemon.DaemonContext():
+                self.go()
+        else:
+            self.go()
+
+    def go(self):
         # args is argparser.Namespace: an object whose members are 
         # accessed as:  self.args.cannedimages
 
@@ -341,7 +349,11 @@ class App:
         parser.add_argument("-s", "--stashinterval",
                 default=0,
                 type=float,
-                help="specifies the time interval between image stashes (0 means off)")
+                help="number of seconds between image stashes (0 means off)")
+        parser.add_argument("-d", "--daemonize",
+                help="put imgExplore in background",
+                action='store_true')
+
         return parser.parse_args()
 
     def simpleThreshold(self, frame, vals=None):
