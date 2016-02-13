@@ -1,11 +1,9 @@
 package org.usfirst.frc.team4915.stronghold;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
@@ -30,9 +28,9 @@ public class OI {
     // Drive train two speed controls
     public JoystickButton speedUpButton;
     public JoystickButton slowDownButton;
-    
-    public static final int HIGH_SPEED_DRIVE_BUTTON= 4;
-    public static final int LOW_SPEED_DRIVE_BUTTON= 3;
+
+    public static final int HIGH_SPEED_DRIVE_BUTTON = 4;
+    public static final int LOW_SPEED_DRIVE_BUTTON = 3;
 
     // buttons are now correct until we decide to change them
     public static final int LAUNCHER_STICK_PORT = 1;
@@ -67,11 +65,14 @@ public class OI {
 
             this.speedUpButton.whenPressed(new HighSpeedModeCommand());
             this.slowDownButton.whenPressed(new LowSpeedModeCommand());
-            
+
             SmartDashboard.putData("High speed mode- extending pneumatic", new HighSpeedModeCommand());
             SmartDashboard.putData("Low speed mode- detracting pneumatic", new LowSpeedModeCommand());
-            
-            System.out.println("ModuleManager OI initialized: TODO DriveTrain");    // TODO: OI init DriveTrain
+
+            System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
+                                                                                 // OI
+                                                                                 // init
+                                                                                 // DriveTrain
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
