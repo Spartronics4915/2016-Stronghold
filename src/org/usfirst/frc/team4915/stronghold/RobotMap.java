@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
@@ -32,7 +32,6 @@ public class RobotMap {
     public final static int GYRO_PORT = 0;
     public static Gyro gyro;
 
-
     public static CANTalon intakeLeftMotor;
     public static CANTalon intakeRightMotor;
     public static CANTalon aimMotor;
@@ -53,6 +52,9 @@ public class RobotMap {
     private static final int LAUNCHER_TOP_SWITCH_PORT = 2;
 
     private static final int LAUNCHER_SERVO_PORT = 17;
+
+    private static final int SCALING_BOTTOM_SWITCH_PORT = 18; // TODO
+    private static final int SCALING_TOP_SWITCH_PORT = 19; // TODO
     // not actual port values
 
     private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 234234234;
@@ -61,6 +63,12 @@ public class RobotMap {
     private static final double AIM_MOTOR_I = 0; // TODO
     private static final double AIM_MOTOR_D = 0; // TODO
 
+    public static TalonSRX SCALING_MOTOR;
+    public static TalonSRX SCALING_WINCH;
+    public static DigitalInput SCALING_BOTTOM_SWITCH;
+    public static DigitalInput SCALING_TOP_SWITCH;
+
+    /* FIXME: to delete as the switches connect directly to Talon */
     public static DigitalInput boulderSwitch;
     public static DigitalInput launcherTopSwitch;
     public static DigitalInput launcherBottomSwitch;
@@ -122,6 +130,6 @@ public class RobotMap {
             gyro = new AnalogGyro(GYRO_PORT);
         }
     }
-    }
-
-
+}
+        
+       

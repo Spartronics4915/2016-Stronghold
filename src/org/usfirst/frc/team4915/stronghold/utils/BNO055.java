@@ -2,10 +2,11 @@ package org.usfirst.frc.team4915.stronghold.utils;
 
 import java.util.TimerTask;
 
-import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * BNO055 IMU for the FIRST Robotics Competition.
@@ -838,6 +839,7 @@ public class BNO055 {
         }
     }
 }
+/*<<<<<<< HEAD
 /*
  * <<<<<<< HEAD
     
@@ -874,4 +876,19 @@ import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 =======
 >>>>>>> 0029e3c832657158b123b93d2ecacbadb56895b2
 
+ */
+/*=======
+
+/*
+*<<<<<<< HEAD
+    // gyro instantiation
+    public final static Gyro gyro = new AnalogGyro(GYRO_PORT);
+    
+    public static BNO055 imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
+                                BNO055.vector_type_t.VECTOR_EULER);
+=======
+    public static Gyro gyro;
+>>>>>>> fc15bfab33a6cbf4749039a4adaf346add5cde8f
+*/
+/*>>>>>>> 37bd9b4ac3af462b49cd0250743fe9d862089c7b
  */
