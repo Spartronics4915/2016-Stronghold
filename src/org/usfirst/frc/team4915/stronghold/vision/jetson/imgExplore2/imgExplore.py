@@ -67,6 +67,7 @@ class App:
             'houghlines',
             'contours',
             'ORB',
+            'dance1',
 
             'b',
             'g',
@@ -106,6 +107,9 @@ class App:
                           # scaleFactor [1 -> 2  (0->255)]
                           # nlevels
                           # patchSizea == edgeThreshold
+            'dance1':		[-45,45,0,0,0,0],
+            			  #minX
+            			  #maxX
             'r': self.zeros,
             'g': self.zeros,
             'b': self.zeros,
@@ -125,6 +129,7 @@ class App:
             54: self.cmodelist[6], # houghlines
             55: self.cmodelist[7], # contours
             56: self.cmodelist[8], # ORB
+            57: self.cmodelist[9], #dance1
 
             98: 'b',
             99: 'rgb',
@@ -194,14 +199,14 @@ class App:
       "  6: houghlines         (rho,theta,thresh,minlen,maxgap)\n"\
       "  7: contours           (mode:0-3,method:0-3,offset,id(-1:all),depth)\n"\
       "  8: ORB features       (nfeatures,scaleFactor(0->255)],patchSize)\n"\
-      "  9: PlaneTracker       (unimplemented)\n"\
+      "  9: dance1         (minX,maxX)\n"\
       "\n"\
       "  F1,F2:            -/+ v1\n"\
       "  F3,F4:            -/+ v2\n"\
       "  F5,F6:            -/+ v3\n"\
       "  F7,F8:            -/+ v4\n"\
       "  F9,F10:           -/+ v5\n"\
-      "  F10,F11:          -/+ v6\n"\
+      "  F11,F12:          -/+ v6\n"\
       "\n"\
       "  <right arrow>:    increase img seq frame\n"\
       "  <left arrow>:     decrease img seq frame\n"\
@@ -514,6 +519,11 @@ class App:
                 keypoints = orb.detect(gray, None)
                 self.putNotice('ORB features: %d' % len(keypoints))
                 frame = gray
+            elif cmode == 'dance1':
+            	t = common.clock()*2*math.pi/5
+            	x = math.sin(t)*values[0]
+            	kp = cv2.KeyPoint(x, 0, 1)
+            	keypoints = [kp]
             else:
                 print("unknown cmode: " + cmode)
         return frame, t0, keypoints, lines, contours
