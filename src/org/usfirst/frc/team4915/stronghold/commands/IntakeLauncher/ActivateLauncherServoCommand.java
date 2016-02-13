@@ -11,15 +11,16 @@ public class ActivateLauncherServoCommand extends Command {
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.activateLaunchServo();
+        
     }
 
     protected void execute() {
+        Robot.intakeLauncher.activateLaunchServo();
         SmartDashboard.putNumber("Servo Position", Robot.intakeLauncher.getLauncherServo().get());
     }
 
     protected boolean isFinished() {
-        return true;
+        return Robot.intakeLauncher.getLauncherServo().get() > .9;
     }
 
     protected void end() {

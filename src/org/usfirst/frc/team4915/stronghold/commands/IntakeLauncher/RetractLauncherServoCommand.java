@@ -11,10 +11,11 @@ public class RetractLauncherServoCommand extends Command {
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.retractLaunchServo();
+      
     }
 
     protected void execute() {
+        Robot.intakeLauncher.retractLaunchServo();
         SmartDashboard.putNumber("Servo Position", Robot.intakeLauncher.getLauncherServo().get());
     }
 
@@ -23,7 +24,7 @@ public class RetractLauncherServoCommand extends Command {
     }
 
     protected void end() {
-
+        
     }
 
     protected void interrupted() {

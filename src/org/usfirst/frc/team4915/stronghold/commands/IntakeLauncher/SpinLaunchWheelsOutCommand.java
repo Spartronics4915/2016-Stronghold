@@ -26,7 +26,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.intakeLauncher.getBallLaunched();
     }
 
     @Override

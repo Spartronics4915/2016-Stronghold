@@ -60,8 +60,6 @@ public class RobotMap {
     private static final double AIM_MOTOR_D = 0; // TODO
 
     public static DigitalInput boulderSwitch;
-    public static DigitalInput launcherTopSwitch;
-    public static DigitalInput launcherBottomSwitch;
 
     /*
      * Initialize the various robot modules
@@ -101,18 +99,12 @@ public class RobotMap {
             aimMotor = new CANTalon(AIM_MOTOR_ID);
             launcherServo = new Servo(LAUNCHER_SERVO_PORT);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
-            launcherTopSwitch = new DigitalInput(LAUNCHER_TOP_SWITCH_PORT);
-            launcherBottomSwitch = new DigitalInput(LAUNCHER_BOTTOM_SWITCH_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
 
             // setup the motor
             aimMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-            aimMotor.setForwardSoftLimit(AIM_MOTOR_FORWARD_SOFT_LIMIT);
-            aimMotor.setReverseSoftLimit(AIM_MOTOR_REVERSE_SOFT_LIMIT);
-            aimMotor.enableForwardSoftLimit(true);
-            aimMotor.enableReverseSoftLimit(true);
-            aimMotor.ConfigFwdLimitSwitchNormallyOpen(true);
-            aimMotor.ConfigRevLimitSwitchNormallyOpen(true);
+            aimMotor.enableLimitSwitch(true, true);
+            aimMotor.enableBrakeMode(true);
         }
 
         if (ModuleManager.GYRO_MODULE_ON) {
