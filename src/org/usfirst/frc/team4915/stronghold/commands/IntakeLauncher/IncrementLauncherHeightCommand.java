@@ -18,7 +18,7 @@ public class IncrementLauncherHeightCommand extends Command {
     }
 
     protected void execute() {
-        SmartDashboard.putNumber("Launcher Position:", Robot.intakeLauncher.getAimMotor().getPosition());
+        SmartDashboard.putNumber("Launcher Position:", Robot.intakeLauncher.getAimMotor().getEncPosition());
     }
 
     protected boolean isFinished() {

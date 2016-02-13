@@ -19,7 +19,7 @@ public class SetLauncherHeightCommand extends Command {
     @Override
     protected void execute() {
         Robot.intakeLauncher.moveLauncher();
-        SmartDashboard.putNumber("Launcher Position:", Robot.intakeLauncher.getAimMotor().getPosition());
+        SmartDashboard.putNumber("Launcher Position:", Robot.intakeLauncher.getAimMotor().getEncPosition());
     }
 
     @Override
