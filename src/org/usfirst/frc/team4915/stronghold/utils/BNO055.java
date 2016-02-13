@@ -345,6 +345,10 @@ public class BNO055 {
         executor.schedule(new BNO055UpdateTask(this), 0L, THREAD_PERIOD);
     }
 
+    public BNO055() {
+        // TODO Auto-generated constructor stub
+    }
+
     /**
      * Get an instance of the IMU object.
      * 

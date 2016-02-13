@@ -20,8 +20,6 @@ public class RobotMap {
     public static final int driveTrainLeftBackMotor = 11;
     public static final int driveTrainLeftFrontMotor = 10;
     
-    
-
     public static CANTalon leftBackMotor; 
     public static CANTalon rightBackMotor; 
     public static CANTalon leftFrontMotor; 
@@ -34,16 +32,10 @@ public class RobotMap {
 
     /* Gyro specific constants - Initialization takes place in RobotMapInit() */ 
     public final static int GYRO_PORT = 0;
-<<<<<<< HEAD
-    // gyro instantiation
-    public final static Gyro gyro = new AnalogGyro(GYRO_PORT);
-    
-    public static BNO055 imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
-                                BNO055.vector_type_t.VECTOR_EULER);
-=======
     public static Gyro gyro;
->>>>>>> fc15bfab33a6cbf4749039a4adaf346add5cde8f
-
+    
+    public static BNO055 imu;
+    
     public static CANTalon  intakeLeftMotor;
     public static CANTalon  intakeRightMotor;
     public static CANTalon  aimMotor;

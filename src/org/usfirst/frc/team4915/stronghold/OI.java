@@ -89,6 +89,10 @@ public class OI {
             System.out.println("ModuleManager initialized: Vision");
         }
         
+        if (ModuleManager.IMU_MODULE_ON) {
+            System.out.println("ModuleManager OI TODO: Initialize IMU!");           // TODO: OI init IMU
+        }
+        
         /* 
          * VERSION STRING!! 
          */

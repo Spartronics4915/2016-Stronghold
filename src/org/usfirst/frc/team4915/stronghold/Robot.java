@@ -23,6 +23,7 @@ public class Robot extends IterativeRobot {
     public static DriveTrain driveTrain;
     public static IntakeLauncher intakeLauncher;
     public static OI oi;
+    public static BNO055 IMU;
     Command autonomousCommand;
 
     /**
@@ -46,6 +47,11 @@ public class Robot extends IterativeRobot {
         if (ModuleManager.GYRO_MODULE_ON) {
             SmartDashboard.putString("Module Manager", "FIX GYRO INITIALIZATION!");
             System.out.println("ModuleManager TODO: Initialize Gyro!");  
+        }
+        if (ModuleManager.IMU_MODULE_ON) {
+            IMU = new BNO055();
+            System.out.println("ModuleManager initialized: IMU");
+            SmartDashboard.putString("Module Manager", "IMU Initialized");
         }
 
         oi = new OI();      // 3. Construct OI after subsystems created
@@ -106,6 +112,6 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void testPeriodic() {
-        System.out.println(RobotMap.imu.isSensorPresent());
+        LiveWindow.run();
     }
 }
