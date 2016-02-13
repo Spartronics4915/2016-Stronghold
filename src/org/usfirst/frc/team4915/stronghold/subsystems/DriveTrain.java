@@ -103,21 +103,26 @@ public class DriveTrain extends Subsystem {
 
     // Methods for Gyro
     public double trackGyro() {
-        this.gyroHeading = -gyro.getAngle() + this.startingAngle;
+        System.out.println("Starting angle: " + this.startingAngle);
+        System.out.println("Gyro: " + gyro);
+        this.gyroHeading = -(gyro.getAngle()) + this.startingAngle;
         System.out.println("Gyro Angle: " + gyro.getAngle());
         System.out.println("Gyro heading:" + this.gyroHeading);
         return this.gyroHeading;
     }
-
+                                                          
     public void driveStraight(double speed) {
         this.robotDrive.arcadeDrive(speed, 0);
     }
 
     public void turn(boolean left) {
+        System.out.println("Public void turn boolean left: Check");
         if (left) {
-            robotDrive.arcadeDrive(0, -.5);
+            System.out.println("Turnleft");
+            robotDrive.tankDrive(-.6, .6);
         } else {
-            robotDrive.arcadeDrive(0, .5);
+            System.out.println("Turnright");
+            robotDrive.tankDrive(.6, -.6);
         }
     }
     

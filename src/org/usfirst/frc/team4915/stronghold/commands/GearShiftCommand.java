@@ -3,30 +3,34 @@ package org.usfirst.frc.team4915.stronghold.commands;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class LowSpeedModeCommand extends Command {
-
-
-    public LowSpeedModeCommand() {
+public class GearShiftCommand extends Command {
+	private boolean on;
+	private boolean fin = false;
+    public GearShiftCommand (boolean on) {
         requires(Robot.gearShift);
     }
     @Override
     protected void initialize() {
-        // switches the gears from high speed to low speed
-        // or turns the gears on and goes to low speed mode
-        System.out.println("Entering low speed mode");
-        Robot.gearShift.lowSpeedMode();
-        //only uses initialize because the gear only shifts once
     }
-
+    
     @Override
     protected void execute() {
-        // initialize() ran the command - nothing more needed
-    }
+      	if (on = true){
+    		Robot.gearShift.highSpeedMode();
+            SmartDashboard.putString("In high gear", null);
+    		fin = true;
+    	}
+        else {
+             Robot.gearShift.lowSpeedMode();
+             SmartDashboard.putString("In low gear", null );
+             fin = true;
+        }    }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return fin;
     }
 
     @Override

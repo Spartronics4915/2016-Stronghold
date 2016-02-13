@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
-import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
@@ -62,7 +62,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         // schedule the autonomous command
-        autonomousCommand = new MoveStraightPositionModeCommand(30);    // in inches
+        autonomousCommand = new AutoRotateDegrees(true, 90);    // in inches
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }

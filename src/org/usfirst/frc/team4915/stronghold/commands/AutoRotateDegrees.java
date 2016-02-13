@@ -17,6 +17,7 @@ public class AutoRotateDegrees extends Command {
         requires(Robot.driveTrain);
         goLeft = left;
         this.robotAngle = robotAngle;
+        System.out.println(robotAngle);
 
     }
 

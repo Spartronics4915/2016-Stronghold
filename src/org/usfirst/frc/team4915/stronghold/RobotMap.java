@@ -86,11 +86,11 @@ public class RobotMap {
             
             //follower mode for right side
             
-            rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            rightBackMotor.set(rightFrontMotor.getDeviceID());
+        //    rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+        //    rightBackMotor.set(rightFrontMotor.getDeviceID());
             //follow mode for left side
-            leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            leftBackMotor.set(leftFrontMotor.getDeviceID());
+        //    leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+        //    leftBackMotor.set(leftFrontMotor.getDeviceID());
             
         
             System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");

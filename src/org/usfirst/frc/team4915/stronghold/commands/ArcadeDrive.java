@@ -32,7 +32,7 @@ public class ArcadeDrive extends Command {
         this.joystickX = this.joystickDrive.getAxis(Joystick.AxisType.kX);
         this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
         this.joystickZ = this.joystickDrive.getAxis(Joystick.AxisType.kZ);
-
+        Robot.driveTrain.trackGyro();
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
         // checks where the joystick is
        if ( VisionState.getInstance().AutoAimEnabled ){
