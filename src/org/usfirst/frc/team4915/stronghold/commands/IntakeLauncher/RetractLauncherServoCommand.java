@@ -7,7 +7,7 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 public class RetractLauncherServoCommand extends Command {
 
     public RetractLauncherServoCommand() {
-    
+
     }
 
     protected void initialize() {
@@ -23,10 +23,10 @@ public class RetractLauncherServoCommand extends Command {
     }
 
     protected void end() {
-    
+
     }
 
     protected void interrupted() {
-    
+
     }
 }

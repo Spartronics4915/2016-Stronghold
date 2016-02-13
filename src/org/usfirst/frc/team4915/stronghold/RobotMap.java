@@ -83,11 +83,11 @@ public class RobotMap {
              * set PID values
              */
 
-            //THe back motors are the follower motors
-            //follower mode for right side
+            // THe back motors are the follower motors
+            // follower mode for right side
             rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
             rightBackMotor.set(rightFrontMotor.getDeviceID());
-            //follower mode for left side
+            // follower mode for left side
 
             leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
             leftBackMotor.set(leftFrontMotor.getDeviceID());

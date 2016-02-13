@@ -22,15 +22,12 @@ public class IntakeLauncher extends Subsystem {
     private final double ZERO_SPEED = 0.0;
     private final double LAUNCHER_SERVO_NEUTRAL_POSITION = 0.0;
     private final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0;
-    
-    //in encoder ticks
+
+    // in encoder ticks
     private final double AIM_MOTOR_INCREMENT = 1; // TODO
-    private final double LAUNCHER_MIN_HEIGHT = 0; 
-    private final double LAUNCHER_MAX_HEIGHT = 1000; //TODO     
+    private final double LAUNCHER_MIN_HEIGHT = 0;
+    private final double LAUNCHER_MAX_HEIGHT = 1000; // TODO
     private final double JOYSTICK_SCALE = 1.0; // TODO
-    
-    
-    
 
     public Joystick aimStick = Robot.oi.getJoystickAimStick();
 
@@ -52,7 +49,7 @@ public class IntakeLauncher extends Subsystem {
     public DigitalInput launcherBottomSwitch = RobotMap.launcherBottomSwitch;
     public DigitalInput launcherTopSwitch = RobotMap.launcherTopSwitch;
 
-    //servo that pushes the ball into the flywheels
+    // servo that pushes the ball into the flywheels
     public Servo launcherServo = RobotMap.launcherServo;
 
     @Override
@@ -89,7 +86,7 @@ public class IntakeLauncher extends Subsystem {
         if (!VisionState.getInstance().AutoAimEnabled) {
             aimMotor.changeControlMode(TalonControlMode.Speed);
             aimMotor.set(aimStick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE);
-            if((aimMotor.getSpeed() > 0 && launcherTopSwitch.get()) || (aimMotor.getSpeed() < 0 && launcherBottomSwitch.get())) {
+            if ((aimMotor.getSpeed() > 0 && launcherTopSwitch.get()) || (aimMotor.getSpeed() < 0 && launcherBottomSwitch.get())) {
                 aimMotor.set(ZERO_SPEED);
             }
         } else {
@@ -134,11 +131,11 @@ public class IntakeLauncher extends Subsystem {
     public DigitalInput getBoulderSwitch() {
         return boulderSwitch;
     }
-    
+
     public Servo getLauncherServo() {
         return launcherServo;
     }
-    
+
     public CANTalon getAimMotor() {
         return aimMotor;
     }
