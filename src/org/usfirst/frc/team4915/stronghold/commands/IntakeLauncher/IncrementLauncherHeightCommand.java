@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class IncrementLauncherHeightCommand extends Command {
@@ -17,7 +18,7 @@ public class IncrementLauncherHeightCommand extends Command {
     }
 
     protected void execute() {
-
+        SmartDashboard.putNumber("Launcher Position:", Robot.intakeLauncher.getAimMotor().getPosition());
     }
 
     protected boolean isFinished() {

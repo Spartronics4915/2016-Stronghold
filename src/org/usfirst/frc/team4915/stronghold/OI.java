@@ -48,6 +48,7 @@ public class OI {
     // shoot the ball
     // grabBall triggers a command group with commands that will get the ball
     // into the basket
+    // launcherUp and launcherDown increment the launcher height by a small amount
     public JoystickButton launchBallButton;
     public JoystickButton grabBallButton;
     public JoystickButton autoAimButton;

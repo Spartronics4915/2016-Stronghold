@@ -17,17 +17,16 @@ public class IntakeLauncher extends Subsystem {
     // Ranges -1 to 1, negative values are reverse direction
     // Negative speed indicates a wheel spinning inwards and positive speed
     // indicates a wheel spinning outwards.
-    // Numbers are not correct
     private final double INTAKE_SPEED = -1.0;
     private final double LAUNCH_SPEED = 1.0;
     private final double ZERO_SPEED = 0.0;
     private final double JOYSTICK_SCALE = 1.0; // TODO
-    private final double ENCODER_SCALE = .31;
+    private final double ENCODER_SCALE = .31; // TODO
     private final double LAUNCHER_SERVO_NEUTRAL_POSITION = 0.0;
     private final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0;
-    private final double AIM_MOTOR_INCREMENT = .1; 
+    private final double AIM_MOTOR_INCREMENT = .1; // TODO
     private final double LAUNCHER_MIN_HEIGHT = 0; 
-    private final double LAUNCHER_MAX_HEIGHT = 1000; 
+    private final double LAUNCHER_MAX_HEIGHT = 1000; //TODO 
 
     public Joystick aimStick = Robot.oi.getJoystickAimStick();
 
@@ -49,6 +48,7 @@ public class IntakeLauncher extends Subsystem {
     public DigitalInput launcherBottomSwitch = RobotMap.launcherBottomSwitch;
     public DigitalInput launcherTopSwitch = RobotMap.launcherTopSwitch;
 
+    //servo that pushes the ball into the flywheels
     public Servo launcherServo = RobotMap.launcherServo;
 
     @Override
@@ -83,18 +83,18 @@ public class IntakeLauncher extends Subsystem {
     // moves the launcher, joystick angle determines speed
     public void moveLauncher() {
         if (!VisionState.getInstance().AutoAimEnabled) {
-            if (!launcherBottomSwitch.get() && !launcherTopSwitch.get()) {
-                aimMotor.changeControlMode(TalonControlMode.Speed);
-                aimMotor.set(aimStick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE);
-            } else {
+            aimMotor.changeControlMode(TalonControlMode.Speed);
+            aimMotor.set(aimStick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE);
+            if((aimMotor.getSpeed() > 0 && launcherTopSwitch.get()) || (aimMotor.getSpeed() < 0 && launcherBottomSwitch.get())) {
                 aimMotor.set(ZERO_SPEED);
             }
         } else {
             if (VisionState.getInstance().TargetY > LAUNCHER_MIN_HEIGHT || VisionState.getInstance().TargetY < LAUNCHER_MAX_HEIGHT) {
                 SmartDashboard.putBoolean("Auto-aim target out of range", true);
+            } else {
                 aimMotor.changeControlMode(TalonControlMode.Position);
                 aimMotor.set(VisionState.getInstance().TargetY * ENCODER_SCALE);
-            } 
+            }
         }
     }
 
@@ -129,5 +129,13 @@ public class IntakeLauncher extends Subsystem {
 
     public DigitalInput getBoulderSwitch() {
         return boulderSwitch;
+    }
+    
+    public Servo getLauncherServo() {
+        return launcherServo;
+    }
+    
+    public CANTalon getAimMotor() {
+        return aimMotor;
     }
 }
