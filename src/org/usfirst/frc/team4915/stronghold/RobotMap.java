@@ -53,7 +53,7 @@ public class RobotMap {
     private static final int LAUNCHER_SERVO_PORT = 17;
     // not actual port values
 
-    private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 1.0;
+    private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 234234234;
     private static final double AIM_MOTOR_REVERSE_SOFT_LIMIT = 0.0;
     private static final double AIM_MOTOR_P = 0; // TODO
     private static final double AIM_MOTOR_I = 0; // TODO
