@@ -1,15 +1,16 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
+import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,7 +24,11 @@ public class Robot extends IterativeRobot {
     public static DriveTrain driveTrain;
     public static IntakeLauncher intakeLauncher;
     public static OI oi;
+<<<<<<< HEAD
     public static BNO055 IMU;
+=======
+    public static GearShift gearShift;
+>>>>>>> 0029e3c832657158b123b93d2ecacbadb56895b2
     Command autonomousCommand;
 
     /**
@@ -37,6 +42,7 @@ public class Robot extends IterativeRobot {
         // 2. conditionally create the modules
         if (ModuleManager.DRIVE_MODULE_ON) {
             driveTrain = new DriveTrain();
+            gearShift= new GearShift();
             System.out.println("ModuleManager initialized: DriveTrain");
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
@@ -65,7 +71,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         // schedule the autonomous command
-        autonomousCommand = new MoveStraightPositionModeCommand(30);    // in inches
+        autonomousCommand = new AutoRotateDegrees(true, 90);    // in inches
+
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }

@@ -2,7 +2,9 @@ package org.usfirst.frc.team4915.stronghold.utils;
 
 import java.util.TimerTask;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -836,3 +838,40 @@ public class BNO055 {
         }
     }
 }
+/*
+ * <<<<<<< HEAD
+    
+    public static BNO055 imu;
+    
+    public static CANTalon  intakeLeftMotor;
+    public static CANTalon  intakeRightMotor;
+    public static CANTalon  aimMotor;
+    public static Servo     launcherServo;
+
+    private static final int PLACEHOLDER_NUMBER = 69;
+    
+    /* IntakeLauncher specific constants - Initialization takes place in RobotMapInit() */ 
+    /* FIXME: Initialize IntakeLauncher's ports */ 
+    
+  /*private static final int INTAKE_LEFT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int INTAKE_RIGHT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int AIM_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+
+    private static final int BOULDER_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_TOP_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+
+    private static final int LAUNCHER_SERVO_PORT = PLACEHOLDER_NUMBER; // TODO
+=======
+ */
+
+/*
+ * <<<<<<< HEAD
+import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
+=======
+>>>>>>> 0029e3c832657158b123b93d2ecacbadb56895b2
+
+ */

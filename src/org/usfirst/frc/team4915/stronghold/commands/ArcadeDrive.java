@@ -1,9 +1,11 @@
 
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class ArcadeDrive extends Command {
 
@@ -26,14 +28,24 @@ public class ArcadeDrive extends Command {
     @Override
     protected void execute() {
         this.joystickDrive = Robot.oi.getJoystickDrive();
-
         this.joystickX = this.joystickDrive.getAxis(Joystick.AxisType.kX);
         this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
         this.joystickZ = this.joystickDrive.getAxis(Joystick.AxisType.kZ);
+        Robot.driveTrain.trackGyro();
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
         // checks where the joystick is
-        if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
+       if ( VisionState.getInstance().AutoAimEnabled ){
+    	   int Vis = VisionState.getInstance().TargetX;
+    	   if (Vis <= -1){
+    		   Robot.driveTrain.turn(false);
+    	   }
+    	   else {
+    		   Robot.driveTrain.turn(true);
+    	   }
+    	   
+       }
+       else if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
 
             if (Math.abs(this.joystickZ) < Math.abs(0.075)) {
                 // all in the middle (x,y,z), stops

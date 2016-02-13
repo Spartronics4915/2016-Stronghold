@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!-- <META HTTP-EQUIV="REFRESH" CONTENT="1">-->
+<html>
+
+<script>
+    var newImage = new Image();
+    var imgSrc = "currentImage.jpg";
+    function updateImage()
+    {
+        var date = new Date();
+        dstr = date.toLocaleTimeString();
+        document.getElementById("img").src = imgSrc + "?" + dstr;
+        document.getElementById("timestamp").innerHTML = dstr;
+        setTimeout(updateImage, 100); // 10 frames/sec
+    }
+</script>
+
+<head>
+</head>
+
+<body bgcolor="#202020" onload="updateImage();">
+<div style="margin-left:10px;margin-right:10px;margin-top=10px;color:white">
+<H3>Spartronics4915 Jetson Vision Server</H3>
+<hr>
+
+
+<br><br>
+
+<center>
+<img id="img"> <br>
+last update: <span id="timestamp"></span>
+</center>
+
+
+</div>
+</body>
+</html>

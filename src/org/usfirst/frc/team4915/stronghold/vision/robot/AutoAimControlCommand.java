@@ -1,10 +1,6 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class AutoAimControlCommand extends Command{
 
