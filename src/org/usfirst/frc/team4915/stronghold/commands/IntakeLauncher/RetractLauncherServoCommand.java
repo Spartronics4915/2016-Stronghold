@@ -6,7 +6,6 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 public class RetractLauncherServoCommand extends Command {
 
     public RetractLauncherServoCommand() {
-        requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {

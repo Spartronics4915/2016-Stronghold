@@ -1,6 +1,4 @@
-
 package org.usfirst.frc.team4915.stronghold.subsystems;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -113,9 +111,12 @@ public class DriveTrain extends Subsystem {
     }
 
     public void turn(boolean left) {
+        System.out.println("public void turn boolean left");
         if (left) {
+            System.out.println("turn left");
             robotDrive.arcadeDrive(0, -.5);
         } else {
+            System.out.println("turn right");
             robotDrive.arcadeDrive(0, .5);
         }
     }
