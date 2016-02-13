@@ -9,7 +9,7 @@ public class LaunchBallCommandGroup extends CommandGroup {
     public final int WAIT_DURATION = 500;
 
     public LaunchBallCommandGroup() {
-        addSequential(new SpinLaunchWheelsOutCommand());
+        addParallel(new SpinLaunchWheelsOutCommand());
         addSequential(new WaitCommand(WAIT_DURATION));
         addSequential(new ActivateLauncherServoCommand());
         addSequential(new RetractLauncherServoCommand());

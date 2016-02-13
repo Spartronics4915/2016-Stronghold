@@ -63,6 +63,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         // schedule the autonomous command
         autonomousCommand = new AutoRotateDegrees(true, 90);    // in inches
+
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }

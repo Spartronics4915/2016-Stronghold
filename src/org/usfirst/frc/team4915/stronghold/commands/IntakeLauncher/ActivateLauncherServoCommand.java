@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ActivateLauncherServoCommand extends Command {
 
     public ActivateLauncherServoCommand() {
-        requires(Robot.intakeLauncher);
+
     }
 
     protected void initialize() {
