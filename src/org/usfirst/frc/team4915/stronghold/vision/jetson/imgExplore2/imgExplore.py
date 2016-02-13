@@ -115,9 +115,9 @@ class App:
                           # scaleFactor [1 -> 2  (0->255)]
                           # nlevels
                           # patchSizea == edgeThreshold
-            'dance1':		[-45,45,0,0,0,0],
-            			  #minX
-            			  #maxX
+            'dance1':		[20,20,0,0,0,0],
+            			  #X(degrees)
+            			  #Y(degrees)
             'r': self.zeros,
             'g': self.zeros,
             'b': self.zeros,
@@ -533,9 +533,11 @@ class App:
                 frame = gray
             elif cmode == 'dance1':
             	t = common.clock()*2*math.pi/5
-            	x = math.sin(t)*values[0]
-            	kp = cv2.KeyPoint(x, 0, 1)
-            	keypoints = [kp]
+            	x = math.sin(t)*values[0]/27*320 + 320 #[0, 640]s/
+            	kp = cv2.KeyPoint(x, 240, 10)
+            	print("This is x:" + x)
+            	keypoints = self.robotCnx.NewKeypoints([kp])
+            	print("keypoints created. dance1 finished")
             else:
                 print("unknown cmode: " + cmode)
         return frame, t0, keypoints, lines, contours
