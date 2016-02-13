@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class RobotMap {
@@ -51,6 +52,9 @@ public class RobotMap {
     private static final int LAUNCHER_TOP_SWITCH_PORT = 2;
 
     private static final int LAUNCHER_SERVO_PORT = 17;
+
+    private static final int SCALING_BOTTOM_SWITCH_PORT = 18; // TODO
+    private static final int SCALING_TOP_SWITCH_PORT = 19; // TODO
     // not actual port values
 
     private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 234234234;
@@ -59,6 +63,12 @@ public class RobotMap {
     private static final double AIM_MOTOR_I = 0; // TODO
     private static final double AIM_MOTOR_D = 0; // TODO
 
+    public static TalonSRX SCALING_MOTOR;
+    public static TalonSRX SCALING_WINCH;
+    public static DigitalInput SCALING_BOTTOM_SWITCH;
+    public static DigitalInput SCALING_TOP_SWITCH;
+
+    /* FIXME: to delete as the switches connect directly to Talon */
     public static DigitalInput boulderSwitch;
     public static DigitalInput launcherTopSwitch;
     public static DigitalInput launcherBottomSwitch;
@@ -118,6 +128,12 @@ public class RobotMap {
             System.out.println("ModuleManager RobotMap initalize TODO: TODO Initialize Gyro!"); // gyro
                                                                                                 // instantiation
             gyro = new AnalogGyro(GYRO_PORT);
+        }
+
+        if (ModuleManager.SCALING_MODULE_ON) {
+            System.out.println("ModuleManager RobotMap Initialize: Scaling");
+            SCALING_BOTTOM_SWITCH = new DigitalInput(SCALING_BOTTOM_SWITCH_PORT);
+            SCALING_TOP_SWITCH = new DigitalInput(SCALING_TOP_SWITCH_PORT);
         }
     }
     }

@@ -8,12 +8,15 @@ import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This class handles the "operator interface", or the interactions between the
  * driver station and the robot code.
@@ -40,6 +43,10 @@ public class OI {
     public static final int LAUNCHER_UP_BUTTON_NUMBER = 7;
     public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6;
 
+    // FIXME: Scaling button values
+    public static final int SCALER_EXTEND_BUTTON_NUMBER = 9;
+    public static final int SCALER_RETRACT_BUTTON_NUMBER = 10;
+
     public static final int UP_DIRECTION = 1;
     public static final int DOWN_DIRECTION = UP_DIRECTION * -1;
 
@@ -55,6 +62,8 @@ public class OI {
     public JoystickButton autoAimButton;
     public JoystickButton launcherUpButton;
     public JoystickButton launcherDownButton;
+    public JoystickButton scalerExtendButton;
+    public JoystickButton scalerRetractButton;
 
     public OI() {
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
@@ -101,6 +110,17 @@ public class OI {
             this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
             this.autoAimButton.whenPressed(new AutoAimControlCommand());
             System.out.println("ModuleManager OI: Initialize Vision!");
+        }
+
+        if (ModuleManager.SCALING_MODULE_ON) {
+            SmartDashboard.putData("Scaler Top Switch", RobotMap.SCALING_TOP_SWITCH);
+            SmartDashboard.putData("Scaler Bottom Switch", RobotMap.SCALING_BOTTOM_SWITCH);
+            SmartDashboard.putData("Scaler Winch", RobotMap.SCALING_WINCH);
+            SmartDashboard.putData("Scaler Tape Measure Motor", RobotMap.SCALING_MOTOR);
+            this.scalerExtendButton = new JoystickButton(this.aimStick, SCALER_EXTEND_BUTTON_NUMBER);
+            this.scalerRetractButton = new JoystickButton(this.aimStick, SCALER_RETRACT_BUTTON_NUMBER);
+            this.scalerExtendButton.whenPressed(new ScalerCommand(State.EXTENDED));
+            this.scalerRetractButton.whenPressed(new ScalerCommand(State.RETRACTED));
         }
 
         /*
