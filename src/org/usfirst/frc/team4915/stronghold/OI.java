@@ -1,18 +1,20 @@
 package org.usfirst.frc.team4915.stronghold;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
-import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.HighSpeedModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.LowSpeedModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -48,6 +50,8 @@ public class OI {
     // shoot the ball
     // grabBall triggers a command group with commands that will get the ball
     // into the basket
+    // launcherUp and launcherDown increment the launcher height by a small
+    // amount
     public JoystickButton launchBallButton;
     public JoystickButton grabBallButton;
     public JoystickButton autoAimButton;
