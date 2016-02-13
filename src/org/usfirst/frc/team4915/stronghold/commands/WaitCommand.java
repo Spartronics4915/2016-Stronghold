@@ -1,7 +1,4 @@
 package org.usfirst.frc.team4915.stronghold.commands;
-
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 public class WaitCommand extends Command {

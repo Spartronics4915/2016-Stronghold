@@ -1,18 +1,11 @@
 package org.usfirst.frc.team4915.stronghold;
-<<<<<<< HEAD
-=======
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
->>>>>>> 5fd9c7a0852e38740fcb8dbf82541cb7fa875fef
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-<<<<<<< HEAD
 
 import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
-=======
->>>>>>> 5fd9c7a0852e38740fcb8dbf82541cb7fa875fef
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
@@ -55,6 +48,8 @@ public class OI {
     // shoot the ball
     // grabBall triggers a command group with commands that will get the ball
     // into the basket
+    // launcherUp and launcherDown increment the launcher height by a small
+    // amount
     public JoystickButton launchBallButton;
     public JoystickButton grabBallButton;
     public JoystickButton autoAimButton;
@@ -70,23 +65,14 @@ public class OI {
             this.speedUpButton = new JoystickButton(driveStick, HIGH_SPEED_DRIVE_BUTTON);
             this.slowDownButton = new JoystickButton(driveStick, LOW_SPEED_DRIVE_BUTTON);
 
-<<<<<<< HEAD
             this.speedUpButton.whenPressed(new GearShiftCommand(true));
             this.slowDownButton.whenPressed(new GearShiftCommand(false));
-            
-            System.out.println("ModuleManager OI initialized: TODO DriveTrain");    // TODO: OI init DriveTrain
-=======
-            this.speedUpButton.whenPressed(new HighSpeedModeCommand());
-            this.slowDownButton.whenPressed(new LowSpeedModeCommand());
-
-            SmartDashboard.putData("High speed mode- extending pneumatic", new HighSpeedModeCommand());
-            SmartDashboard.putData("Low speed mode- detracting pneumatic", new LowSpeedModeCommand());
+           
 
             System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
                                                                                  // OI
                                                                                  // init
                                                                                  // DriveTrain
->>>>>>> 5fd9c7a0852e38740fcb8dbf82541cb7fa875fef
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {

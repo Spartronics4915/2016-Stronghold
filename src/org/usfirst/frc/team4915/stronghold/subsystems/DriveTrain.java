@@ -1,9 +1,11 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 import java.util.Arrays;
 import java.util.List;
+
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -13,11 +15,13 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
-    // Constructor for SpeedControllers: frontLeftMotor, rearLeftMotor, frontRightMotor,  rearRightMotor
+
+    // Constructor for SpeedControllers: frontLeftMotor, rearLeftMotor,
+    // frontRightMotor, rearRightMotor
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
-    
+
     // For Gyro
     public static Gyro gyro = RobotMap.gyro;
     public double deltaGyro = 0;
@@ -35,21 +39,22 @@ public class DriveTrain extends Subsystem {
 
         setDefaultCommand(new ArcadeDrive());
 
-        /* FIXME: robotDrive static field access
-         * instead of:          this.robotDrive.setSafetyEnabled(true);
-         * do (remove this):    robotDrive.setSafetyEnabled(true)
-         */ 
+        /*
+         * FIXME: robotDrive static field access instead of:
+         * this.robotDrive.setSafetyEnabled(true); do (remove this):
+         * robotDrive.setSafetyEnabled(true)
+         */
         this.robotDrive.setSafetyEnabled(true);
-        //inverting motors
+        // inverting motors
         this.robotDrive.setInvertedMotor(MotorType.kFrontLeft, true);
         this.robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
         this.robotDrive.setInvertedMotor(MotorType.kFrontRight, true);
         this.robotDrive.setInvertedMotor(MotorType.kRearRight, true);
-        
-        //checking to see the encoder values
-        //this can be removed later. Used to debug
-        if (motors.size() > 0){
-            for (int i = 0; i < motors.size(); i++){
+
+        // checking to see the encoder values
+        // this can be removed later. Used to debug
+        if (motors.size() > 0) {
+            for (int i = 0; i < motors.size(); i++) {
                 System.out.println("The encoder value of motor " + i + " is " + motors.get(i).getEncPosition());
             }
         }
@@ -71,10 +76,10 @@ public class DriveTrain extends Subsystem {
     public void arcadeDrive(Joystick stick) {
         Robot.driveTrain.trackGyro();
         this.robotDrive.arcadeDrive(stick);
-        //checking to see the encoder values
-        //this can be removed later. Used to debug
-        if (motors.size() > 0){
-            for (int i = 0; i < motors.size(); i++){
+        // checking to see the encoder values
+        // this can be removed later. Used to debug
+        if (motors.size() > 0) {
+            for (int i = 0; i < motors.size(); i++) {
                 System.out.println("The encoder value of motor " + i + " is " + motors.get(i).getEncPosition());
             }
         }

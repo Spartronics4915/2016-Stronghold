@@ -14,13 +14,13 @@ public class IntakeBallCommand extends Command {
 
     @Override
     protected void initialize() {
-       
+
     }
 
     @Override
     protected void execute() {
         Robot.intakeLauncher.setSpeedIntake();
-        //reports the speed of the motor as it increases
+        // reports the speed of the motor as it increases
         SmartDashboard.putString("Intake Flywheels", "Right: " + Double.toString(Robot.intakeLauncher.getIntakeRightMotor().getSpeed()) + " Left: "
                 + Double.toString(Robot.intakeLauncher.getIntakeLeftMotor().getSpeed()));
     }
@@ -28,9 +28,11 @@ public class IntakeBallCommand extends Command {
     @Override
     protected boolean isFinished() {
         // ends once the ball is in the basket and presses the limit switch
-        SmartDashboard.putBoolean("Boulder in Basket", Robot.intakeLauncher.boulderSwitch.get());
-        return Robot.intakeLauncher.boulderSwitch.get();
-
+        if (Robot.intakeLauncher.boulderSwitch.get()) {
+            SmartDashboard.putBoolean("Boulder in Basket", Robot.intakeLauncher.boulderSwitch.get());
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -40,6 +42,6 @@ public class IntakeBallCommand extends Command {
 
     @Override
     protected void interrupted() {
-        
+
     }
 }
