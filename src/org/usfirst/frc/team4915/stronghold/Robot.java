@@ -1,16 +1,16 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
+import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
-import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
-import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -62,8 +62,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         // schedule the autonomous command
-        
-        autonomousCommand = new AutoRotateDegrees(true, 90);     
+        autonomousCommand = new AutoRotateDegrees(true, 90);    // in inches
+
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }

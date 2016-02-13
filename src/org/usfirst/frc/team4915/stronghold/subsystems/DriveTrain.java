@@ -1,4 +1,10 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
+import java.util.Arrays;
+import java.util.List;
+
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
@@ -7,12 +13,6 @@ import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class DriveTrain extends Subsystem {
 
@@ -104,24 +104,26 @@ public class DriveTrain extends Subsystem {
 
     // Methods for Gyro
     public double trackGyro() {
-        this.gyroHeading = -gyro.getAngle() + this.startingAngle;
+        System.out.println("Starting angle: " + this.startingAngle);
+        System.out.println("Gyro: " + gyro);
+        this.gyroHeading = -(gyro.getAngle()) + this.startingAngle;
         System.out.println("Gyro Angle: " + gyro.getAngle());
         System.out.println("Gyro heading:" + this.gyroHeading);
         return this.gyroHeading;
     }
-
+                                                          
     public void driveStraight(double speed) {
         this.robotDrive.arcadeDrive(speed, 0);
     }
 
     public void turn(boolean left) {
-        System.out.println("public void turn boolean left");
+        System.out.println("Public void turn boolean left: Check");
         if (left) {
-            System.out.println("turn left");
-            robotDrive.arcadeDrive(0, -.5);
+            System.out.println("Turnleft");
+            robotDrive.tankDrive(-.6, .6);
         } else {
-            System.out.println("turn right");
-            robotDrive.arcadeDrive(0, .5);
+            System.out.println("Turnright");
+            robotDrive.tankDrive(.6, -.6);
         }
     }
 }

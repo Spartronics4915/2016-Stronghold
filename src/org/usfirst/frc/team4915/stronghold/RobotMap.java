@@ -82,15 +82,14 @@ public class RobotMap {
              * set feedbackdevice to quadEncoder 4. optional: if driving jerky,
              * set PID values
              */
-
-            // THe back motors are the follower motors
-            // follower mode for right side
-            rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            rightBackMotor.set(rightFrontMotor.getDeviceID());
-            // follower mode for left side
-
-            leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            leftBackMotor.set(leftFrontMotor.getDeviceID());
+            //THe back motors are the follower motors
+            //follower mode for right side            
+        //    rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+        //    rightBackMotor.set(rightFrontMotor.getDeviceID());
+            //follow mode for left side
+        //    leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+        //    leftBackMotor.set(leftFrontMotor.getDeviceID());
+            
 
             System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
         }
@@ -121,4 +120,6 @@ public class RobotMap {
             gyro = new AnalogGyro(GYRO_PORT);
         }
     }
-}
+    }
+
+
