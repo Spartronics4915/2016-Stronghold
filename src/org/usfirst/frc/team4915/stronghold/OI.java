@@ -5,10 +5,10 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
+import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
@@ -31,11 +31,12 @@ public class OI {
     // Drive train two speed controls
     public JoystickButton speedUpButton;
     public JoystickButton slowDownButton;
-
+    
+    //Gearbox speed buttons on the driving joystick
     public static final int HIGH_SPEED_DRIVE_BUTTON = 4;
     public static final int LOW_SPEED_DRIVE_BUTTON = 3;
 
-    // buttons are now correct until we decide to change them
+    // Launcher Buttons on the mechanism joystick
     public static final int LAUNCHER_STICK_PORT = 1;
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 2;
@@ -43,7 +44,7 @@ public class OI {
     public static final int LAUNCHER_UP_BUTTON_NUMBER = 6;
     public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 7;
 
-    // FIXME: Scaling button values
+    //Scaling button values on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 11;
     public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
     public static final int SCALER_LIFT_BUTTON_NUMBER = 9;

@@ -6,9 +6,7 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.TalonSRX;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
+
 
 public class RobotMap {
 
@@ -37,8 +35,6 @@ public class RobotMap {
     public static CANTalon intakeRightMotor;
     public static CANTalon aimMotor;
     public static Servo launcherServo; 
-    
-    public static BNO055 imu;
 
     /*
      * IntakeLauncher specific constants - Initialization takes place in

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 
@@ -18,36 +19,31 @@ public class AutoRotateDegrees extends Command {
         goLeft = left;
         this.robotAngle = robotAngle;
         System.out.println(robotAngle);
-
     }
 
     @Override
     protected void initialize() {
-        // TODO Auto-generated method stub
         Robot.driveTrain.calibrateGyro();
     }
 
     @Override
     protected void execute() {
-        // TODO Auto-generated method stub
         Robot.driveTrain.turn(goLeft);
+	SmartDashboard.putNumber("Robot Angle", robotAngle);
     }
 
     @Override
     protected boolean isFinished() {
-        // TODO Auto-generated method stub
         return (Math.abs(Robot.driveTrain.trackGyro()) >= robotAngle);
     }
 
     @Override
     protected void end() {
-        // TODO Auto-generated method stub
         robotDrive.stopMotor();
     }
 
     @Override
     protected void interrupted() {
-        // TODO Auto-generated method stub
         end();
 
     }

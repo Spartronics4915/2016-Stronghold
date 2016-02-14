@@ -1,9 +1,10 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 public class ScalerCommand extends Command {
 
@@ -46,7 +47,7 @@ public class ScalerCommand extends Command {
     @Override
     protected void end() {
         RobotMap.scalingWinch.set(0);
-        RobotMap.scalingWinch.set(0);
+        RobotMap.scalingMotor.set(0);
     }
 
     @Override
