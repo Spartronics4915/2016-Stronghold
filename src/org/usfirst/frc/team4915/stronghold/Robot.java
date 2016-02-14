@@ -5,7 +5,7 @@ import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
-
+import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -25,6 +25,7 @@ public class Robot extends IterativeRobot {
     public static IntakeLauncher intakeLauncher;
     public static OI oi;
     public static GearShift gearShift;
+    public static Scaler scaler;
     Command autonomousCommand;
 
     /**
@@ -47,10 +48,17 @@ public class Robot extends IterativeRobot {
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
         if (ModuleManager.GYRO_MODULE_ON) {
-            SmartDashboard.putString("Module Manager", "FIX GYRO INITIALIZATION!");
-            System.out.println("ModuleManager TODO: Initialize Gyro!");  
+            RobotMap.gyro.initGyro();
+            //Got the sensitivity from VEX Yaw Rate Gyro data sheet
+            RobotMap.gyro.setSensitivity(0.0011);
+            RobotMap.gyro.calibrate();
+            SmartDashboard.putString("Module Manager", "initialize gyro");
+            System.out.println("ModuleManager initialize gyro: " + RobotMap.gyro.getAngle()); 
+            
         }
-
+        if (ModuleManager.SCALING_MODULE_ON){
+            scaler = new Scaler();
+        }
         oi = new OI();      // 3. Construct OI after subsystems created
     }
 

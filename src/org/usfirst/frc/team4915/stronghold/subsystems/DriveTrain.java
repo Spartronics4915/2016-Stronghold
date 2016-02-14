@@ -113,10 +113,12 @@ public class DriveTrain extends Subsystem {
     }
                                                           
     public void driveStraight(double speed) {
+        trackGyro();
         this.robotDrive.arcadeDrive(speed, 0);
     }
 
     public void turn(boolean left) {
+        trackGyro();
         System.out.println("Public void turn boolean left: Check");
         if (left) {
             System.out.println("Turnleft");

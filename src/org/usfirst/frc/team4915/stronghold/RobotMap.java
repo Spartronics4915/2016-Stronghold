@@ -30,7 +30,7 @@ public class RobotMap {
 
     /* Gyro specific constants - Initialization takes place in RobotMapInit() */
     public final static int GYRO_PORT = 0;
-    public static Gyro gyro;
+    public static AnalogGyro gyro;
 
     public static CANTalon intakeLeftMotor;
     public static CANTalon intakeRightMotor;
@@ -53,8 +53,8 @@ public class RobotMap {
 
     private static final int LAUNCHER_SERVO_PORT = 17;
 
-    private static final int SCALING_BOTTOM_SWITCH_PORT = 18; // TODO
-    private static final int SCALING_TOP_SWITCH_PORT = 19; // TODO
+    private static final int SCALING_MOTOR_PORT = 18; // TODO
+    private static final int SCALING_WINCH_PORT = 19; // TODO
     // not actual port values
 
     private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 234234234;
@@ -63,10 +63,9 @@ public class RobotMap {
     private static final double AIM_MOTOR_I = 0; // TODO
     private static final double AIM_MOTOR_D = 0; // TODO
 
-    public static TalonSRX SCALING_MOTOR;
-    public static TalonSRX SCALING_WINCH;
-    public static DigitalInput SCALING_BOTTOM_SWITCH;
-    public static DigitalInput SCALING_TOP_SWITCH;
+    public static CANTalon scalingMotor;
+    public static CANTalon scalingWinch;
+    
 
     /* FIXME: to delete as the switches connect directly to Talon */
     public static DigitalInput boulderSwitch;
@@ -117,15 +116,14 @@ public class RobotMap {
         }
 
         if (ModuleManager.GYRO_MODULE_ON) {
-            System.out.println("ModuleManager RobotMap initalize TODO: TODO Initialize Gyro!"); // gyro
-                                                                                                // instantiation
+            System.out.println("ModuleManager RobotMap initalize. Initialize Gyro!"); 
             gyro = new AnalogGyro(GYRO_PORT);
         }
 
         if (ModuleManager.SCALING_MODULE_ON) {
             System.out.println("ModuleManager RobotMap Initialize: Scaling");
-            SCALING_BOTTOM_SWITCH = new DigitalInput(SCALING_BOTTOM_SWITCH_PORT);
-            SCALING_TOP_SWITCH = new DigitalInput(SCALING_TOP_SWITCH_PORT);
+            scalingMotor = new CANTalon(SCALING_MOTOR_PORT);
+            scalingWinch = new CANTalon(SCALING_WINCH_PORT);
         }
     }
     }
