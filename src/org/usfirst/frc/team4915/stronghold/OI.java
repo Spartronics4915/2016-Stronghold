@@ -5,10 +5,10 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
+import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;

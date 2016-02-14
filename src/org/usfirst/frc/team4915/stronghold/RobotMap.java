@@ -6,8 +6,6 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.TalonSRX;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class RobotMap {
 
