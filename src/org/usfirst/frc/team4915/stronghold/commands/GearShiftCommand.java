@@ -18,9 +18,9 @@ public class GearShiftCommand extends Command {
     @Override
     protected void execute() {
       	if (on = true){
-    		Robot.gearShift.highSpeedMode();
+	    Robot.gearShift.highSpeedMode();
             SmartDashboard.putString("In high gear", null);
-    		fin = true;
+	    fin = true;
     	}
         else {
              Robot.gearShift.lowSpeedMode();
