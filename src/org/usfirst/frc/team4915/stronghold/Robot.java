@@ -40,8 +40,10 @@ public class Robot extends IterativeRobot {
         // 2. conditionally create the modules
         if (ModuleManager.DRIVE_MODULE_ON) {
             driveTrain = new DriveTrain();
-            gearShift= new GearShift();
             System.out.println("ModuleManager initialized: DriveTrain");
+        }
+        if (ModuleManager.GEARSHIFT_MODULE_ON){
+            gearShift= new GearShift();
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLauncher = new IntakeLauncher();
