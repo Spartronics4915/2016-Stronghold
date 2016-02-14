@@ -25,11 +25,13 @@ public class IntakeLauncher extends Subsystem {
     private final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0;
 
     // in encoder ticks
-    private final double AIM_MOTOR_INCREMENT = 1; // TODO
-    private final double LAUNCHER_MIN_HEIGHT = 0;
-    private final double LAUNCHER_MAX_HEIGHT = 1000; // TODO
+    private final int AIM_MOTOR_INCREMENT = 5; // TODO
+    private final int LAUNCHER_MIN_HEIGHT = 0;
+    private final int LAUNCHER_MAX_HEIGHT = 215; // TODO
     private final double JOYSTICK_SCALE = 1.0; // TODO
 
+    private boolean ballLaunched = false;
+    
     public Joystick aimStick = Robot.oi.getJoystickAimStick();
 
     // left and right are determined when standing behind the robot
@@ -45,14 +47,15 @@ public class IntakeLauncher extends Subsystem {
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
-    // limitswitches that tell when the launcher is at the maximum or minumum
-    // height
-    public DigitalInput launcherBottomSwitch = RobotMap.launcherBottomSwitch;
-    public DigitalInput launcherTopSwitch = RobotMap.launcherTopSwitch;
-
     // servo that pushes the ball into the flywheels
     public Servo launcherServo = RobotMap.launcherServo;
 
+    //lowers the aimer so the encoder can zero when the robot turns on
+    //method commented for now so we can test
+    public IntakeLauncher() {
+        //lowerAimer();
+    }
+    
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new SetLauncherHeightCommand());
@@ -87,9 +90,6 @@ public class IntakeLauncher extends Subsystem {
         if (!VisionState.getInstance().AutoAimEnabled) {
             aimMotor.changeControlMode(TalonControlMode.Speed);
             aimMotor.set(aimStick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE);
-            if ((aimMotor.getSpeed() > 0 && launcherTopSwitch.get()) || (aimMotor.getSpeed() < 0 && launcherBottomSwitch.get())) {
-                aimMotor.set(ZERO_SPEED);
-            }
         } else {
             if (VisionState.getInstance().TargetY > LAUNCHER_MIN_HEIGHT || VisionState.getInstance().TargetY < LAUNCHER_MAX_HEIGHT) {
                 SmartDashboard.putBoolean("Auto-aim target out of range", true);
@@ -97,6 +97,9 @@ public class IntakeLauncher extends Subsystem {
                 aimMotor.changeControlMode(TalonControlMode.Position);
                 aimMotor.set(VisionState.getInstance().TargetY);
             }
+        }
+        if(aimMotor.isRevLimitSwitchClosed()) {
+            aimMotor.setEncPosition(LAUNCHER_MIN_HEIGHT);
         }
     }
 
@@ -115,6 +118,16 @@ public class IntakeLauncher extends Subsystem {
 
     public void retractLaunchServo() {
         launcherServo.set(LAUNCHER_SERVO_NEUTRAL_POSITION);
+        ballLaunched = true;
+    }
+    
+    public void lowerAimer() {
+        aimMotor.changeControlMode(TalonControlMode.Position);
+        aimMotor.set(LAUNCHER_MIN_HEIGHT);
+    }
+    
+    public void zeroEncoder() {
+        aimMotor.setEncPosition(0);
     }
 
     public CANTalon getIntakeLeftMotor() {
@@ -139,5 +152,12 @@ public class IntakeLauncher extends Subsystem {
 
     public CANTalon getAimMotor() {
         return aimMotor;
+    }
+    public boolean getBallLaunched() {
+        return ballLaunched;
+    }
+    
+    public void setBallLaunched(boolean ballLaunched) {
+        this.ballLaunched = ballLaunched;
     }
 }

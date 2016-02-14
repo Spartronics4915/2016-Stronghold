@@ -8,12 +8,15 @@ import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This class handles the "operator interface", or the interactions between the
  * driver station and the robot code.
@@ -36,9 +39,13 @@ public class OI {
     public static final int LAUNCHER_STICK_PORT = 1;
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 2;
-    public static final int AUTO_AIM_BUTTON_NUMBER = 11;
-    public static final int LAUNCHER_UP_BUTTON_NUMBER = 7;
-    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6;
+    public static final int AUTO_AIM_BUTTON_NUMBER = 8;
+    public static final int LAUNCHER_UP_BUTTON_NUMBER = 6;
+    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 7;
+
+    // FIXME: Scaling button values
+    public static final int SCALER_REACH_BUTTON_NUMBER = 10;
+    public static final int SCALER_LIFT_BUTTON_NUMBER = 11;
 
     public static final int UP_DIRECTION = 1;
     public static final int DOWN_DIRECTION = UP_DIRECTION * -1;
@@ -55,6 +62,8 @@ public class OI {
     public JoystickButton autoAimButton;
     public JoystickButton launcherUpButton;
     public JoystickButton launcherDownButton;
+    public JoystickButton scalerReachButton;
+    public JoystickButton scalerLiftButton;
 
     public OI() {
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
@@ -101,6 +110,15 @@ public class OI {
             this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
             this.autoAimButton.whenPressed(new AutoAimControlCommand());
             System.out.println("ModuleManager OI: Initialize Vision!");
+        }
+
+        if (ModuleManager.SCALING_MODULE_ON) {
+            SmartDashboard.putData("Scaler Winch", RobotMap.scalingWinch);
+            SmartDashboard.putData("Scaler Tape Measure Motor", RobotMap.scalingMotor);
+            this.scalerReachButton = new JoystickButton(this.aimStick, SCALER_REACH_BUTTON_NUMBER);
+            this.scalerLiftButton = new JoystickButton(this.aimStick, SCALER_LIFT_BUTTON_NUMBER);
+            this.scalerReachButton.whenPressed(new ScalerCommand(State.REACHING));
+            this.scalerLiftButton.whenPressed(new ScalerCommand(State.LIFTING));
         }
 
         /*
