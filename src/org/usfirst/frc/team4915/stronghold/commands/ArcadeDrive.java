@@ -13,7 +13,6 @@ public class ArcadeDrive extends Command {
     public Joystick joystickDrive;
     private double joystickX;
     private double joystickY;
-    private double joystickZ;
 
     public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -31,7 +30,6 @@ public class ArcadeDrive extends Command {
         this.joystickDrive = Robot.oi.getJoystickDrive();
         this.joystickX = this.joystickDrive.getAxis(Joystick.AxisType.kX);
         this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
-        this.joystickZ = this.joystickDrive.getAxis(Joystick.AxisType.kZ);
         Robot.driveTrain.trackGyro();
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
@@ -50,8 +48,8 @@ public class ArcadeDrive extends Command {
         } else {
             Robot.driveTrain.arcadeDrive(this.joystickDrive);
         }
-	SmartDashboard.putNumber("Drive joystick X position", this.joyStickX);
-	SmartDashboard.putNumber("Drive joystick Y position", this.joyStickY);
+	SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
+	SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
     }
 
     // Make this return true when this Command no longer needs to run execute()

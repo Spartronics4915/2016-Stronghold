@@ -23,32 +23,27 @@ public class AutoRotateDegrees extends Command {
 
     @Override
     protected void initialize() {
-        // TODO Auto-generated method stub
         Robot.driveTrain.calibrateGyro();
     }
 
     @Override
     protected void execute() {
-        // TODO Auto-generated method stub
         Robot.driveTrain.turn(goLeft);
 	SmartDashboard.putNumber("Robot Angle", robotAngle);
     }
 
     @Override
     protected boolean isFinished() {
-        // TODO Auto-generated method stub
         return (Math.abs(Robot.driveTrain.trackGyro()) >= robotAngle);
     }
 
     @Override
     protected void end() {
-        // TODO Auto-generated method stub
         robotDrive.stopMotor();
     }
 
     @Override
     protected void interrupted() {
-        // TODO Auto-generated method stub
         end();
 
     }
