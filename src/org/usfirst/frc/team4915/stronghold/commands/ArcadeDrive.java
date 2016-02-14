@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
@@ -49,6 +50,8 @@ public class ArcadeDrive extends Command {
         } else {
             Robot.driveTrain.arcadeDrive(this.joystickDrive);
         }
+	SmartDashboard.putNumber("Drive joystick X position", this.joyStickX);
+	SmartDashboard.putNumber("Drive joystick Y position", this.joyStickY);
     }
 
     // Make this return true when this Command no longer needs to run execute()
