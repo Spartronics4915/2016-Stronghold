@@ -107,6 +107,7 @@ public class OI {
                                                                            // OI
                                                                            // init
                                                                            // Gyro
+            SmartDashboard.putData("Gyro", RobotMap.gyro);
         }
 
         if (ModuleManager.VISION_MODULE_ON) {

@@ -50,12 +50,12 @@ public class Robot extends IterativeRobot {
         }
         if (ModuleManager.GYRO_MODULE_ON) {
             RobotMap.gyro.initGyro();
-            //Got the sensitivity from VEX Yaw Rate Gyro data sheet
-            RobotMap.gyro.setSensitivity(0.0011);
+            // Sensitivity in VEX Yaw Rate Gyro data sheet: 0.0011
+            RobotMap.gyro.setSensitivity(0.0011); 
             RobotMap.gyro.calibrate();
             SmartDashboard.putString("Module Manager", "initialize gyro");
             System.out.println("ModuleManager initialize gyro: " + RobotMap.gyro.getAngle()); 
-            
+            RobotMap.gyro.reset();
         }
         if (ModuleManager.SCALING_MODULE_ON){
             scaler = new Scaler();
