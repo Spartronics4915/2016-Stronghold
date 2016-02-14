@@ -75,17 +75,18 @@ public class OI {
 
         // Bind module commands to buttons
         if (ModuleManager.DRIVE_MODULE_ON) {
+            System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
+                                                                                 // OI
+                                                                                 // init
+                                                                                 // DriveTrain
+        }
+        
+        if (ModuleManager.GEARSHIFT_MODULE_ON){
             this.speedUpButton = new JoystickButton(driveStick, HIGH_SPEED_DRIVE_BUTTON);
             this.slowDownButton = new JoystickButton(driveStick, LOW_SPEED_DRIVE_BUTTON);
 
             this.speedUpButton.whenPressed(new GearShiftCommand(true));
             this.slowDownButton.whenPressed(new GearShiftCommand(false));
-           
-
-            System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
-                                                                                 // OI
-                                                                                 // init
-                                                                                 // DriveTrain
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {

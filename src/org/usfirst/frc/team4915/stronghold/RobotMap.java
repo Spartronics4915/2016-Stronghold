@@ -79,7 +79,6 @@ public class RobotMap {
             leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
             rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
             // TODO: Invert motors here if needed: someMotor.setInverted(true)
-            doubleSolenoid = new DoubleSolenoid(SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
             /*
              * TODO: Initialize the Talon drive motors 1. establish follower
              * mode: we have 4 motor controls, but need to give commands to two
@@ -97,6 +96,9 @@ public class RobotMap {
             
 
             System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
+        }
+        if (ModuleManager.GEARSHIFT_MODULE_ON){
+            doubleSolenoid = new DoubleSolenoid(SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
