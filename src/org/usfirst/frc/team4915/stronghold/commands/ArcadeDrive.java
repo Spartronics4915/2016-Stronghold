@@ -35,26 +35,17 @@ public class ArcadeDrive extends Command {
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
         // checks where the joystick is
-       if ( VisionState.getInstance().AutoAimEnabled ){
-    	   int Vis = VisionState.getInstance().TargetX;
-    	   if (Vis <= -1){
-    		   Robot.driveTrain.turn(false);
-    	   }
-    	   else {
-    		   Robot.driveTrain.turn(true);
-    	   }
-    	   
-       }
-       else if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
+        if (VisionState.getInstance().AutoAimEnabled) {
+            int Vis = VisionState.getInstance().TargetX;
+            if (Vis <= -1) {
+                Robot.driveTrain.turn(false);
+            } else {
+                Robot.driveTrain.turn(true);
+            }
 
-            if (Math.abs(this.joystickZ) < Math.abs(0.075)) {
-                // all in the middle (x,y,z), stops
-                Robot.driveTrain.stop();
-            }
-            // x and y is in middle but z is twisted
-            else {
-                Robot.driveTrain.twistDrive(this.joystickDrive);
-            }
+        } else if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
+
+            Robot.driveTrain.stop();
         } else {
             Robot.driveTrain.arcadeDrive(this.joystickDrive);
         }
