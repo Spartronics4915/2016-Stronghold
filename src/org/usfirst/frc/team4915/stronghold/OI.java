@@ -39,13 +39,13 @@ public class OI {
     public static final int LAUNCHER_STICK_PORT = 1;
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 2;
-    public static final int AUTO_AIM_BUTTON_NUMBER = 11;
-    public static final int LAUNCHER_UP_BUTTON_NUMBER = 7;
-    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6;
+    public static final int AUTO_AIM_BUTTON_NUMBER = 8;
+    public static final int LAUNCHER_UP_BUTTON_NUMBER = 6;
+    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 7;
 
     // FIXME: Scaling button values
-    public static final int SCALER_REACH_BUTTON_NUMBER = 9;
-    public static final int SCALER_LIFT_BUTTON_NUMBER = 10;
+    public static final int SCALER_REACH_BUTTON_NUMBER = 10;
+    public static final int SCALER_LIFT_BUTTON_NUMBER = 11;
 
     public static final int UP_DIRECTION = 1;
     public static final int DOWN_DIRECTION = UP_DIRECTION * -1;
