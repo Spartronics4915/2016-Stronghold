@@ -27,8 +27,23 @@ public class GearShiftCommand extends Command {
 
     @Override
     protected void execute() {
+<<<<<<< HEAD
         // Everything happens in initialize
     }
+=======
+      	if (on = true){
+	    Robot.gearShift.highSpeedMode();
+            SmartDashboard.putString("In high gear", null);
+	    SmartDashboard.putBoolean("High Gear", true);
+	    fin = true;
+    	}
+        else {
+             Robot.gearShift.lowSpeedMode();
+             SmartDashboard.putString("In low gear", null );
+	     SmartDashboard.putBoolean("Low Gear", true);
+             fin = true;
+        }    }
+>>>>>>> 641baf693fadfa80447d8f2fdbac2274dd954713
 
     @Override
     protected boolean isFinished() {
