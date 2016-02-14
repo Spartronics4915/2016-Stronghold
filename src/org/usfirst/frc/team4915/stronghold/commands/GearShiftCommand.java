@@ -18,13 +18,15 @@ public class GearShiftCommand extends Command {
     @Override
     protected void execute() {
       	if (on = true){
-    		Robot.gearShift.highSpeedMode();
+	    Robot.gearShift.highSpeedMode();
             SmartDashboard.putString("In high gear", null);
-    		fin = true;
+	    SmartDashboard.putBoolean("High Gear", true);
+	    fin = true;
     	}
         else {
              Robot.gearShift.lowSpeedMode();
              SmartDashboard.putString("In low gear", null );
+	     SmartDashboard.putBoolean("Low Gear", true);
              fin = true;
         }    }
 
