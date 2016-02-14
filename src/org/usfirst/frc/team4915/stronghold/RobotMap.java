@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
@@ -32,34 +31,15 @@ public class RobotMap {
     /* Gyro specific constants - Initialization takes place in RobotMapInit() */
     public final static int GYRO_PORT = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 104365f6854a3e1e20858c19d69f1d6841dbbda3
     public static Gyro gyro;
 =======
     public static AnalogGyro gyro;
 >>>>>>> a0bd932a7f9e37675258b5abeab892b564381d57
 
-<<<<<<< HEAD
-
-    public static CANTalon  intakeLeftMotor;
-    public static CANTalon  intakeRightMotor;
-    public static CANTalon  aimMotor;
-    public static Servo     launcherServo;
-
-    private static final int PLACEHOLDER_NUMBER = 69;
-    
-    /* IntakeLauncher specific constants - Initialization takes place in RobotMapInit() */ 
-    /* FIXME: Initialize IntakeLauncher's ports */ 
-    
-    private static final int INTAKE_LEFT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
-    private static final int INTAKE_RIGHT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
-    private static final int AIM_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
-
-    private static final int BOULDER_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
-    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
-    private static final int LAUNCHER_TOP_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
-
-    private static final int LAUNCHER_SERVO_PORT = PLACEHOLDER_NUMBER; // TODO
-=======
     public static CANTalon intakeLeftMotor;
     public static CANTalon intakeRightMotor;
     public static CANTalon aimMotor;
@@ -81,12 +61,18 @@ public class RobotMap {
 
     private static final int LAUNCHER_SERVO_PORT = 17;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> upstream/master
 =======
 
     private static final int SCALING_MOTOR_PORT = 18; // TODO
     private static final int SCALING_WINCH_PORT = 19; // TODO
 >>>>>>> a0bd932a7f9e37675258b5abeab892b564381d57
+=======
+
+    private static final int SCALING_BOTTOM_SWITCH_PORT = 18; // TODO
+    private static final int SCALING_TOP_SWITCH_PORT = 19; // TODO
+>>>>>>> 104365f6854a3e1e20858c19d69f1d6841dbbda3
     // not actual port values
 
     private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 234234234;
@@ -95,9 +81,16 @@ public class RobotMap {
     private static final double AIM_MOTOR_I = 0; // TODO
     private static final double AIM_MOTOR_D = 0; // TODO
 
+<<<<<<< HEAD
     public static CANTalon scalingMotor;
     public static CANTalon scalingWinch;
     
+=======
+    public static TalonSRX SCALING_MOTOR;
+    public static TalonSRX SCALING_WINCH;
+    public static DigitalInput SCALING_BOTTOM_SWITCH;
+    public static DigitalInput SCALING_TOP_SWITCH;
+>>>>>>> 104365f6854a3e1e20858c19d69f1d6841dbbda3
 
     /* FIXME: to delete as the switches connect directly to Talon */
     public static DigitalInput boulderSwitch;
@@ -158,6 +151,6 @@ public class RobotMap {
             scalingWinch = new CANTalon(SCALING_WINCH_PORT);
         }
     }
-    }
-
-
+}
+        
+       

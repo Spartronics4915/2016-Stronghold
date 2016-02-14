@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
@@ -20,6 +21,8 @@ import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 =======
 >>>>>>> a0bd932a7f9e37675258b5abeab892b564381d57
+=======
+>>>>>>> 104365f6854a3e1e20858c19d69f1d6841dbbda3
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -127,6 +130,6 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void testPeriodic() {
-        System.out.println(RobotMap.imu.isSensorPresent());
+        LiveWindow.run();
     }
 }

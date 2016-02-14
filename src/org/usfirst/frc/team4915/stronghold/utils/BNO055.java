@@ -4,6 +4,7 @@ import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
@@ -345,6 +346,10 @@ public class BNO055 {
         
         executor = new java.util.Timer();
         executor.schedule(new BNO055UpdateTask(this), 0L, THREAD_PERIOD);
+    }
+
+    public BNO055() {
+        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -834,6 +839,45 @@ public class BNO055 {
         }
     }
 }
+/*<<<<<<< HEAD
+/*
+ * <<<<<<< HEAD
+    
+    public static BNO055 imu;
+    
+    public static CANTalon  intakeLeftMotor;
+    public static CANTalon  intakeRightMotor;
+    public static CANTalon  aimMotor;
+    public static Servo     launcherServo;
+
+    private static final int PLACEHOLDER_NUMBER = 69;
+    
+    /* IntakeLauncher specific constants - Initialization takes place in RobotMapInit() */ 
+    /* FIXME: Initialize IntakeLauncher's ports */ 
+    
+  /*private static final int INTAKE_LEFT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int INTAKE_RIGHT_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int AIM_MOTOR_PORT = PLACEHOLDER_NUMBER; // TODO
+
+    private static final int BOULDER_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+    private static final int LAUNCHER_TOP_SWITCH_PORT = PLACEHOLDER_NUMBER; // TODO
+
+    private static final int LAUNCHER_SERVO_PORT = PLACEHOLDER_NUMBER; // TODO
+=======
+ */
+
+/*
+ * <<<<<<< HEAD
+import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
+=======
+>>>>>>> 0029e3c832657158b123b93d2ecacbadb56895b2
+
+ */
+/*=======
 
 /*
 *<<<<<<< HEAD
@@ -846,3 +890,5 @@ public class BNO055 {
     public static Gyro gyro;
 >>>>>>> fc15bfab33a6cbf4749039a4adaf346add5cde8f
 */
+/*>>>>>>> 37bd9b4ac3af462b49cd0250743fe9d862089c7b
+ */
