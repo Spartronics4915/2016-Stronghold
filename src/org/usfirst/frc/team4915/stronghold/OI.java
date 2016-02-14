@@ -44,8 +44,8 @@ public class OI {
     public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6;
 
     // FIXME: Scaling button values
-    public static final int SCALER_EXTEND_BUTTON_NUMBER = 9;
-    public static final int SCALER_RETRACT_BUTTON_NUMBER = 10;
+    public static final int SCALER_REACH_BUTTON_NUMBER = 9;
+    public static final int SCALER_LIFT_BUTTON_NUMBER = 10;
 
     public static final int UP_DIRECTION = 1;
     public static final int DOWN_DIRECTION = UP_DIRECTION * -1;
@@ -62,8 +62,8 @@ public class OI {
     public JoystickButton autoAimButton;
     public JoystickButton launcherUpButton;
     public JoystickButton launcherDownButton;
-    public JoystickButton scalerExtendButton;
-    public JoystickButton scalerRetractButton;
+    public JoystickButton scalerReachButton;
+    public JoystickButton scalerLiftButton;
 
     public OI() {
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
@@ -113,14 +113,12 @@ public class OI {
         }
 
         if (ModuleManager.SCALING_MODULE_ON) {
-            SmartDashboard.putData("Scaler Top Switch", RobotMap.SCALING_TOP_SWITCH);
-            SmartDashboard.putData("Scaler Bottom Switch", RobotMap.SCALING_BOTTOM_SWITCH);
-            SmartDashboard.putData("Scaler Winch", RobotMap.SCALING_WINCH);
-            SmartDashboard.putData("Scaler Tape Measure Motor", RobotMap.SCALING_MOTOR);
-            this.scalerExtendButton = new JoystickButton(this.aimStick, SCALER_EXTEND_BUTTON_NUMBER);
-            this.scalerRetractButton = new JoystickButton(this.aimStick, SCALER_RETRACT_BUTTON_NUMBER);
-            this.scalerExtendButton.whenPressed(new ScalerCommand(State.EXTENDED));
-            this.scalerRetractButton.whenPressed(new ScalerCommand(State.RETRACTED));
+            SmartDashboard.putData("Scaler Winch", RobotMap.scalingWinch);
+            SmartDashboard.putData("Scaler Tape Measure Motor", RobotMap.scalingMotor);
+            this.scalerReachButton = new JoystickButton(this.aimStick, SCALER_REACH_BUTTON_NUMBER);
+            this.scalerLiftButton = new JoystickButton(this.aimStick, SCALER_LIFT_BUTTON_NUMBER);
+            this.scalerReachButton.whenPressed(new ScalerCommand(State.REACHING));
+            this.scalerLiftButton.whenPressed(new ScalerCommand(State.LIFTING));
         }
 
         /*

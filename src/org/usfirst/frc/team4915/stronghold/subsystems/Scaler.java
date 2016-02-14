@@ -7,13 +7,13 @@ public class Scaler extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new ScalerCommand(State.RETRACTED));
+        
     }
 
     public static enum State {
 
-        RETRACTED,
-        EXTENDED
+        LIFTING,
+        REACHING
 
     }
 
