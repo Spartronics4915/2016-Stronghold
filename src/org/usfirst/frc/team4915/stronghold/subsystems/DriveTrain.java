@@ -41,14 +41,14 @@ public class DriveTrain extends Subsystem {
 
         /*
          * FIXME: robotDrive static field access instead of:
-         * this.robotDrive.setSafetyEnabled(true); do (remove this):
+         * robotDrive.setSafetyEnabled(true); do (remove this):
          * robotDrive.setSafetyEnabled(true)
          */
-        this.robotDrive.setSafetyEnabled(true);
+        robotDrive.setSafetyEnabled(true);
         // inverting motors
-        this.robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
+        robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
      
-        this.robotDrive.setInvertedMotor(MotorType.kRearRight, true);
+        robotDrive.setInvertedMotor(MotorType.kRearRight, true);
         
 
         // checking to see the encoder values
@@ -70,12 +70,12 @@ public class DriveTrain extends Subsystem {
     }
 
     private void setMaxOutput(double topSpeed) {
-        this.robotDrive.setMaxOutput(topSpeed);
+        robotDrive.setMaxOutput(topSpeed);
     }
 
     public void arcadeDrive(Joystick stick) {
         Robot.driveTrain.trackGyro();
-        this.robotDrive.arcadeDrive(stick);
+        robotDrive.arcadeDrive(stick);
         // checking to see the encoder values
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
@@ -85,17 +85,8 @@ public class DriveTrain extends Subsystem {
         }
     }
 
-    public void twistDrive(Joystick stick) {
-        Robot.driveTrain.trackGyro();
-        /*
-         * FIXME: should use rotate values rather than twist values 1 to -1 --
-         * check the motor mapping correctness
-         */
-        this.robotDrive.arcadeDrive(stick, Joystick.AxisType.kY.value, stick, Joystick.AxisType.kZ.value);
-    }
-
     public void stop() {
-        this.robotDrive.arcadeDrive(0, 0);
+        robotDrive.arcadeDrive(0, 0);
     }
 
     public void calibrateGyro() {
@@ -114,7 +105,7 @@ public class DriveTrain extends Subsystem {
                                                           
     public void driveStraight(double speed) {
         trackGyro();
-        this.robotDrive.arcadeDrive(speed, 0);
+        robotDrive.arcadeDrive(speed, 0);
     }
 
     public void turn(boolean left) {

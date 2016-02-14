@@ -47,7 +47,7 @@ public class ScalerCommand extends Command {
     @Override
     protected void end() {
         RobotMap.scalingWinch.set(0);
-        RobotMap.scalingWinch.set(0);
+        RobotMap.scalingMotor.set(0);
     }
 
     @Override

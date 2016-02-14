@@ -12,7 +12,7 @@ public class GearShift extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        // TODO Auto-generated method stub
+        // No default
     }
     
     /*
