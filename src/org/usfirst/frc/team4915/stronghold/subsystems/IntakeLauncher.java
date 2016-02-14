@@ -57,6 +57,7 @@ public class IntakeLauncher extends Subsystem {
     private final double JOYSTICK_SCALE = (LAUNCHER_MAX_HEIGHT - LAUNCHER_MIN_HEIGHT) / TIME_IN_MS_FOR_FULL_MOTION * 10; //
 
     private boolean ballLaunched = false;
+    private boolean aimed45Degrees = false;
 
     // left and right are determined when standing behind the robot
 
@@ -160,6 +161,18 @@ public class IntakeLauncher extends Subsystem {
             aimMotor.set(FULL_SPEED_REVERSE / 2);
         }
     }
+    
+    public void launcher45Degrees() {
+        aimMotor.changeControlMode(TalonControlMode.PercentVbus);
+        if(aimMotor.getEncPosition() > 47 * TICKS_PER_DEGREE) {
+            aimMotor.set(-1);
+        } else if(aimMotor.getEncPosition() < 43 * TICKS_PER_DEGREE) {
+            aimMotor.set(1);
+        } else {
+            aimMotor.set(0);
+            aimed45Degrees = true;
+        }
+    }
 
     public CANTalon getIntakeLeftMotor() {
         return intakeLeftMotor;
@@ -187,6 +200,14 @@ public class IntakeLauncher extends Subsystem {
 
     public boolean getBallLaunched() {
         return ballLaunched;
+    }
+    
+    public boolean getAimed45Degrees() {
+        return aimed45Degrees;
+    }
+    
+    public void setAimed45Degrees(boolean aimed45Degrees) {
+        this.aimed45Degrees = aimed45Degrees;
     }
 
     public void setBallLaunched(boolean ballLaunched) {

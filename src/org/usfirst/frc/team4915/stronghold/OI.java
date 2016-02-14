@@ -9,6 +9,8 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLaunc
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Launcher45DegreesCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServoCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
@@ -43,6 +45,9 @@ public class OI {
     public static final int AUTO_AIM_BUTTON_NUMBER = 11;
     public static final int LAUNCHER_UP_BUTTON_NUMBER = 7;
     public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6;
+    public static final int LAUNCHER_SERVO_ACTIVATE_TEST_BUTTON_NUMBER = 5; //TODO
+    public static final int LAUNCHER_SERVO_RETRACT_TEST_BUTTON_NUMBER = 5; //TODO
+    public static final int LAUNCHER_45_DEGREES_BUTTON_NUMBER = 8;
 
     // FIXME: Scaling button values
     public static final int SCALER_EXTEND_BUTTON_NUMBER = 9;
@@ -63,6 +68,9 @@ public class OI {
     public JoystickButton autoAimButton;
     public JoystickButton launcherUpButton;
     public JoystickButton launcherDownButton;
+    public JoystickButton launcher45DegreesButton;
+    public JoystickButton launcherServoActivateTestButton;
+    public JoystickButton launcherServoRetractTestButton;
     public JoystickButton scalerExtendButton;
     public JoystickButton scalerRetractButton;
 
@@ -89,11 +97,17 @@ public class OI {
             this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
             this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
             this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
+            this.launcherServoActivateTestButton = new JoystickButton(this.aimStick, LAUNCHER_SERVO_ACTIVATE_TEST_BUTTON_NUMBER);
+            this.launcherServoRetractTestButton = new JoystickButton(this.aimStick, LAUNCHER_SERVO_RETRACT_TEST_BUTTON_NUMBER);
+            this.launcher45DegreesButton = new JoystickButton(this.aimStick, LAUNCHER_45_DEGREES_BUTTON_NUMBER);
 
             this.grabBallButton.whenPressed(new IncrementLauncherHeightCommand(0)); //Not right, good for testing
             this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
             this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
             this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
+            this.launcherServoActivateTestButton.whenPressed(new ActivateLauncherServoCommand());
+            this.launcherServoRetractTestButton.whenPressed(new RetractLauncherServoCommand());
+            this.launcher45DegreesButton.whenPressed(new Launcher45DegreesCommand());
             SmartDashboard.putData(new ActivateLauncherServoCommand());
             SmartDashboard.putData(new IncrementLauncherHeightCommand(1));
             SmartDashboard.putData(new IncrementLauncherHeightCommand(-1));
