@@ -1,19 +1,22 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4915.stronghold.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RetractLauncherServoCommand extends Command {
 
     public RetractLauncherServoCommand() {
+
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.retractLaunchServo();
+      
     }
 
     protected void execute() {
-    
+        Robot.intakeLauncher.retractLaunchServo();
+        SmartDashboard.putNumber("Servo Position", Robot.intakeLauncher.getLauncherServo().get());
     }
 
     protected boolean isFinished() {
@@ -21,9 +24,10 @@ public class RetractLauncherServoCommand extends Command {
     }
 
     protected void end() {
+        
     }
 
     protected void interrupted() {
-    
+
     }
 }

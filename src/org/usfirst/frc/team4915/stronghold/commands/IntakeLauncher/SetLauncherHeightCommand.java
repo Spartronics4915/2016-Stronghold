@@ -1,7 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4915.stronghold.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SetLauncherHeightCommand extends Command {
 
@@ -18,6 +19,7 @@ public class SetLauncherHeightCommand extends Command {
     @Override
     protected void execute() {
         Robot.intakeLauncher.moveLauncher();
+        SmartDashboard.putNumber("Launcher Position:", Robot.intakeLauncher.getAimMotor().getEncPosition());
     }
 
     @Override

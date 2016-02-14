@@ -1,7 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4915.stronghold.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ActivateLauncherServoCommand extends Command {
 
@@ -10,15 +11,16 @@ public class ActivateLauncherServoCommand extends Command {
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.activateLaunchServo();
+        
     }
 
     protected void execute() {
-    
+        Robot.intakeLauncher.activateLaunchServo();
+        SmartDashboard.putNumber("Servo Position", Robot.intakeLauncher.getLauncherServo().get());
     }
 
     protected boolean isFinished() {
-        return true;
+        return Robot.intakeLauncher.getLauncherServo().get() > .9;
     }
 
     protected void end() {

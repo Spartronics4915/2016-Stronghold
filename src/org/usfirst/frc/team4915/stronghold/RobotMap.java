@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
@@ -30,8 +31,12 @@ public class RobotMap {
 
     /* Gyro specific constants - Initialization takes place in RobotMapInit() */
     public final static int GYRO_PORT = 0;
+<<<<<<< HEAD
 
     public static Gyro gyro;
+=======
+    public static AnalogGyro gyro;
+>>>>>>> a0bd932a7f9e37675258b5abeab892b564381d57
 
 <<<<<<< HEAD
 
@@ -75,18 +80,27 @@ public class RobotMap {
     private static final int LAUNCHER_TOP_SWITCH_PORT = 2;
 
     private static final int LAUNCHER_SERVO_PORT = 17;
+<<<<<<< HEAD
 >>>>>>> upstream/master
+=======
+
+    private static final int SCALING_MOTOR_PORT = 18; // TODO
+    private static final int SCALING_WINCH_PORT = 19; // TODO
+>>>>>>> a0bd932a7f9e37675258b5abeab892b564381d57
     // not actual port values
 
-    private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 1.0;
+    private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 234234234;
     private static final double AIM_MOTOR_REVERSE_SOFT_LIMIT = 0.0;
     private static final double AIM_MOTOR_P = 0; // TODO
     private static final double AIM_MOTOR_I = 0; // TODO
     private static final double AIM_MOTOR_D = 0; // TODO
 
+    public static CANTalon scalingMotor;
+    public static CANTalon scalingWinch;
+    
+
+    /* FIXME: to delete as the switches connect directly to Talon */
     public static DigitalInput boulderSwitch;
-    public static DigitalInput launcherTopSwitch;
-    public static DigitalInput launcherBottomSwitch;
 
     /*
      * Initialize the various robot modules
@@ -107,15 +121,14 @@ public class RobotMap {
              * set feedbackdevice to quadEncoder 4. optional: if driving jerky,
              * set PID values
              */
-
-            //THe back motors are the follower motors
-            //follower mode for right side
-            rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            rightBackMotor.set(rightFrontMotor.getDeviceID());
-            //follower mode for left side
-
-            leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            leftBackMotor.set(leftFrontMotor.getDeviceID());
+            //THe front motors are the follower motors
+            //follower mode for right side            
+            rightFrontMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            rightFrontMotor.set(rightBackMotor.getDeviceID());
+            //follow mode for left side
+            leftFrontMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            leftFrontMotor.set(leftBackMotor.getDeviceID());
+            
 
             System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
         }
@@ -126,24 +139,25 @@ public class RobotMap {
             aimMotor = new CANTalon(AIM_MOTOR_ID);
             launcherServo = new Servo(LAUNCHER_SERVO_PORT);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
-            launcherTopSwitch = new DigitalInput(LAUNCHER_TOP_SWITCH_PORT);
-            launcherBottomSwitch = new DigitalInput(LAUNCHER_BOTTOM_SWITCH_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
 
             // setup the motor
             aimMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-            aimMotor.setForwardSoftLimit(AIM_MOTOR_FORWARD_SOFT_LIMIT);
-            aimMotor.setReverseSoftLimit(AIM_MOTOR_REVERSE_SOFT_LIMIT);
-            aimMotor.enableForwardSoftLimit(true);
-            aimMotor.enableReverseSoftLimit(true);
-            aimMotor.ConfigFwdLimitSwitchNormallyOpen(true);
-            aimMotor.ConfigRevLimitSwitchNormallyOpen(true);
+            aimMotor.enableLimitSwitch(true, true);
+            aimMotor.enableBrakeMode(true);
         }
 
         if (ModuleManager.GYRO_MODULE_ON) {
-            System.out.println("ModuleManager RobotMap initalize TODO: TODO Initialize Gyro!"); // gyro
-                                                                                                // instantiation
+            System.out.println("ModuleManager RobotMap initalize. Initialize Gyro!"); 
             gyro = new AnalogGyro(GYRO_PORT);
         }
+
+        if (ModuleManager.SCALING_MODULE_ON) {
+            System.out.println("ModuleManager RobotMap Initialize: Scaling");
+            scalingMotor = new CANTalon(SCALING_MOTOR_PORT);
+            scalingWinch = new CANTalon(SCALING_WINCH_PORT);
+        }
     }
-}
+    }
+
+
