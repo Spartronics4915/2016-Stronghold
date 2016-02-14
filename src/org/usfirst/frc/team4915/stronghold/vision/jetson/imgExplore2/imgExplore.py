@@ -216,10 +216,15 @@ class App:
           )
 
         if not self.fnpat:
-            vsrc = cv2.VideoCapture(0)
-            if not vsrc or not vsrc.isOpened():
-                print("Problem opening video source")
-                vsrc = None
+            for i in range(0, 4):
+                vsrc = cv2.VideoCapture(i)
+                if not vsrc or not vsrc.isOpened():
+                    print("Problem opening video source %d" % i)
+                    vsrc = None
+                else:
+                    break
+
+            if not vsrc:
                 exit(1)
             else:
                 ret1 = vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 1280)
