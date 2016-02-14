@@ -6,6 +6,7 @@ import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055; 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -27,6 +28,7 @@ public class Robot extends IterativeRobot {
     public static OI oi;
     public static GearShift gearShift;
     public static Scaler scaler;
+    public static BNO055 imu;
     Command autonomousCommand;
 
     /**
@@ -61,6 +63,11 @@ public class Robot extends IterativeRobot {
         }
         if (ModuleManager.SCALING_MODULE_ON){
             scaler = new Scaler();
+        }
+        if (ModuleManager.IMU_MODULE_ON) {
+            imu = new BNO055();
+            SmartDashboard.putString("Module Manager", "imu Initialized");
+            System.out.println("Module Manager initialized: imu");
         }
         oi = new OI();      // 3. Construct OI after subsystems created
     }

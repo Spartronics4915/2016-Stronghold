@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 
+
 public class RobotMap {
 
     // Define channels for the drive train motors
@@ -33,7 +34,7 @@ public class RobotMap {
     public static CANTalon intakeLeftMotor;
     public static CANTalon intakeRightMotor;
     public static CANTalon aimMotor;
-    public static Servo launcherServo;
+    public static Servo launcherServo; 
 
     /*
      * IntakeLauncher specific constants - Initialization takes place in
@@ -127,5 +128,4 @@ public class RobotMap {
         }
     }
     }
-
 

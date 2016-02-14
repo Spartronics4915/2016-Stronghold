@@ -128,6 +128,10 @@ public class OI {
             this.scalerReachDownButton =new JoystickButton(this.aimStick, SCALER_REACH_DOWN_BUTTON_NUMBER);
             this.scalerReachDownButton.whileHeld(new ScalerCommand(State.REACHING_DOWN));
         }
+        
+        if (ModuleManager.IMU_MODULE_ON) {
+            System.out.println("ModuleManager initialized: imu");
+        }
 
         /*
          * VERSION STRING!!
