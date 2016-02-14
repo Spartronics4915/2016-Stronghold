@@ -20,11 +20,13 @@ public class GearShiftCommand extends Command {
       	if (on = true){
 	    Robot.gearShift.highSpeedMode();
             SmartDashboard.putString("In high gear", null);
+	    SmartDashboard.putBoolean("High Gear", true);
 	    fin = true;
     	}
         else {
              Robot.gearShift.lowSpeedMode();
              SmartDashboard.putString("In low gear", null );
+	     SmartDashboard.putBoolean("Low Gear", true);
              fin = true;
         }    }
 
