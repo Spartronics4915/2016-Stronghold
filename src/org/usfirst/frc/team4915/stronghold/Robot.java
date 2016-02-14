@@ -5,6 +5,7 @@ import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -25,6 +26,7 @@ public class Robot extends IterativeRobot {
     public static IntakeLauncher intakeLauncher;
     public static OI oi;
     public static GearShift gearShift;
+    public static BNO055 IMU;
     Command autonomousCommand;
 
     /**
@@ -49,6 +51,10 @@ public class Robot extends IterativeRobot {
         if (ModuleManager.GYRO_MODULE_ON) {
             SmartDashboard.putString("Module Manager", "FIX GYRO INITIALIZATION!");
             System.out.println("ModuleManager TODO: Initialize Gyro!");  
+        }
+        if (ModuleManager.IMU_MODULE_ON) {
+            SmartDashboard.putString("Module Manager", "IMU Initialized");
+            System.out.println("ModuleManager initialized: IMU");
         }
 
         oi = new OI();      // 3. Construct OI after subsystems created

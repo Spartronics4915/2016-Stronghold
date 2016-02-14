@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
@@ -129,7 +130,11 @@ public class RobotMap {
                                                                                                 // instantiation
             gyro = new AnalogGyro(GYRO_PORT);
         }
+        
+        if (ModuleManager.IMU_MODULE_ON) {
+            System.out.println("ModuleManager RobotMap initalized: IMU");
+            
+            BNO055 IMU = new BNO055();
     }
 }
-        
-       
+}
