@@ -12,7 +12,8 @@ public class Scaler extends Subsystem {
     public static enum State {
 
         LIFTING,
-        REACHING
+        REACHING_UP,
+        REACHING_DOWN
 
     }
 

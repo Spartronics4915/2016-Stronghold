@@ -27,10 +27,13 @@ public class ScalerCommand extends Command {
                 RobotMap.scalingMotor.set(0);
                 RobotMap.scalingWinch.set(WINCH_SPEED);
                 break;
-            case REACHING:
+            case REACHING_UP:
                 RobotMap.scalingWinch.set(0);
                 RobotMap.scalingMotor.set(MOTOR_SPEED);
                 break;
+            case REACHING_DOWN:
+                RobotMap.scalingWinch.set(0);
+                RobotMap.scalingMotor.set(-MOTOR_SPEED);
             default:
                 System.out.println("Invalid scaler state " + target);
         }
