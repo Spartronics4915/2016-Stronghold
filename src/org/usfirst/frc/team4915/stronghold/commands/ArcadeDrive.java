@@ -50,8 +50,8 @@ public class ArcadeDrive extends Command {
         } else {
             Robot.driveTrain.arcadeDrive(this.joystickDrive);
         }
-	SmartDashboard.putNumber("Drive joystick X position", this.joyStickX);
-	SmartDashboard.putNumber("Drive joystick Y position", this.joyStickY);
+	SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
+	SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
     }
 
     // Make this return true when this Command no longer needs to run execute()
