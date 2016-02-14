@@ -1,21 +1,21 @@
 package org.usfirst.frc.team4915.stronghold;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
-
-import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
-import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
+import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
+import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -76,7 +76,6 @@ public class OI {
 
             this.speedUpButton.whenPressed(new GearShiftCommand(true));
             this.slowDownButton.whenPressed(new GearShiftCommand(false));
-           
 
             System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
                                                                                  // OI
@@ -85,7 +84,6 @@ public class OI {
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
             this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
             this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
             this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);

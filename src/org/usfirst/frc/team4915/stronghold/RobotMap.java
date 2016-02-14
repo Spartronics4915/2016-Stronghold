@@ -3,6 +3,7 @@ package org.usfirst.frc.team4915.stronghold;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
@@ -47,21 +48,17 @@ public class RobotMap {
     private static final int INTAKE_RIGHT_MOTOR_ID = 15;
     private static final int AIM_MOTOR_ID = 16;
 
-    private static final int BOULDER_SWITCH_PORT = 0;
-    private static final int LAUNCHER_BOTTOM_SWITCH_PORT = 1;
-    private static final int LAUNCHER_TOP_SWITCH_PORT = 2;
+    private static final int BOULDER_SWITCH_PORT = 2;
 
-    private static final int LAUNCHER_SERVO_PORT = 17;
+    private static final int LAUNCHER_SERVO_PORT = 0;
 
     private static final int SCALING_BOTTOM_SWITCH_PORT = 18; // TODO
     private static final int SCALING_TOP_SWITCH_PORT = 19; // TODO
     // not actual port values
 
-    private static final double AIM_MOTOR_FORWARD_SOFT_LIMIT = 234234234;
-    private static final double AIM_MOTOR_REVERSE_SOFT_LIMIT = 0.0;
-    private static final double AIM_MOTOR_P = 0; // TODO
-    private static final double AIM_MOTOR_I = 0; // TODO
-    private static final double AIM_MOTOR_D = 0; // TODO
+    // private static final double AIM_MOTOR_P = 0; // TODO
+    // private static final double AIM_MOTOR_I = 0; // TODO
+    // private static final double AIM_MOTOR_D = 0; // TODO
 
     public static TalonSRX SCALING_MOTOR;
     public static TalonSRX SCALING_WINCH;
@@ -90,14 +87,13 @@ public class RobotMap {
              * set feedbackdevice to quadEncoder 4. optional: if driving jerky,
              * set PID values
              */
-            //THe back motors are the follower motors
-            //follower mode for right side            
-        //    rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-        //    rightBackMotor.set(rightFrontMotor.getDeviceID());
-            //follow mode for left side
-        //    leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-        //    leftBackMotor.set(leftFrontMotor.getDeviceID());
-            
+            // THe back motors are the follower motors
+            // follower mode for right side
+            // rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            // rightBackMotor.set(rightFrontMotor.getDeviceID());
+            // follow mode for left side
+            // leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            // leftBackMotor.set(leftFrontMotor.getDeviceID());
 
             System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
         }
@@ -105,15 +101,19 @@ public class RobotMap {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_ID);
             intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
+            intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
+            intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
             aimMotor = new CANTalon(AIM_MOTOR_ID);
             launcherServo = new Servo(LAUNCHER_SERVO_PORT);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
 
             // setup the motor
-            aimMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-            aimMotor.enableLimitSwitch(true, true);
-            aimMotor.enableBrakeMode(true);
+            if (aimMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != null) {
+                aimMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+                aimMotor.enableLimitSwitch(true, true);
+                aimMotor.enableBrakeMode(true);
+            }
         }
 
         if (ModuleManager.GYRO_MODULE_ON) {
@@ -128,6 +128,4 @@ public class RobotMap {
             SCALING_TOP_SWITCH = new DigitalInput(SCALING_TOP_SWITCH_PORT);
         }
     }
-    }
-
-
+}

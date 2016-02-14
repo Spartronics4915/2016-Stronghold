@@ -1,16 +1,15 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
-import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
-import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
-import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,12 +32,12 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void robotInit() {
-        RobotMap.init();        // 1. Initialize RobotMap prior to initializing modules
-        
+        RobotMap.init(); // 1. Initialize RobotMap prior to initializing modules
+
         // 2. conditionally create the modules
         if (ModuleManager.DRIVE_MODULE_ON) {
             driveTrain = new DriveTrain();
-            gearShift= new GearShift();
+            gearShift = new GearShift();
             System.out.println("ModuleManager initialized: DriveTrain");
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
@@ -48,10 +47,10 @@ public class Robot extends IterativeRobot {
         }
         if (ModuleManager.GYRO_MODULE_ON) {
             SmartDashboard.putString("Module Manager", "FIX GYRO INITIALIZATION!");
-            System.out.println("ModuleManager TODO: Initialize Gyro!");  
+            System.out.println("ModuleManager TODO: Initialize Gyro!");
         }
 
-        oi = new OI();      // 3. Construct OI after subsystems created
+        oi = new OI(); // 3. Construct OI after subsystems created
     }
 
     @Override
@@ -62,7 +61,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         // schedule the autonomous command
-        autonomousCommand = new AutoRotateDegrees(true, 90);    // in inches
+        autonomousCommand = new AutoRotateDegrees(true, 90); // in inches
 
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
