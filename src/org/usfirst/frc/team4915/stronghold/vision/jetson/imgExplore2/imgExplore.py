@@ -60,6 +60,7 @@ class App:
         self.stashFilename = "/var/tmp/imgServer.home/currentImage.jpg"
         self.stashParams = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
         self.zeros = (0,0,0,0,0,0)
+        self.LUT =  np.array(range(0,256)).astype('uint8')
 
         self.indent = ' ' * 50
         self.lastStatus = ""
@@ -76,6 +77,7 @@ class App:
             'contours',
             'ORB',
             'dance1',
+            'gamma',
 
             'b',
             'g',
@@ -90,7 +92,7 @@ class App:
         self.cmodeValueCache = {
             'adaptiveThreshold': [-4, 0, 0, 0, 0, 0],
             'threshold':         [75, 0, 0, 0, 0, 0],
-            'huerange*valrange': [79, 91, 100, 255, 0, 0],
+            'huerange*valrange': [55, 100, 255, 255, 0, 0], # works for g LED
             'canny':             [10, 200, 0, 0, 0, 0],
             'simpleblob':        [75, 150, 5, 150, 0, 0], 
                           # minThresh
@@ -118,10 +120,14 @@ class App:
             'dance1':		[20,20,0,0,0,0],
             			  #X(degrees)
             			  #Y(degrees)
+            			  #Not rotating correctly (not interpreting correctly)
+            'gamma':		[1,0,0,0,0,0],
+            			  #alpha
+            			  #beta
             'r': self.zeros,
             'g': self.zeros,
             'b': self.zeros,
-            'h': self.zeros,
+            'h':            [0, 61, 0, 0, 0, 0],
             's': self.zeros,
             'v': self.zeros,
             'rgb': self.zeros
@@ -137,7 +143,8 @@ class App:
             54: self.cmodelist[6], # houghlines
             55: self.cmodelist[7], # contours
             56: self.cmodelist[8], # ORB
-            57: self.cmodelist[9], #dance1
+            57: self.cmodelist[9], # dance1
+            48: self.cmodelist[10],# 0 key: gamma
 
             98: 'b',
             99: 'rgb',
@@ -176,8 +183,8 @@ class App:
             198: ("v5Down",  (0, 0, 0, 0, -1, 0)), # f9
             199: ("v5Up  ",  (0, 0, 0, 0, 1, 0)), # f10
 
-            200: ("v6Down",  (0, 0, 0, 0, 0, -1)), # f10
-            201: ("v6Up  ",  (0, 0, 0, 0, 0, 1)),  # f11
+            200: ("v6Down",  (0, 0, 0, 0, 0, -1)), # f11
+            201: ("v6Up  ",  (0, 0, 0, 0, 0, 1)),  # f12
         }
 
         self.cmode = self.getCmode(self.args.algorithm)
@@ -207,7 +214,8 @@ class App:
       "  6: houghlines         (rho,theta,thresh,minlen,maxgap)\n"\
       "  7: contours           (mode:0-3,method:0-3,offset,id(-1:all),depth)\n"\
       "  8: ORB features       (nfeatures,scaleFactor(0->255)],patchSize)\n"\
-      "  9: dance1         (minX,maxX)\n"\
+      "  9: dance1         	   (minX,maxX)\n"\
+      "  0: gamma         	   (gamma)\n"\
       "\n"\
       "  F1,F2:            -/+ v1\n"\
       "  F3,F4:            -/+ v2\n"\
@@ -399,13 +407,19 @@ class App:
                 mode = (cv2.COLOR_BGR2HSV, cv2.COLOR_HSV2BGR)
                 hsv = cv2.cvtColor(frame, mode[0])
                 if cmode == 'h':
-                    if mode[0] == cv2.COLOR_BGR2HSV: 
-                        hsv[:,:,1] = 255 # s = 1
-                        hsv[:,:,2] = 128 # v = .5
+                    if 0:
+                        if mode[0] == cv2.COLOR_BGR2HSV: 
+                            hsv[:,:,1] = 255 # s = 1
+                            hsv[:,:,2] = 128 # v = .5
+                        else:
+                            hsv[:,:,1] = 128 # l = .5 
+                            hsv[:,:,2] = 255 # s = 1
+                        frame = cv2.cvtColor(hsv, mode[1])
                     else:
-                        hsv[:,:,1] = 128 # l = .5 
-                        hsv[:,:,2] = 255 # s = 1
-                    frame = cv2.cvtColor(hsv, mode[1])
+                        h,s,v = cv2.split(hsv)
+                        # now find the interesting range of hues..
+                        frame = cv2.inRange(h, values[0], values[1])
+                        #frame = frame * v
                 elif cmode == 's':
                     # extract the s as grayscale
                     if mode[0] == cv2.COLOR_BGR2HSV: 
@@ -483,7 +497,16 @@ class App:
                 else:
                     detector = self.algostate["blobdetector"] 
 
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                if 0:
+                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                elif 0:
+                    frame = self.hvRange(frame)
+                else:
+                    hvals = self.getCmodeValues('h')
+                    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+                    frame,s,v = cv2.split(hsv)
+                    frame = cv2.inRange(frame, hvals[0], hvals[1])
+
                 keypoints = detector.detect(frame) # we'll draw them
                 keypoints = self.robotCnx.NewKeypoints(keypoints)
             elif cmode == "houghlines":
@@ -535,9 +558,17 @@ class App:
             	t = common.clock()*2*math.pi/5
             	x = math.sin(t)*values[0]/27*320 + 320 #[0, 640]s/
             	kp = cv2.KeyPoint(x, 240, 10)
-            	print("This is x:" + x)
             	keypoints = self.robotCnx.NewKeypoints([kp])
-            	print("keypoints created. dance1 finished")
+            elif cmode == 'gamma':
+                # Since our inputs are normalized to [0, 1]
+                # we want a power > 1 to reduce darker shades.
+                # map values [0, 100] -> [1 - 10]
+                gamma = 1 + 10*values[0]/100.0
+                self.putNotice('gamma: %f' % gamma)
+            	for i in range(0, 256):
+            		self.LUT[i] = 255 * ((i/255.0) ** gamma)
+            	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            	frame = cv2.LUT(gray, self.LUT)           		
             else:
                 print("unknown cmode: " + cmode)
         return frame, t0, keypoints, lines, contours
@@ -591,7 +622,7 @@ class App:
             return self.cmodeValueCache[cmode]
         else:
             print("%s not cached, ..." % cmode)
-        return self, zeros
+        return self, self.zeros
 
     def setCmodeValues(self, cmode, values):
         self.cmodeValueCache[cmode] = values 
