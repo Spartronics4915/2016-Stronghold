@@ -19,7 +19,7 @@ public class DriveTrain extends Subsystem {
     // Constructor for SpeedControllers: frontLeftMotor, rearLeftMotor,
     // frontRightMotor, rearRightMotor
     public static RobotDrive robotDrive =
-            new RobotDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
+            new RobotDrive(RobotMap.leftBackMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
 
     // For Gyro
@@ -46,10 +46,10 @@ public class DriveTrain extends Subsystem {
          */
         this.robotDrive.setSafetyEnabled(true);
         // inverting motors
-        this.robotDrive.setInvertedMotor(MotorType.kFrontLeft, true);
         this.robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
-        this.robotDrive.setInvertedMotor(MotorType.kFrontRight, true);
+     
         this.robotDrive.setInvertedMotor(MotorType.kRearRight, true);
+        
 
         // checking to see the encoder values
         // this can be removed later. Used to debug
