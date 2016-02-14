@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherServoCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
@@ -89,10 +90,13 @@ public class OI {
             this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
             this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
 
-            this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
+            this.grabBallButton.whenPressed(new IncrementLauncherHeightCommand(0)); //Not right, good for testing
             this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
             this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
             this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
+            SmartDashboard.putData(new ActivateLauncherServoCommand());
+            SmartDashboard.putData(new IncrementLauncherHeightCommand(1));
+            SmartDashboard.putData(new IncrementLauncherHeightCommand(-1));
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 

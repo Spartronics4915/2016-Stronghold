@@ -101,9 +101,9 @@ public class RobotMap {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_ID);
             intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
-            intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
-            intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
             aimMotor = new CANTalon(AIM_MOTOR_ID);
+            intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
+            intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);            
             launcherServo = new Servo(LAUNCHER_SERVO_PORT);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");

@@ -13,7 +13,7 @@ public class IntakeBallCommand extends Command {
 
     @Override
     protected void initialize() {
-
+        System.out.println("Intake Ball Command");
     }
 
     @Override

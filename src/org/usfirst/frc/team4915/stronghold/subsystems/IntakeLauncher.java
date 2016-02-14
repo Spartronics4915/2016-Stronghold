@@ -21,11 +21,11 @@ public class IntakeLauncher extends Subsystem {
     // Ranges -1 to 1, negative values are reverse direction
     // Negative speed indicates a wheel spinning inwards and positive speed
     // indicates a wheel spinning outwards.
-    private final double FULL_SPEED_REVERSE = -1 / 5 ;
-    private final double FULL_SPEED_FORWARD = 1.0 / 5;
+    private final double FULL_SPEED_REVERSE = 1.0 / 1.0 ;
+    private final double FULL_SPEED_FORWARD = -1.0 / 1.0;
     private final double ZERO_SPEED = 0.0;
     private final double LAUNCHER_SERVO_NEUTRAL_POSITION = 0.0;
-    private final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0;
+    private final double LAUNCHER_SERVO_LAUNCH_POSITION = -5.0;
 
     /*
      * in encoder ticks Step 1: Find number of encoder ticks per cycle:
@@ -41,7 +41,7 @@ public class IntakeLauncher extends Subsystem {
     private final int TICKS_PER_360_DEGREES = TICKS_PER_CYCLE * PLANETARY_GEAR_RATIO * GEAR_RATIO;
     private final double TICKS_PER_DEGREE = TICKS_PER_360_DEGREES / 360;
 
-    private final double AIM_MOTOR_INCREMENT = 1 * TICKS_PER_DEGREE; // increment
+    private final double AIM_MOTOR_INCREMENT = 20 * TICKS_PER_DEGREE; // increment
                                                                      // 1 degree
     private final int LAUNCHER_MIN_HEIGHT = 0;
     private final int LAUNCHER_MAX_HEIGHT = 5264; // 90 degrees * ticks per
@@ -89,13 +89,13 @@ public class IntakeLauncher extends Subsystem {
     // Sets the speed on the flywheels to suck in the boulder
     public void setSpeedIntake() {
         this.intakeLeftMotor.set(FULL_SPEED_REVERSE);
-        this.intakeRightMotor.set(FULL_SPEED_REVERSE);
+        this.intakeRightMotor.set(-FULL_SPEED_REVERSE);
     }
 
     // Sets the speed on the flywheels to launch the boulder
     public void setSpeedLaunch() {
         this.intakeLeftMotor.set(FULL_SPEED_FORWARD);
-        this.intakeRightMotor.set(FULL_SPEED_FORWARD);
+        this.intakeRightMotor.set(-FULL_SPEED_FORWARD);
     }
 
     // stops the flywheels
@@ -106,7 +106,8 @@ public class IntakeLauncher extends Subsystem {
 
     // moves the launcher, joystick angle determines speed
     public void moveLauncher() {
-        if (!VisionState.getInstance().AutoAimEnabled) {
+        
+        /*if (!VisionState.getInstance().AutoAimEnabled) {
             aimMotor.changeControlMode(TalonControlMode.Speed);
             aimMotor.set(Robot.oi.aimStick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE);
         } else {
@@ -121,19 +122,27 @@ public class IntakeLauncher extends Subsystem {
         if (aimMotor.isRevLimitSwitchClosed()) {
             aimMotor.setEncPosition(LAUNCHER_MIN_HEIGHT);
         }
+        */
     }
 
     // changes the launcher height by a small value
     // direction is either 1 or -1
     public void incrementLauncherHeight(int direction) {
-        if (!VisionState.getInstance().AutoAimEnabled) {
+        /*if (!VisionState.getInstance().AutoAimEnabled) {
+            System.out.println("Increment new height: " + (aimMotor.getPosition() + (AIM_MOTOR_INCREMENT * direction)));
             aimMotor.changeControlMode(TalonControlMode.Position);
             aimMotor.set(aimMotor.getPosition() + (AIM_MOTOR_INCREMENT * direction));
         }
+        */
+        System.out.println("in move launcher");
+        aimMotor.changeControlMode(TalonControlMode.PercentVbus);
+        aimMotor.set(0.5 * direction);
     }
 
     public void activateLaunchServo() {
         launcherServo.set(LAUNCHER_SERVO_LAUNCH_POSITION);
+        System.out.println(launcherServo.get());
+  
     }
 
     public void retractLaunchServo() {

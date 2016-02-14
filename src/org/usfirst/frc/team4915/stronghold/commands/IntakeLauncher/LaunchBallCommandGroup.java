@@ -9,10 +9,12 @@ public class LaunchBallCommandGroup extends CommandGroup {
     public final int WAIT_DURATION = 500;
 
     public LaunchBallCommandGroup() {
-        addParallel(new SpinLaunchWheelsOutCommand());
-        addSequential(new WaitCommand(WAIT_DURATION));
+        addSequential(new SpinLaunchWheelsOutCommand());
+        System.out.println("Wheels spin out command finished");
         addSequential(new ActivateLauncherServoCommand());
+        System.out.println("Activate Launcher Servo Command finished");
         addSequential(new RetractLauncherServoCommand());
+        System.out.println("Retract Launcher Servo Command finished");
         addSequential(new StopWheelsCommand());
     }
 }

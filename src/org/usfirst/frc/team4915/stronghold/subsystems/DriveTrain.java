@@ -107,8 +107,8 @@ public class DriveTrain extends Subsystem {
         System.out.println("Starting angle: " + this.startingAngle);
         System.out.println("Gyro: " + gyro);
         this.gyroHeading = -(gyro.getAngle()) + this.startingAngle;
-        System.out.println("Gyro Angle: " + gyro.getAngle());
-        System.out.println("Gyro heading:" + this.gyroHeading);
+        //System.out.println("Gyro Angle: " + gyro.getAngle());
+        //System.out.println("Gyro heading:" + this.gyroHeading);
         return this.gyroHeading;
     }
                                                           
