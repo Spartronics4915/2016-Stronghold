@@ -106,9 +106,9 @@ public class DriveTrain extends Subsystem {
     public void turn(boolean left) {
         trackGyro();
         if (left) {
-            robotDrive.arcadeDrive(0, .7);
-        } else {
             robotDrive.arcadeDrive(0, -.7);
+        } else {
+            robotDrive.arcadeDrive(0, .7);
         }
     }
 }
