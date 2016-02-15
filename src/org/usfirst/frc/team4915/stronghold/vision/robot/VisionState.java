@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
@@ -118,15 +121,10 @@ public class VisionState implements NamedSendable {
     	return false;
     }
     
-    public boolean followTargetY(CANTalon aimMotor, double LAUNCHER_MIN_HEIGHT, double LAUNCHER_MAX_HEIGHT) {
+    public boolean followTargetY(IntakeLauncher intakeLauncher) {
     	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
-    		if (this.TargetY > LAUNCHER_MIN_HEIGHT || this.TargetY < LAUNCHER_MAX_HEIGHT) {
-                SmartDashboard.putBoolean("Auto-aim target out of range", true);
-            } else {
-                aimMotor.changeControlMode(TalonControlMode.Position);
-                aimMotor.set(this.TargetY);
-            }
-            return true;
+    		intakeLauncher.setPointInDegrees(TargetY);
+    		return true;
     	}
     	else {
     		return false;

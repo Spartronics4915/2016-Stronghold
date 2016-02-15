@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 

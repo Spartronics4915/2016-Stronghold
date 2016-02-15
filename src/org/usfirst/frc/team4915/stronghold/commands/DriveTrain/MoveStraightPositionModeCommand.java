@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +66,7 @@ public class MoveStraightPositionModeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        System.out.println("Executing move straight");
         if (this.inputDistanceInches < 0) {
             this.driveTrain.driveStraight(this.driveStraightValue);
         } else {

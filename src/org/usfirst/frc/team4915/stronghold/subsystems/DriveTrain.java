@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
@@ -89,10 +89,6 @@ public class DriveTrain extends Subsystem {
         robotDrive.arcadeDrive(0, 0);
     }
 
-    public void calibrateGyro() {
-        gyro.reset();
-    }
-
     // Methods for Gyro
     public double trackGyro() {
         this.gyroHeading = -(gyro.getAngle()) + this.startingAngle;
@@ -109,9 +105,9 @@ public class DriveTrain extends Subsystem {
     public void turn(boolean left) {
         trackGyro();
         if (left) {
-            robotDrive.tankDrive(-.6, .6);
+            robotDrive.arcadeDrive(0, .7);
         } else {
-            robotDrive.tankDrive(.6, -.6);
+            robotDrive.arcadeDrive(0, -.7);
         }
     }
 }

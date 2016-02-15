@@ -1,21 +1,29 @@
 package org.usfirst.frc.team4915.stronghold;
+
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SetSetPointFromSmartDashboardCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ZeroAimerCommand;
+import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
+import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
-import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
-import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -23,53 +31,64 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class OI {
 
-    // create joysticks for driving and aiming the launcher
-    public Joystick driveStick;
-    public Joystick aimStick;
+    // Ports for joysticks
     public static final int DRIVE_STICK_PORT = 0;
+    public static final int LAUNCHER_STICK_PORT = 1;
 
-    // Drive train two speed controls
-    public JoystickButton speedUpButton;
-    public JoystickButton slowDownButton;
-    
-    //Gearbox speed buttons on the driving joystick
+    // Button numbers for driveStick buttons
     public static final int HIGH_SPEED_DRIVE_BUTTON = 4;
     public static final int LOW_SPEED_DRIVE_BUTTON = 3;
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 11;
 
-    // Launcher Buttons on the mechanism joystick
-    public static final int LAUNCHER_STICK_PORT = 1;
+    // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
-    public static final int INTAKE_BALL_BUTTON_NUMBER = 2;
-    public static final int AUTO_AIM_BUTTON_NUMBER = 8;
-    public static final int LAUNCHER_UP_BUTTON_NUMBER = 6;
-    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 7;
+    public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
+    public static final int LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER = 3;
+    public static final int LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER = 10;
+    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4;
+    public static final int AUTO_AIM_BUTTON_NUMBER = 11; // currently jumping to
+                                                         // 2000 encoder ticks
 
-    //Scaling button values on the mechanism joystick
+    // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 11;
     public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
     public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
 
-    public static final int UP_DIRECTION = 1;
-    public static final int DOWN_DIRECTION = UP_DIRECTION * -1;
+    // Create joysticks for driving and aiming the launcher
+    public Joystick driveStick;
+    public Joystick aimStick;
 
-    // creates new buttons
-    // launchBall triggers a command group with commands that ultimately will
-    // shoot the ball
-    // grabBall triggers a command group with commands that will get the ball
-    // into the basket
-    // launcherUp and launcherDown increment the launcher height by a small
-    // amount
-    public JoystickButton launchBallButton;
+    // Create buttons for the driveStick
+    public JoystickButton speedUpButton;
+    public JoystickButton slowDownButton;
     public JoystickButton grabBallButton;
+
+    // Create buttons for the launcher on the mechanism stick
+    public JoystickButton launchBallButton;
+    public JoystickButton stopWheelsButton;
+    public JoystickButton launcherZeroEncoderButton;
+    public JoystickButton launcherSetSetpointForDashboardButton;
+    public JoystickButton launcherJumpToPositionButton;
     public JoystickButton autoAimButton;
-    public JoystickButton launcherUpButton;
-    public JoystickButton launcherDownButton;
+
+    // Create buttons for the scaler on the mechanism stick
+    public JoystickButton scalerExtendButton;
+    public JoystickButton scalerRetractButton;
     public JoystickButton scalerReachUpButton;
     public JoystickButton scalerReachDownButton;
     public JoystickButton scalerLiftButton;
-    
+
+    public SendableChooser autonomousProgramChooser;
+
 
     public OI() {
+        autonomousProgramChooser = new SendableChooser();
+        SmartDashboard.putData("Autonomous Program", autonomousProgramChooser);
+        autonomousProgramChooser.addDefault("Autonomous Turn", new AutoRotateDegrees(false, 90));
+        autonomousProgramChooser.addObject("Autonomous Just Drive", new MoveStraightPositionModeCommand(30));
+
+
+        
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
 
@@ -80,26 +99,25 @@ public class OI {
                                                                                  // init
                                                                                  // DriveTrain
         }
-        
-        if (ModuleManager.GEARSHIFT_MODULE_ON){
-            this.speedUpButton = new JoystickButton(driveStick, HIGH_SPEED_DRIVE_BUTTON);
-            this.slowDownButton = new JoystickButton(driveStick, LOW_SPEED_DRIVE_BUTTON);
 
-            this.speedUpButton.whenPressed(new GearShiftCommand(true));
-            this.slowDownButton.whenPressed(new GearShiftCommand(false));
+        if (ModuleManager.GEARSHIFT_MODULE_ON) {
+            initializeButton(this.speedUpButton, driveStick, HIGH_SPEED_DRIVE_BUTTON, new GearShiftCommand(true));
+            initializeButton(this.speedUpButton, driveStick, LOW_SPEED_DRIVE_BUTTON, new GearShiftCommand(false));
+
+            System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
+                                                                                 // OI
+                                                                                 // init
+                                                                                 // DriveTrain
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
-            this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
-            this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
-            this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
-            this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
-
-            this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
-            this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-            this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
-            this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
+            initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());
+            initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
+            initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
+            initializeButton(this.launcherZeroEncoderButton, aimStick, LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER, new ZeroAimerCommand());
+            initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(2000));
+            initializeButton(this.launcherSetSetpointForDashboardButton, aimStick, LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER,
+                    new SetSetPointFromSmartDashboardCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 
@@ -113,22 +131,18 @@ public class OI {
 
         if (ModuleManager.VISION_MODULE_ON) {
             SmartDashboard.putData(VisionState.getInstance());
-            this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
-            this.autoAimButton.whenPressed(new AutoAimControlCommand());
+            initializeButton(this.autoAimButton, aimStick, AUTO_AIM_BUTTON_NUMBER, new AutoAimControlCommand());
             System.out.println("ModuleManager OI: Initialize Vision!");
         }
 
         if (ModuleManager.SCALING_MODULE_ON) {
             SmartDashboard.putData("Scaler Winch", RobotMap.scalingWinch);
             SmartDashboard.putData("Scaler Tape Measure Motor", RobotMap.scalingMotor);
-            this.scalerReachUpButton = new JoystickButton(this.aimStick, SCALER_REACH_UP_BUTTON_NUMBER);
-            this.scalerLiftButton = new JoystickButton(this.aimStick, SCALER_LIFT_BUTTON_NUMBER);
-            this.scalerReachUpButton.whileHeld(new ScalerCommand(State.REACHING_UP));
-            this.scalerLiftButton.whileHeld(new ScalerCommand(State.LIFTING));
-            this.scalerReachDownButton =new JoystickButton(this.aimStick, SCALER_REACH_DOWN_BUTTON_NUMBER);
-            this.scalerReachDownButton.whileHeld(new ScalerCommand(State.REACHING_DOWN));
+            initializeButton(this.scalerReachUpButton, aimStick, SCALER_REACH_UP_BUTTON_NUMBER, new ScalerCommand(State.REACHING_UP));
+            initializeButton(this.scalerLiftButton, aimStick, SCALER_LIFT_BUTTON_NUMBER, new ScalerCommand(State.LIFTING));
+            initializeButton(this.scalerReachDownButton, aimStick, SCALER_REACH_DOWN_BUTTON_NUMBER, new ScalerCommand(State.REACHING_DOWN));
         }
-        
+
         if (ModuleManager.IMU_MODULE_ON) {
             System.out.println("ModuleManager initialized: imu");
         }
@@ -151,6 +165,11 @@ public class OI {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void initializeButton(JoystickButton Button, Joystick Joystick, int buttonNumber, Command Command) {
+        Button = new JoystickButton(Joystick, buttonNumber);
+        Button.whenPressed(Command);
     }
 
     public Joystick getJoystickDrive() {
