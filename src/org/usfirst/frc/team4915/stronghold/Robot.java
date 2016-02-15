@@ -5,6 +5,8 @@ import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055; 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -25,6 +27,8 @@ public class Robot extends IterativeRobot {
     public static IntakeLauncher intakeLauncher;
     public static OI oi;
     public static GearShift gearShift;
+    public static Scaler scaler;
+    public static BNO055 imu;
     Command autonomousCommand;
 
     /**
@@ -38,8 +42,10 @@ public class Robot extends IterativeRobot {
         // 2. conditionally create the modules
         if (ModuleManager.DRIVE_MODULE_ON) {
             driveTrain = new DriveTrain();
-            gearShift= new GearShift();
             System.out.println("ModuleManager initialized: DriveTrain");
+        }
+        if (ModuleManager.GEARSHIFT_MODULE_ON){
+            gearShift= new GearShift();
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLauncher = new IntakeLauncher();
@@ -47,10 +53,22 @@ public class Robot extends IterativeRobot {
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
         if (ModuleManager.GYRO_MODULE_ON) {
-            SmartDashboard.putString("Module Manager", "FIX GYRO INITIALIZATION!");
-            System.out.println("ModuleManager TODO: Initialize Gyro!");  
+            RobotMap.gyro.initGyro();
+            // Sensitivity in VEX Yaw Rate Gyro data sheet: 0.0011
+            RobotMap.gyro.setSensitivity(0.0011); 
+            RobotMap.gyro.calibrate();
+            SmartDashboard.putString("Module Manager", "initialize gyro");
+            System.out.println("ModuleManager initialize gyro: " + RobotMap.gyro.getAngle()); 
+            RobotMap.gyro.reset();
         }
-
+        if (ModuleManager.SCALING_MODULE_ON){
+            scaler = new Scaler();
+        }
+        if (ModuleManager.IMU_MODULE_ON) {
+            imu = new BNO055();
+            SmartDashboard.putString("Module Manager", "imu Initialized");
+            System.out.println("Module Manager initialized: imu");
+        }
         oi = new OI();      // 3. Construct OI after subsystems created
     }
 

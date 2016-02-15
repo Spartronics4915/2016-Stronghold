@@ -6,41 +6,43 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GearShiftCommand extends Command {
-	private boolean on;
-	private boolean fin = false;
-    public GearShiftCommand (boolean on) {
+
+    private boolean highSpeed;
+
+    public GearShiftCommand(boolean highSpeed) {
+        this.highSpeed = highSpeed;
         requires(Robot.gearShift);
     }
+
     @Override
     protected void initialize() {
+        if (highSpeed) {
+            Robot.gearShift.highSpeedMode();
+            SmartDashboard.putString("In high gear", null);
+        } else {
+            Robot.gearShift.lowSpeedMode();
+            SmartDashboard.putString("In low gear", null);
+        }
     }
-    
+
     @Override
     protected void execute() {
-      	if (on = true){
-    		Robot.gearShift.highSpeedMode();
-            SmartDashboard.putString("In high gear", null);
-    		fin = true;
-    	}
-        else {
-             Robot.gearShift.lowSpeedMode();
-             SmartDashboard.putString("In low gear", null );
-             fin = true;
-        }    }
+    
+    }
 
     @Override
     protected boolean isFinished() {
-        return fin;
+        return true;
     }
 
     @Override
     protected void end() {
-        // FIXME: call isFinished() to ensure scheduler properly ends/cleans the command
+        // Nothing to clean up
     }
 
     @Override
     protected void interrupted() {
-        // FIXME: call end() to ensure scheduler properly ends/cleans the command
+        end();
     }
 
 }
