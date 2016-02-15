@@ -3,19 +3,22 @@
 <html>
 
 <script>
-    function update()
+    var newImage = new Image();
+    var imgSrc = "currentImage.jpg";
+    function updateImage()
     {
         var date = new Date();
         dstr = date.toLocaleTimeString();
+        document.getElementById("img").src = imgSrc + "?" + dstr;
         document.getElementById("timestamp").innerHTML = dstr;
-        setTimeout(update, 1000); // 1 tick/sec
+        setTimeout(updateImage, 100); // 10 frames/sec
     }
 </script>
 
 <head>
 </head>
 
-<body bgcolor="#202020" onload="update();">
+<body bgcolor="#202020" onload="updateImage();">
 <div style="margin-left:10px;margin-right:10px;margin-top=10px;color:white">
 <H3>Spartronics4915 Jetson Vision Server</H3>
 <hr>
@@ -24,7 +27,7 @@
 <br><br>
 
 <center>
-<img src="/?action=stream"> <br>
+<img id="img"> <br>
 last update: <span id="timestamp"></span>
 </center>
 

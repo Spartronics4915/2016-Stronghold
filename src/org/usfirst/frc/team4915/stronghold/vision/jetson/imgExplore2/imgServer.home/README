@@ -1,8 +1,3 @@
-This directory is intended to be the home of our imgServer.
-imgServer.py currently it is started as follows:
+This directory is intended to be the home of our streamin vision web server.
+See startvision script for details on how this fits into the big picture.
 
-./imgServer.py >& /var/tmp/imgServer.log
-
-The default page, index.html, displays the image named "currentImage.jpg".
-We assume that this image is updated by imgExplore.py at a "reasonable"
-frequency.

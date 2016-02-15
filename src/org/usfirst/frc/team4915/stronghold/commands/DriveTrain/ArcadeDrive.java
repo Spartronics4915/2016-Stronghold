@@ -36,24 +36,18 @@ public class ArcadeDrive extends Command {
         Robot.driveTrain.trackGyro();
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-        // checks where the joystick is
-        if (VisionState.getInstance().AutoAimEnabled) {
-            int Vis = VisionState.getInstance().TargetX;
-            if (Vis <= -1) {
-                Robot.driveTrain.turn(false);
-            } else {
-                Robot.driveTrain.turn(true);
-            }
-
-        } else if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
-
-            Robot.driveTrain.stop();
-        } else {
-            Robot.driveTrain.arcadeDrive(this.joystickDrive);
-        }
-	SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
-	SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-	SmartDashboard.putNumber("IMU Heading", RobotMap.imu.getHeading());
+        
+        if (!VisionState.getInstance().followTargetX(Robot.driveTrain) ){
+    	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
+               Robot.driveTrain.stop();
+           } 
+    	   else {
+               Robot.driveTrain.arcadeDrive(this.joystickDrive);
+    	   }
+    	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
+    	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
+    	   SmartDashboard.putNumber("IMU Heading", RobotMap.imu.getHeading());
+       }
     }
 
     // Make this return true when this Command no longer needs to run execute()
