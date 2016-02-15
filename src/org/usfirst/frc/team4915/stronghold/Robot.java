@@ -52,9 +52,9 @@ public class Robot extends IterativeRobot {
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLauncher = new IntakeLauncher();
-            intakeLauncher.setSetPoint();
+            intakeLauncher.readSetPoint();
             SmartDashboard.putNumber("Launcher Set Point: ", intakeLauncher.getEncoderPosition());
-            intakeLauncher.setSetPoint();
+            intakeLauncher.readSetPoint();
             SmartDashboard.putString("Module Manager", "IntakeLauncher Initialized");
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
