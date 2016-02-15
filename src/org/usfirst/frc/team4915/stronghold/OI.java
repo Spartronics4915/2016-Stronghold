@@ -9,9 +9,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherPneumaticCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherPneumaticCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SetSetPointFromSmartDashboardCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ZeroAimerCommand;
@@ -43,11 +45,12 @@ public class OI {
     // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
-    public static final int LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER = 3;
-    public static final int LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER = 10;
-    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4;
-    public static final int AUTO_AIM_BUTTON_NUMBER = 11; // currently jumping to
-                                                         // 2000 encoder ticks
+    public static final int LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER = 3; //Test
+    public static final int LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER = 10; //Tests
+    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; //Test
+    public static final int AUTO_AIM_BUTTON_NUMBER = 11;
+    public static final int ACTIVATE_PNEUMATIC_TEST_BUTTON_NUMBER = 6; //Test Button
+    public static final int RETRACT_PNEUMATIC_TEST_BUTTON_NUMBER = 7; //Test Button
 
     // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 11;
@@ -70,6 +73,8 @@ public class OI {
     public JoystickButton launcherSetSetpointForDashboardButton;
     public JoystickButton launcherJumpToPositionButton;
     public JoystickButton autoAimButton;
+    public JoystickButton activatePneumaticTestButton;
+    public JoystickButton retractPneumaticTestButton;
 
     // Create buttons for the scaler on the mechanism stick
     public JoystickButton scalerExtendButton;
@@ -116,8 +121,9 @@ public class OI {
             initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
             initializeButton(this.launcherZeroEncoderButton, aimStick, LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER, new ZeroAimerCommand());
             initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(2000));
-            initializeButton(this.launcherSetSetpointForDashboardButton, aimStick, LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER,
-                    new SetSetPointFromSmartDashboardCommand());
+            initializeButton(this.launcherSetSetpointForDashboardButton, aimStick, LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER, new SetSetPointFromSmartDashboardCommand());
+            initializeButton(this.activatePneumaticTestButton, aimStick, ACTIVATE_PNEUMATIC_TEST_BUTTON_NUMBER, new ActivateLauncherPneumaticCommand());
+            initializeButton(this.retractPneumaticTestButton, aimStick, RETRACT_PNEUMATIC_TEST_BUTTON_NUMBER, new RetractLauncherPneumaticCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 
