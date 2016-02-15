@@ -1,37 +1,29 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class StopWheelsCommand extends Command {
+public class ActivateLauncherPneumaticCommand extends Command {
 
-    // this command stops the intake flywheels
-    public StopWheelsCommand() {
+    public ActivateLauncherPneumaticCommand() {
         requires(Robot.intakeLauncher);
     }
 
-    @Override
     protected void initialize() {
-        Robot.intakeLauncher.setWheelsFinished(true);
+        Robot.intakeLauncher.activatePneumatic();
     }
 
-    @Override
     protected void execute() {
-        SmartDashboard.putString("Flywheels spinning ", "nowhere");
     }
 
-    @Override
     protected boolean isFinished() {
         return true;
     }
 
-    @Override
     protected void end() {
-        
+
     }
 
-    @Override
     protected void interrupted() {
 
     }

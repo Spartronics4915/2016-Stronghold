@@ -14,25 +14,24 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void initialize() {
-
+        Robot.intakeLauncher.setWheelsFinished(false);
     }
 
     @Override
     protected void execute() {
         Robot.intakeLauncher.setSpeedLaunch();
-        SmartDashboard.putString("Intake Flywheels",
-                "Right: " + Double.toString(Robot.intakeLauncher.getIntakeRightMotor().getBusVoltage()) + " Left: "
-                        + Double.toString(Robot.intakeLauncher.getIntakeLeftMotor().getBusVoltage()));
+        SmartDashboard.putString("Flywheels spinning ", "outward");
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        // Ends once the command to retract the pneumatic ends
+        return Robot.intakeLauncher.areWheelsFinished();
     }
 
     @Override
     protected void end() {
-
+        SmartDashboard.putString("Boulder in Basket: ", "No");
     }
 
     @Override
