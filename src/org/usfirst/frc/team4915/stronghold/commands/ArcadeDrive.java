@@ -1,6 +1,10 @@
 
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
@@ -11,7 +15,6 @@ public class ArcadeDrive extends Command {
     public Joystick joystickDrive;
     private double joystickX;
     private double joystickY;
-    private double joystickZ;
 
     public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -29,7 +32,6 @@ public class ArcadeDrive extends Command {
         this.joystickDrive = Robot.oi.getJoystickDrive();
         this.joystickX = this.joystickDrive.getAxis(Joystick.AxisType.kX);
         this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
-        this.joystickZ = this.joystickDrive.getAxis(Joystick.AxisType.kZ);
         Robot.driveTrain.trackGyro();
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
@@ -44,17 +46,12 @@ public class ArcadeDrive extends Command {
 
         } else if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
 
-            if (Math.abs(this.joystickZ) < Math.abs(0.075)) {
-                // all in the middle (x,y,z), stops
-                Robot.driveTrain.stop();
-            }
-            // x and y is in middle but z is twisted
-            else {
-                Robot.driveTrain.twistDrive(this.joystickDrive);
-            }
+            Robot.driveTrain.stop();
         } else {
             Robot.driveTrain.arcadeDrive(this.joystickDrive);
         }
+	SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
+	SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -32,12 +32,12 @@ public class RobotMap {
 
     /* Gyro specific constants - Initialization takes place in RobotMapInit() */
     public final static int GYRO_PORT = 0;
-    public static Gyro gyro;
+    public static AnalogGyro gyro;
 
     public static CANTalon intakeLeftMotor;
     public static CANTalon intakeRightMotor;
     public static CANTalon aimMotor;
-    public static Servo launcherServo;
+    public static Servo launcherServo; 
 
     /*
      * IntakeLauncher specific constants - Initialization takes place in
@@ -53,18 +53,17 @@ public class RobotMap {
 
     private static final int LAUNCHER_SERVO_PORT = 0;
 
-    private static final int SCALING_BOTTOM_SWITCH_PORT = 18; // TODO
-    private static final int SCALING_TOP_SWITCH_PORT = 19; // TODO
+    private static final int SCALING_MOTOR_PORT = 18; // TODO
+    private static final int SCALING_WINCH_PORT = 19; // TODO
     // not actual port values
 
     // private static final double AIM_MOTOR_P = 0; // TODO
     // private static final double AIM_MOTOR_I = 0; // TODO
     // private static final double AIM_MOTOR_D = 0; // TODO
 
-    public static TalonSRX SCALING_MOTOR;
-    public static TalonSRX SCALING_WINCH;
-    public static DigitalInput SCALING_BOTTOM_SWITCH;
-    public static DigitalInput SCALING_TOP_SWITCH;
+    public static CANTalon scalingMotor;
+    public static CANTalon scalingWinch;
+    
 
     /* FIXME: to delete as the switches connect directly to Talon */
     public static DigitalInput boulderSwitch;
@@ -80,7 +79,6 @@ public class RobotMap {
             leftFrontMotor = new CANTalon(driveTrainLeftFrontMotor);
             rightFrontMotor = new CANTalon(driveTrainRightFrontMotor);
             // TODO: Invert motors here if needed: someMotor.setInverted(true)
-            doubleSolenoid = new DoubleSolenoid(SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
             /*
              * TODO: Initialize the Talon drive motors 1. establish follower
              * mode: we have 4 motor controls, but need to give commands to two
@@ -88,15 +86,18 @@ public class RobotMap {
              * set feedbackdevice to quadEncoder 4. optional: if driving jerky,
              * set PID values
              */
-            // THe back motors are the follower motors
-            // follower mode for right side
-            // rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            // rightBackMotor.set(rightFrontMotor.getDeviceID());
-            // follow mode for left side
-            // leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            // leftBackMotor.set(leftFrontMotor.getDeviceID());
+            //THe front motors are the follower motors
+            //follower mode for right side            
+            rightFrontMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            rightFrontMotor.set(rightBackMotor.getDeviceID());
+            //follow mode for left side
+            leftFrontMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+            leftFrontMotor.set(leftBackMotor.getDeviceID());
 
             System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
+        }
+        if (ModuleManager.GEARSHIFT_MODULE_ON){
+            doubleSolenoid = new DoubleSolenoid(SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
@@ -119,15 +120,15 @@ public class RobotMap {
         }
 
         if (ModuleManager.GYRO_MODULE_ON) {
-            System.out.println("ModuleManager RobotMap initalize TODO: TODO Initialize Gyro!"); // gyro
-                                                                                                // instantiation
+            System.out.println("ModuleManager RobotMap initalize. Initialize Gyro!"); 
             gyro = new AnalogGyro(GYRO_PORT);
         }
 
         if (ModuleManager.SCALING_MODULE_ON) {
             System.out.println("ModuleManager RobotMap Initialize: Scaling");
-            SCALING_BOTTOM_SWITCH = new DigitalInput(SCALING_BOTTOM_SWITCH_PORT);
-            SCALING_TOP_SWITCH = new DigitalInput(SCALING_TOP_SWITCH_PORT);
+            scalingMotor = new CANTalon(SCALING_MOTOR_PORT);
+            scalingWinch = new CANTalon(SCALING_WINCH_PORT);
         }
     }
 }
+
