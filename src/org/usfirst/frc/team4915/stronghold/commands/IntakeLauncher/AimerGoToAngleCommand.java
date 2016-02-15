@@ -9,6 +9,7 @@ public class AimerGoToAngleCommand extends Command {
 
     public AimerGoToAngleCommand(int setPoint) {
         this.setPoint = setPoint;
+	SmartDashboard.putNumber("Aimer setPoint", this.setpoint);
     }
 
     protected void initialize() {
