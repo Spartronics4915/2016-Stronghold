@@ -1,4 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,21 +48,21 @@ public class DriveTrain extends Subsystem {
         robotDrive.setSafetyEnabled(true);
         // inverting motors
         robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
-     
+
         robotDrive.setInvertedMotor(MotorType.kRearRight, true);
-        
 
         // checking to see the encoder values
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
+                SmartDashboard.putNumber("Encoder Value for Motor" + i, motors.get(i).getEncPosition());
             }
         }
     }
 
     public double modifyThrottle() {
-        double modifiedThrottle = 0.40 * (1.0 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
+        //255 is the max number on the throttle
+        double modifiedThrottle = 0.40 * (255 - Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
         if (modifiedThrottle != this.joystickThrottle) {
             SmartDashboard.putNumber("Throttle: ", modifiedThrottle);
         }
@@ -80,7 +81,7 @@ public class DriveTrain extends Subsystem {
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
+                SmartDashboard.putNumber("Encoder Value for Motor" + i, motors.get(i).getEncPosition());
             }
         }
     }
@@ -96,7 +97,7 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putData("Gyro", RobotMap.gyro);
         return this.gyroHeading;
     }
-                                                          
+
     public void driveStraight(double speed) {
         trackGyro();
         robotDrive.arcadeDrive(speed, 0);
@@ -105,9 +106,9 @@ public class DriveTrain extends Subsystem {
     public void turn(boolean left) {
         trackGyro();
         if (left) {
-            robotDrive.arcadeDrive(0, .7);
-        } else {
             robotDrive.arcadeDrive(0, -.7);
+        } else {
+            robotDrive.arcadeDrive(0, .7);
         }
     }
 }
