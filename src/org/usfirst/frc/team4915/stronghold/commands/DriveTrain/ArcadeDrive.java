@@ -50,9 +50,11 @@ public class ArcadeDrive extends Command {
     	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
     	   
     	   BNO055.CalData calData = RobotMap.imu.getCalibration();
-    	    
-    	   SmartDashboard.putNumber("IMU Heading",(int)(RobotMap.imu.getHeading() + 0.5));
-    	   SmartDashboard.putNumber("IMU Calibration Status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
+    	   
+    	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
+    	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+    	   SmartDashboard.putNumber("IMU heading", (int)(RobotMap.imu.getHeading() + 0.5));
+    	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
        }
     }
 

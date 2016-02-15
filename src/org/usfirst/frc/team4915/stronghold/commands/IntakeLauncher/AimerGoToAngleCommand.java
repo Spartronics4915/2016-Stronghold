@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 /**
@@ -12,7 +13,7 @@ public class AimerGoToAngleCommand extends Command {
     
     public AimerGoToAngleCommand(int setPoint) {
         this.setPoint = setPoint;
-	SmartDashboard.putNumber("Aimer setPoint", this.setpoint);
+	SmartDashboard.putNumber("Aimer setPoint", this.setPoint);
     }
 
     // Called just before this Command runs the first time
