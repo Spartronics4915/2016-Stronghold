@@ -3,19 +3,21 @@ package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class AimerGoToAngleCommand extends Command {
+/**
+ *
+ */
+public class RetractLauncherPneumaticCommand extends Command {
 
-    private int setPoint;
-
-    public AimerGoToAngleCommand(int setPoint) {
-        this.setPoint = setPoint;
+    public RetractLauncherPneumaticCommand() {
+        requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.setSetPoint(setPoint);
+        Robot.intakeLauncher.retractPneumatic();
     }
 
     protected void execute() {
+    
     }
 
     protected boolean isFinished() {
@@ -23,6 +25,7 @@ public class AimerGoToAngleCommand extends Command {
     }
 
     protected void end() {
+    
     }
 
     protected void interrupted() {

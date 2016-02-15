@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
@@ -65,6 +66,8 @@ public class IntakeLauncher extends Subsystem {
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
+    public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
+    
     // lowers the aimer so the encoder can zero when the robot turns on
     // method commented for now so we can test
 
@@ -92,9 +95,13 @@ public class IntakeLauncher extends Subsystem {
         this.intakeLeftMotor.set(ZERO_SPEED);
         this.intakeRightMotor.set(ZERO_SPEED);
     }
-
-    public void zeroEncoder() {
-        aimMotor.setEncPosition(0);
+    
+    public void activatePneumatic() {
+        this.launcherSolenoid.set(true);
+    }
+    
+    public void retractPneumatic() {
+        this.launcherSolenoid.set(false);
     }
 
     public void initAimer() {
@@ -109,7 +116,7 @@ public class IntakeLauncher extends Subsystem {
         return angleMotorPosition < angle + 5 && angleMotorPosition > angle - 5;
     }
 
-    public void setSetPoint() {
+    public void readSetPoint() {
         setPoint = getEncoderPosition();
     }
 
@@ -118,7 +125,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void offsetSetPoint(int offset) {
-        setSetPoint();
+        readSetPoint();
         setPoint += offset;
     }
 
@@ -132,7 +139,7 @@ public class IntakeLauncher extends Subsystem {
     public void moveToSetPoint() {
         keepSetPointInRange();
         if (isLauncherAtBottom()) {
-            zeroEncoder();
+            setEncoderPosition(0);
         }
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
