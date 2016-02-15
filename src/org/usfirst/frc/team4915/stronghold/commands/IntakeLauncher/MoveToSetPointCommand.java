@@ -2,6 +2,7 @@ package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 /**
  *
@@ -18,8 +19,10 @@ public class MoveToSetPointCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.intakeLauncher.offsetSetPoint();
-        Robot.intakeLauncher.moveToSetPoint();
+    	if(!VisionState.getInstance().followTargetY(Robot.intakeLauncher)) {
+    		Robot.intakeLauncher.offsetSetPoint();
+    		Robot.intakeLauncher.moveToSetPoint();
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

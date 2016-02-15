@@ -37,30 +37,23 @@ public class ArcadeDrive extends Command {
         Robot.driveTrain.trackGyro();
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-        // checks where the joystick is
-        if (VisionState.getInstance().AutoAimEnabled) {
-            int Vis = VisionState.getInstance().TargetX;
-            if (Vis <= -1) {
-                Robot.driveTrain.turn(false);
-            } else {
-                Robot.driveTrain.turn(true);
-            }
 
-        } else if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
-
-            Robot.driveTrain.stop();
-        } else {
-            Robot.driveTrain.arcadeDrive(this.joystickDrive);
-        }
-	SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
-	SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-	
-	
-	BNO055.CalData calData = RobotMap.imu.getCalibration();
-	
-	SmartDashboard.putNumber("IMU Heading",(int)(RobotMap.imu.getHeading() + 0.5));
-	SmartDashboard.putNumber("IMU Calibration Status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
-	
+        
+        if (!VisionState.getInstance().followTargetX(Robot.driveTrain) ){
+    	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
+               Robot.driveTrain.stop();
+           } 
+    	   else {
+               Robot.driveTrain.arcadeDrive(this.joystickDrive);
+    	   }
+    	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
+    	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
+    	   
+    	   BNO055.CalData calData = RobotMap.imu.getCalibration();
+    	    
+    	   SmartDashboard.putNumber("IMU Heading",(int)(RobotMap.imu.getHeading() + 0.5));
+    	   SmartDashboard.putNumber("IMU Calibration Status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
+       }
     }
 
     // Make this return true when this Command no longer needs to run execute()
