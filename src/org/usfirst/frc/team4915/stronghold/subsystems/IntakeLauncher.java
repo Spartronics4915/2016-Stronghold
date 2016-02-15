@@ -19,7 +19,6 @@ public class IntakeLauncher extends Subsystem {
     // indicates a wheel spinning outwards.
     private final double FULL_SPEED_REVERSE = 1.0;
     private final double FULL_SPEED_FORWARD = -1.0;
-    private final double ZERO_SPEED = 0.0;
 
     /*
      * in encoder ticks Step 1: Find number of encoder ticks per cycle:
@@ -53,6 +52,7 @@ public class IntakeLauncher extends Subsystem {
     private final double JOYSTICK_SCALE = (LAUNCHER_MAX_HEIGHT - LAUNCHER_MIN_HEIGHT) / TIME_IN_MS_FOR_FULL_MOTION * 10; //
 
     private int setPoint;
+    private boolean wheelsFinished = false;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -89,13 +89,15 @@ public class IntakeLauncher extends Subsystem {
         this.intakeRightMotor.set(-FULL_SPEED_FORWARD); // Right motor spins in
                                                         // the wrong direction
     }
-
-    // stops the flywheels
-    public void stopWheels() {
-        this.intakeLeftMotor.set(ZERO_SPEED);
-        this.intakeRightMotor.set(ZERO_SPEED);
+    
+    public boolean areWheelsFinished() {
+        return wheelsFinished;
     }
     
+    public void setWheelsFinished(boolean wheelsFinished) {
+        this.wheelsFinished = wheelsFinished;
+    }
+
     public void activatePneumatic() {
         this.launcherSolenoid.set(true);
     }
@@ -158,25 +160,13 @@ public class IntakeLauncher extends Subsystem {
         setSetPoint((int) SmartDashboard.getNumber("Launcher Set Point: "));
         moveToSetPoint();
     }
-
+    
     public boolean isLauncherAtBottom() {
         return aimMotor.isRevLimitSwitchClosed();
     }
 
-    public CANTalon getIntakeLeftMotor() {
-        return intakeLeftMotor;
-    }
-
-    public CANTalon getIntakeRightMotor() {
-        return intakeRightMotor;
-    }
-
-    public CANTalon getLauncherAimMotor() {
-        return aimMotor;
-    }
-
-    public DigitalInput getBoulderSwitch() {
-        return boulderSwitch;
+    public int degreesToTicks(int degrees) {
+        return (int)(degrees * TICKS_PER_DEGREE);
     }
 
     public int getEncoderPosition() {

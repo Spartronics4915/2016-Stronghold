@@ -13,14 +13,12 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.stopWheels();
+        Robot.intakeLauncher.setWheelsFinished(true);
     }
 
     @Override
     protected void execute() {
-        SmartDashboard.putString("Intake Flywheels",
-                "Right: " + Double.toString(Robot.intakeLauncher.getIntakeRightMotor().getBusVoltage()) + " Left: "
-                        + Double.toString(Robot.intakeLauncher.getIntakeLeftMotor().getBusVoltage()));
+        SmartDashboard.putString("Flywheels spinning ", "nowhere");
     }
 
     @Override
@@ -30,7 +28,7 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void end() {
-        isFinished();
+        
     }
 
     @Override

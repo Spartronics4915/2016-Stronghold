@@ -39,6 +39,11 @@ public class RobotMap {
     private static final int SCALING_MOTOR_ID = 18; // TODO
     private static final int SCALING_WINCH_ID = 19; // TODO
 
+    private static final int AIMER_P = 0;
+    private static final int AIMER_I = 0;
+    private static final int AIMER_D = 0;
+    
+    
     // Create motor controllers for the driveTrain
     public static CANTalon leftBackMotor;
     public static CANTalon rightBackMotor;
@@ -112,6 +117,7 @@ public class RobotMap {
                 aimMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
                 aimMotor.enableLimitSwitch(true, true);
                 aimMotor.enableBrakeMode(true);
+                aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D);
             }
             LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
         }
