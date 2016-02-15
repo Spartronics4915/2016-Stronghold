@@ -42,6 +42,9 @@ public class Robot extends IterativeRobot {
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLauncher = new IntakeLauncher();
+            intakeLauncher.setSetPoint();
+            SmartDashboard.putNumber("Launcher Set Point: ", intakeLauncher.getEncoderPosition());
+            intakeLauncher.setSetPoint();
             SmartDashboard.putString("Module Manager", "IntakeLauncher Initialized");
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
@@ -102,6 +105,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+           SmartDashboard.putNumber("aimMotor Encoder position = ", RobotMap.aimMotor.getEncPosition());
     }
 
     /**

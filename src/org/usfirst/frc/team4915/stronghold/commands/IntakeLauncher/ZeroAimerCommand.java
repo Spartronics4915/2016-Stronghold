@@ -13,21 +13,19 @@ public class ZeroAimerCommand extends Command {
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.initAimer();
+        System.out.println("Zero Aimer Command");
     }
 
     protected void execute() {
-        if (Robot.intakeLauncher.aimMotor.isFwdLimitSwitchClosed()) {
-            Robot.intakeLauncher.zeroEncoder();
-        }
+        Robot.intakeLauncher.initAimer();
     }
 
     protected boolean isFinished() {
-        return Robot.intakeLauncher.aimMotor.isFwdLimitSwitchClosed();
+        return Robot.intakeLauncher.aimMotor.isRevLimitSwitchClosed();
     }
 
     protected void end() {
-        isFinished();
+        Robot.intakeLauncher.aimMotor.setEncPosition(0);
     }
 
     protected void interrupted() {

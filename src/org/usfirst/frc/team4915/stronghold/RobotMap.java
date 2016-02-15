@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class RobotMap {
 
@@ -114,6 +115,7 @@ public class RobotMap {
                 aimMotor.enableLimitSwitch(true, true);
                 aimMotor.enableBrakeMode(true);
             }
+            LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
         }
 
         if (ModuleManager.GYRO_MODULE_ON) {

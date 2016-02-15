@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherServoCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Launcher45DegreesCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServoCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ZeroAimerCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
@@ -41,13 +41,15 @@ public class OI {
     // buttons are now correct until we decide to change them
     public static final int LAUNCHER_STICK_PORT = 1;
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
-    public static final int INTAKE_BALL_BUTTON_NUMBER = 2;
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 11;
     public static final int AUTO_AIM_BUTTON_NUMBER = 11;
     public static final int LAUNCHER_UP_BUTTON_NUMBER = 7;
     public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6;
-    public static final int LAUNCHER_SERVO_ACTIVATE_TEST_BUTTON_NUMBER = 5; //TODO
+    public static final int LAUNCHER_SERVO_ACTIVATE_TEST_BUTTON_NUMBER = 4; //TODO
     public static final int LAUNCHER_SERVO_RETRACT_TEST_BUTTON_NUMBER = 5; //TODO
     public static final int LAUNCHER_45_DEGREES_BUTTON_NUMBER = 8;
+    public static final int LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER = 3;
+    public static final int SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER = 10;
 
     // FIXME: Scaling button values
     public static final int SCALER_EXTEND_BUTTON_NUMBER = 9;
@@ -71,8 +73,11 @@ public class OI {
     public JoystickButton launcher45DegreesButton;
     public JoystickButton launcherServoActivateTestButton;
     public JoystickButton launcherServoRetractTestButton;
+    public JoystickButton launcherZeroEncoderButton;
+    public JoystickButton launcherSetSetpointForDashboardButton;
     public JoystickButton scalerExtendButton;
     public JoystickButton scalerRetractButton;
+   
 
     public OI() {
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
@@ -82,6 +87,7 @@ public class OI {
         if (ModuleManager.DRIVE_MODULE_ON) {
             this.speedUpButton = new JoystickButton(driveStick, HIGH_SPEED_DRIVE_BUTTON);
             this.slowDownButton = new JoystickButton(driveStick, LOW_SPEED_DRIVE_BUTTON);
+            this.grabBallButton = new JoystickButton(this.driveStick, INTAKE_BALL_BUTTON_NUMBER);
 
             this.speedUpButton.whenPressed(new GearShiftCommand(true));
             this.slowDownButton.whenPressed(new GearShiftCommand(false));
@@ -93,24 +99,24 @@ public class OI {
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            this.grabBallButton = new JoystickButton(this.aimStick, INTAKE_BALL_BUTTON_NUMBER);
             this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
             this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
             this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
             this.launcherServoActivateTestButton = new JoystickButton(this.aimStick, LAUNCHER_SERVO_ACTIVATE_TEST_BUTTON_NUMBER);
             this.launcherServoRetractTestButton = new JoystickButton(this.aimStick, LAUNCHER_SERVO_RETRACT_TEST_BUTTON_NUMBER);
             this.launcher45DegreesButton = new JoystickButton(this.aimStick, LAUNCHER_45_DEGREES_BUTTON_NUMBER);
+            this.launcherZeroEncoderButton = new JoystickButton(this.aimStick, LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER);
+            this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
+            this.launcherSetSetpointForDashboardButton = new JoystickButton(this.aimStick, SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER);
 
-            this.grabBallButton.whenPressed(new IncrementLauncherHeightCommand(0)); //Not right, good for testing
-            this.launchBallButton.whenPressed(new LaunchBallCommandGroup());
-            this.launcherUpButton.whenPressed(new IncrementLauncherHeightCommand(UP_DIRECTION));
-            this.launcherDownButton.whenPressed(new IncrementLauncherHeightCommand(DOWN_DIRECTION));
+            //this.grabBallButton.whenPressed(new IncrementLauncherHeightCommand(0)); //Not right, good for testing
+            this.launchBallButton.whenPressed(new LaunchBallCommandGroup()); //TODO uncomment
             this.launcherServoActivateTestButton.whenPressed(new ActivateLauncherServoCommand());
             this.launcherServoRetractTestButton.whenPressed(new RetractLauncherServoCommand());
-            this.launcher45DegreesButton.whenPressed(new Launcher45DegreesCommand());
-            SmartDashboard.putData(new ActivateLauncherServoCommand());
-            SmartDashboard.putData(new IncrementLauncherHeightCommand(1));
-            SmartDashboard.putData(new IncrementLauncherHeightCommand(-1));
+            this.launcherZeroEncoderButton.whenPressed(new ZeroAimerCommand());
+            this.autoAimButton.whenPressed(new AimerGoToAngleCommand(2000)); //testing
+            //SmartDashboard.putData("Setpoint = 2000", new AimerGoToAngleCommand(2000));
+   
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 
