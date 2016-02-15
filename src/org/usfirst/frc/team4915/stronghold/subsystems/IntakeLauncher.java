@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeLauncher extends Subsystem {
 
@@ -84,18 +83,11 @@ public class IntakeLauncher extends Subsystem {
 
     // moves the launcher, joystick angle determines speed
     public void moveLauncher() {
-        if (!VisionState.getInstance().AutoAimEnabled) {
-            aimMotor.changeControlMode(TalonControlMode.Speed);
+        if (!VisionState.getInstance().followTargetY(aimMotor, LAUNCHER_MIN_HEIGHT, LAUNCHER_MAX_HEIGHT)) {
+        	aimMotor.changeControlMode(TalonControlMode.Speed);
             aimMotor.set(aimStick.getAxis(Joystick.AxisType.kY) * JOYSTICK_SCALE);
             if ((aimMotor.getSpeed() > 0 && launcherTopSwitch.get()) || (aimMotor.getSpeed() < 0 && launcherBottomSwitch.get())) {
                 aimMotor.set(ZERO_SPEED);
-            }
-        } else {
-            if (VisionState.getInstance().TargetY > LAUNCHER_MIN_HEIGHT || VisionState.getInstance().TargetY < LAUNCHER_MAX_HEIGHT) {
-                SmartDashboard.putBoolean("Auto-aim target out of range", true);
-            } else {
-                aimMotor.changeControlMode(TalonControlMode.Position);
-                aimMotor.set(VisionState.getInstance().TargetY);
             }
         }
     }

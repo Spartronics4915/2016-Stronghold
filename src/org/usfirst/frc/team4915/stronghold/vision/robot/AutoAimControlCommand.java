@@ -7,7 +7,7 @@ public class AutoAimControlCommand extends Command{
 	@Override
 	protected void initialize() {
 		VisionState vs = VisionState.getInstance();
-		vs.AutoAimEnabled = !vs.AutoAimEnabled;
+		vs.toggleAutoAim();
 	}
 
 	@Override
@@ -17,7 +17,6 @@ public class AutoAimControlCommand extends Command{
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

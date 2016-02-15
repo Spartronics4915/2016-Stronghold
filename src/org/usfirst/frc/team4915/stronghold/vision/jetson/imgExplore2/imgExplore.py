@@ -501,11 +501,18 @@ class App:
                     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 elif 0:
                     frame = self.hvRange(frame)
-                else:
+                elif 0:
                     hvals = self.getCmodeValues('h')
                     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
                     frame,s,v = cv2.split(hsv)
                     frame = cv2.inRange(frame, hvals[0], hvals[1])
+                else:
+                	gamma = 1 + 10*values[0]/100.0
+                	self.putNotice('gamma: %f' % gamma)
+            		for i in range(0, 256):
+            			self.LUT[i] = 255 * ((i/255.0) ** gamma)
+            		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            		frame = cv2.LUT(gray, self.LUT)
 
                 keypoints = detector.detect(frame) # we'll draw them
                 keypoints = self.robotCnx.NewKeypoints(keypoints)
