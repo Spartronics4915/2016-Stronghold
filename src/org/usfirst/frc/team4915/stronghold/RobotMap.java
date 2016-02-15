@@ -115,7 +115,7 @@ public class RobotMap {
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
             launcherSolenoid = new Solenoid(LAUNCHER_SOLENOID_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
-
+            
             // setup the motor
             if (aimMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != null) {
                 aimMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
