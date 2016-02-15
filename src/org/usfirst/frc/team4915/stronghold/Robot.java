@@ -28,7 +28,7 @@ public class Robot extends IterativeRobot {
     public static OI oi;
     public static GearShift gearShift;
     public static Scaler scaler;
-    public static BNO055 imu;
+    
     Command autonomousCommand;
 
     /**
@@ -63,9 +63,10 @@ public class Robot extends IterativeRobot {
             scaler = new Scaler();
         }
         if (ModuleManager.IMU_MODULE_ON) {
-            imu = new BNO055();
+            
             SmartDashboard.putString("Module Manager", "imu Initialized");
             System.out.println("Module Manager initialized: imu");
+            
         }
         oi = new OI();      // 3. Construct OI after subsystems created
     }

@@ -3,6 +3,7 @@ package org.usfirst.frc.team4915.stronghold;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
@@ -30,6 +31,9 @@ public class RobotMap {
     /* Gyro specific constants - Initialization takes place in RobotMapInit() */
     public final static int GYRO_PORT = 0;
     public static AnalogGyro gyro;
+    
+    //IMU variable
+    public static BNO055 imu;
 
     public static CANTalon intakeLeftMotor;
     public static CANTalon intakeRightMotor;
@@ -123,6 +127,10 @@ public class RobotMap {
             System.out.println("ModuleManager RobotMap Initialize: Scaling");
             scalingMotor = new CANTalon(SCALING_MOTOR_PORT);
             scalingWinch = new CANTalon(SCALING_WINCH_PORT);
+        }
+        if (ModuleManager.IMU_MODULE_ON) {
+            System.out.println("ModuleManager RobotMap Initialize: IMU");
+            imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_EULER);
         }
     }
     }
