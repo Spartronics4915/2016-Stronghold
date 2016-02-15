@@ -4,10 +4,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class LaunchBallCommandGroup extends CommandGroup {
 
-    public final int WAIT_DURATION = 500;
-
     public LaunchBallCommandGroup() {
-        addSequential(new SpinLaunchWheelsOutCommand());
+        addParallel(new SpinLaunchWheelsOutCommand());
         addSequential(new ActivateLauncherPneumaticCommand());
         addSequential(new RetractLauncherPneumaticCommand());
         addSequential(new StopWheelsCommand());

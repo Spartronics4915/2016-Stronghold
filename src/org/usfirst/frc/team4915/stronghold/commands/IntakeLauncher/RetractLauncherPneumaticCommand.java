@@ -17,7 +17,7 @@ public class RetractLauncherPneumaticCommand extends Command {
     }
 
     protected void execute() {
-    
+
     }
 
     protected boolean isFinished() {
@@ -25,7 +25,7 @@ public class RetractLauncherPneumaticCommand extends Command {
     }
 
     protected void end() {
-        Robot.intakeLauncher.setWheelsFinished(true);
+        
     }
 
     protected void interrupted() {

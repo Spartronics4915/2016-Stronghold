@@ -67,7 +67,7 @@ public class IntakeLauncher extends Subsystem {
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
     public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
-    
+
     // lowers the aimer so the encoder can zero when the robot turns on
     // method commented for now so we can test
 
@@ -89,11 +89,11 @@ public class IntakeLauncher extends Subsystem {
         this.intakeRightMotor.set(-FULL_SPEED_FORWARD); // Right motor spins in
                                                         // the wrong direction
     }
-    
+
     public boolean areWheelsFinished() {
         return wheelsFinished;
     }
-    
+
     public void setWheelsFinished(boolean wheelsFinished) {
         this.wheelsFinished = wheelsFinished;
     }
@@ -101,7 +101,7 @@ public class IntakeLauncher extends Subsystem {
     public void activatePneumatic() {
         this.launcherSolenoid.set(true);
     }
-    
+
     public void retractPneumatic() {
         this.launcherSolenoid.set(false);
     }
@@ -137,7 +137,7 @@ public class IntakeLauncher extends Subsystem {
             offsetSetPoint((int) (joystickY * 1000));
         }
     }
-    
+
     public void moveToSetPoint() {
         keepSetPointInRange();
         if (isLauncherAtBottom()) {
@@ -146,7 +146,7 @@ public class IntakeLauncher extends Subsystem {
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
     }
-    
+
     public void keepSetPointInRange() {
         if (setPoint > LAUNCHER_MAX_HEIGHT) {
             setPoint = LAUNCHER_MAX_HEIGHT;
@@ -155,20 +155,20 @@ public class IntakeLauncher extends Subsystem {
             setPoint = LAUNCHER_MIN_HEIGHT;
         }
     }
-    
+
     public void aimWithDashboard() {
         setSetPoint((int) SmartDashboard.getNumber("Launcher Set Point: "));
         moveToSetPoint();
     }
-    
+
     public boolean isLauncherAtBottom() {
         return aimMotor.isRevLimitSwitchClosed();
     }
 
     public int degreesToTicks(int degrees) {
-        return (int)(degrees * TICKS_PER_DEGREE);
+        return (int) (degrees * TICKS_PER_DEGREE);
     }
-    
+
     public void setPointInDegrees(int TargetY) {
         TargetY = degreesToTicks(TargetY);
         setSetPoint(TargetY);

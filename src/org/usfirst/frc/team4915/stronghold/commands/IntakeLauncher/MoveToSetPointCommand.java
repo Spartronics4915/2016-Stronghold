@@ -19,10 +19,10 @@ public class MoveToSetPointCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(!VisionState.getInstance().followTargetY(Robot.intakeLauncher)) {
-    		Robot.intakeLauncher.offsetSetPoint();
-    		Robot.intakeLauncher.moveToSetPoint();
-    	}
+        if (!VisionState.getInstance().followTargetY(Robot.intakeLauncher)) {
+            Robot.intakeLauncher.offsetSetPoint();
+            Robot.intakeLauncher.moveToSetPoint();
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,7 +31,7 @@ public class MoveToSetPointCommand extends Command {
     }
 
     // Called once after isFinished returns true
-    protected void end() {        
+    protected void end() {
         System.out.println("Interrupted");
     }
 

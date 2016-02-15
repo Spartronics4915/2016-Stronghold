@@ -1,4 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,15 +48,14 @@ public class DriveTrain extends Subsystem {
         robotDrive.setSafetyEnabled(true);
         // inverting motors
         robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
-     
+
         robotDrive.setInvertedMotor(MotorType.kRearRight, true);
-        
 
         // checking to see the encoder values
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
+                SmartDashboard.putNumber("Encoder Value for Motor" + i, motors.get(i).getEncPosition());
             }
         }
     }
@@ -80,7 +80,7 @@ public class DriveTrain extends Subsystem {
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
+                SmartDashboard.putNumber("Encoder Value for Motor" + i, motors.get(i).getEncPosition());
             }
         }
     }
@@ -96,7 +96,7 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putData("Gyro", RobotMap.gyro);
         return this.gyroHeading;
     }
-                                                          
+
     public void driveStraight(double speed) {
         trackGyro();
         robotDrive.arcadeDrive(speed, 0);

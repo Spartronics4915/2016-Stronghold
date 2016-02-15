@@ -19,13 +19,13 @@ public class IntakeBallCommand extends Command {
     @Override
     protected void execute() {
         Robot.intakeLauncher.setSpeedIntake();
-        SmartDashboard.putString("Flywheels spinning ", "inward"); 
+        SmartDashboard.putString("Flywheels spinning ", "inward");
     }
 
     @Override
     protected boolean isFinished() {
         // ends once the ball is in the basket and presses the limit switch
-        return(Robot.intakeLauncher.boulderSwitch.get() || Robot.intakeLauncher.areWheelsFinished());
+        return (Robot.intakeLauncher.boulderSwitch.get() || Robot.intakeLauncher.areWheelsFinished());
     }
 
     @Override

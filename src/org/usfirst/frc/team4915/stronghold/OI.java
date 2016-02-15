@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4915.stronghold;
 
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,7 +25,6 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-
 /**
  * This class handles the "operator interface", or the interactions between the
  * driver station and the robot code.
@@ -45,12 +43,14 @@ public class OI {
     // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
-    public static final int LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER = 3; //Test
-    public static final int LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER = 10; //Tests
-    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; //Test
+    public static final int LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER = 3; // Test
+    public static final int LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER = 10; // Tests
+    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; // Test
     public static final int AUTO_AIM_BUTTON_NUMBER = 11;
-    public static final int ACTIVATE_PNEUMATIC_TEST_BUTTON_NUMBER = 6; //Test Button
-    public static final int RETRACT_PNEUMATIC_TEST_BUTTON_NUMBER = 7; //Test Button
+    public static final int ACTIVATE_PNEUMATIC_TEST_BUTTON_NUMBER = 6; // Test
+                                                                       // Button
+    public static final int RETRACT_PNEUMATIC_TEST_BUTTON_NUMBER = 7; // Test
+                                                                      // Button
 
     // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 11;
@@ -85,15 +85,12 @@ public class OI {
 
     public SendableChooser autonomousProgramChooser;
 
-
     public OI() {
         autonomousProgramChooser = new SendableChooser();
         SmartDashboard.putData("Autonomous Program", autonomousProgramChooser);
         autonomousProgramChooser.addDefault("Autonomous Turn", new AutoRotateDegrees(false, 90));
         autonomousProgramChooser.addObject("Autonomous Just Drive", new MoveStraightPositionModeCommand(30));
 
-
-        
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
 
@@ -121,8 +118,10 @@ public class OI {
             initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
             initializeButton(this.launcherZeroEncoderButton, aimStick, LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER, new ZeroAimerCommand());
             initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(2000));
-            initializeButton(this.launcherSetSetpointForDashboardButton, aimStick, LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER, new SetSetPointFromSmartDashboardCommand());
-            initializeButton(this.activatePneumaticTestButton, aimStick, ACTIVATE_PNEUMATIC_TEST_BUTTON_NUMBER, new ActivateLauncherPneumaticCommand());
+            initializeButton(this.launcherSetSetpointForDashboardButton, aimStick, LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER,
+                    new SetSetPointFromSmartDashboardCommand());
+            initializeButton(this.activatePneumaticTestButton, aimStick, ACTIVATE_PNEUMATIC_TEST_BUTTON_NUMBER,
+                    new ActivateLauncherPneumaticCommand());
             initializeButton(this.retractPneumaticTestButton, aimStick, RETRACT_PNEUMATIC_TEST_BUTTON_NUMBER, new RetractLauncherPneumaticCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
