@@ -1,6 +1,7 @@
-package org.usfirst.frc.team4915.stronghold.vision.robot;
+package org.usfirst.frc.team4915.stronghold.commands.vision;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class AutoAimControlCommand extends Command{
 

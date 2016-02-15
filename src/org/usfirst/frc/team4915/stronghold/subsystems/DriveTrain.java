@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
