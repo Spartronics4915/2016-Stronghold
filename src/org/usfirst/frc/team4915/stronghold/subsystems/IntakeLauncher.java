@@ -168,6 +168,11 @@ public class IntakeLauncher extends Subsystem {
     public int degreesToTicks(int degrees) {
         return (int)(degrees * TICKS_PER_DEGREE);
     }
+    
+    public void setPointInDegrees(int TargetY) {
+        TargetY = degreesToTicks(TargetY);
+        setSetPoint(TargetY);
+    }
 
     public int getEncoderPosition() {
         return aimMotor.getEncPosition();

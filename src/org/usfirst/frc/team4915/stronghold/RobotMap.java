@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
@@ -55,6 +56,9 @@ public class RobotMap {
 
     // Create the gyro
     public static AnalogGyro gyro;
+    
+    //IMU variable
+    public static BNO055 imu;
 
     // Create the motor controllers for the IntakeLauncher
     public static CANTalon intakeLeftMotor;
@@ -131,6 +135,10 @@ public class RobotMap {
             System.out.println("ModuleManager RobotMap Initialize: Scaling");
             scalingMotor = new CANTalon(SCALING_MOTOR_ID);
             scalingWinch = new CANTalon(SCALING_WINCH_ID);
+        }
+        if (ModuleManager.IMU_MODULE_ON) {
+            System.out.println("ModuleManager RobotMap Initialize: IMU");
+            imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_EULER);
         }
     }
 }

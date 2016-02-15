@@ -1,6 +1,14 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.NamedSendable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 
@@ -94,5 +102,32 @@ public class VisionState implements NamedSendable {
         this.TargetResponse = m_table.getNumber("TargetResponse", 0.);
         this.TargetClass = (int) m_table.getNumber("TargetClass", 0);
 
+    }
+    
+    public void toggleAutoAim() {
+    	this.AutoAimEnabled = !this.AutoAimEnabled;
+    }
+    
+    public boolean followTargetX(DriveTrain driveTrain) {
+    	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
+    		if (this.TargetX <= -1){
+    			driveTrain.turn(false);
+    		}
+    		else {
+    			driveTrain.turn(true);
+    		}
+    		return true;
+    	}
+    	return false;
+    }
+    
+    public boolean followTargetY(IntakeLauncher intakeLauncher) {
+    	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
+    		intakeLauncher.setPointInDegrees(TargetY);
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
     }
 }
