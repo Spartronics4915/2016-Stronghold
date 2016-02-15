@@ -1,9 +1,10 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.Scaler;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 public class ScalerCommand extends Command {
 
@@ -26,10 +27,13 @@ public class ScalerCommand extends Command {
                 RobotMap.scalingMotor.set(0);
                 RobotMap.scalingWinch.set(WINCH_SPEED);
                 break;
-            case REACHING:
+            case REACHING_UP:
                 RobotMap.scalingWinch.set(0);
                 RobotMap.scalingMotor.set(MOTOR_SPEED);
                 break;
+            case REACHING_DOWN:
+                RobotMap.scalingWinch.set(0);
+                RobotMap.scalingMotor.set(-MOTOR_SPEED);
             default:
                 System.out.println("Invalid scaler state " + target);
         }
@@ -43,7 +47,7 @@ public class ScalerCommand extends Command {
     @Override
     protected void end() {
         RobotMap.scalingWinch.set(0);
-        RobotMap.scalingWinch.set(0);
+        RobotMap.scalingMotor.set(0);
     }
 
     @Override

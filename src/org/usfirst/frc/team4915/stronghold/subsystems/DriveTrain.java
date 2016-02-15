@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
@@ -41,21 +41,21 @@ public class DriveTrain extends Subsystem {
 
         /*
          * FIXME: robotDrive static field access instead of:
-         * this.robotDrive.setSafetyEnabled(true); do (remove this):
+         * robotDrive.setSafetyEnabled(true); do (remove this):
          * robotDrive.setSafetyEnabled(true)
          */
-        this.robotDrive.setSafetyEnabled(true);
+        robotDrive.setSafetyEnabled(true);
         // inverting motors
-        this.robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
+        robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
      
-        this.robotDrive.setInvertedMotor(MotorType.kRearRight, true);
+        robotDrive.setInvertedMotor(MotorType.kRearRight, true);
         
 
         // checking to see the encoder values
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                System.out.println("The encoder value of motor " + i + " is " + motors.get(i).getEncPosition());
+                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
             }
         }
     }
@@ -70,62 +70,44 @@ public class DriveTrain extends Subsystem {
     }
 
     private void setMaxOutput(double topSpeed) {
-        this.robotDrive.setMaxOutput(topSpeed);
+        robotDrive.setMaxOutput(topSpeed);
     }
 
     public void arcadeDrive(Joystick stick) {
         Robot.driveTrain.trackGyro();
-        this.robotDrive.arcadeDrive(stick);
+        robotDrive.arcadeDrive(stick);
         // checking to see the encoder values
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                System.out.println("The encoder value of motor " + i + " is " + motors.get(i).getEncPosition());
+                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
             }
         }
     }
 
-    public void twistDrive(Joystick stick) {
-        Robot.driveTrain.trackGyro();
-        /*
-         * FIXME: should use rotate values rather than twist values 1 to -1 --
-         * check the motor mapping correctness
-         */
-        this.robotDrive.arcadeDrive(stick, Joystick.AxisType.kY.value, stick, Joystick.AxisType.kZ.value);
-    }
-
     public void stop() {
-        this.robotDrive.arcadeDrive(0, 0);
-    }
-
-    public void calibrateGyro() {
-        gyro.reset();
+        robotDrive.arcadeDrive(0, 0);
     }
 
     // Methods for Gyro
     public double trackGyro() {
-        System.out.println("Starting angle: " + this.startingAngle);
-        System.out.println("Gyro: " + gyro);
         this.gyroHeading = -(gyro.getAngle()) + this.startingAngle;
-        System.out.println("Gyro Angle: " + gyro.getAngle());
-        System.out.println("Gyro heading:" + this.gyroHeading);
+        SmartDashboard.putNumber("Gyro heading", this.gyroHeading);
+        SmartDashboard.putData("Gyro", RobotMap.gyro);
         return this.gyroHeading;
     }
                                                           
     public void driveStraight(double speed) {
         trackGyro();
-        this.robotDrive.arcadeDrive(speed, 0);
+        robotDrive.arcadeDrive(speed, 0);
     }
 
     public void turn(boolean left) {
         trackGyro();
-        System.out.println("Public void turn boolean left: Check");
         if (left) {
-            System.out.println("Turnleft");
-            robotDrive.tankDrive(-.6, .6);
+            robotDrive.arcadeDrive(0, .7);
         } else {
-            System.out.println("Turnright");
-            robotDrive.tankDrive(.6, -.6);
+            robotDrive.arcadeDrive(0, -.7);
         }
     }
 }

@@ -1,13 +1,14 @@
-package org.usfirst.frc.team4915.stronghold.vision.robot;
+package org.usfirst.frc.team4915.stronghold.commands.vision;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class AutoAimControlCommand extends Command{
 
 	@Override
 	protected void initialize() {
 		VisionState vs = VisionState.getInstance();
-		vs.AutoAimEnabled = !vs.AutoAimEnabled;
+		vs.toggleAutoAim();
 	}
 
 	@Override
@@ -17,7 +18,6 @@ public class AutoAimControlCommand extends Command{
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -29,6 +29,5 @@ public class AutoAimControlCommand extends Command{
 	@Override
 	protected void interrupted() {
 		// TODO Auto-generated method stub
-	}
-	
+	}	
 }

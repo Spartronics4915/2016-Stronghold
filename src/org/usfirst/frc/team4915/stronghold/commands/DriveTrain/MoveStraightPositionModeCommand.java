@@ -1,8 +1,9 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 
@@ -53,7 +54,7 @@ public class MoveStraightPositionModeCommand extends Command {
             // All the motors are inverted/backwards. The ticks are moving down
             // when moving forward
             this.desiredTicksValue.add(ticksToMove);
-
+	    SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
         }
     }
 
@@ -65,11 +66,13 @@ public class MoveStraightPositionModeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        System.out.println("Executing move straight");
         if (this.inputDistanceInches < 0) {
             this.driveTrain.driveStraight(this.driveStraightValue);
         } else {
             this.driveTrain.driveStraight(-this.driveStraightValue);
         }
+	SmartDashboard.putNumber("Drive Straight: Input distance", this.inputDistanceInches);
     }
 
     // Make this return true when this Command no longer needs to run execute()
