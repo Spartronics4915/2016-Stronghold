@@ -2,8 +2,9 @@ package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -13,6 +14,8 @@ public class AutoRotateDegrees extends Command {
     RobotDrive robotDrive = DriveTrain.robotDrive;
     private boolean goLeft;
     double robotAngle;
+    //creates new IMU variable
+    BNO055 imu = RobotMap.imu;
 
     // autonomous rotate command
     public AutoRotateDegrees(boolean left, double robotAngle) {
@@ -26,7 +29,7 @@ public class AutoRotateDegrees extends Command {
     @Override
     protected void initialize() {
         robotDrive.setMaxOutput(1.0);
-        startingGyroValue = Robot.driveTrain.trackGyro();
+        startingGyroValue = imu.getHeading();
     }
 
     @Override
@@ -37,8 +40,8 @@ public class AutoRotateDegrees extends Command {
 
     @Override
     protected boolean isFinished() {
-        double gyroDelta = Math.abs(Robot.driveTrain.trackGyro() - startingGyroValue);
-        System.out.println("Current Gyro:" + Robot.driveTrain.trackGyro() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
+        double gyroDelta = Math.abs(imu.getHeading() - startingGyroValue);
+        System.out.println("Current IMU heading:" + imu.getHeading() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
         return gyroDelta >= robotAngle;
     }
 

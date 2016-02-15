@@ -89,8 +89,8 @@ public class OI {
     public OI() {
         autonomousProgramChooser = new SendableChooser();
         SmartDashboard.putData("Autonomous Program", autonomousProgramChooser);
-        autonomousProgramChooser.addObject("Autonomous Turn", new AutoRotateDegrees(false, 90));
-        autonomousProgramChooser.addDefault("Autonomous Just Drive", new MoveStraightPositionModeCommand(30));
+        autonomousProgramChooser.addDefault("Autonomous Turn", new AutoRotateDegrees(false, 90));
+        autonomousProgramChooser.addObject("Autonomous Just Drive", new MoveStraightPositionModeCommand(30));
 
 
         
