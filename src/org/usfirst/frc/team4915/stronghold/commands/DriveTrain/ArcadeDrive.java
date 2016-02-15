@@ -4,6 +4,7 @@ package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -36,6 +37,7 @@ public class ArcadeDrive extends Command {
         Robot.driveTrain.trackGyro();
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
+
         
         if (!VisionState.getInstance().followTargetX(Robot.driveTrain) ){
     	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
@@ -46,7 +48,14 @@ public class ArcadeDrive extends Command {
     	   }
     	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
     	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-    	   SmartDashboard.putNumber("IMU Heading", RobotMap.imu.getHeading());
+    	   
+    	   BNO055.CalData calData = RobotMap.imu.getCalibration();
+    	   int num = (int)(.5 + RobotMap.imu.getHeading());
+    	   
+    	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
+    	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+    	   SmartDashboard.putNumber("IMU heading", num);
+    	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
        }
     }
 
