@@ -10,6 +10,7 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngl
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServoCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SetSetPointFromSmartDashboardCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ZeroAimerCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
@@ -42,12 +43,9 @@ public class OI {
     public static final int LAUNCHER_STICK_PORT = 1;
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 11;
-    public static final int AUTO_AIM_BUTTON_NUMBER = 11;
-    public static final int LAUNCHER_UP_BUTTON_NUMBER = 7;
-    public static final int LAUNCHER_DOWN_BUTTON_NUMBER = 6;
+    public static final int AUTO_AIM_BUTTON_NUMBER = 11; //currently jumping to 2000
     public static final int LAUNCHER_SERVO_ACTIVATE_TEST_BUTTON_NUMBER = 4; //TODO
     public static final int LAUNCHER_SERVO_RETRACT_TEST_BUTTON_NUMBER = 5; //TODO
-    public static final int LAUNCHER_45_DEGREES_BUTTON_NUMBER = 8;
     public static final int LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER = 3;
     public static final int SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER = 10;
 
@@ -87,10 +85,11 @@ public class OI {
         if (ModuleManager.DRIVE_MODULE_ON) {
             this.speedUpButton = new JoystickButton(driveStick, HIGH_SPEED_DRIVE_BUTTON);
             this.slowDownButton = new JoystickButton(driveStick, LOW_SPEED_DRIVE_BUTTON);
-            this.grabBallButton = new JoystickButton(this.driveStick, INTAKE_BALL_BUTTON_NUMBER);
+            this.grabBallButton = new JoystickButton(driveStick, INTAKE_BALL_BUTTON_NUMBER);
 
             this.speedUpButton.whenPressed(new GearShiftCommand(true));
             this.slowDownButton.whenPressed(new GearShiftCommand(false));
+            this.grabBallButton.whenPressed(new IntakeBallCommandGroup());
 
             System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
                                                                                  // OI
@@ -100,11 +99,8 @@ public class OI {
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             this.launchBallButton = new JoystickButton(this.aimStick, LAUNCH_BALL_BUTTON_NUMBER);
-            this.launcherUpButton = new JoystickButton(this.aimStick, LAUNCHER_UP_BUTTON_NUMBER);
-            this.launcherDownButton = new JoystickButton(this.aimStick, LAUNCHER_DOWN_BUTTON_NUMBER);
             this.launcherServoActivateTestButton = new JoystickButton(this.aimStick, LAUNCHER_SERVO_ACTIVATE_TEST_BUTTON_NUMBER);
             this.launcherServoRetractTestButton = new JoystickButton(this.aimStick, LAUNCHER_SERVO_RETRACT_TEST_BUTTON_NUMBER);
-            this.launcher45DegreesButton = new JoystickButton(this.aimStick, LAUNCHER_45_DEGREES_BUTTON_NUMBER);
             this.launcherZeroEncoderButton = new JoystickButton(this.aimStick, LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER);
             this.autoAimButton = new JoystickButton(this.aimStick, AUTO_AIM_BUTTON_NUMBER);
             this.launcherSetSetpointForDashboardButton = new JoystickButton(this.aimStick, SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER);
@@ -115,6 +111,7 @@ public class OI {
             this.launcherServoRetractTestButton.whenPressed(new RetractLauncherServoCommand());
             this.launcherZeroEncoderButton.whenPressed(new ZeroAimerCommand());
             this.autoAimButton.whenPressed(new AimerGoToAngleCommand(2000)); //testing
+            this.launcherSetSetpointForDashboardButton.whenPressed(new SetSetPointFromSmartDashboardCommand());
             //SmartDashboard.putData("Setpoint = 2000", new AimerGoToAngleCommand(2000));
    
             System.out.println("ModuleManager initialized: IntakeLauncher");
