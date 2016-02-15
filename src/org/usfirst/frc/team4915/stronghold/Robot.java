@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
@@ -30,6 +30,7 @@ public class Robot extends IterativeRobot {
     public static Scaler scaler;
     public static BNO055 imu;
     Command autonomousCommand;
+    SendableChooser autonomousProgramChooser;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -45,8 +46,9 @@ public class Robot extends IterativeRobot {
             gearShift = new GearShift();
             System.out.println("ModuleManager initialized: DriveTrain");
         }
-        if (ModuleManager.GEARSHIFT_MODULE_ON) {
-            gearShift = new GearShift();
+        if (ModuleManager.GEARSHIFT_MODULE_ON){
+            SmartDashboard.putString("Gear shift", "Initialized" );
+            gearShift= new GearShift();
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLauncher = new IntakeLauncher();
@@ -84,7 +86,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         // schedule the autonomous command
-        autonomousCommand = new AutoRotateDegrees(true, 90); // in inches
+        autonomousCommand = (Command) oi.autonomousProgramChooser.getSelected();
+// in inches
 
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();

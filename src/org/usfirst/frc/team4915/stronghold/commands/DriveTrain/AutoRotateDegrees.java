@@ -9,12 +9,14 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class AutoRotateDegrees extends Command {
 
+    private double startingGyroValue;
     RobotDrive robotDrive = DriveTrain.robotDrive;
     private boolean goLeft;
     double robotAngle;
 
     // autonomous rotate command
     public AutoRotateDegrees(boolean left, double robotAngle) {
+        System.out.println("Auto Rotate degrees");
         requires(Robot.driveTrain);
         goLeft = left;
         this.robotAngle = robotAngle;
@@ -23,18 +25,21 @@ public class AutoRotateDegrees extends Command {
 
     @Override
     protected void initialize() {
-        Robot.driveTrain.calibrateGyro();
+        robotDrive.setMaxOutput(1.0);
+        startingGyroValue = Robot.driveTrain.trackGyro();
     }
 
     @Override
     protected void execute() {
         Robot.driveTrain.turn(goLeft);
-	SmartDashboard.putNumber("Robot Angle", robotAngle);
+        SmartDashboard.putNumber("Robot Angle", robotAngle);
     }
 
     @Override
     protected boolean isFinished() {
-        return (Math.abs(Robot.driveTrain.trackGyro()) >= robotAngle);
+        double gyroDelta = Math.abs(Robot.driveTrain.trackGyro() - startingGyroValue);
+        System.out.println("Current Gyro:" + Robot.driveTrain.trackGyro() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
+        return gyroDelta >= robotAngle;
     }
 
     @Override

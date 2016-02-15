@@ -89,10 +89,6 @@ public class DriveTrain extends Subsystem {
         robotDrive.arcadeDrive(0, 0);
     }
 
-    public void calibrateGyro() {
-        gyro.reset();
-    }
-
     // Methods for Gyro
     public double trackGyro() {
         this.gyroHeading = -(gyro.getAngle()) + this.startingAngle;
@@ -109,9 +105,9 @@ public class DriveTrain extends Subsystem {
     public void turn(boolean left) {
         trackGyro();
         if (left) {
-            robotDrive.tankDrive(-.6, .6);
+            robotDrive.arcadeDrive(0, .7);
         } else {
-            robotDrive.tankDrive(.6, -.6);
+            robotDrive.arcadeDrive(0, -.7);
         }
     }
 }
