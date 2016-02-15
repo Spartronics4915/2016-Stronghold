@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
@@ -20,8 +19,6 @@ public class IntakeLauncher extends Subsystem {
     private final double FULL_SPEED_REVERSE = 1.0;
     private final double FULL_SPEED_FORWARD = -1.0;
     private final double ZERO_SPEED = 0.0;
-    private final double LAUNCHER_SERVO_NEUTRAL_POSITION = 0.0;
-    private final double LAUNCHER_SERVO_LAUNCH_POSITION = 1.0;
 
     /*
      * in encoder ticks Step 1: Find number of encoder ticks per cycle:
@@ -38,9 +35,6 @@ public class IntakeLauncher extends Subsystem {
     private final int TICKS_PER_360_DEGREES = TICKS_PER_CYCLE * PLANETARY_GEAR_RATIO * GEAR_RATIO;
     private final double TICKS_PER_DEGREE = TICKS_PER_360_DEGREES / 360;
 
-    private final double AIM_MOTOR_INCREMENT = 20 * TICKS_PER_DEGREE; // increment
-                                                                      // 1
-                                                                      // degree
     private final int MIN_ANGLE = -10; // deg from horiz
     private final int MAX_ANGLE = 60; // deg from horiz
 
@@ -57,15 +51,12 @@ public class IntakeLauncher extends Subsystem {
     private final int TIME_IN_MS_FOR_FULL_MOTION = 2000;
     private final double JOYSTICK_SCALE = (LAUNCHER_MAX_HEIGHT - LAUNCHER_MIN_HEIGHT) / TIME_IN_MS_FOR_FULL_MOTION * 10; //
 
-    private boolean ballLaunched = false;
-
     private int setPoint;
 
     // left and right are determined when standing behind the robot
-
     // These motors control flywheels that collect and shoot the ball
-    public CANTalon intakeLeftMotor = RobotMap.intakeLeftMotor;
-    public CANTalon intakeRightMotor = RobotMap.intakeRightMotor;
+    private CANTalon intakeLeftMotor = RobotMap.intakeLeftMotor;
+    private CANTalon intakeRightMotor = RobotMap.intakeRightMotor;
 
     // This motor adjusts the angle of the launcher for shooting
     public CANTalon aimMotor = RobotMap.aimMotor;
@@ -74,14 +65,8 @@ public class IntakeLauncher extends Subsystem {
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
-    // servo that pushes the ball into the flywheels
-    public Servo launcherServo = RobotMap.launcherServo;
-
     // lowers the aimer so the encoder can zero when the robot turns on
     // method commented for now so we can test
-    public IntakeLauncher() {
-
-    }
 
     @Override
     protected void initDefaultCommand() {
@@ -108,31 +93,14 @@ public class IntakeLauncher extends Subsystem {
         this.intakeRightMotor.set(ZERO_SPEED);
     }
 
-    // moves the launcher, joystick angle determines speed
-
-    // changes the launcher height by a small value
-    // direction is either 1 or -1
-
-    public void activateLaunchServo() {
-        launcherServo.set(LAUNCHER_SERVO_LAUNCH_POSITION);
-        System.out.println(launcherServo.get());
-    }
-
-    public void retractLaunchServo() {
-        launcherServo.set(LAUNCHER_SERVO_NEUTRAL_POSITION);
-        ballLaunched = true;
-    }
-
     public void zeroEncoder() {
         aimMotor.setEncPosition(0);
     }
 
     public void initAimer() {
-        System.out.println("Init Aimer");
         if (Robot.intakeLauncher.aimMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != null) {
             aimMotor.changeControlMode(TalonControlMode.PercentVbus);
             aimMotor.set(FULL_SPEED_FORWARD);
-            System.out.println("Moving to Bottom");
         }
     }
 
@@ -149,27 +117,6 @@ public class IntakeLauncher extends Subsystem {
         setPoint = newSetPoint;
     }
 
-    public void aimWithDashboard() {
-        if (isLauncherAtBottom()) {
-            setEncoderPosition(0);
-        }
-        setSetPoint((int) SmartDashboard.getNumber("Launcher Set Point: "));
-        moveToSetPoint();
-    }
-
-    public void moveToSetPoint() {
-        keepSetPointInRange();
-        if (isLauncherAtBottom()) {
-            setEncoderPosition(0);
-        }
-        aimMotor.changeControlMode(TalonControlMode.Position);
-        aimMotor.set(setPoint);
-    }
-
-    public boolean isLauncherAtBottom() {
-        return aimMotor.isRevLimitSwitchClosed();
-    }
-
     public void offsetSetPoint(int offset) {
         setSetPoint();
         setPoint += offset;
@@ -181,7 +128,16 @@ public class IntakeLauncher extends Subsystem {
             offsetSetPoint((int) (joystickY * 1000));
         }
     }
-
+    
+    public void moveToSetPoint() {
+        keepSetPointInRange();
+        if (isLauncherAtBottom()) {
+            zeroEncoder();
+        }
+        aimMotor.changeControlMode(TalonControlMode.Position);
+        aimMotor.set(setPoint);
+    }
+    
     public void keepSetPointInRange() {
         if (setPoint > LAUNCHER_MAX_HEIGHT) {
             setPoint = LAUNCHER_MAX_HEIGHT;
@@ -189,6 +145,15 @@ public class IntakeLauncher extends Subsystem {
         if (setPoint < LAUNCHER_MIN_HEIGHT) {
             setPoint = LAUNCHER_MIN_HEIGHT;
         }
+    }
+    
+    public void aimWithDashboard() {
+        setSetPoint((int) SmartDashboard.getNumber("Launcher Set Point: "));
+        moveToSetPoint();
+    }
+
+    public boolean isLauncherAtBottom() {
+        return aimMotor.isRevLimitSwitchClosed();
     }
 
     public CANTalon getIntakeLeftMotor() {
@@ -205,18 +170,6 @@ public class IntakeLauncher extends Subsystem {
 
     public DigitalInput getBoulderSwitch() {
         return boulderSwitch;
-    }
-
-    public Servo getLauncherServo() {
-        return launcherServo;
-    }
-
-    public boolean getBallLaunched() {
-        return ballLaunched;
-    }
-
-    public void setBallLaunched(boolean ballLaunched) {
-        this.ballLaunched = ballLaunched;
     }
 
     public int getEncoderPosition() {
