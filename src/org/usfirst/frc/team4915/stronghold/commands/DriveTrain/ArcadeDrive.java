@@ -3,6 +3,7 @@ package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -52,6 +53,7 @@ public class ArcadeDrive extends Command {
         }
 	SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
 	SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
+	SmartDashboard.putNumber("IMU Heading", RobotMap.imu.getHeading());
     }
 
     // Make this return true when this Command no longer needs to run execute()
