@@ -48,7 +48,7 @@ public class RobotMap {
     // Create the gyro
     public static AnalogGyro gyro;
     
-    //IMU variable
+    //Create IMU
     public static BNO055 imu;
 
     // Create the motor controllers for the IntakeLauncher
