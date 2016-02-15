@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.ArcadeDrive;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
@@ -55,7 +55,7 @@ public class DriveTrain extends Subsystem {
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                System.out.println("The encoder value of motor " + i + " is " + motors.get(i).getEncPosition());
+                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
             }
         }
     }
@@ -80,7 +80,7 @@ public class DriveTrain extends Subsystem {
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                System.out.println("The encoder value of motor " + i + " is " + motors.get(i).getEncPosition());
+                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
             }
         }
     }
@@ -89,17 +89,11 @@ public class DriveTrain extends Subsystem {
         robotDrive.arcadeDrive(0, 0);
     }
 
-    public void calibrateGyro() {
-        gyro.reset();
-    }
-
     // Methods for Gyro
     public double trackGyro() {
-        System.out.println("Starting angle: " + this.startingAngle);
-        System.out.println("Gyro: " + gyro);
         this.gyroHeading = -(gyro.getAngle()) + this.startingAngle;
-        System.out.println("Gyro Angle: " + gyro.getAngle());
-        System.out.println("Gyro heading:" + this.gyroHeading);
+        SmartDashboard.putNumber("Gyro heading", this.gyroHeading);
+        SmartDashboard.putData("Gyro", RobotMap.gyro);
         return this.gyroHeading;
     }
                                                           
@@ -110,13 +104,10 @@ public class DriveTrain extends Subsystem {
 
     public void turn(boolean left) {
         trackGyro();
-        System.out.println("Public void turn boolean left: Check");
         if (left) {
-            System.out.println("Turnleft");
-            robotDrive.tankDrive(-.6, .6);
+            robotDrive.arcadeDrive(0, .7);
         } else {
-            System.out.println("Turnright");
-            robotDrive.tankDrive(.6, -.6);
+            robotDrive.arcadeDrive(0, -.7);
         }
     }
 }

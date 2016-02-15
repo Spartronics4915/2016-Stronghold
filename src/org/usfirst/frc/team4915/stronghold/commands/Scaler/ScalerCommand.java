@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands;
+package org.usfirst.frc.team4915.stronghold.commands.Scaler;
 
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
