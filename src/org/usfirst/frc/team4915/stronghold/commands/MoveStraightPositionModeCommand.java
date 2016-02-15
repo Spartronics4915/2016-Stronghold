@@ -15,8 +15,14 @@ public class MoveStraightPositionModeCommand extends Command {
     public double inputDistanceInches;
     private DriveTrain driveTrain = Robot.driveTrain;
     private List<Double> desiredTicksValue;
-    private double driveStraightValue = 0.7;
-
+    private double driveStraightValue = 0.5;
+    //variables for the ticks to move
+    private static double cyclesPerRotation = 256;
+    private static double approxCircumference = 45;//in inches
+    private static double shaftRatio = 3.2;
+    private static double gearBoxRatio = 4;
+    private static double pulsesPerCycle = 4;
+    //private static double 
     public MoveStraightPositionModeCommand(double inputDistanceInches) {
 
         requires(this.driveTrain);
@@ -36,10 +42,11 @@ public class MoveStraightPositionModeCommand extends Command {
      */
     @Override
     protected void initialize() {
+
         this.desiredTicksValue = new ArrayList<Double>();
 
-        //double ticksToMove = this.inputDistanceInches * 1000 / (14 * Math.PI);
-        double ticksToMove = (this.inputDistanceInches * 256 * 4) / (14 * Math.PI);
+        //new equation
+        double ticksToMove = (this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle)/ (approxCircumference);
 
         //double startingTickValue;
         //double endValue;
@@ -84,7 +91,7 @@ public class MoveStraightPositionModeCommand extends Command {
         boolean finished = false;
         double desiredPosition = this.desiredTicksValue.get(i);
 
-        double currentPosition = motors.get(i).getEncPosition();
+        double currentPosition = Math.abs(motors.get(i).getEncPosition());
         System.out.println("Motor " + i + ": current position: " + currentPosition + ", desired position " + desiredPosition);
 
         // All motors are inverted

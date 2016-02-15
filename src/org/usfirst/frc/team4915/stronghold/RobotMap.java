@@ -108,7 +108,7 @@ public class RobotMap {
             launcherServo = new Servo(LAUNCHER_SERVO_PORT);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
-
+            
             // setup the motor
             aimMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
             aimMotor.enableLimitSwitch(true, true);
