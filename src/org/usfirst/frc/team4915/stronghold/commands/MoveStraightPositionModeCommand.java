@@ -66,6 +66,7 @@ public class MoveStraightPositionModeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        System.out.println("Executing move straight");
         if (this.inputDistanceInches < 0) {
             this.driveTrain.driveStraight(this.driveStraightValue);
         } else {

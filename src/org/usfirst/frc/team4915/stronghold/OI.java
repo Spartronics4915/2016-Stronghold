@@ -4,7 +4,9 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import org.usfirst.frc.team4915.stronghold.commands.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.GearShiftCommand;
+import org.usfirst.frc.team4915.stronghold.commands.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IncrementLauncherHeightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
@@ -12,7 +14,7 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCom
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -68,8 +70,16 @@ public class OI {
     public JoystickButton scalerReachDownButton;
     public JoystickButton scalerLiftButton;
     
+    public SendableChooser autonomousProgramChooser;
 
     public OI() {
+        autonomousProgramChooser = new SendableChooser();
+        SmartDashboard.putData("Autonomous Program", autonomousProgramChooser);
+        autonomousProgramChooser.addDefault("Autonomous Turn", new AutoRotateDegrees(false, 90));
+        autonomousProgramChooser.addObject("Autonomous Just Drive", new MoveStraightPositionModeCommand(30));
+
+
+        
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
 
