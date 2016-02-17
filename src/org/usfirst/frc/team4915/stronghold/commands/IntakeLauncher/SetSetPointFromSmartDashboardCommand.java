@@ -16,7 +16,7 @@ public class SetSetPointFromSmartDashboardCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.intakeLauncher.setSetPoint((int) SmartDashboard.getNumber("Launcher Set Point: "));
+        Robot.intakeLauncher.setSetPoint(SmartDashboard.getNumber("Launcher Set Point: "));
     }
 
     // Called repeatedly when this Command is scheduled to run

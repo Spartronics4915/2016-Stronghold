@@ -28,7 +28,7 @@ public class Robot extends IterativeRobot {
     public static OI oi;
     public static GearShift gearShift;
     public static Scaler scaler;
-    
+
     Command autonomousCommand;
     SendableChooser autonomousProgramChooser;
 
@@ -46,14 +46,14 @@ public class Robot extends IterativeRobot {
             gearShift = new GearShift();
             System.out.println("ModuleManager initialized: DriveTrain");
         }
-        if (ModuleManager.GEARSHIFT_MODULE_ON){
-            SmartDashboard.putString("Gear shift", "Initialized" );
-            gearShift= new GearShift();
+        if (ModuleManager.GEARSHIFT_MODULE_ON) {
+            SmartDashboard.putString("Gear shift", "Initialized");
+            gearShift = new GearShift();
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLauncher = new IntakeLauncher();
             intakeLauncher.readSetPoint();
-            SmartDashboard.putNumber("Launcher Set Point: ", intakeLauncher.getEncoderPosition());
+            SmartDashboard.putNumber("Launcher Set Point: ", intakeLauncher.aimMotor.getPosition());
             intakeLauncher.readSetPoint();
             SmartDashboard.putString("Module Manager", "IntakeLauncher Initialized");
             System.out.println("ModuleManager initialized: IntakeLauncher");
@@ -71,10 +71,10 @@ public class Robot extends IterativeRobot {
             scaler = new Scaler();
         }
         if (ModuleManager.IMU_MODULE_ON) {
-            
+
             SmartDashboard.putString("Module Manager", "imu Initialized");
             System.out.println("Module Manager initialized: imu");
-            
+
         }
         oi = new OI(); // 3. Construct OI after subsystems created
     }

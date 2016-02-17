@@ -15,7 +15,6 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCom
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherPneumaticCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SetSetPointFromSmartDashboardCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ZeroAimerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
@@ -43,7 +42,6 @@ public class OI {
     // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
-    public static final int LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER = 3; // Test
     public static final int LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER = 10; // Tests
     public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; // Test
     public static final int AUTO_AIM_BUTTON_NUMBER = 11;
@@ -116,8 +114,7 @@ public class OI {
             initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());
             initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
-            initializeButton(this.launcherZeroEncoderButton, aimStick, LAUNCHER_ZERO_ENCODER_BUTTON_NUMBER, new ZeroAimerCommand());
-            initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(2000));
+            initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(1));
             initializeButton(this.launcherSetSetpointForDashboardButton, aimStick, LAUNCHER_SET_SETPOINT_FOR_DASHBOARD_BUTTON_NUMBER,
                     new SetSetPointFromSmartDashboardCommand());
             initializeButton(this.activatePneumaticTestButton, aimStick, ACTIVATE_PNEUMATIC_TEST_BUTTON_NUMBER,

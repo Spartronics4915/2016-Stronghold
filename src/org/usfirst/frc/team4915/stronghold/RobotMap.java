@@ -32,9 +32,9 @@ public class RobotMap {
 
     // Define port for the boulder switch
     private static final int BOULDER_SWITCH_PORT = 2;
-    
+
     // Define port for the launcher pneumatic
-    private static final int LAUNCHER_SOLENOID_PORT = 2; //TODO
+    private static final int LAUNCHER_SOLENOID_PORT = 2; // TODO
 
     // Define channels for scaling motors
     private static final int SCALING_MOTOR_ID = 18; // TODO
@@ -43,8 +43,7 @@ public class RobotMap {
     private static final int AIMER_P = 0;
     private static final int AIMER_I = 0;
     private static final int AIMER_D = 0;
-    
-    
+
     // Create motor controllers for the driveTrain
     public static CANTalon leftBackMotor;
     public static CANTalon rightBackMotor;
@@ -56,8 +55,8 @@ public class RobotMap {
 
     // Create the gyro
     public static AnalogGyro gyro;
-    
-    //IMU variable
+
+    // IMU variable
     public static BNO055 imu;
 
     // Create the motor controllers for the IntakeLauncher
@@ -67,10 +66,10 @@ public class RobotMap {
 
     // Create the boulder switch
     public static DigitalInput boulderSwitch;
-    
+
     // Create the launcher solenoid
     public static Solenoid launcherSolenoid;
-    
+
     // Create the motor controllers for the Scaler
     public static CANTalon scalingMotor;
     public static CANTalon scalingWinch;
@@ -111,14 +110,15 @@ public class RobotMap {
             aimMotor = new CANTalon(AIM_MOTOR_ID);
             intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
             intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
+            intakeRightMotor.reverseSensor(true);
             aimMotor.changeControlMode(TalonControlMode.Position);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
             launcherSolenoid = new Solenoid(LAUNCHER_SOLENOID_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
 
             // setup the motor
-            if (aimMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != null) {
-                aimMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+            if (aimMotor.isSensorPresent(FeedbackDevice.AnalogPot) != null) {
+                aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
                 aimMotor.enableLimitSwitch(true, true);
                 aimMotor.enableBrakeMode(true);
                 aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D);

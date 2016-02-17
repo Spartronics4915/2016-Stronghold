@@ -50,7 +50,5 @@ public class AutoRotateDegrees extends Command {
     @Override
     protected void interrupted() {
         end();
-
     }
-
 }
