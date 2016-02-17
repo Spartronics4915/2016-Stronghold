@@ -3,13 +3,16 @@ package org.usfirst.frc.team4915.stronghold.commands.vision;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-public class AutoAimControlCommand extends Command {
-
-    @Override
-    protected void initialize() {
-        VisionState vs = VisionState.getInstance();
-        vs.toggleAutoAim();
-    }
+public class AutoAimControlCommand extends Command{
+	
+	public AutoAimControlCommand(boolean toggleEnable, boolean toggleTarget) {
+		VisionState vs = VisionState.getInstance();
+		vs.toggleAimState(toggleEnable, toggleTarget);
+	}
+	@Override
+	protected void initialize() {
+		//Do nothing		
+	}
 
     @Override
     protected void execute() {

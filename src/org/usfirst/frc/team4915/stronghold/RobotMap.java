@@ -34,7 +34,7 @@ public class RobotMap {
     private static final int BOULDER_SWITCH_PORT = 2;
 
     // Define port for the launcher pneumatic
-    private static final int LAUNCHER_SOLENOID_PORT = 2; // TODO
+    private static final int LAUNCHER_SOLENOID_PORT = 2; //TODO
 
     // Define channels for scaling motors
     private static final int SCALING_MOTOR_ID = 18; // TODO
@@ -55,8 +55,8 @@ public class RobotMap {
 
     // Create the gyro
     public static AnalogGyro gyro;
-
-    // IMU variable
+    
+    //Create IMU
     public static BNO055 imu;
 
     // Create the motor controllers for the IntakeLauncher
@@ -115,7 +115,7 @@ public class RobotMap {
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
             launcherSolenoid = new Solenoid(LAUNCHER_SOLENOID_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
-
+            
             // setup the motor
             if (aimMotor.isSensorPresent(FeedbackDevice.AnalogPot) != null) {
                 aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);

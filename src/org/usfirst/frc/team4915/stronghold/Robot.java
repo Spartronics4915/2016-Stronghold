@@ -129,8 +129,12 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("aimMotor Encoder position = ", RobotMap.aimMotor.getEncPosition());
-        SmartDashboard.putNumber("Aimer JoystickY Position: ", Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
+        
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON){
+            SmartDashboard.putNumber("aimMotor Encoder position = ", RobotMap.aimMotor.getEncPosition());
+            SmartDashboard.putNumber("Aimer JoystickY Position: ", Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
+        }
+
     }
 
     /**

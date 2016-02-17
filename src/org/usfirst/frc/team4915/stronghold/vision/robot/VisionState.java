@@ -28,6 +28,7 @@ public class VisionState implements NamedSendable {
     }
 
     public boolean AutoAimEnabled = false;
+    public boolean TargetHigh = true;
     public int FPS = 0;
     public int TargetsAcquired = 0;
     public int TargetX = 0;
@@ -104,8 +105,15 @@ public class VisionState implements NamedSendable {
 
     }
     
-    public void toggleAutoAim() {
-    	this.AutoAimEnabled = !this.AutoAimEnabled;
+    public void toggleAimState(boolean toggleEnable, boolean toggleTarget) {
+    	if(toggleEnable) {
+    		this.AutoAimEnabled = !this.AutoAimEnabled;
+    		m_table.putBoolean("AutoAimEnabled", this.AutoAimEnabled);
+    	}
+    	if(toggleTarget) {
+    		this.TargetHigh = !this.TargetHigh;
+    		m_table.putBoolean("TargetHigh", this.TargetHigh);
+    	}
     }
     
     public boolean followTargetX(DriveTrain driveTrain) {
