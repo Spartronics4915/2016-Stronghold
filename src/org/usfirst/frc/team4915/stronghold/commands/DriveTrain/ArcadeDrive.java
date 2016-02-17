@@ -1,21 +1,22 @@
-
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
+import java.util.List;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcadeDrive extends Command {
 
     public Joystick joystickDrive;
     private double joystickX;
     private double joystickY;
+    public static List<CANTalon> motors = Robot.driveTrain.motors;
 
     public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -25,6 +26,9 @@ public class ArcadeDrive extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+    	 for (int i = 0; i < motors.size(); i++) {
+             motors.get(i).setEncPosition(0);
+    	 }
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -33,9 +37,14 @@ public class ArcadeDrive extends Command {
         this.joystickDrive = Robot.oi.getJoystickDrive();
         this.joystickX = this.joystickDrive.getAxis(Joystick.AxisType.kX);
         this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
-        Robot.driveTrain.trackGyro();
+        
+        if (ModuleManager.GYRO_MODULE_ON){
+            Robot.driveTrain.trackGyro();
+        }
+
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
+
         
         if (!VisionState.getInstance().followTargetX(Robot.driveTrain) ){
     	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
@@ -46,7 +55,14 @@ public class ArcadeDrive extends Command {
     	   }
     	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
     	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-    	   SmartDashboard.putNumber("IMU Heading", RobotMap.imu.getHeading());
+    	   
+    	   BNO055.CalData calData = RobotMap.imu.getCalibration();
+    	   int num = (int)(.5 + RobotMap.imu.getHeading());
+    	   
+    	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
+    	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+    	   SmartDashboard.putNumber("IMU heading", num);
+    	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
        }
     }
 
@@ -59,12 +75,14 @@ public class ArcadeDrive extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+    	Robot.driveTrain.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+    	end();
     }
 
 }

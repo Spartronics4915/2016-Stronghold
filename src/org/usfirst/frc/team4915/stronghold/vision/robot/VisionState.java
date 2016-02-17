@@ -1,14 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.NamedSendable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 
@@ -28,6 +23,7 @@ public class VisionState implements NamedSendable {
     }
 
     public boolean AutoAimEnabled = false;
+    public boolean TargetHigh = true;
     public int FPS = 0;
     public int TargetsAcquired = 0;
     public int TargetX = 0;
@@ -104,8 +100,15 @@ public class VisionState implements NamedSendable {
 
     }
     
-    public void toggleAutoAim() {
-    	this.AutoAimEnabled = !this.AutoAimEnabled;
+    public void toggleAimState(boolean toggleEnable, boolean toggleTarget) {
+    	if(toggleEnable) {
+    		this.AutoAimEnabled = !this.AutoAimEnabled;
+    		m_table.putBoolean("AutoAimEnabled", this.AutoAimEnabled);
+    	}
+    	if(toggleTarget) {
+    		this.TargetHigh = !this.TargetHigh;
+    		m_table.putBoolean("TargetHigh", this.TargetHigh);
+    	}
     }
     
     public boolean followTargetX(DriveTrain driveTrain) {

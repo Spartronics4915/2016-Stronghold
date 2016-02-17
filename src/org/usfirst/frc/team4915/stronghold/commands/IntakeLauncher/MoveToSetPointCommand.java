@@ -1,8 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *

@@ -1,7 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
+
 import java.util.Arrays;
 import java.util.List;
 
+import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
@@ -38,7 +40,6 @@ public class DriveTrain extends Subsystem {
         System.out.println("INFO: Initializing the ArcadeDrive");
 
         setDefaultCommand(new ArcadeDrive());
-
         /*
          * FIXME: robotDrive static field access instead of:
          * robotDrive.setSafetyEnabled(true); do (remove this):
@@ -47,21 +48,20 @@ public class DriveTrain extends Subsystem {
         robotDrive.setSafetyEnabled(true);
         // inverting motors
         robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
-     
-        robotDrive.setInvertedMotor(MotorType.kRearRight, true);
-        
 
+        robotDrive.setInvertedMotor(MotorType.kRearRight, true);
+        robotDrive.stopMotor();
         // checking to see the encoder values
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
             }
         }
     }
 
     public double modifyThrottle() {
-        double modifiedThrottle = 0.40 * (1.0 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
+        //255 is the max number on the throttle
+        double modifiedThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
         if (modifiedThrottle != this.joystickThrottle) {
             SmartDashboard.putNumber("Throttle: ", modifiedThrottle);
         }
@@ -74,19 +74,22 @@ public class DriveTrain extends Subsystem {
     }
 
     public void arcadeDrive(Joystick stick) {
-        Robot.driveTrain.trackGyro();
+        
+        if (ModuleManager.GYRO_MODULE_ON){
+            Robot.driveTrain.trackGyro();
+        }
         robotDrive.arcadeDrive(stick);
         // checking to see the encoder values
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                SmartDashboard.putNumber("Encoder Value for Motor"+i, motors.get(i).getEncPosition());
+                SmartDashboard.putNumber("Encoder Value for Motor" + i, motors.get(i).getEncPosition());
             }
         }
     }
 
     public void stop() {
-        robotDrive.arcadeDrive(0, 0);
+        robotDrive.stopMotor();
     }
 
     // Methods for Gyro
@@ -96,18 +99,21 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putData("Gyro", RobotMap.gyro);
         return this.gyroHeading;
     }
-                                                          
+
     public void driveStraight(double speed) {
-        trackGyro();
+      
+
         robotDrive.arcadeDrive(speed, 0);
     }
 
     public void turn(boolean left) {
-        trackGyro();
+        if (ModuleManager.GYRO_MODULE_ON){
+            trackGyro();
+        }
         if (left) {
-            robotDrive.arcadeDrive(0, .7);
-        } else {
             robotDrive.arcadeDrive(0, -.7);
+        } else {
+            robotDrive.arcadeDrive(0, .7);
         }
     }
 }
