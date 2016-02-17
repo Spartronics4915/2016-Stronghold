@@ -76,10 +76,10 @@ public class DriveTrain extends Subsystem {
     }
 
     public void arcadeDrive(Joystick stick) {
+        
         if (ModuleManager.GYRO_MODULE_ON){
             Robot.driveTrain.trackGyro();
         }
-
         robotDrive.arcadeDrive(stick);
         // checking to see the encoder values
         // this can be removed later. Used to debug

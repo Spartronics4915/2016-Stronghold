@@ -47,7 +47,7 @@ public class MoveStraightPositionModeCommand extends Command {
         this.desiredTicksValue = new ArrayList<Double>();
 
         //new equation
-        double ticksToMove = (this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle)/ (approxCircumference);
+        double ticksToMove = ((this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle)/ (approxCircumference)) /2;
         System.out.println("ticksToMove: " + ticksToMove);
         //double startingTickValue;
         //double endValue;

@@ -90,7 +90,7 @@ public class OI {
         autonomousProgramChooser = new SendableChooser();
         SmartDashboard.putData("Autonomous Program", autonomousProgramChooser);
         autonomousProgramChooser.addObject("Autonomous Turn", new AutoRotateDegrees(false, 90));
-        autonomousProgramChooser.addDefault("Autonomous Just Drive", new MoveStraightPositionModeCommand(30));
+        autonomousProgramChooser.addDefault("Autonomous Just Drive", new MoveStraightPositionModeCommand(45));
 
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
