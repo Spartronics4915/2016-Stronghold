@@ -69,7 +69,18 @@ class TargetState:
     	distBetweenKeypoints =(kp1.pt[0]-kp2.pt[0])**2 + \
                               (kp1.pt[1] - kp2.pt[1])**2
         return distBetweenKeypoints
-
+        
+    def AverageKeypoints(self):
+     	avgKeypointX = 0
+     	avgKeypointY = 0
+    	for kp in self.m_kpHistory:
+    		avgKeypointX += kp.pt[0]
+    		avgKeypointY += kp.pt[1]
+    	avgKeypointX += self.m_kpHistory[-1].pt[0]
+    	avgKeypointY += self.m_kpHistory[-1].pt[1]
+    	self.m_kp.pt = (avgKeypointX / 5, avgKeypointY / 5)
+    	return self.m_kp
+    
     def NewKeypoints(self, kplist):
         if len(kplist) > 0:
             if 0:
@@ -77,13 +88,13 @@ class TargetState:
                 if len(kplist) > 0:
                     kplist.sort(self.kpcompare)
                     self.m_kp = kplist[0]
-            if 0:
+            if 1:
                 #average 5 most recent keypoints (in progress)
                 kplist.sort(self.kpcompare)
                 self.m_kp = kplist[0]
                 self.m_kpHistory.append(self.m_kp)
                 self.m_kpHistory = self.m_kpHistory[-4:]
-                averagekpHistory(self.m_kpHistory, kp)
+                self.m_kp = self.AverageKeypoints()
             if 0:
                 #keep the 10 biggest keypoints ever found (not very good)
                 kplist.extend(self.m_kpHistory)
@@ -91,7 +102,7 @@ class TargetState:
                 kplist.sort(self.kpcompare)
                 kplist = kplist[:10]
                 self.m_kpHistory = kplist
-            if 1: 
+            if 0: 
                 nearest = None
                 nearestD = 10000
                 if self.m_kp:
@@ -121,14 +132,6 @@ class TargetState:
             self.m_kp = None
         self.updateVisionTable()
         return kplist
-        
-    def AverageKeypoints(self, kplist):
-    	if len(kplist) > 0:
-    		pass
-    	else:
-    		self.m_kp = None
-    	self.updateVisionTable()
-    	return kplist
 
     def updateVisionTable(self):
         kp = self.m_kp

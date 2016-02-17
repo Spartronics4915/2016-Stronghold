@@ -56,10 +56,10 @@ class RobotCnx:
         #This is where we can be woken up if the driver station (or robot) wants to talk to us
         if key == 'TargetHigh':
         	self.targetHigh = value
-            print(value)
+            #print(value)
         elif key == 'AutoAimEnabled':
         	self.autoAimEnabled = value
-            print(value)
+            #print(value)
         else:
             pass
         	# print("Unexpected key in visValueChanged")
