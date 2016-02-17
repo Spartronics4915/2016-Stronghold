@@ -34,6 +34,7 @@ public class AutoRotateDegrees extends Command {
 
     @Override
     protected void execute() {
+    	System.out.println("Running AutoRotateDegrees");
         Robot.driveTrain.turn(goLeft);
         SmartDashboard.putNumber("Robot Angle", robotAngle);
     }

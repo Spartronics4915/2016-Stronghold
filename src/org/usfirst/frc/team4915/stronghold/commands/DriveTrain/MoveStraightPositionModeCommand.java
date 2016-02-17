@@ -62,6 +62,7 @@ public class MoveStraightPositionModeCommand extends Command {
             // when moving forward
             this.desiredTicksValue.add(ticksToMove);
 	    SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
+	    System.out.println("Running MoveStraight");
         }
     }
 
