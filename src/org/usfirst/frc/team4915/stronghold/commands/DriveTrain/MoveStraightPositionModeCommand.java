@@ -1,14 +1,13 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class MoveStraightPositionModeCommand extends Command {
 
@@ -17,13 +16,13 @@ public class MoveStraightPositionModeCommand extends Command {
     private DriveTrain driveTrain = Robot.driveTrain;
     private List<Double> desiredTicksValue;
     private double driveStraightValue = 0.5;
-    //variables for the ticks to move
+    //variables for the ticks to move equation
     private static double cyclesPerRotation = 256;
     private static double approxCircumference = 45;//in inches
     private static double shaftRatio = 3.2;
     private static double gearBoxRatio = 4;
     private static double pulsesPerCycle = 4;
-    //private static double 
+    
     public MoveStraightPositionModeCommand(double inputDistanceInches) {
 
         requires(this.driveTrain);
@@ -47,11 +46,10 @@ public class MoveStraightPositionModeCommand extends Command {
         this.desiredTicksValue = new ArrayList<Double>();
 
         //new equation
-        double ticksToMove = (this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle)/ (approxCircumference);
-
+        double ticksToMove = ((this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle)/ (approxCircumference)) /2;
+        System.out.println("ticksToMove: " + ticksToMove);
         //double startingTickValue;
         //double endValue;
-        //reset encoders
         
         // get the starting encoder value
         // move motors and read new encoder value
@@ -62,6 +60,8 @@ public class MoveStraightPositionModeCommand extends Command {
             // when moving forward
             this.desiredTicksValue.add(ticksToMove);
 	    SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
+	    System.out.println("Running MoveStraight");
+
         }
     }
 
@@ -79,10 +79,9 @@ public class MoveStraightPositionModeCommand extends Command {
         } else {
             this.driveTrain.driveStraight(-this.driveStraightValue);
         }
-	SmartDashboard.putNumber("Drive Straight: Input distance", this.inputDistanceInches);
+    SmartDashboard.putNumber("Drive Straight: Input distance", this.inputDistanceInches);
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         // Checking if all the motors have reached the desired tick values
@@ -92,7 +91,6 @@ public class MoveStraightPositionModeCommand extends Command {
     private boolean isMotorFinished(int i) {
         boolean finished = false;
         double desiredPosition = this.desiredTicksValue.get(i);
-
         double currentPosition = Math.abs(motors.get(i).getEncPosition());
         System.out.println("Motor " + i + ": current position: " + currentPosition + ", desired position " + desiredPosition);
 
