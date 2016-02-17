@@ -63,7 +63,7 @@ public class DriveTrain extends Subsystem {
 
     public double modifyThrottle() {
         //255 is the max number on the throttle
-        double modifiedThrottle = 0.40 * (255 - Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
+        double modifiedThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
         if (modifiedThrottle != this.joystickThrottle) {
             SmartDashboard.putNumber("Throttle: ", modifiedThrottle);
         }
