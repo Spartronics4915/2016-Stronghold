@@ -88,6 +88,10 @@ public class BNO055 {
     private volatile double nextTime; //seconds
     private volatile byte[] accelVector = new byte[6];
     private volatile double[] m_accel = new double[3];
+    private volatile double[] m_velocity = new double[3];
+    private volatile double[] m_position = new double[3];
+    private volatile double[] m_cumulativePosition = new double[3];
+    private volatile double m_distFromOrigin = 0;
 
     private volatile byte[] headingVector = new byte[6];
     private volatile long turns = 0;
@@ -383,6 +387,11 @@ public class BNO055 {
         return getInstance(mode, vectorType, I2C.Port.kOnboard,
                 BNO055_ADDRESS_A);
     }
+    
+    public static BNO055 getInstance() {
+    	//Preferred entry point for 4915
+        return getInstance(opmode_t.OPERATION_MODE_ACCMAG,vector_type_t.VECTOR_LINEARACCEL);
+    }
 
 
     /**
@@ -518,6 +527,17 @@ public class BNO055 {
         accel[0] = ((double)ax)/100.0;
         accel[1] = ((double)ay)/100.0;
         accel[2] = ((double)az)/100.0;
+        
+    	double deltaT = THREAD_PERIOD/1000.0;
+    	double[] deltaVelocity = new double[3];
+    	double[] newVelocity = new double[3];
+    	for(int i = 0; i<3; i++) {
+    		deltaVelocity[i] = accel[i] * deltaT;
+    		newVelocity[i] = m_velocity[i] + deltaVelocity[i];
+    		m_position[i] += ((newVelocity[i]+m_velocity[i])/2 * deltaT);
+    		m_velocity[i] = newVelocity[i];
+    	}
+    	m_distFromOrigin = Math.hypot(m_position[0], m_position[1]);    
         
         //calculate turns
         headingDiff = m_heading[0] - head[0];
@@ -750,6 +770,10 @@ public class BNO055 {
      */
     public double getHeading() {
         return m_heading[0] + turns * 360;
+    }
+    
+    public double getDistFromOrigin() {
+    	return m_distFromOrigin;
     }
     
     /**
