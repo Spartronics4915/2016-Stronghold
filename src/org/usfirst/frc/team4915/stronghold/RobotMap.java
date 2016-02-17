@@ -60,6 +60,7 @@ public class RobotMap {
     
     //Create IMU
     public static BNO055 imuEuler;
+    public static BNO055 imuLinAcc;
 
     // Create the motor controllers for the IntakeLauncher
     public static CANTalon intakeLeftMotor;
@@ -140,6 +141,7 @@ public class RobotMap {
         if (ModuleManager.IMU_MODULE_ON) {
             System.out.println("ModuleManager RobotMap Initialize: IMU");
             imuEuler = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_EULER);
+            imuLinAcc = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_LINEARACCEL);
         }
     }
 }
