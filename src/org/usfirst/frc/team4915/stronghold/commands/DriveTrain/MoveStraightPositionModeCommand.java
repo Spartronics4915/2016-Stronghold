@@ -47,8 +47,8 @@ public class MoveStraightPositionModeCommand extends Command {
         this.desiredTicksValue = new ArrayList<Double>();
 
         //new equation
-        double ticksToMove = (this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle)/ (approxCircumference);
-
+        double ticksToMove = ((this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle)/ (approxCircumference)) /2;
+        System.out.println("ticksToMove: " + ticksToMove);
         //double startingTickValue;
         //double endValue;
         //reset encoders
@@ -63,6 +63,7 @@ public class MoveStraightPositionModeCommand extends Command {
             this.desiredTicksValue.add(ticksToMove);
 	    SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
 	    System.out.println("Running MoveStraight");
+
         }
     }
 
@@ -80,7 +81,7 @@ public class MoveStraightPositionModeCommand extends Command {
         } else {
             this.driveTrain.driveStraight(-this.driveStraightValue);
         }
-	SmartDashboard.putNumber("Drive Straight: Input distance", this.inputDistanceInches);
+    SmartDashboard.putNumber("Drive Straight: Input distance", this.inputDistanceInches);
     }
 
     // Make this return true when this Command no longer needs to run execute()
