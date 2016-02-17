@@ -43,18 +43,15 @@ public class OI {
     // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
-
     public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; // Test
     public static final int LAUNCHER_FORCE_DOWN_BUTTON_NUMBER = 1;
     public static final int AUTO_AIM_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 8;
     public static final int ACTIVATE_SERVOS_TEST_BUTTON_NUMBER = 6; // Test
-                                                                    // Button
     public static final int RETRACT_SERVOS_TEST_BUTTON_NUMBER = 7; // Test
-                                                                   // Button
 
     // Button numbers for scaling related buttons on the mechanism joystick
-    public static final int SCALER_REACH_UP_BUTTON_NUMBER = 2;
+    public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
     public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
     public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
 
@@ -74,10 +71,10 @@ public class OI {
     public JoystickButton launcherSetSetpointForDashboardButton;
     public JoystickButton launcherJumpToPositionButton;
     public JoystickButton launcherForceDownButton;
-    public JoystickButton autoAimButton;
-    public JoystickButton highLowButton;
     public JoystickButton activateServosTestButton;
     public JoystickButton retractServosTestButton;
+    public JoystickButton autoAimButton;
+    public JoystickButton highLowButton;
 
     // Create buttons for the scaler on the mechanism stick
     public JoystickButton scalerExtendButton;
@@ -125,8 +122,10 @@ public class OI {
             initializeButton(this.launcherForceDownButton, aimStick, LAUNCHER_FORCE_DOWN_BUTTON_NUMBER, new LauncherForceNeutralCommand());
             initializeButton(this.activateServosTestButton, aimStick, ACTIVATE_SERVOS_TEST_BUTTON_NUMBER, new ActivateLauncherServosCommand());
             initializeButton(this.retractServosTestButton, aimStick, RETRACT_SERVOS_TEST_BUTTON_NUMBER, new RetractLauncherServosCommand());
+            // not using initialize button for force down because it needs to be
+            // using whileHeld()
             launcherForceDownButton = new JoystickButton(aimStick, LAUNCHER_FORCE_DOWN_BUTTON_NUMBER);
-            launcherForceDownButton.whenPressed(new LauncherForceNeutralCommand());
+            launcherForceDownButton.whileHeld(new LauncherForceNeutralCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 

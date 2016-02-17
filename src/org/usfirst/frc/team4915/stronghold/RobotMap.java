@@ -109,10 +109,10 @@ public class RobotMap {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_ID);
             intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
-            aimMotor = new CANTalon(AIM_MOTOR_ID);
             intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
             intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
             intakeRightMotor.reverseSensor(true);
+            aimMotor = new CANTalon(AIM_MOTOR_ID);
             aimMotor.changeControlMode(TalonControlMode.Position);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
             launcherServoLeft = new Servo(LAUNCHER_SERVO_LEFT_PORT);
@@ -124,7 +124,7 @@ public class RobotMap {
                 aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
                 aimMotor.enableLimitSwitch(true, true);
                 aimMotor.enableBrakeMode(true);
-                // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D);
+                // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO uncomment
             }
             LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
         }

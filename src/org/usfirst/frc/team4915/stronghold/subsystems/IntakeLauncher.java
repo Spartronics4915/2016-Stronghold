@@ -9,13 +9,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.MoveToSetPointCommand;
 
 public class IntakeLauncher extends Subsystem {
 
     // Ranges -1 to 1, negative values are reverse direction
-    // Negative speed indicates a wheel spinning inwards and positive speed
-    // indicates a wheel spinning outwards.
+    // Negative values indicate a wheel spinning outwards and positive values
+    // indicate a wheel spinning inwards.
     private final double FULL_SPEED_REVERSE = 1.0;
     private final double FULL_SPEED_FORWARD = -1.0;
 
@@ -24,14 +25,16 @@ public class IntakeLauncher extends Subsystem {
     private final int LAUNCHER_MIN_HEIGHT_DEGREES = -10; // TODO, in degrees
                                                          // from horizontal
 
-    private final double LAUNCHER_MAX_HEIGHT_VOLTS = 1023; // TODO, in
-                                                           // potentiometer
-                                                           // volts
-    private final double LAUNCHER_MIN_HEIGHT_VOLTS = 0; // TODO, in
-                                                        // potentiometer volts
+    private final double LAUNCHER_MAX_HEIGHT_VOLTS = 1023.0; // TODO, in
+                                                             // potentiometer
+                                                             // volts
+    private final double LAUNCHER_MIN_HEIGHT_VOLTS = 0.0; // TODO, in
+                                                          // potentiometer volts
 
-    private final double LAUNCHER_NEUTRAL_HEIGHT_VOLTS = 200; //TODO, in potentiometer volts
-    
+    private final double LAUNCHER_NEUTRAL_HEIGHT_VOLTS = 200.0; // TODO, in
+                                                                // potentiometer
+                                                                // volts
+
     private final double JOYSTICK_SCALE = 1.0; // TODO
 
     private final double SERVO_LAUNCH_POSITION = 1.0;
@@ -53,12 +56,14 @@ public class IntakeLauncher extends Subsystem {
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
+    // These servos push the boulder into the launcher flywheels
     public Servo launcherServoLeft = RobotMap.launcherServoLeft;
     public Servo launcherServoRight = RobotMap.launcherServoRight;
 
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new MoveToSetPointCommand());
+        // setDefaultCommand(new BackUpJoystickControlCommand());
     }
 
     // Sets the speed on the flywheels to suck in the boulder
@@ -156,5 +161,10 @@ public class IntakeLauncher extends Subsystem {
 
     public void setForceLauncherNeutral(boolean forceLauncherNeutral) {
         this.forceLauncherNeutral = forceLauncherNeutral;
+    }
+
+    public void backUpJoystickMethod() {
+        aimMotor.changeControlMode(TalonControlMode.PercentVbus);
+        aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
     }
 }
