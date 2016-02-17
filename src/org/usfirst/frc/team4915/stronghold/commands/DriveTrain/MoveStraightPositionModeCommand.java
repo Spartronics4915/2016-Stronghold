@@ -48,7 +48,7 @@ public class MoveStraightPositionModeCommand extends Command {
 
         //new equation
         double ticksToMove = (this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle)/ (approxCircumference);
-
+        System.out.println("ticksToMove: " + ticksToMove);
         //double startingTickValue;
         //double endValue;
         //reset encoders
@@ -61,7 +61,7 @@ public class MoveStraightPositionModeCommand extends Command {
             // All the motors are inverted/backwards. The ticks are moving down
             // when moving forward
             this.desiredTicksValue.add(ticksToMove);
-	    SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
+        SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
         }
     }
 
@@ -79,7 +79,7 @@ public class MoveStraightPositionModeCommand extends Command {
         } else {
             this.driveTrain.driveStraight(-this.driveStraightValue);
         }
-	SmartDashboard.putNumber("Drive Straight: Input distance", this.inputDistanceInches);
+    SmartDashboard.putNumber("Drive Straight: Input distance", this.inputDistanceInches);
     }
 
     // Make this return true when this Command no longer needs to run execute()
