@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
@@ -33,9 +33,10 @@ public class RobotMap {
     // Define port for the boulder switch
     private static final int BOULDER_SWITCH_PORT = 2;
 
-    // Define port for the launcher pneumatic
-    private static final int LAUNCHER_SOLENOID_PORT = 2; //TODO
-
+    // Define ports for the launcher servos
+    private static final int LAUNCHER_SERVO_LEFT_PORT = 0; //TODO
+    private static final int LAUNCHER_SERVO_RIGHT_PORT = 1; //TODO
+    
     // Define channels for scaling motors
     private static final int SCALING_MOTOR_ID = 18; // TODO
     private static final int SCALING_WINCH_ID = 19; // TODO
@@ -68,7 +69,8 @@ public class RobotMap {
     public static DigitalInput boulderSwitch;
 
     // Create the launcher solenoid
-    public static Solenoid launcherSolenoid;
+    public static Servo launcherServoLeft;
+    public static Servo launcherServoRight;
 
     // Create the motor controllers for the Scaler
     public static CANTalon scalingMotor;
@@ -113,7 +115,8 @@ public class RobotMap {
             intakeRightMotor.reverseSensor(true);
             aimMotor.changeControlMode(TalonControlMode.Position);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
-            launcherSolenoid = new Solenoid(LAUNCHER_SOLENOID_PORT);
+            launcherServoLeft = new Servo(LAUNCHER_SERVO_LEFT_PORT);
+            launcherServoRight = new Servo(LAUNCHER_SERVO_RIGHT_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
             
             // setup the motor

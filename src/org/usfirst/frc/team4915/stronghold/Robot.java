@@ -12,7 +12,6 @@ import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 /**
  * The VM is configured to automatically run this class, and to call the

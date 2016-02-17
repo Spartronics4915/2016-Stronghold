@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,6 +33,9 @@ public class IntakeLauncher extends Subsystem {
 
     private final double JOYSTICK_SCALE = 1.0; // TODO
 
+    private final double SERVO_LAUNCH_POSITION = 1.0;
+    private final double SERVO_NEUTRAL_POSITION = 1.0;
+    
     private double setPoint; // in potentiometer volts
     private boolean wheelsFinished = false;
 
@@ -47,7 +51,9 @@ public class IntakeLauncher extends Subsystem {
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
-    public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
+    public Servo launcherServoLeft = RobotMap.launcherServoLeft;
+    public Servo launcherServoRight = RobotMap.launcherServoRight;
+    
 
     @Override
     protected void initDefaultCommand() {
@@ -74,12 +80,14 @@ public class IntakeLauncher extends Subsystem {
         this.wheelsFinished = wheelsFinished;
     }
 
-    public void activatePneumatic() {
-        this.launcherSolenoid.set(true);
+    public void activateLauncherServos() {
+        this.launcherServoLeft.set(SERVO_LAUNCH_POSITION);
+        this.launcherServoRight.set(SERVO_LAUNCH_POSITION);
     }
 
-    public void retractPneumatic() {
-        this.launcherSolenoid.set(false);
+    public void retractLauncherServos() {
+        this.launcherServoLeft.set(SERVO_NEUTRAL_POSITION);
+        this.launcherServoRight.set(SERVO_NEUTRAL_POSITION);
     }
 
     public void readSetPoint() {

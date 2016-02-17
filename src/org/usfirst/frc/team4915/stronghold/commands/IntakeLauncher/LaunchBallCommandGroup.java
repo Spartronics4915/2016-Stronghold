@@ -6,8 +6,8 @@ public class LaunchBallCommandGroup extends CommandGroup {
 
     public LaunchBallCommandGroup() {
         addParallel(new SpinLaunchWheelsOutCommand());
-        addSequential(new ActivateLauncherPneumaticCommand());
-        addSequential(new RetractLauncherPneumaticCommand());
+        addSequential(new ActivateLauncherServosCommand());
+        addSequential(new RetractLauncherServosCommand());
         addSequential(new StopWheelsCommand());
     }
 }
