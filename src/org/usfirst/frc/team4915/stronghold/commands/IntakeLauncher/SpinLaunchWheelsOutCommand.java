@@ -1,9 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class SpinLaunchWheelsOutCommand extends Command {
 
@@ -26,7 +25,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        // Ends once the command to retract the pneumatic ends
+        // Ends once stopWheelsCommand is used
         return Robot.intakeLauncher.areWheelsFinished();
     }
 

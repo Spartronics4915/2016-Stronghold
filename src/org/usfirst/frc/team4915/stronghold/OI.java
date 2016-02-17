@@ -1,9 +1,10 @@
 package org.usfirst.frc.team4915.stronghold;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
@@ -11,7 +12,7 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLaunc
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherForceDownCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherForceNeutralCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
@@ -19,11 +20,10 @@ import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -44,12 +44,14 @@ public class OI {
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
 
-    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; //Test
+    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; // Test
     public static final int LAUNCHER_FORCE_DOWN_BUTTON_NUMBER = 1;
     public static final int AUTO_AIM_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 8;
-    public static final int ACTIVATE_SERVOS_TEST_BUTTON_NUMBER = 6; //Test Button
-    public static final int RETRACT_SERVOS_TEST_BUTTON_NUMBER = 7; //Test Button
+    public static final int ACTIVATE_SERVOS_TEST_BUTTON_NUMBER = 6; // Test
+                                                                    // Button
+    public static final int RETRACT_SERVOS_TEST_BUTTON_NUMBER = 7; // Test
+                                                                   // Button
 
     // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 2;
@@ -120,11 +122,11 @@ public class OI {
             initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
             initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(500));
-            initializeButton(this.launcherForceDownButton, aimStick, LAUNCHER_FORCE_DOWN_BUTTON_NUMBER, new LauncherForceDownCommand());
+            initializeButton(this.launcherForceDownButton, aimStick, LAUNCHER_FORCE_DOWN_BUTTON_NUMBER, new LauncherForceNeutralCommand());
             initializeButton(this.activateServosTestButton, aimStick, ACTIVATE_SERVOS_TEST_BUTTON_NUMBER, new ActivateLauncherServosCommand());
             initializeButton(this.retractServosTestButton, aimStick, RETRACT_SERVOS_TEST_BUTTON_NUMBER, new RetractLauncherServosCommand());
             launcherForceDownButton = new JoystickButton(aimStick, LAUNCHER_FORCE_DOWN_BUTTON_NUMBER);
-            launcherForceDownButton.whenPressed(new LauncherForceDownCommand());
+            launcherForceDownButton.whenPressed(new LauncherForceNeutralCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 

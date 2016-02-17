@@ -1,20 +1,16 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class AimerGoToAngleCommand extends Command {
+public class LauncherForceNeutralCommand extends Command {
 
-    private double setPoint;
-
-    public AimerGoToAngleCommand(double setPoint) {
-        this.setPoint = setPoint;
-        SmartDashboard.putNumber("Aimer setPoint", this.setPoint);
+    public LauncherForceNeutralCommand() {
+        requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.setSetPoint(setPoint);
+        Robot.intakeLauncher.setForceLauncherNeutral(true);
     }
 
     protected void execute() {
@@ -22,14 +18,14 @@ public class AimerGoToAngleCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     protected void end() {
-
+        Robot.intakeLauncher.setForceLauncherNeutral(false);
     }
 
     protected void interrupted() {
-
+        end();
     }
 }

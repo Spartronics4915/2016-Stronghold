@@ -1,17 +1,15 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.MoveToSetPointCommand;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.MoveToSetPointCommand;
 
 public class IntakeLauncher extends Subsystem {
 
@@ -32,12 +30,15 @@ public class IntakeLauncher extends Subsystem {
     private final double LAUNCHER_MIN_HEIGHT_VOLTS = 0; // TODO, in
                                                         // potentiometer volts
 
+    private final double LAUNCHER_NEUTRAL_HEIGHT_VOLTS = 200; //TODO, in potentiometer volts
+    
     private final double JOYSTICK_SCALE = 1.0; // TODO
 
     private final double SERVO_LAUNCH_POSITION = 1.0;
     private final double SERVO_NEUTRAL_POSITION = 1.0;
 
     private double setPoint; // in potentiometer volts
+    private boolean forceLauncherNeutral = false;
     private boolean wheelsFinished = false;
 
     // left and right are determined when standing behind the robot
@@ -113,7 +114,12 @@ public class IntakeLauncher extends Subsystem {
     public void moveToSetPoint() {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
-        aimMotor.set(setPoint);
+        if (!forceLauncherNeutral) {
+            aimMotor.set(setPoint);
+        } else {
+            aimMotor.set(LAUNCHER_NEUTRAL_HEIGHT_VOLTS);
+        }
+        // TODO: calibrate potentiometer at the top and bottom?
     }
 
     public void keepSetPointInRange() {
@@ -143,12 +149,12 @@ public class IntakeLauncher extends Subsystem {
         double heightRatio = (volts - LAUNCHER_MIN_HEIGHT_VOLTS) / (LAUNCHER_MAX_HEIGHT_VOLTS - LAUNCHER_MIN_HEIGHT_VOLTS);
         return LAUNCHER_MIN_HEIGHT_DEGREES + (int) ((LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio);
     }
-    
-    public double getSetPoint() {
-        return setPoint;
+
+    public boolean getForceLauncherNeutral() {
+        return forceLauncherNeutral;
     }
-    
-    public double getMinHeight() {
-        return LAUNCHER_MIN_HEIGHT_VOLTS;
+
+    public void setForceLauncherNeutral(boolean forceLauncherNeutral) {
+        this.forceLauncherNeutral = forceLauncherNeutral;
     }
 }

@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4915.stronghold;
 
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
-
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
@@ -10,6 +8,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
@@ -35,16 +34,16 @@ public class RobotMap {
     private static final int BOULDER_SWITCH_PORT = 2;
 
     // Define ports for the launcher servos
-    private static final int LAUNCHER_SERVO_LEFT_PORT = 0; //TODO
-    private static final int LAUNCHER_SERVO_RIGHT_PORT = 1; //TODO
-    
+    private static final int LAUNCHER_SERVO_LEFT_PORT = 0;
+    private static final int LAUNCHER_SERVO_RIGHT_PORT = 1;
+
     // Define channels for scaling motors
     private static final int SCALING_MOTOR_ID = 18; // TODO
     private static final int SCALING_WINCH_ID = 19; // TODO
 
-    private static final int AIMER_P = 0;
-    private static final int AIMER_I = 0;
-    private static final int AIMER_D = 0;
+    // private static final int AIMER_P = 0; //TODO uncomment
+    // private static final int AIMER_I = 0; //TODO uncomment
+    // private static final int AIMER_D = 0; //TODO uncomment
 
     // Create motor controllers for the driveTrain
     public static CANTalon leftBackMotor;
@@ -57,8 +56,8 @@ public class RobotMap {
 
     // Create the gyro
     public static AnalogGyro gyro;
-    
-    //Create IMU
+
+    // Create IMU
     public static BNO055 imu;
 
     // Create the motor controllers for the IntakeLauncher
@@ -119,13 +118,13 @@ public class RobotMap {
             launcherServoLeft = new Servo(LAUNCHER_SERVO_LEFT_PORT);
             launcherServoRight = new Servo(LAUNCHER_SERVO_RIGHT_PORT);
             System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
-            
+
             // setup the motor
             if (aimMotor.isSensorPresent(FeedbackDevice.AnalogPot) != null) {
                 aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
                 aimMotor.enableLimitSwitch(true, true);
                 aimMotor.enableBrakeMode(true);
-                aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D);
+                // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D);
             }
             LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
         }
