@@ -2,11 +2,8 @@ package org.usfirst.frc.team4915.stronghold.utils;
 
 import java.util.TimerTask;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * BNO055 IMU for the FIRST Robotics Competition.

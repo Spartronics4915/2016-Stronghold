@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4915.stronghold;
 
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
+
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
@@ -8,7 +10,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
