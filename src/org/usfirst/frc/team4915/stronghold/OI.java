@@ -4,9 +4,7 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherPneumaticCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
@@ -15,6 +13,7 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLaunch
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
@@ -80,18 +79,44 @@ public class OI {
     public JoystickButton scalerReachUpButton;
     public JoystickButton scalerReachDownButton;
     public JoystickButton scalerLiftButton;
-
-    public SendableChooser autonomousProgramChooser;
-
+    
+    //variables for the sendable chooser
+    public SendableChooser startingFieldPosition;
+    public SendableChooser barrierType;
+    public SendableChooser strategy;
 
     public OI() {
-        // autonomous
-        autonomousProgramChooser = new SendableChooser();
 
-        autonomousProgramChooser.addDefault("Autonomous Turn", new AutoRotateDegrees(false, 90));
-        autonomousProgramChooser.addObject("Autonomous Just Drive", new MoveStraightPositionModeCommand(30));
-        SmartDashboard.putString("Favorite Programmer", "Michaela");
-        SmartDashboard.putData("Autonomous Program", autonomousProgramChooser);
+        // *****autonomous*****
+        //***Three Sendable Choosers***
+        //SendableChooser for the starting field position
+        startingFieldPosition = new SendableChooser();
+        SmartDashboard.putData("Starting Field Position for autonomous", startingFieldPosition);
+        startingFieldPosition.addDefault("Field Position 1: Low Bar", Autonomous.Position.ONE);
+        startingFieldPosition.addObject("Field Position 2", Autonomous.Position.TWO);
+        startingFieldPosition.addObject("Field Position 3:", Autonomous.Position.THREE);
+        startingFieldPosition.addObject("Field Position 4:", Autonomous.Position.FOUR);
+        startingFieldPosition.addObject("Field Position 5", Autonomous.Position.FIVE);
+        
+        //SendableChooser for the barrier type
+        //assigning each barrier to a number
+        barrierType = new SendableChooser();
+        SmartDashboard.putData("Barrier Type for autonomous", barrierType);
+        barrierType.addDefault("Low Bar", Autonomous.Type.LOWBAR);
+        barrierType.addObject("Cheval De Frise", Autonomous.Type.CHEVAL_DE_FRISE);
+        barrierType.addObject("Moat", Autonomous.Type.MOAT);
+        barrierType.addObject("Ramparts", Autonomous.Type.RAMPARTS);
+        barrierType.addObject("Rough Terrain", Autonomous.Type.ROUGH_TERRAIN);
+        barrierType.addObject("Rock Wall", Autonomous.Type.ROCK_WALL);
+        
+        //SendableChooser for the strategy
+        strategy = new SendableChooser();
+        SmartDashboard.putData("Strategy for autonomous", strategy);
+        strategy.addDefault("None", Autonomous.Strat.NONE);
+        strategy.addObject("Drive across barrier", Autonomous.Strat.DRIVE_ACROSS);
+        strategy.addObject("Drive and shoot high goal with vision", Autonomous.Strat.DRIVE_SHOOT_VISION);
+        strategy.addObject("Drive and shoot high goal without vision", Autonomous.Strat.DRIVE_SHOOT_NO_VISION);
+
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
 
