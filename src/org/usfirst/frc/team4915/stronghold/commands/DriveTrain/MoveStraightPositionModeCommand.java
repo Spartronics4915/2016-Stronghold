@@ -39,7 +39,7 @@ public class MoveStraightPositionModeCommand extends Command {
      * This initializes the variables for the distance calculator.
      */
     @Override
-    protected void initialize() {
+    public void initialize() {
 
         this.desiredTicksValue = new ArrayList<Double>();
 
@@ -68,7 +68,7 @@ public class MoveStraightPositionModeCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         System.out.println("Executing move straight");
         if (this.inputDistanceInches < 0) {
             this.driveTrain.driveStraight(this.driveStraightValue);
@@ -79,7 +79,7 @@ public class MoveStraightPositionModeCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         // Checking if all the motors have reached the desired tick values
         return isMotorFinished(0) || isMotorFinished(1) || isMotorFinished(2) || isMotorFinished(3);
     }
@@ -103,14 +103,14 @@ public class MoveStraightPositionModeCommand extends Command {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
+    public void end() {
         this.driveTrain.robotDrive.stopMotor();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
-    protected void interrupted() {
+    public void interrupted() {
         end();
     }
 }

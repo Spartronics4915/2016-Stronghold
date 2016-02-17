@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
+import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
@@ -28,7 +30,7 @@ public class Robot extends IterativeRobot {
     public static OI oi;
     public static GearShift gearShift;
     public static Scaler scaler;
-    
+
     Command autonomousCommand;
     SendableChooser autonomousProgramChooser;
 
@@ -46,9 +48,9 @@ public class Robot extends IterativeRobot {
             gearShift = new GearShift();
             System.out.println("ModuleManager initialized: DriveTrain");
         }
-        if (ModuleManager.GEARSHIFT_MODULE_ON){
-            SmartDashboard.putString("Gear shift", "Initialized" );
-            gearShift= new GearShift();
+        if (ModuleManager.GEARSHIFT_MODULE_ON) {
+            SmartDashboard.putString("Gear shift", "Initialized");
+            gearShift = new GearShift();
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLauncher = new IntakeLauncher();
@@ -71,10 +73,10 @@ public class Robot extends IterativeRobot {
             scaler = new Scaler();
         }
         if (ModuleManager.IMU_MODULE_ON) {
-            
+
             SmartDashboard.putString("Module Manager", "imu Initialized");
             System.out.println("Module Manager initialized: imu");
-            
+
         }
         oi = new OI(); // 3. Construct OI after subsystems created
     }
@@ -86,9 +88,10 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+
         // schedule the autonomous command
-        autonomousCommand = (Command) oi.autonomousProgramChooser.getSelected();
-// in inches
+
+        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat)oi.strategy.getSelected(), (Autonomous.Position)oi.startingFieldPosition.getSelected());
 
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
@@ -129,8 +132,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        
-        if (ModuleManager.INTAKELAUNCHER_MODULE_ON){
+
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             SmartDashboard.putNumber("aimMotor Encoder position = ", RobotMap.aimMotor.getEncPosition());
             SmartDashboard.putNumber("Aimer JoystickY Position: ", Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
         }
