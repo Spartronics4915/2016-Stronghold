@@ -58,18 +58,60 @@ class TargetState:
         
     def CompareKeypointToHistory(self):
     	self.m_kpHistory = self.m_kpHistory[-2:]
-    	distBetweenKeypoints = (self.m_kpHistory[0].pt[0]
-    	- self.m_kp.pt[0])**2 + (self.m_kpHistory[0].pt[1] 
-    	- self.m_kp.pt[1])**2
-    	if distBetweenKeypoints > 100:
+        #print("hello: len(%d) %s", (len(self.m_kpHistory), 
+        #                            repr(self.m_kpHistory[0])))
+    	distBetweenKeypoints =(self.m_kpHistory[0].pt[0]-self.m_kp.pt[0])**2 + \
+                              (self.m_kpHistory[0].pt[1] - self.m_kp.pt[1])**2
+    	if distBetweenKeypoints > -1:
     		self.m_kp = self.m_kpHistory[0]
+
+    def calcDist(self, kp1, kp2):
+    	distBetweenKeypoints =(kp1.pt[0]-kp2.pt[0])**2 + \
+                              (kp1.pt[1] - kp2.pt[1])**2
+        return distBetweenKeypoints
 
     def NewKeypoints(self, kplist):
         if len(kplist) > 0:
-            kplist.sort(self.kpcompare)
-            self.m_kp = kplist[0]
-            self.m_kpHistory.append(self.m_kp)
-            self.CompareKeypointToHistory()
+            if 0:
+                # always sort biggest to front
+                if len(kplist) > 0:
+                    kplist.sort(self.kpcompare)
+                    self.m_kp = kplist[0]
+            if 0:
+                #average 5 most recent keypoints (in progress)
+                kplist.sort(self.kpcompare)
+                self.m_kp = kplist[0]
+                self.m_kpHistory.append(self.m_kp)
+                self.m_kpHistory = self.m_kpHistory[-4:]
+                averagekpHistory(self.m_kpHistory, kp)
+            if 0:
+                #keep the 10 biggest keypoints ever found (not very good)
+                kplist.extend(self.m_kpHistory)
+                self.m_kpHistory = kplist
+                kplist.sort(self.kpcompare)
+                kplist = kplist[:10]
+                self.m_kpHistory = kplist
+            if 1: 
+                nearest = None
+                nearestD = 10000
+                if self.m_kp:
+                    # old valid kp... just search near
+                    for kp in kplist:
+                        dist = self.calcDist(self.m_kp, kp)
+                        if dist < nearestD and dist < 125:
+                            nearest = kp
+                            nearestD = dist
+
+                if not nearest:
+                    kplist.sort(self.kpcompare)
+                    self.m_kp = kplist[0]
+
+                if nearest:
+                    self.m_kp = nearest
+            # append and trucate to fixed length:
+            # self.m_kpHistory = self.m_kpHistory.append(self.m_kp)[-5:]
+
+            # self.CompareKeypointToHistory()
             if 0:
                 # print out our keypoints for debugging
                 for kp in kplist:
