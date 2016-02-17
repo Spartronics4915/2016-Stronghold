@@ -56,10 +56,13 @@ class RobotCnx:
         #This is where we can be woken up if the driver station (or robot) wants to talk to us
         if key == 'TargetHigh':
         	self.targetHigh = value
+            #print(value)
         elif key == 'AutoAimEnabled':
         	self.autoAimEnabled = value
+            #print(value)
         else:
-        	print("Unexpected key in visValueChanged")
+            pass
+        	# print("Unexpected key in visValueChanged")
 
 class ConnectionListener:
     def __init__(self):

@@ -18,6 +18,9 @@ public class ArcadeDrive extends Command {
     private double joystickX;
     private double joystickY;
     public static List<CANTalon> motors = Robot.driveTrain.motors;
+    public double[] oldVelocity = new double[3];
+    public double[] distTraveled = new double[3];
+    public double distFromOrigin;
 
     public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -59,7 +62,9 @@ public class ArcadeDrive extends Command {
     	   
     	   BNO055.CalData calData = RobotMap.imuEuler.getCalibration();
     	   int num = (int)(.5 + RobotMap.imuEuler.getHeading());
+    	   distFromOrigin = BNO055.getInstance().getDistFromOrigin();
     	   
+    	   SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
     	   SmartDashboard.putBoolean("IMU present", RobotMap.imuEuler.isSensorPresent());
     	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imuEuler.isInitialized());
     	   SmartDashboard.putNumber("IMU heading", num);
@@ -85,5 +90,8 @@ public class ArcadeDrive extends Command {
     protected void interrupted() {
     	end();
     }
+    
+  //Call every 100th of a sec
+    
 
 }
