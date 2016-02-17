@@ -1,6 +1,4 @@
 package org.usfirst.frc.team4915.stronghold;
-
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -87,6 +85,7 @@ public class OI {
 
 
     public OI() {
+        // autonomous
         autonomousProgramChooser = new SendableChooser();
         SmartDashboard.putData("Autonomous Program", autonomousProgramChooser);
         autonomousProgramChooser.addObject("Autonomous Turn", new AutoRotateDegrees(false, 90));
