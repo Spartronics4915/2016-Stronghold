@@ -36,7 +36,7 @@ public class IntakeLauncher extends Subsystem {
 
     private final double SERVO_LAUNCH_POSITION = 1.0;
     private final double SERVO_NEUTRAL_POSITION = 1.0;
-    
+
     private double setPoint; // in potentiometer volts
     private boolean wheelsFinished = false;
 
@@ -54,7 +54,6 @@ public class IntakeLauncher extends Subsystem {
 
     public Servo launcherServoLeft = RobotMap.launcherServoLeft;
     public Servo launcherServoRight = RobotMap.launcherServoRight;
-    
 
     @Override
     protected void initDefaultCommand() {
@@ -104,7 +103,7 @@ public class IntakeLauncher extends Subsystem {
         setPoint += offset;
     }
 
-    public void offsetSetPoint() {
+    public void moveLauncherWithJoystick() {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
         if (Math.abs(joystickY) > .1) {
             offsetSetPoint(joystickY * JOYSTICK_SCALE);
@@ -143,5 +142,13 @@ public class IntakeLauncher extends Subsystem {
     public int voltsToDegrees(double volts) {
         double heightRatio = (volts - LAUNCHER_MIN_HEIGHT_VOLTS) / (LAUNCHER_MAX_HEIGHT_VOLTS - LAUNCHER_MIN_HEIGHT_VOLTS);
         return LAUNCHER_MIN_HEIGHT_DEGREES + (int) ((LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio);
+    }
+    
+    public double getSetPoint() {
+        return setPoint;
+    }
+    
+    public double getMinHeight() {
+        return LAUNCHER_MIN_HEIGHT_VOLTS;
     }
 }
