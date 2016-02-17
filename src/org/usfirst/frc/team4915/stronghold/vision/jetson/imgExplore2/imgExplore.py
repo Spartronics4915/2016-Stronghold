@@ -495,8 +495,7 @@ class App:
                     detector = cv2.SimpleBlobDetector(bp)
                     self.algostate["blobdetector"] = detector
                 else:
-                    detector = self.algostate["blobdetector"] 
-
+                    detector = self.algostate["blobdetector"]
                 if 0:
                     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 elif 0:
@@ -513,7 +512,7 @@ class App:
             			self.LUT[i] = 255 * ((i/255.0) ** gamma)
             		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             		frame = cv2.LUT(gray, self.LUT)
-
+            		
                 keypoints = detector.detect(frame) # we'll draw them
                 keypoints = self.robotCnx.NewKeypoints(keypoints)
             elif cmode == "houghlines":

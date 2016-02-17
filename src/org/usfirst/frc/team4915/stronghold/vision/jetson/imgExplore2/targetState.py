@@ -27,6 +27,7 @@ class TargetState:
         self.m_center = (self.m_res[0]/2, self.m_res[1]/2)
         self.m_visTab.putString("~TYPE~", "Vision")
         self.m_visTab.putInt("TargetsAcquired", 0)
+        self.m_kpHistory = []
 
     # a key-point sorter:
     #   We wish to find the most relevant keypoints.
@@ -54,11 +55,21 @@ class TargetState:
 
     def NewLines(self, lines):
         return lines
+        
+    def CompareKeypointToHistory(self):
+    	self.m_kpHistory = self.m_kpHistory[-2:]
+    	distBetweenKeypoints = (self.m_kpHistory[0].pt[0]
+    	- self.m_kp.pt[0])**2 + (self.m_kpHistory[0].pt[1] 
+    	- self.m_kp.pt[1])**2
+    	if distBetweenKeypoints > 100:
+    		self.m_kp = self.m_kpHistory[0]
 
     def NewKeypoints(self, kplist):
         if len(kplist) > 0:
             kplist.sort(self.kpcompare)
             self.m_kp = kplist[0]
+            self.m_kpHistory.append(self.m_kp)
+            self.CompareKeypointToHistory()
             if 0:
                 # print out our keypoints for debugging
                 for kp in kplist:
@@ -68,6 +79,14 @@ class TargetState:
             self.m_kp = None
         self.updateVisionTable()
         return kplist
+        
+    def AverageKeypoints(self, kplist):
+    	if len(kplist) > 0:
+    		pass
+    	else:
+    		self.m_kp = None
+    	self.updateVisionTable()
+    	return kplist
 
     def updateVisionTable(self):
         kp = self.m_kp

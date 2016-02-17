@@ -53,13 +53,14 @@ class RobotCnx:
 
     @staticmethod
     def visValueChanged(table, key, value, isNew):
-        #This is where we can be woken up if the driver station (or robot) wants to talk to us
+        #This is where we can be woken up if the 
+        #driver station (or robot) wants to talk to us
         if key == 'TargetHigh':
         	self.targetHigh = value
         elif key == 'AutoAimEnabled':
         	self.autoAimEnabled = value
         else:
-        	print("Unexpected key in visValueChanged")
+        	#print("Unexpected key in visValueChanged")
 
 class ConnectionListener:
     def __init__(self):
