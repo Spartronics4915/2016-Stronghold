@@ -84,20 +84,19 @@ case "$1" in
         ;;
 
     status)
+        f_message 'vision4915 status....\n'
         pid=`f_getpid mjpg_streamer`
         if [ -n "$pid" ];
         then
-            f_message "mjpg_streamer is running with pid ${pid}"
-            f_message " started with: "
+            echo "mjpg_streamer is running with pid ${pid}, started with:"
             cat /proc/${pid}/cmdline; echo '\n'
         else
-            f_message "Could not find mjpg_streamer running"
+            echo  "Could not find mjpg_streamer running"
         fi
         pid=`f_getpid imgExplore` 
         if [ -n "$pid" ];
         then
-            f_message "imgExplore is running with pid ${pid}"
-            f_message " started with: "
+            echo "imgExplore is running with pid ${pid}, started with:"
             cat /proc/${pid}/cmdline; echo '\n'
         else
             f_message "Could not find imgExplore running"
