@@ -50,7 +50,15 @@ public class ArcadeDrive extends Command {
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
 
         
-        if (!VisionState.getInstance().followTargetX(Robot.driveTrain) ){
+        if (VisionState.getInstance().wantsControl()) {
+        	if (VisionState.getInstance().TargetX <= -1){
+    			Robot.driveTrain.turn(false);
+    		}
+    		else {
+    			Robot.driveTrain.turn(true);
+    		}
+        }
+        else {
     	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
                Robot.driveTrain.stop();
            } 
