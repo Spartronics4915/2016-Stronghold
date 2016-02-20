@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- <META HTTP-EQUIV="REFRESH" CONTENT="1">-->
+<html>
+
+<script>
+    function update()
+    {
+        var date = new Date();
+        dstr = date.toLocaleTimeString();
+        document.getElementById("timestamp").innerHTML = dstr;
+        setTimeout(update, 1000); // 1 tick/sec
+    }
+</script>
+
+<head>
+    <link href="imgServer.css" rel="stylesheet">
+</head>
+
+<body onload="update();">
+
+<!--- _body.html -->
+<a href="index.html"> <img src="favicon.ico" align="left" width="100"> </a>
+
+<H3>Spartronics4915 Jetson Vision Server</H3>
+
+<hr>
+<br/><br/>
+<!--- _body.html -->
+<br><br>
+
+<center>
+<img src="/?action=stream"> <br>
+last update: <span id="timestamp"></span>
+</center>
+
+
+</div>
+</body>
+</html>
