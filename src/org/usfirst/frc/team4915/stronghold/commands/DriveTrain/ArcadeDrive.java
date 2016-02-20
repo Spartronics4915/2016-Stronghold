@@ -68,7 +68,7 @@ public class ArcadeDrive extends Command {
     	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
     	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
     	   SmartDashboard.putNumber("IMU heading", num);
-    	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
+    	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + (calData.gyro * 10) + (calData.mag))); //Calibration values range from 0-3, Right to left: mag, gyro, accel
        }
     }
 
