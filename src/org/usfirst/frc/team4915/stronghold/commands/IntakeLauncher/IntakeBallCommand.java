@@ -14,6 +14,7 @@ public class IntakeBallCommand extends Command {
     @Override
     protected void initialize() {
         System.out.println("Intake Ball Command");
+        setTimeout(10); //TODO finalize time
     }
 
     @Override
@@ -26,16 +27,17 @@ public class IntakeBallCommand extends Command {
     protected boolean isFinished() {
         // ends once the ball is in the basket and presses the limit switch or
         // the stop wheels button is pressed
-        return (Robot.intakeLauncher.boulderSwitch.get() || Robot.intakeLauncher.areWheelsFinished());
+        return (Robot.intakeLauncher.boulderSwitch.get() || isTimedOut());
     }
 
     @Override
     protected void end() {
         SmartDashboard.putString("Boulder in Basket: ", "Yes");
+        Robot.intakeLauncher.stopWheels();
     }
 
     @Override
     protected void interrupted() {
-
+        end();
     }
 }

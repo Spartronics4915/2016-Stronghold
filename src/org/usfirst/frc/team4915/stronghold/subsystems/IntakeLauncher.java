@@ -10,7 +10,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.MoveToSetPointCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class IntakeLauncher extends Subsystem {
 
@@ -19,6 +20,7 @@ public class IntakeLauncher extends Subsystem {
     // indicate a wheel spinning inwards.
     private final double FULL_SPEED_REVERSE = 1.0;
     private final double FULL_SPEED_FORWARD = -1.0;
+    private final double ZERO_SPEED = 0;
 
     private final int LAUNCHER_MAX_HEIGHT_DEGREES = 70; // TODO, in degrees from
                                                         // horizontal
@@ -42,7 +44,6 @@ public class IntakeLauncher extends Subsystem {
 
     private double setPoint; // in potentiometer volts
     private boolean forceLauncherNeutral = false;
-    private boolean wheelsFinished = false;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -62,7 +63,7 @@ public class IntakeLauncher extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new MoveToSetPointCommand());
+        setDefaultCommand(new AimLauncherCommand());
         // setDefaultCommand(new BackUpJoystickControlCommand());
     }
 
@@ -77,13 +78,10 @@ public class IntakeLauncher extends Subsystem {
         this.intakeLeftMotor.set(FULL_SPEED_FORWARD);
         this.intakeRightMotor.set(FULL_SPEED_FORWARD);
     }
-
-    public boolean areWheelsFinished() {
-        return wheelsFinished;
-    }
-
-    public void setWheelsFinished(boolean wheelsFinished) {
-        this.wheelsFinished = wheelsFinished;
+    
+    public void stopWheels() {
+        this.intakeLeftMotor.set(ZERO_SPEED);
+        this.intakeRightMotor.set(ZERO_SPEED);
     }
 
     public void activateLauncherServos() {
@@ -100,15 +98,35 @@ public class IntakeLauncher extends Subsystem {
         setPoint = aimMotor.getPosition();
     }
 
+    //changes the set point to a value
     public void setSetPoint(double newSetPoint) {
         setPoint = newSetPoint;
     }
 
+    //changes the set point based on an offset
     public void offsetSetPoint(double offset) {
         readSetPoint();
         setPoint += offset;
     }
 
+    //sets the set point with the joystick and moves to set point
+    public void trackJoystick() {
+        moveLauncherWithJoystick();
+        moveToSetPoint();
+    }
+    
+    //sets the set point with vision and moves to set point
+    public void trackVision() {
+        moveLauncherWithVision();
+        moveToSetPoint();
+    }
+    
+    //changes the set point based on vision
+    public void moveLauncherWithVision() {
+        offsetSetPoint(VisionState.getInstance().TargetY); 
+    }
+    
+    //changes the set point based on the joystick
     public void moveLauncherWithJoystick() {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
         if (Math.abs(joystickY) > .1) {
@@ -116,6 +134,7 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
+    //sets the launcher position to the current set point
     public void moveToSetPoint() {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
@@ -127,6 +146,16 @@ public class IntakeLauncher extends Subsystem {
         // TODO: calibrate potentiometer at the top and bottom?
     }
 
+    //Checks to see if joystick control or vision control is needed and controls motion
+    public void aimLauncher() {
+        if(VisionState.getInstance().followTargetY(this)) {
+            trackVision();
+        } else {
+            trackJoystick();
+        }
+    }
+    
+    //makes sure the set point doesn't go outside its max or min range
     public void keepSetPointInRange() {
         if (setPoint > LAUNCHER_MAX_HEIGHT_VOLTS) {
             setPoint = LAUNCHER_MAX_HEIGHT_VOLTS;

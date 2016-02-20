@@ -8,8 +8,7 @@ public class LaunchBallCommandGroup extends CommandGroup {
     public LaunchBallCommandGroup() {
         addParallel(new SpinLaunchWheelsOutCommand());
         addSequential(new ActivateLauncherServosCommand());
-        addSequential(new WaitCommand(0.5)); //TODO we will see how much wait is necesary for servos
+        addSequential(new WaitCommand(2)); //TODO finalize time
         addSequential(new RetractLauncherServosCommand());
-        addSequential(new StopWheelsCommand());
     }
 }

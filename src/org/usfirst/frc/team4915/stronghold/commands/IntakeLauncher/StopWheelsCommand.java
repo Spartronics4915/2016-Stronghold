@@ -13,8 +13,8 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.setWheelsFinished(true);
         SmartDashboard.putString("Flywheels spinning ", "nowhere");
+        Robot.intakeLauncher.stopWheels();
     }
 
     @Override

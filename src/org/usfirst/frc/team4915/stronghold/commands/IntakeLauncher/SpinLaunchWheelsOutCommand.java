@@ -14,7 +14,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.setWheelsFinished(false);
+        setTimeout(2); //TODO finalize time
     }
 
     @Override
@@ -25,12 +25,12 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        // Ends once stopWheelsCommand is used
-        return Robot.intakeLauncher.areWheelsFinished();
+        return isTimedOut();
     }
 
     @Override
     protected void end() {
+        Robot.intakeLauncher.stopWheels();
         SmartDashboard.putString("Boulder in Basket: ", "No");
         System.out.println("Launch Command Ended");
     }

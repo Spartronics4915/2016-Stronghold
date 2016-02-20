@@ -2,11 +2,10 @@ package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-public class MoveToSetPointCommand extends Command {
+public class AimLauncherCommand extends Command {
 
-    public MoveToSetPointCommand() {
+    public AimLauncherCommand() {
         requires(Robot.intakeLauncher);
     }
 
@@ -15,10 +14,7 @@ public class MoveToSetPointCommand extends Command {
     }
 
     protected void execute() {
-        if (!VisionState.getInstance().followTargetY(Robot.intakeLauncher)) {
-            Robot.intakeLauncher.moveLauncherWithJoystick();
-            Robot.intakeLauncher.moveToSetPoint();
-        }
+        Robot.intakeLauncher.aimLauncher();
     }
 
     protected boolean isFinished() {
