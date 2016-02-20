@@ -20,7 +20,10 @@ public class MoveToSetPointCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(!VisionState.getInstance().followTargetY(Robot.intakeLauncher)) {
+    	if(VisionState.getInstance().wantsControl()) {
+        	//TODO this.setPointInDegrees(VisionState.getInstance().TargetY);
+    	}
+    	else {
     		Robot.intakeLauncher.offsetSetPoint();
     		Robot.intakeLauncher.moveToSetPoint();
     	}
