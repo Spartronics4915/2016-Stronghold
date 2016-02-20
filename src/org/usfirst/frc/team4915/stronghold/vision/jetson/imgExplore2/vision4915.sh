@@ -12,7 +12,7 @@
 
 f_message()
 {
-    printf "[+] $1"
+    printf "[+] $1\n"
 }
 
 f_getpid()
@@ -23,25 +23,20 @@ f_getpid()
 
 f_start()
 {
-    f_message "Starting vision4915 services"
-    f_message "  installing website"
+    f_message "Starting vision4915 mjpg services on port 80"
     rsync -a --delete imgServer.home /var/tmp
 
-    f_message "  starting mjpg_streamer on port 80"
-    LD_LIBRARY_PATH=/usr/local/lib \
-        /usr/local/bin/mjpg_streamer \
+    # nb: mjpg streamer requires quotes around -i and -o lines
+    #     because they embody private parameters.
+    # nb: messages are logged to /var/log/syslog
+    # more details here:
+    # http://rpm.pbone.net/index.php3/stat/45/idpl/23775320/numer/1/nazwa/mjpg_streamer 
+    www=/var/tmp/imgServer.home
+    /usr/local/bin/mjpg_streamer \
         -b \
-        -i "input_file.so -f /var/tmp/imgServer.home -n currentImage.jpg" \
-        -o "output_http.so -w /var/tmp/imgServer.home -p 80"
+        -i "/usr/local/lib/input_file.so -f $www -n currentImage.jpg" \
+        -o "/usr/local/lib/output_http.so -w $www -p 80" \
     f_message "  mjpg_stream started"
-
-    f_message "Starting imgExplore.py"
-    su ubuntu -c "python ./imgExplore.py \
-                    --algorithm 5 \
-                    --stashinterval 1 \
-                    --nodisplay \
-                    --daemonize >> /var/tmp/imgExplore.log 2>&1"
-    f_message "  imgExplore.py started"
 }
 
 f_stop()
@@ -52,20 +47,9 @@ f_stop()
     then
         kill $pid
     fi
-    # the next line is a bit of a big hammer.. we'd need a pid
-    # file to be more surgical
-    pid=`f_getpid imgExplore`
-    if [ -n "$pid" ];
-    then
-        kill $pid
-    fi
-    f_message "  vision4915 stopped"
 }
 
-visdir="/home/ubuntu/2016-Stronghold/src/org/usfirst/frc/team4915/stronghold/vision"
-if [ ! -d $visdir ] ; then
-    visdir="/home/ubuntu/vision"
-fi
+visdir="/home/ubuntu/vision"
 
 cd $visdir/jetson/imgExplore2
 
@@ -84,22 +68,24 @@ case "$1" in
         ;;
 
     status)
-        f_message 'vision4915 status....\n'
-        pid=`f_getpid mjpg_streamer`
+        f_message 'vision4915 status....'
+        pid=`f_getpid bin/mjpg_streamer`
         if [ -n "$pid" ];
         then
-            echo "mjpg_streamer is running with pid ${pid}, started with:"
-            cat /proc/${pid}/cmdline; echo '\n'
+            f_message  "  -mjpg_streamer pid ${pid}, started with:"
+            cat /proc/${pid}/cmdline; 
+            printf "\n"
         else
-            echo  "Could not find mjpg_streamer running"
+            f_message  "  -could not find mjpg_streamer running"
         fi
-        pid=`f_getpid imgExplore` 
+        pid=`f_getpid ./imgExplore` 
         if [ -n "$pid" ];
         then
-            echo "imgExplore is running with pid ${pid}, started with:"
-            cat /proc/${pid}/cmdline; echo '\n'
+            f_message "  -imgExplore pid ${pid}, started with:"
+            cat /proc/${pid}/cmdline 
+            printf "\n"
         else
-            f_message "Could not find imgExplore running"
+            f_message "  -could not find imgExplore running"
         fi
         ;;
 
