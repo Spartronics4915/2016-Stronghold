@@ -1,0 +1,26 @@
+/* CSS for 4915 imgServer */
+
+body {
+    min-height: 200px;
+    min-width: 100px;
+    background-color: #101010;
+    color: #A0A0A0;
+}
+
+h3 {
+    margin-left:10px;
+    margin-right:10px;
+    margin-top=50px;
+}
+
+a:link {
+    color: yellow
+}
+
+a:visited {
+    color: yellow
+}
+
+a:hover {
+    color: blue
+}

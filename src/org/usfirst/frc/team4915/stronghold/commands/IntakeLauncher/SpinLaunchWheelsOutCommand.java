@@ -32,6 +32,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
     @Override
     protected void end() {
         SmartDashboard.putString("Boulder in Basket: ", "No");
+        System.out.println("Launch Command Ended");
     }
 
     @Override

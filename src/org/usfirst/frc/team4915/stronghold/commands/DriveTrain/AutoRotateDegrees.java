@@ -16,7 +16,7 @@ public class AutoRotateDegrees extends Command {
     private boolean goLeft;
     double robotAngle;
     //creates new IMU variable
-    BNO055 imu = RobotMap.imu;
+    BNO055 imuEuler = RobotMap.imuEuler;
 
     // autonomous rotate command
     public AutoRotateDegrees(boolean left, double robotAngle) {
@@ -30,20 +30,20 @@ public class AutoRotateDegrees extends Command {
     @Override
     protected void initialize() {
         robotDrive.setMaxOutput(1.0);
-        startingGyroValue = imu.getHeading();
+        startingGyroValue = imuEuler.getHeading();
     }
 
     @Override
-    protected void execute() {
-    	System.out.println("Running AutoRotateDegrees");
+    public void execute() {
+
         Robot.driveTrain.turn(goLeft);
         SmartDashboard.putNumber("Robot Angle", robotAngle);
     }
 
     @Override
     protected boolean isFinished() {
-        double gyroDelta = Math.abs(imu.getHeading() - startingGyroValue);
-        System.out.println("Current IMU heading:" + imu.getHeading() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
+        double gyroDelta = Math.abs(imuEuler.getHeading() - startingGyroValue);
+        System.out.println("Current IMU heading:" + imuEuler.getHeading() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
         return gyroDelta >= robotAngle;
     }
 

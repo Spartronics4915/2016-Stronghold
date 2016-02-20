@@ -1,3 +1,4 @@
 
 - networktables implementation comes from RobotPy
-- other code comes from opencv/samples
+- imgExplore.py code comes from opencv/samples
+- mjpg-streamer was hand-built and extended to support command extensions

@@ -6,6 +6,7 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,6 +18,9 @@ public class ArcadeDrive extends Command {
     private double joystickX;
     private double joystickY;
     public static List<CANTalon> motors = Robot.driveTrain.motors;
+    public double[] oldVelocity = new double[3];
+    public double[] distTraveled = new double[3];
+    public double distFromOrigin;
 
     public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -56,11 +60,13 @@ public class ArcadeDrive extends Command {
     	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
     	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
     	   
-    	   BNO055.CalData calData = RobotMap.imu.getCalibration();
-    	   int num = (int)(.5 + RobotMap.imu.getHeading());
+    	   BNO055.CalData calData = RobotMap.imuEuler.getCalibration();
+    	   int num = (int)(.5 + RobotMap.imuEuler.getHeading());
+    	   distFromOrigin = BNO055.getInstance().getDistFromOrigin();
     	   
-    	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-    	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+    	   SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
+    	   SmartDashboard.putBoolean("IMU present", RobotMap.imuEuler.isSensorPresent());
+    	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imuEuler.isInitialized());
     	   SmartDashboard.putNumber("IMU heading", num);
     	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
        }
@@ -84,5 +90,8 @@ public class ArcadeDrive extends Command {
     protected void interrupted() {
     	end();
     }
+    
+  //Call every 100th of a sec
+    
 
 }

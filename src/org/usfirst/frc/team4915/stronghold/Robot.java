@@ -1,10 +1,13 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
+import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
+import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -85,10 +88,10 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+
         // schedule the autonomous command
-        autonomousCommand = (Command) oi.autonomousProgramChooser.getSelected();
-        autonomousCommand.start();
-// in inches
+        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat)oi.strategy.getSelected(), (Autonomous.Position)oi.startingFieldPosition.getSelected());
+
 
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
@@ -129,8 +132,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        
-        if (ModuleManager.INTAKELAUNCHER_MODULE_ON){
+
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             SmartDashboard.putNumber("aimMotor Encoder position = ", RobotMap.aimMotor.getEncPosition());
             SmartDashboard.putNumber("Aimer JoystickY Position: ", Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
         }
