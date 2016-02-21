@@ -35,8 +35,8 @@ public class IntakeLauncher extends Subsystem {
                                                             // potentiometer
                                                             // ticks
     private final double LAUNCHER_MIN_HEIGHT_TICKS = 0; // TODO, in
-                                                          // potentiometer
-                                                          // ticks
+                                                        // potentiometer
+                                                        // ticks
     private final double LAUNCHER_NEUTRAL_HEIGHT_DEGREES = 20.0; // TODO, in
                                                                  // degrees from
                                                                  // horizontal
@@ -63,13 +63,6 @@ public class IntakeLauncher extends Subsystem {
     // limitswitch in the back of the basket that tells the robot when the
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
-
-    public boolean boulderLoaded() {
-        SmartDashboard.putBoolean("Boulder Limit Switch ", boulderSwitch.get()); // TODO
-                                                                                 // Flip
-                                                                                 // polarity
-        return boulderSwitch.get();
-    }
 
     // These servos push the boulder into the launcher flywheels
     public Servo launcherServoLeft = RobotMap.launcherServoLeft;
@@ -165,17 +158,6 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
-    // sets the launcher position to the current set point
-    public void moveToSetPoint() {
-        keepSetPointInRange();
-        aimMotor.changeControlMode(TalonControlMode.Position);
-        // System.out.println("aimMotor.set(" + setPoint + ")");
-        if (!isOnTarget()) {
-            aimMotor.set(setPoint);
-        }
-        // System.out.println("setted------------------------------------------------------");
-    }
-
     // Checks to see if joystick control or vision control is needed and
     // controls motion
     public void aimLauncher() {
@@ -184,6 +166,17 @@ public class IntakeLauncher extends Subsystem {
         } else {
             trackJoystick();
         }
+    }
+
+    // sets the launcher position to the current set point
+    public void moveToSetPoint() {
+        keepSetPointInRange();
+        aimMotor.changeControlMode(TalonControlMode.Position);
+        aimMotor.set(setPoint);
+    }
+
+    public void launcherSetNeutralPosition() {
+        setSetPoint(-degreesToTicks(LAUNCHER_NEUTRAL_HEIGHT_DEGREES));
     }
 
     // makes sure the set point doesn't go outside its max or min range
@@ -196,19 +189,6 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
-    public void aimWithDashboard() {
-        setSetPoint(SmartDashboard.getNumber("Launcher Set Point: "));
-        moveToSetPoint();
-    }
-
-    public boolean isLauncherAtTop() {
-        return aimMotor.isRevLimitSwitchClosed();
-    }
-
-    public boolean isLauncherAtBottom() {
-        return aimMotor.isFwdLimitSwitchClosed();
-    }
-
     public double degreesToTicks(double degrees) {
         double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
         return LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * heightRatio;
@@ -219,17 +199,15 @@ public class IntakeLauncher extends Subsystem {
         return LAUNCHER_MIN_HEIGHT_DEGREES + (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio;
     }
 
-    public void backUpJoystickMethod() {
-        aimMotor.changeControlMode(TalonControlMode.PercentVbus);
-        aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
+    public boolean isLauncherAtTop() {
+        return aimMotor.isRevLimitSwitchClosed();
     }
 
-    public void launcherSetNeutralPosition() {
-        setSetPoint(-degreesToTicks(LAUNCHER_NEUTRAL_HEIGHT_DEGREES));
+    public boolean isLauncherAtBottom() {
+        return aimMotor.isFwdLimitSwitchClosed();
     }
 
     public double getPosition() {
-        // System.out.println("Current Position: " + aimMotor.getPosition());
         return Math.abs(aimMotor.getPosition()); // TODO will explain later
     }
 
@@ -237,9 +215,15 @@ public class IntakeLauncher extends Subsystem {
         return Math.abs(setPoint); // TODO will explain later
     }
 
-    private boolean isOnTarget() {
-        // return (getPosition() < getSetPoint() + 10.0 && getPosition() >
-        // getSetPoint() - 10);
-        return false;
+    public boolean boulderLoaded() {
+        SmartDashboard.putBoolean("Boulder Limit Switch ", boulderSwitch.get()); // TODO
+                                                                                 // Flip
+                                                                                 // polarity
+        return boulderSwitch.get();
+    }
+
+    public void backUpJoystickMethod() {
+        aimMotor.changeControlMode(TalonControlMode.PercentVbus);
+        aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
     }
 }

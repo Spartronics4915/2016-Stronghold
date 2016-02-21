@@ -1,34 +1,39 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+public class SpinLaunchWheelsOutCommand extends Command {
 
-/**
- *
- */
-public class AimWithDashboardCommand extends Command {
+    public boolean shouldActivateServos = true;
 
-    public AimWithDashboardCommand() {
+    // this command spins the launch wheels outwards so they will launch the
+    // ball
+    public SpinLaunchWheelsOutCommand() {
         requires(Robot.intakeLauncher);
     }
 
+    @Override
     protected void initialize() {
 
     }
 
+    @Override
     protected void execute() {
-        Robot.intakeLauncher.aimWithDashboard();
+        Robot.intakeLauncher.setSpeedLaunch();
     }
 
+    @Override
     protected boolean isFinished() {
         return false;
     }
 
+    @Override
     protected void end() {
-        // Robot.intakeLauncher.readSetPoint();
+
     }
 
+    @Override
     protected void interrupted() {
         end();
     }
