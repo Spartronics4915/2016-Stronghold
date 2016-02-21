@@ -22,24 +22,28 @@ public class AutoCommand1 extends CommandGroup {
         this.position = position;
         this.type = type;
         System.out.println("Angle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
-		if (ModuleManager.INTAKELAUNCHER_MODULE_ON);
+		if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 			Robot.intakeLauncher.launcherSetNeutralPosition(); //placeholder for setting the launcher to neutral driving position
-        switch(strat){
+		}
+		switch(strat){
         	case DRIVE_SHOOT_VISION: //sets us up to use vision to shoot a high goal. 
          		addParallel(new ArcadeDrive());
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
                 addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
-                if (ModuleManager.VISION_MODULE_ON);
+                if (ModuleManager.VISION_MODULE_ON){
         			addSequential(new AutoAimControlCommand(true, true));
+                }
         		break;
         	case DRIVE_SHOOT_NO_VISION:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
                 addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
-                if (ModuleManager.VISION_MODULE_ON);
+                if (ModuleManager.VISION_MODULE_ON){
         			addSequential(new AutoAimControlCommand(false, true));
-        		if (ModuleManager.INTAKELAUNCHER_MODULE_ON);
+                }
+        		if (ModuleManager.INTAKELAUNCHER_MODULE_ON){
         			addSequential(new AimerGoToAngleCommand(25));
         			addSequential(new LaunchBallCommand());
+        		}
         		break;
         	case DRIVE_ACROSS:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
@@ -123,22 +127,22 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 200;
+                distance = 20;
                 break;
             case CHEVAL_DE_FRISE:
-                distance = 168;
+                distance = 30;
                 break;
             case MOAT:
-                distance = 168;
+                distance = 15;
                 break;
             case RAMPARTS:
-                distance = 168;
+                distance = 35;
                 break;
             case ROUGH_TERRAIN:
-                distance = 168;
+                distance = 40;
                 break;
             case ROCK_WALL:
-                distance = 168;
+                distance = 5;
                 break;
             default:
                 distance = 0;
