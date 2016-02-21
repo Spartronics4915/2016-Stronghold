@@ -1,9 +1,15 @@
 package org.usfirst.frc.team4915.stronghold.commands;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+
+import org.usfirst.frc.team4915.stronghold.ModuleManager;
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommand;
+import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCommand1 extends CommandGroup {
@@ -16,12 +22,46 @@ public class AutoCommand1 extends CommandGroup {
         this.strat = strat;
         this.position = position;
         this.type = type;
-        
-        addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
-        addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+        System.out.println("Angle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
+
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+            Robot.intakeLauncher.launcherSetNeutralPosition(); // placeholder
+                                                               // for setting
+                                                               // the launcher
+                                                               // to neutral
+                                                               // driving
+                                                               // position
+        }
+        switch (strat) {
+            case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
+                                     // goal.
+                addParallel(new ArcadeDrive());
+                addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
+                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+                if (ModuleManager.VISION_MODULE_ON) {
+                    addSequential(new AutoAimControlCommand(true, true));
+                }
+                break;
+            case DRIVE_SHOOT_NO_VISION:
+                addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
+                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+                if (ModuleManager.VISION_MODULE_ON) {
+                    addSequential(new AutoAimControlCommand(false, true));
+                }
+                if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+                    addSequential(new AimerGoToAngleCommand(25));
+                    addSequential(new LaunchBallCommand());                }
+                break;
+            case DRIVE_ACROSS:
+                addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
+                break;
+            default:
+                break;
+        }
     }
 
     public static boolean getLeft(Autonomous.Position position) {
+        System.out.println(position);
         boolean left = true;
         switch (position) {
             case ONE:
@@ -46,6 +86,7 @@ public class AutoCommand1 extends CommandGroup {
 
     public static int getDegrees(Autonomous.Position position) {
         int degrees;
+        System.out.println(position);
         switch (position) {
             case ONE:
                 degrees = 45;
@@ -69,6 +110,7 @@ public class AutoCommand1 extends CommandGroup {
     }
 
     public static boolean getStrategy(Autonomous.Strat strat) {
+        System.out.println(strat);
         boolean vision = true;
         switch (strat) {
             case NONE:
@@ -81,32 +123,33 @@ public class AutoCommand1 extends CommandGroup {
             case DRIVE_SHOOT_NO_VISION:
                 vision = false;
                 break;
-             default:
-                 vision = true;
+            default:
+                vision = true;
         }
         return vision;
     }
 
     public static int getDistance(Autonomous.Type type) {
         int distance;
+        System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 200;
+                distance = 20;
                 break;
             case CHEVAL_DE_FRISE:
-                distance = 168;
+                distance = 0;
                 break;
             case MOAT:
-                distance = 168;
+                distance = 15;
                 break;
             case RAMPARTS:
-                distance = 168;
+                distance = 35;
                 break;
             case ROUGH_TERRAIN:
-                distance = 168;
+                distance = 40;
                 break;
             case ROCK_WALL:
-                distance = 168;
+                distance = 5;
                 break;
             default:
                 distance = 0;
