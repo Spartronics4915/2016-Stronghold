@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
-import com.sun.org.apache.xalan.internal.xsltc.trax.SmartTransformerFactoryImpl;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -11,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class IntakeLauncher extends Subsystem {
@@ -20,7 +18,7 @@ public class IntakeLauncher extends Subsystem {
     // Negative values indicate a wheel spinning outwards and positive values
     // indicate a wheel spinning inwards.
     private final double FULL_SPEED_REVERSE = .750;
-    private final double FULL_SPEED_FORWARD = -.750;
+    private final double FULL_SPEED_FORWARD = -1;
     private final double ZERO_SPEED = 0.0;
 
     private final double LAUNCHER_MAX_HEIGHT_DEGREES = 35.0; // TODO, in degrees
@@ -28,10 +26,10 @@ public class IntakeLauncher extends Subsystem {
     private final double LAUNCHER_MIN_HEIGHT_DEGREES = -16.0; // TODO, in
                                                               // degrees from
                                                               // horizontal
-    private final double LAUNCHER_MAX_HEIGHT_TICKS = 345.0; // TODO, in
+    private final double LAUNCHER_MAX_HEIGHT_TICKS = 550.0; // TODO, in
                                                             // potentiometer
                                                             // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 150.0; // TODO, in
+    private final double LAUNCHER_MIN_HEIGHT_TICKS = 0.0; // TODO, in
                                                             // potentiometer
                                                             // ticks
     private final double LAUNCHER_NEUTRAL_HEIGHT_DEGREES = 20.0; // TODO, in
@@ -113,10 +111,10 @@ public class IntakeLauncher extends Subsystem {
     public void launchEnd() {
         retractLauncherServos();
         stopWheels();
-        launcherSetNeutralPosition();
+        //launcherSetNeutralPosition();
     }
 
-    public void readSetPoint() { // TODO rename
+    private void readSetPoint() { // TODO rename
         setPoint = -getPosition();
     }
 
@@ -166,7 +164,9 @@ public class IntakeLauncher extends Subsystem {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         //System.out.println("aimMotor.set(" + setPoint + ")");
-        aimMotor.set(setPoint);
+        if (!isOnTarget()) {
+            aimMotor.set(setPoint);
+        }
         //System.out.println("setted------------------------------------------------------");
     }
 
@@ -229,5 +229,10 @@ public class IntakeLauncher extends Subsystem {
 
     public double getSetPoint() {
         return Math.abs(setPoint); //TODO will explain later
+    }
+    
+    private boolean isOnTarget() {
+        //return (getPosition() < getSetPoint() + 10.0 && getPosition() > getSetPoint() - 10);
+        return false;
     }
 }

@@ -1,18 +1,18 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class LaunchBallCommand extends Command {
 
+    public boolean shouldActivateServos = true;
+    
     // this command spins the launch wheels outwards so they will launch the
     // ball
     public LaunchBallCommand() {
         requires(Robot.intakeLauncher);
     }
 
-    private boolean shouldQuit = false;
     @Override
     protected void initialize() {
         setTimeout(1); //TODO finalize time
@@ -21,22 +21,21 @@ public class LaunchBallCommand extends Command {
     @Override
     protected void execute() {
         Robot.intakeLauncher.setSpeedLaunch();
-        if (!shouldQuit && isTimedOut())
-        {
+        if (isTimedOut() && shouldActivateServos) {
             Robot.intakeLauncher.activateLauncherServos();
-            setTimeout(5);
-            shouldQuit = true;
-        }
+            //System.out.println("Activating Servo");
+            shouldActivateServos = false;
+        } 
     }
 
     @Override
     protected boolean isFinished() {
-        return (shouldQuit && isTimedOut());
+        return (false);
     }
 
     @Override
     protected void end() {
-        System.out.println("Launch Command Ended");
+        //System.out.println("Launch Command Ended");
         Robot.intakeLauncher.launchEnd();
     }
 

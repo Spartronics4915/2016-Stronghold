@@ -33,7 +33,7 @@ public class IntakeBallCommand extends Command {
     @Override
     protected void end() {
         Robot.intakeLauncher.stopWheels();
-        Robot.intakeLauncher.launcherSetNeutralPosition();
+        //Robot.intakeLauncher.launcherSetNeutralPosition();
     }
 
     @Override
