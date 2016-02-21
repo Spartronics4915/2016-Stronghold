@@ -27,12 +27,15 @@ public class IntakeLauncher extends Subsystem {
                                                          // from horizontal
 
     private final double LAUNCHER_MAX_HEIGHT_TICKS = 900.0; // TODO, in
-                                                             // potentiometer
-                                                             // volts
+                                                            // potentiometer
+                                                            // volts
     private final double LAUNCHER_MIN_HEIGHT_TICKS = 100.0; // TODO, in
-                                                          // potentiometer volts
+                                                            // potentiometer
+                                                            // volts
 
-    private final double JOYSTICK_SCALE = 1.0; // TODO
+    private final double JOYSTICK_SCALE = 10.0; // TODO
+
+    private final double MIN_JOYSTICK_MOTION = 0.1;
 
     private final double SERVO_LAUNCH_POSITION = 1.0;
     private final double SERVO_NEUTRAL_POSITION = 1.0;
@@ -58,8 +61,7 @@ public class IntakeLauncher extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        
-        
+
         setDefaultCommand(new AimLauncherCommand());
         // setDefaultCommand(new BackUpJoystickControlCommand());
     }
@@ -126,7 +128,7 @@ public class IntakeLauncher extends Subsystem {
     // changes the set point based on the joystick
     public void moveLauncherWithJoystick() {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
-        if (Math.abs(joystickY) > .1) {
+        if (Math.abs(joystickY) > MIN_JOYSTICK_MOTION) {
             offsetSetPoint(joystickY * JOYSTICK_SCALE);
         }
     }
@@ -141,11 +143,11 @@ public class IntakeLauncher extends Subsystem {
     // Checks to see if joystick control or vision control is needed and
     // controls motion
     public void aimLauncher() {
-        //if (VisionState.getInstance().wantsControl()) {
-          //  trackVision();
-        //} else {
-            trackJoystick();
-       //}
+        // if (VisionState.getInstance().wantsControl()) {
+        // trackVision();
+        // } else {
+        trackJoystick();
+        // }
     }
 
     // makes sure the set point doesn't go outside its max or min range
@@ -165,6 +167,10 @@ public class IntakeLauncher extends Subsystem {
 
     public boolean isLauncherAtBottom() {
         return aimMotor.isRevLimitSwitchClosed();
+    }
+
+    public boolean isLauncherAtTop() {
+        return aimMotor.isFwdLimitSwitchClosed();
     }
 
     public double degreesToVolts(int degrees) {
@@ -189,8 +195,12 @@ public class IntakeLauncher extends Subsystem {
         aimMotor.changeControlMode(TalonControlMode.PercentVbus);
         aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
     }
-    
+
     public double getPosition() {
         return aimMotor.getPosition();
+    }
+
+    public double getSetPoint() {
+        return setPoint;
     }
 }

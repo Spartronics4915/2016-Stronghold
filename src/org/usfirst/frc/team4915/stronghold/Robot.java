@@ -135,6 +135,9 @@ public class Robot extends IterativeRobot {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             SmartDashboard.putNumber("aimMotor Potentiometer position = ", intakeLauncher.getPosition());
             SmartDashboard.putNumber("Aimer JoystickY Position: ", Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
+            SmartDashboard.putNumber("Aimer Set Point: ", intakeLauncher.getSetPoint());
+            SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
+            SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
         }
     }
 
@@ -144,5 +147,12 @@ public class Robot extends IterativeRobot {
     @Override
     public void testPeriodic() {
         LiveWindow.run();
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+            SmartDashboard.putNumber("aimMotor Potentiometer position = ", intakeLauncher.getPosition());
+            SmartDashboard.putNumber("Aimer JoystickY Position: ", Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
+            SmartDashboard.putNumber("Aimer Set Point: ", intakeLauncher.getSetPoint());
+            SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
+            SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
+        }
     }
 }
