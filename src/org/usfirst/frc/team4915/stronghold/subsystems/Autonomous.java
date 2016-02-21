@@ -16,7 +16,6 @@ public class Autonomous extends Subsystem {
 
     public static enum Type {
         LOWBAR,
-        CHEVAL_DE_FRISE,
         MOAT,
         RAMPARTS,
         ROUGH_TERRAIN,
