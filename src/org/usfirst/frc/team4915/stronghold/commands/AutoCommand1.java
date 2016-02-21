@@ -8,7 +8,6 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngl
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
-import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -22,19 +21,22 @@ public class AutoCommand1 extends CommandGroup {
         this.strat = strat;
         this.position = position;
         this.type = type;
-        System.out.println("ANgle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
-        Robot.intakeLauncher.launcherSetNeutralPosition(); //placeholder for setting the launcher to neutral driving position
+        System.out.println("Angle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
+		if (ModuleManager.INTAKELAUNCHER_MODULE_ON);
+			Robot.intakeLauncher.launcherSetNeutralPosition(); //placeholder for setting the launcher to neutral driving position
         switch(strat){
         	case DRIVE_SHOOT_VISION: //sets us up to use vision to shoot a high goal. 
+         		addParallel(new ArcadeDrive());
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
                 addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
-        		addSequential(new AutoAimControlCommand(true, true));
-        		addSequential(new ArcadeDrive());
+                if (ModuleManager.VISION_MODULE_ON);
+        			addSequential(new AutoAimControlCommand(true, true));
         		break;
         	case DRIVE_SHOOT_NO_VISION:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
                 addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
-        		addSequential(new AutoAimControlCommand(false, true));
+                if (ModuleManager.VISION_MODULE_ON);
+        			addSequential(new AutoAimControlCommand(false, true));
         		if (ModuleManager.INTAKELAUNCHER_MODULE_ON);
         			addSequential(new AimerGoToAngleCommand(25));
         			addSequential(new LaunchBallCommand());
@@ -46,7 +48,6 @@ public class AutoCommand1 extends CommandGroup {
         		break;
         }
     }
-
 
     public static boolean getLeft(Autonomous.Position position) {
     	System.out.println(position);

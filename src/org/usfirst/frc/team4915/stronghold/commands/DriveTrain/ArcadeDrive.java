@@ -69,6 +69,7 @@ public class ArcadeDrive extends Command {
     	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
     	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
     	   
+   		if (ModuleManager.IMU_MODULE_ON); 
     	   BNO055.CalData calData = RobotMap.imu.getCalibration();
     	   int num = (int)(.5 + RobotMap.imu.getHeading());
     	   distFromOrigin = BNO055.getInstance().getDistFromOrigin();
