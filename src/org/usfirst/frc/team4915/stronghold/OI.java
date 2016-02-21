@@ -41,8 +41,7 @@ public class OI {
     // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
-    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; // Test
-    public static final int LAUNCHER_FORCE_DOWN_BUTTON_NUMBER = 1;
+    public static final int LAUNCHER_JUMP_TO_NEUTRAl_BUTTON_NUMBER = 4; // Test
     public static final int AUTO_AIM_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 8;
     public static final int ACTIVATE_SERVOS_TEST_BUTTON_NUMBER = 6; // Test
@@ -65,10 +64,7 @@ public class OI {
     // Create buttons for the launcher on the mechanism stick
     public JoystickButton launchBallButton;
     public JoystickButton stopWheelsButton;
-    public JoystickButton launcherZeroEncoderButton;
-    public JoystickButton launcherSetSetpointForDashboardButton;
-    public JoystickButton launcherJumpToPositionButton;
-    public JoystickButton launcherForceDownButton;
+    public JoystickButton launcherJumpToNeutralButton;
     public JoystickButton activateServosTestButton;
     public JoystickButton retractServosTestButton;
     public JoystickButton autoAimButton;
@@ -143,7 +139,7 @@ public class OI {
             initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new SpinLaunchWheelsOutCommand());
             initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.grabBallButton, driveStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommand());
-            initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER,
+            initializeButton(this.launcherJumpToNeutralButton, aimStick, LAUNCHER_JUMP_TO_NEUTRAl_BUTTON_NUMBER,
                     new LauncherGoToNeutralPositionCommand());
             initializeButton(this.activateServosTestButton, aimStick, ACTIVATE_SERVOS_TEST_BUTTON_NUMBER, new ActivateLauncherServosCommand());
             initializeButton(this.retractServosTestButton, aimStick, RETRACT_SERVOS_TEST_BUTTON_NUMBER, new RetractLauncherServosCommand());

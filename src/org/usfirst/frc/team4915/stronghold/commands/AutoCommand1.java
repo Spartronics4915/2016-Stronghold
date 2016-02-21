@@ -51,7 +51,8 @@ public class AutoCommand1 extends CommandGroup {
                 }
                 if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
                     addSequential(new AimerGoToAngleCommand(25));
-                    addSequential(new LaunchBallCommandGroup());                }
+                    addSequential(new LaunchBallCommandGroup());
+                }
                 break;
             case DRIVE_ACROSS:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
