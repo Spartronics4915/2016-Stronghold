@@ -175,11 +175,11 @@ public class IntakeLauncher extends Subsystem {
     // Checks to see if joystick control or vision control is needed and
     // controls motion
     public void aimLauncher() {
-        // if (VisionState.getInstance().wantsControl()) {
-        // trackVision();
-        // } else {
-        trackJoystick();
-        // }
+        if (VisionState.getInstance().wantsControl()) {
+            trackVision();
+        } else {
+            trackJoystick();
+        }
     }
 
     // makes sure the set point doesn't go outside its max or min range
