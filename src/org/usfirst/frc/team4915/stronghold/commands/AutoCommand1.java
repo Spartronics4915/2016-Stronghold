@@ -1,10 +1,13 @@
 package org.usfirst.frc.team4915.stronghold.commands;
-
+import org.usfirst.frc.team4915.stronghold.ModuleManager;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -19,16 +22,26 @@ public class AutoCommand1 extends CommandGroup {
         this.position = position;
         this.type = type;
         System.out.println("ANgle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
-        
-        addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
-        addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); // these two commands can move you across barriers and roughly turn an angle towards the goal
+        IntakeLauncher.SetNeutralPosition(); //placeholder for setting the launcher to neutral driving position
         switch(strat){
         	case DRIVE_SHOOT_VISION: //sets us up to use vision to shoot a high goal. 
+                addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
+                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
         		addSequential(new AutoAimControlCommand(true, true));
+        		addSequential(new ArcadeDrive());
+        		break;
+        	case DRIVE_SHOOT_NO_VISION:
+                addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
+                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
+        		addSequential(new AutoAimControlCommand(false, true));
+        		if (ModuleManager.INTAKELAUNCHER_MODULE_ON);
+        			addSequential(new AimerGoToAngleCommand(25));
+        			addSequential(new LaunchBallCommandGroup());
+        		break;
+        	case DRIVE_ACROSS:
+                addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
         		break;
         	default:
-        		addSequential(new AutoAimControlCommand(false, true));
-        		addSequential(new AimerGoToAngleCommand(300));
         		break;
         }
     }

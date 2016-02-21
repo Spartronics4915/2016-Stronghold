@@ -48,9 +48,10 @@ public class ArcadeDrive extends Command {
 
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-
+        
         
         if (VisionState.getInstance().wantsControl()) {
+        	System.out.println("Arcade Drive: driving with vision \n");
         	if (VisionState.getInstance().TargetX <= -1){
     			Robot.driveTrain.turn(false);
     		}
