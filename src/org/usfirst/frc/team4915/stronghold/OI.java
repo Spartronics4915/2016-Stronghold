@@ -15,6 +15,7 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCom
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
@@ -120,6 +121,8 @@ public class OI {
 
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
+        
+        SmartDashboard.putData(new DriveTrain.SetMotors(0));
 
         // Bind module commands to buttons
         if (ModuleManager.DRIVE_MODULE_ON) {
