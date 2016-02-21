@@ -1,10 +1,11 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
+import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
@@ -22,7 +23,7 @@ public class AutoCommand1 extends CommandGroup {
         this.position = position;
         this.type = type;
         System.out.println("ANgle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
-        IntakeLauncher.SetNeutralPosition(); //placeholder for setting the launcher to neutral driving position
+        Robot.intakeLauncher.launcherSetNeutralPosition(); //placeholder for setting the launcher to neutral driving position
         switch(strat){
         	case DRIVE_SHOOT_VISION: //sets us up to use vision to shoot a high goal. 
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
@@ -36,7 +37,7 @@ public class AutoCommand1 extends CommandGroup {
         		addSequential(new AutoAimControlCommand(false, true));
         		if (ModuleManager.INTAKELAUNCHER_MODULE_ON);
         			addSequential(new AimerGoToAngleCommand(25));
-        			addSequential(new LaunchBallCommandGroup());
+        			addSequential(new LaunchBallCommand());
         		break;
         	case DRIVE_ACROSS:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
