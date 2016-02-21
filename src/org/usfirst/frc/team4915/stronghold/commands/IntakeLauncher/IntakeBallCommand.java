@@ -16,12 +16,12 @@ public class IntakeBallCommand extends Command {
     protected void initialize() {
         System.out.println("Intake Ball Command");
         setTimeout(10); //TODO finalize time
+        Robot.intakeLauncher.retractLauncherServos();
     }
 
     @Override
     protected void execute() {
         Robot.intakeLauncher.setSpeedIntake();
-        SmartDashboard.putString("Flywheels spinning ", "inward");
     }
 
     @Override
@@ -33,9 +33,8 @@ public class IntakeBallCommand extends Command {
 
     @Override
     protected void end() {
-        SmartDashboard.putString("Boulder in Basket: ", "Yes");
         Robot.intakeLauncher.stopWheels();
-        Robot.intakeLauncher.launcherSetNeutralPosition();
+        //Robot.intakeLauncher.launcherSetNeutralPosition();
     }
 
     @Override

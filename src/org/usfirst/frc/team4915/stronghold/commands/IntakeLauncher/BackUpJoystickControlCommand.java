@@ -31,5 +31,6 @@ public class BackUpJoystickControlCommand extends Command {
 
     protected void interrupted() {
         System.out.println("Interrupted");
+        end();
     }
 }

@@ -1,12 +1,12 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class LaunchBallCommand extends Command {
 
+    public boolean shouldActivateServos = true;
+    
     // this command spins the launch wheels outwards so they will launch the
     // ball
     public LaunchBallCommand() {
@@ -15,24 +15,28 @@ public class LaunchBallCommand extends Command {
 
     @Override
     protected void initialize() {
-        setTimeout(2); //TODO finalize time
+        setTimeout(1); //TODO finalize time
     }
 
     @Override
     protected void execute() {
-        Robot.intakeLauncher.launch();
-        SmartDashboard.putString("Flywheels spinning ", "outward");
+        Robot.intakeLauncher.setSpeedLaunch();
+        if (isTimedOut() && shouldActivateServos) {
+            Robot.intakeLauncher.activateLauncherServos();
+            //System.out.println("Activating Servo");
+            shouldActivateServos = false;
+        } 
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return (false);
     }
 
     @Override
     protected void end() {
-        SmartDashboard.putString("Boulder in Basket: ", "No");
-        System.out.println("Launch Command Ended");
+        //System.out.println("Launch Command Ended");
+        Robot.intakeLauncher.launchEnd();
     }
 
     @Override

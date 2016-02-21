@@ -6,9 +6,9 @@ import java.util.jar.Manifest;
 
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherServosCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
@@ -80,8 +80,8 @@ public class OI {
     public JoystickButton scalerReachUpButton;
     public JoystickButton scalerReachDownButton;
     public JoystickButton scalerLiftButton;
-    
-    //variables for the sendable chooser
+
+    // variables for the sendable chooser
     public SendableChooser startingFieldPosition;
     public SendableChooser barrierType;
     public SendableChooser strategy;
@@ -89,8 +89,8 @@ public class OI {
     public OI() {
 
         // *****autonomous*****
-        //***Three Sendable Choosers***
-        //SendableChooser for the starting field position
+        // ***Three Sendable Choosers***
+        // SendableChooser for the starting field position
         startingFieldPosition = new SendableChooser();
         SmartDashboard.putData("Starting Field Position for autonomous", startingFieldPosition);
         startingFieldPosition.addDefault("Field Position 1: Low Bar", Autonomous.Position.ONE);
@@ -98,9 +98,9 @@ public class OI {
         startingFieldPosition.addObject("Field Position 3:", Autonomous.Position.THREE);
         startingFieldPosition.addObject("Field Position 4:", Autonomous.Position.FOUR);
         startingFieldPosition.addObject("Field Position 5", Autonomous.Position.FIVE);
-        
-        //SendableChooser for the barrier type
-        //assigning each barrier to a number
+
+        // SendableChooser for the barrier type
+        // assigning each barrier to a number
         barrierType = new SendableChooser();
         SmartDashboard.putData("Barrier Type for autonomous", barrierType);
         barrierType.addDefault("Low Bar", Autonomous.Type.LOWBAR);
@@ -109,8 +109,8 @@ public class OI {
         barrierType.addObject("Ramparts", Autonomous.Type.RAMPARTS);
         barrierType.addObject("Rough Terrain", Autonomous.Type.ROUGH_TERRAIN);
         barrierType.addObject("Rock Wall", Autonomous.Type.ROCK_WALL);
-        
-        //SendableChooser for the strategy
+
+        // SendableChooser for the strategy
         strategy = new SendableChooser();
         SmartDashboard.putData("Strategy for autonomous", strategy);
         strategy.addDefault("None", Autonomous.Strat.NONE);
@@ -142,8 +142,9 @@ public class OI {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new LaunchBallCommand());
             initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
-            initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommand());
-            initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(500));
+            initializeButton(this.grabBallButton, driveStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommand());
+            initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER,
+                    new LauncherGoToNeutralPositionCommand());
             initializeButton(this.activateServosTestButton, aimStick, ACTIVATE_SERVOS_TEST_BUTTON_NUMBER, new ActivateLauncherServosCommand());
             initializeButton(this.retractServosTestButton, aimStick, RETRACT_SERVOS_TEST_BUTTON_NUMBER, new RetractLauncherServosCommand());
 

@@ -54,9 +54,7 @@ public class Robot extends IterativeRobot {
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLauncher = new IntakeLauncher();
-            intakeLauncher.readSetPoint();
             SmartDashboard.putNumber("Launcher Set Point: ", intakeLauncher.aimMotor.getPosition());
-            intakeLauncher.readSetPoint();
             SmartDashboard.putString("Module Manager", "IntakeLauncher Initialized");
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
@@ -153,6 +151,7 @@ public class Robot extends IterativeRobot {
             SmartDashboard.putNumber("Aimer Set Point: ", intakeLauncher.getSetPoint());
             SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
             SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
+            SmartDashboard.putBoolean("Boulder Limit Switch ", Robot.intakeLauncher.boulderLoaded());
         }
     }
 }
