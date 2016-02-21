@@ -6,7 +6,7 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 public class LaunchBallCommand extends Command {
 
     public boolean shouldActivateServos = true;
-    
+
     // this command spins the launch wheels outwards so they will launch the
     // ball
     public LaunchBallCommand() {
@@ -15,7 +15,7 @@ public class LaunchBallCommand extends Command {
 
     @Override
     protected void initialize() {
-        setTimeout(1); //TODO finalize time
+        setTimeout(1); // TODO finalize time
     }
 
     @Override
@@ -23,9 +23,9 @@ public class LaunchBallCommand extends Command {
         Robot.intakeLauncher.setSpeedLaunch();
         if (isTimedOut() && shouldActivateServos) {
             Robot.intakeLauncher.activateLauncherServos();
-            //System.out.println("Activating Servo");
+            // System.out.println("Activating Servo");
             shouldActivateServos = false;
-        } 
+        }
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LaunchBallCommand extends Command {
 
     @Override
     protected void end() {
-        //System.out.println("Launch Command Ended");
+        // System.out.println("Launch Command Ended");
         Robot.intakeLauncher.launchEnd();
     }
 

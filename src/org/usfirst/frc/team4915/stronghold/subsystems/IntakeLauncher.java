@@ -1,10 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -12,7 +7,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class IntakeLauncher extends Subsystem {
 
@@ -23,17 +21,17 @@ public class IntakeLauncher extends Subsystem {
     private final double FULL_SPEED_FORWARD = -1;
     private final double ZERO_SPEED = 0.0;
 
-    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 35.0; // TODO, in degrees
+    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // TODO, in degrees
                                                              // from horizontal
     private final double LAUNCHER_MIN_HEIGHT_DEGREES = -16.0; // TODO, in
                                                               // degrees from
                                                               // horizontal
-    private final double LAUNCHER_MAX_HEIGHT_TICKS = 550.0; // TODO, in
+    private final double LAUNCHER_MAX_HEIGHT_TICKS = 350.0; // TODO, in
                                                             // potentiometer
                                                             // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 0.0; // TODO, in
-                                                            // potentiometer
-                                                            // ticks
+    private final double LAUNCHER_MIN_HEIGHT_TICKS = 0; // TODO, in
+                                                          // potentiometer
+                                                          // ticks
     private final double LAUNCHER_NEUTRAL_HEIGHT_DEGREES = 20.0; // TODO, in
                                                                  // degrees from
                                                                  // horizontal
@@ -61,12 +59,13 @@ public class IntakeLauncher extends Subsystem {
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
-    public boolean boulderLoaded()
-    {
-        SmartDashboard.putBoolean("Boulder Limit Switch ", boulderSwitch.get()); // TODO Flip polarity
+    public boolean boulderLoaded() {
+        SmartDashboard.putBoolean("Boulder Limit Switch ", boulderSwitch.get()); // TODO
+                                                                                 // Flip
+                                                                                 // polarity
         return boulderSwitch.get();
     }
-    
+
     // These servos push the boulder into the launcher flywheels
     public Servo launcherServoLeft = RobotMap.launcherServoLeft;
     public Servo launcherServoRight = RobotMap.launcherServoRight;
@@ -75,7 +74,7 @@ public class IntakeLauncher extends Subsystem {
     protected void initDefaultCommand() {
 
         setDefaultCommand(new AimLauncherCommand());
-        //setDefaultCommand(new BackUpJoystickControlCommand());
+        // setDefaultCommand(new BackUpJoystickControlCommand());
     }
 
     // Sets the speed on the flywheels to suck in the boulder
@@ -113,7 +112,7 @@ public class IntakeLauncher extends Subsystem {
     public void launchEnd() {
         retractLauncherServos();
         stopWheels();
-        //launcherSetNeutralPosition();
+        // launcherSetNeutralPosition();
     }
 
     private void readSetPoint() { // TODO rename
@@ -131,8 +130,8 @@ public class IntakeLauncher extends Subsystem {
         setPoint += offset;
         SmartDashboard.putNumber("Offset: ", offset);
         SmartDashboard.putNumber("Moving to setPoint", getSetPoint());
-        //System.out.println("Offset: " + offset);
-        //System.out.println("Current SetPoint: " + getSetPoint());
+        // System.out.println("Offset: " + offset);
+        // System.out.println("Current SetPoint: " + getSetPoint());
     }
 
     // sets the set point with the joystick and moves to set point
@@ -157,7 +156,7 @@ public class IntakeLauncher extends Subsystem {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
         if (Math.abs(joystickY) > MIN_JOYSTICK_MOTION) {
             offsetSetPoint(joystickY * JOYSTICK_SCALE);
-            
+
         }
     }
 
@@ -165,11 +164,11 @@ public class IntakeLauncher extends Subsystem {
     public void moveToSetPoint() {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
-        //System.out.println("aimMotor.set(" + setPoint + ")");
+        // System.out.println("aimMotor.set(" + setPoint + ")");
         if (!isOnTarget()) {
             aimMotor.set(setPoint);
         }
-        //System.out.println("setted------------------------------------------------------");
+        // System.out.println("setted------------------------------------------------------");
     }
 
     // Checks to see if joystick control or vision control is needed and
@@ -225,16 +224,17 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public double getPosition() {
-        //System.out.println("Current Position: " + aimMotor.getPosition());
-        return Math.abs(aimMotor.getPosition()); //TODO will explain later
+        // System.out.println("Current Position: " + aimMotor.getPosition());
+        return Math.abs(aimMotor.getPosition()); // TODO will explain later
     }
 
     public double getSetPoint() {
-        return Math.abs(setPoint); //TODO will explain later
+        return Math.abs(setPoint); // TODO will explain later
     }
-    
+
     private boolean isOnTarget() {
-        //return (getPosition() < getSetPoint() + 10.0 && getPosition() > getSetPoint() - 10);
+        // return (getPosition() < getSetPoint() + 10.0 && getPosition() >
+        // getSetPoint() - 10);
         return false;
     }
 }

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SetSetPointFromSmartDashboardCommand extends Command {
 
     public SetSetPointFromSmartDashboardCommand() {
-    
+
     }
 
     protected void initialize() {
@@ -19,7 +19,7 @@ public class SetSetPointFromSmartDashboardCommand extends Command {
     }
 
     protected void execute() {
-    
+
     }
 
     protected boolean isFinished() {
@@ -27,10 +27,10 @@ public class SetSetPointFromSmartDashboardCommand extends Command {
     }
 
     protected void end() {
-    
+
     }
 
     protected void interrupted() {
-    
+
     }
 }
