@@ -85,7 +85,25 @@ public class MoveStraightPositionModeCommand extends Command {
     @Override
     public boolean isFinished() {
         // Checking if all the motors have reached the desired tick values
-        return isMotorFinished(0) || isMotorFinished(1) || isMotorFinished(2) || isMotorFinished(3);
+        return isAverageMotorFinished();
+        //return isMotorFinished(0) || isMotorFinished(1) || isMotorFinished(2) || isMotorFinished(3);
+    }
+    
+    private boolean isAverageMotorFinished(){
+        //averages the motors
+        boolean finished = false;
+        double total;
+        double average;
+        double desiredPosition = this.desiredTicksValue.get(0);// all the same but we didn't want to change everything
+        total = Math.abs(motors.get(0).getEncPosition()) + Math.abs(motors.get(1).getEncPosition()) + Math.abs(motors.get(2).getEncPosition()) + Math.abs(motors.get(3).getEncPosition());
+        average = total/4;
+        // drive backwards
+        if (this.inputDistanceInches < 0) {
+            finished = average <= desiredPosition;
+        } else {
+            finished = average >= desiredPosition;
+        }
+        return finished;
     }
 
     private boolean isMotorFinished(int i) {
@@ -94,7 +112,7 @@ public class MoveStraightPositionModeCommand extends Command {
         double currentPosition = Math.abs(motors.get(i).getEncPosition());
         System.out.println("Motor " + i + ": current position: " + currentPosition + ", desired position " + desiredPosition);
 
-        // All motors are inverted
+        // drive backwards
         if (this.inputDistanceInches < 0) {
             finished = currentPosition <= desiredPosition;
         } else {
