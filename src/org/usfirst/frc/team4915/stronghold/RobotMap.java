@@ -125,6 +125,7 @@ public class RobotMap {
                 aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
                 aimMotor.enableLimitSwitch(true, true);
                 aimMotor.enableBrakeMode(true);
+                aimMotor.reverseSensor(true);
                 // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO uncomment
             }
             LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
