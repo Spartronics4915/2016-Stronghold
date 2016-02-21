@@ -26,10 +26,10 @@ public class RetractLauncherServosCommand extends Command {
     }
 
     protected void end() {
-        
+
     }
 
     protected void interrupted() {
-    
+
     }
 }

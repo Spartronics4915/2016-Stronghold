@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class LauncherGoToNeutralPositionCommand extends Command {
 
     public LauncherGoToNeutralPositionCommand() {
-  
+
     }
 
     protected void initialize() {
@@ -25,10 +25,10 @@ public class LauncherGoToNeutralPositionCommand extends Command {
     }
 
     protected void end() {
-    
+
     }
 
     protected void interrupted() {
-    
+
     }
 }

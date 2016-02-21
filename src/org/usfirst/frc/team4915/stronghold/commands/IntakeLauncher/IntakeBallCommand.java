@@ -14,7 +14,7 @@ public class IntakeBallCommand extends Command {
     @Override
     protected void initialize() {
         System.out.println("Intake Ball Command");
-        setTimeout(10); //TODO finalize time
+        setTimeout(10); // TODO finalize time
         Robot.intakeLauncher.retractLauncherServos();
     }
 
@@ -33,7 +33,7 @@ public class IntakeBallCommand extends Command {
     @Override
     protected void end() {
         Robot.intakeLauncher.stopWheels();
-        //Robot.intakeLauncher.launcherSetNeutralPosition();
+        // Robot.intakeLauncher.launcherSetNeutralPosition();
     }
 
     @Override
