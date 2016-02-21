@@ -1,5 +1,10 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -7,12 +12,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
 public class IntakeLauncher extends Subsystem {
 
     // Ranges -1 to 1, negative values are reverse direction
@@ -43,7 +42,8 @@ public class IntakeLauncher extends Subsystem {
     private final double MIN_JOYSTICK_MOTION = 0.1;
 
     private final double SERVO_LAUNCH_POSITION = 1.0;
-    private final double SERVO_NEUTRAL_POSITION = -1.0;
+    
+    private final double SERVO_NEUTRAL_POSITION = - 1.0;
 
     private double setPoint; // in potentiometer volts
     private boolean forceLauncherNeutral = false;

@@ -48,9 +48,10 @@ public class ArcadeDrive extends Command {
 
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-
+        
         
         if (VisionState.getInstance().wantsControl()) {
+        	System.out.println("Arcade Drive: driving with vision \n");
         	if (VisionState.getInstance().TargetX <= -1){
     			Robot.driveTrain.turn(false);
     		}
@@ -67,7 +68,7 @@ public class ArcadeDrive extends Command {
     	   }
     	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
     	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-    	   
+
     	   if(ModuleManager.IMU_MODULE_ON) {
     		   BNO055.CalData calData = RobotMap.imu.getCalibration();
     	   	   int num = (int)(.5 + RobotMap.imu.getHeading());

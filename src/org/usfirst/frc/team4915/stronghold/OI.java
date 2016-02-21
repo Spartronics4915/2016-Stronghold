@@ -1,10 +1,9 @@
 package org.usfirst.frc.team4915.stronghold;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
@@ -18,10 +17,11 @@ import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class handles the "operator interface", or the interactions between the
