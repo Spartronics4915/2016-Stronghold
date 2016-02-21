@@ -13,7 +13,6 @@ import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherForceNeutralCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
@@ -148,13 +147,9 @@ public class OI {
             initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
             initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(500));
-            initializeButton(this.launcherForceDownButton, aimStick, LAUNCHER_FORCE_DOWN_BUTTON_NUMBER, new LauncherForceNeutralCommand());
             initializeButton(this.activateServosTestButton, aimStick, ACTIVATE_SERVOS_TEST_BUTTON_NUMBER, new ActivateLauncherServosCommand());
             initializeButton(this.retractServosTestButton, aimStick, RETRACT_SERVOS_TEST_BUTTON_NUMBER, new RetractLauncherServosCommand());
-            // not using initialize button for force down because it needs to be
-            // using whileHeld()
-            launcherForceDownButton = new JoystickButton(aimStick, LAUNCHER_FORCE_DOWN_BUTTON_NUMBER);
-            launcherForceDownButton.whileHeld(new LauncherForceNeutralCommand());
+
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 

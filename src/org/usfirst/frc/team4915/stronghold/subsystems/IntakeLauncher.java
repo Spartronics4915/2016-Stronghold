@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
@@ -78,7 +77,7 @@ public class IntakeLauncher extends Subsystem {
         this.intakeLeftMotor.set(FULL_SPEED_FORWARD);
         this.intakeRightMotor.set(FULL_SPEED_FORWARD);
     }
-    
+
     public void stopWheels() {
         this.intakeLeftMotor.set(ZERO_SPEED);
         this.intakeRightMotor.set(ZERO_SPEED);
@@ -94,39 +93,39 @@ public class IntakeLauncher extends Subsystem {
         this.launcherServoRight.set(SERVO_NEUTRAL_POSITION);
     }
 
-    public void readSetPoint() {
+    public void readSetPoint() { // TODO rename
         setPoint = aimMotor.getPosition();
     }
 
-    //changes the set point to a value
+    // changes the set point to a value
     public void setSetPoint(double newSetPoint) {
         setPoint = newSetPoint;
     }
 
-    //changes the set point based on an offset
+    // changes the set point based on an offset
     public void offsetSetPoint(double offset) {
         readSetPoint();
         setPoint += offset;
     }
 
-    //sets the set point with the joystick and moves to set point
+    // sets the set point with the joystick and moves to set point
     public void trackJoystick() {
         moveLauncherWithJoystick();
         moveToSetPoint();
     }
-    
-    //sets the set point with vision and moves to set point
+
+    // sets the set point with vision and moves to set point
     public void trackVision() {
         moveLauncherWithVision();
         moveToSetPoint();
     }
-    
-    //changes the set point based on vision
+
+    // changes the set point based on vision
     public void moveLauncherWithVision() {
-        offsetSetPoint(VisionState.getInstance().TargetY); 
+        offsetSetPoint(VisionState.getInstance().TargetY);
     }
-    
-    //changes the set point based on the joystick
+
+    // changes the set point based on the joystick
     public void moveLauncherWithJoystick() {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
         if (Math.abs(joystickY) > .1) {
@@ -134,28 +133,24 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
-    //sets the launcher position to the current set point
+    // sets the launcher position to the current set point
     public void moveToSetPoint() {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
-        if (!forceLauncherNeutral) {
-            aimMotor.set(setPoint);
-        } else {
-            aimMotor.set(LAUNCHER_NEUTRAL_HEIGHT_VOLTS);
-        }
-        // TODO: calibrate potentiometer at the top and bottom?
+        aimMotor.set(LAUNCHER_NEUTRAL_HEIGHT_VOLTS);
     }
 
-    //Checks to see if joystick control or vision control is needed and controls motion
+    // Checks to see if joystick control or vision control is needed and
+    // controls motion
     public void aimLauncher() {
-        if(VisionState.getInstance().wantsControl()) {
+        if (VisionState.getInstance().wantsControl()) {
             trackVision();
         } else {
             trackJoystick();
         }
     }
-    
-    //makes sure the set point doesn't go outside its max or min range
+
+    // makes sure the set point doesn't go outside its max or min range
     public void keepSetPointInRange() {
         if (setPoint > LAUNCHER_MAX_HEIGHT_VOLTS) {
             setPoint = LAUNCHER_MAX_HEIGHT_VOLTS;
