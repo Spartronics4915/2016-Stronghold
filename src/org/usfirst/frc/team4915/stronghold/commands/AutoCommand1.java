@@ -23,6 +23,7 @@ public class AutoCommand1 extends CommandGroup {
         this.position = position;
         this.type = type;
         System.out.println("Angle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
+
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             Robot.intakeLauncher.launcherSetNeutralPosition(); // placeholder
                                                                // for setting
@@ -49,8 +50,7 @@ public class AutoCommand1 extends CommandGroup {
                 }
                 if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
                     addSequential(new AimerGoToAngleCommand(25));
-                    addSequential(new LaunchBallCommand());
-                }
+                    addSequential(new LaunchBallCommand());                }
                 break;
             case DRIVE_ACROSS:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
@@ -137,7 +137,7 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 20;
                 break;
             case CHEVAL_DE_FRISE:
-                distance = 30;
+                distance = 0;
                 break;
             case MOAT:
                 distance = 15;
