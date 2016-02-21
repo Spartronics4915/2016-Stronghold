@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class SpinLaunchWheelsOutCommand extends Command {
+public class LaunchBallCommand extends Command {
 
     // this command spins the launch wheels outwards so they will launch the
     // ball
-    public SpinLaunchWheelsOutCommand() {
+    public LaunchBallCommand() {
         requires(Robot.intakeLauncher);
     }
 
@@ -19,7 +19,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void execute() {
-        Robot.intakeLauncher.setSpeedLaunch();
+        Robot.intakeLauncher.launch();
         SmartDashboard.putString("Flywheels spinning ", "outward");
     }
 
@@ -30,7 +30,6 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void end() {
-        Robot.intakeLauncher.stopWheels();
         SmartDashboard.putString("Boulder in Basket: ", "No");
         System.out.println("Launch Command Ended");
     }
