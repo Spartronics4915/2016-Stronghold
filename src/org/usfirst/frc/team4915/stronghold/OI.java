@@ -121,8 +121,6 @@ public class OI {
 
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
-        
-        SmartDashboard.putData(new DriveTrain.SetMotors(0));
 
         // Bind module commands to buttons
         if (ModuleManager.DRIVE_MODULE_ON) {
