@@ -3,7 +3,7 @@ package org.usfirst.frc.team4915.stronghold.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinLaunchWheelsOutCommand;
 
 /**
@@ -38,7 +38,7 @@ public class AutoLowbarNoVision extends CommandGroup {
         addSequential(new AutoRotateDegrees(false, 30));
         // volts to degrees...
         // just put in a random number and gets the aimer ready to shoot
-        addSequential(new AimerGoToAngleCommand(520));
+        addSequential(new LauncherGoToAngleCommand(520));
         // launches ball
         addSequential(new SpinLaunchWheelsOutCommand());
 

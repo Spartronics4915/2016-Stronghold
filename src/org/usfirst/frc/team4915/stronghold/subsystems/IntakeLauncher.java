@@ -29,16 +29,15 @@ public class IntakeLauncher extends Subsystem {
     private final double LAUNCHER_MAX_HEIGHT_TICKS = 350.0; // TODO, in
                                                             // potentiometer
                                                             // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 0; // TODO, in
+    private final double LAUNCHER_MIN_HEIGHT_TICKS = 0.0; // TODO, in
                                                         // potentiometer
                                                         // ticks
     private final double LAUNCHER_NEUTRAL_HEIGHT_DEGREES = 20.0; // TODO, in
                                                                  // degrees from
                                                                  // horizontal
-
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
-    private final double MIN_JOYSTICK_MOTION = 0.1;
+    private final double MIN_JOYSTICK_MOTION = 0.05;
 
     private final double SERVO_LEFT_LAUNCH_POSITION = .45;
     private final double SERVO_RIGHT_LAUNCH_POSITION = .65;
@@ -65,7 +64,6 @@ public class IntakeLauncher extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-
         setDefaultCommand(new AimLauncherCommand());
         // setDefaultCommand(new BackUpJoystickControlCommand());
     }
@@ -140,7 +138,6 @@ public class IntakeLauncher extends Subsystem {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
         if (Math.abs(joystickY) > MIN_JOYSTICK_MOTION) {
             offsetSetPoint(joystickY * JOYSTICK_SCALE);
-
         }
     }
 
@@ -170,6 +167,10 @@ public class IntakeLauncher extends Subsystem {
     public void launcherSetNeutralPosition() {
         setSetPoint(-degreesToTicks(LAUNCHER_NEUTRAL_HEIGHT_DEGREES));
     }
+    
+    public void launcherJumpToAngle(double angle) {
+        setSetPoint(-degreesToTicks(angle));
+    }
 
     // makes sure the set point doesn't go outside its max or min range
     private void keepSetPointInRange() {
@@ -181,12 +182,13 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
-    public double degreesToTicks(double degrees) {
+    private double degreesToTicks(double degrees) {
         double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
         return LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * heightRatio;
     }
 
-    public double ticksToDegrees(double ticks) {
+    @SuppressWarnings("unused")
+    private double ticksToDegrees(double ticks) {
         double heightRatio = (ticks - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
         return LAUNCHER_MIN_HEIGHT_DEGREES + (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio;
     }
@@ -196,11 +198,12 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public boolean isLauncherAtBottom() {
-        return aimMotor.isFwdLimitSwitchClosed ();
+        return aimMotor.isFwdLimitSwitchClosed();
     }
 
     public double getPosition() {
-        return Math.abs(aimMotor.getPosition()); // TODO will explain later
+        //return aimMotor.getAnalogInPosition(); 
+        return Math.abs(aimMotor.getPosition());
     }
 
     public double getSetPoint() {

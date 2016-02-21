@@ -5,7 +5,7 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinLaunchWheelsOutCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
@@ -50,7 +50,7 @@ public class AutoCommand1 extends CommandGroup {
                     addSequential(new AutoAimControlCommand(false, true));
                 }
                 if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-                    addSequential(new AimerGoToAngleCommand(25));
+                    addSequential(new LauncherGoToAngleCommand(25));
                     addSequential(new LaunchBallCommandGroup());
                 }
                 break;
