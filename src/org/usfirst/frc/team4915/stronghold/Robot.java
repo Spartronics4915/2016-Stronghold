@@ -90,8 +90,8 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
 
         // schedule the autonomous command
-        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat)oi.strategy.getSelected(), (Autonomous.Position)oi.startingFieldPosition.getSelected());
-
+        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
+                (Autonomous.Position) oi.startingFieldPosition.getSelected());
 
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
@@ -132,12 +132,13 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            SmartDashboard.putNumber("aimMotor Encoder position = ", RobotMap.aimMotor.getEncPosition());
+            SmartDashboard.putNumber("aimMotor Potentiometer position = ", intakeLauncher.getPosition());
             SmartDashboard.putNumber("Aimer JoystickY Position: ", Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
+            SmartDashboard.putNumber("Aimer Set Point: ", intakeLauncher.getSetPoint());
+            SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
+            SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
         }
-
     }
 
     /**
@@ -146,5 +147,12 @@ public class Robot extends IterativeRobot {
     @Override
     public void testPeriodic() {
         LiveWindow.run();
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+            SmartDashboard.putNumber("aimMotor Potentiometer position = ", intakeLauncher.getPosition());
+            SmartDashboard.putNumber("Aimer JoystickY Position: ", Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
+            SmartDashboard.putNumber("Aimer Set Point: ", intakeLauncher.getSetPoint());
+            SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
+            SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
+        }
     }
 }
