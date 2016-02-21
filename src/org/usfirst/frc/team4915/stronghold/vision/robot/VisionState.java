@@ -51,7 +51,11 @@ public class VisionState implements NamedSendable {
             System.out.println(key + " " + value + " " + value.getClass().getName());
             if (key.equals("~TYPE~")) {
                 return;
-            } else {
+            }
+            else if (key.equals(("AutoAimEnabled"))) {
+            	s_instance.AutoAimEnabled = (Boolean) value;
+            } 
+            else {
                 // System.out.println(key + " " + value);
                 double num = (Double) value;
                 int ival = (int) num;
@@ -136,7 +140,7 @@ public class VisionState implements NamedSendable {
     
     public boolean followTargetY(IntakeLauncher intakeLauncher) {
     	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
-    		intakeLauncher.setSetPoint(intakeLauncher.degreesToVolts(TargetY));
+    		intakeLauncher.setPointInDegrees(TargetY);
     		return true;
     	}
     	else {
