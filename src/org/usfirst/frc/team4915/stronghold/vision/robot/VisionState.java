@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
@@ -115,6 +116,7 @@ public class VisionState implements NamedSendable {
     		this.AutoAimEnabled = !this.AutoAimEnabled;
     		m_table.putBoolean("AutoAimEnabled", this.AutoAimEnabled);
     		System.out.println("AutoAimEnabled:" + this.AutoAimEnabled);
+            setLight(this.AutoAimEnabled);
     	}
     	if(toggleTarget) {
     		this.TargetHigh = !this.TargetHigh;
@@ -148,5 +150,14 @@ public class VisionState implements NamedSendable {
     
     public boolean wantsControl() {
     	return AutoAimEnabled;
+    }
+
+    /**
+     * Enable or disable the "photonic cannon" on the robot.
+     *
+     * @param on True to turn on, false to turn off
+     */
+    public void setLight(boolean on) {
+        RobotMap.PHOTONIC_CANNON.set(on);
     }
 }
