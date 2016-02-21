@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class IntakeLauncher extends Subsystem {
@@ -19,12 +20,14 @@ public class IntakeLauncher extends Subsystem {
     // indicate a wheel spinning inwards.
     private final double FULL_SPEED_REVERSE = 1.0;
     private final double FULL_SPEED_FORWARD = -1.0;
-    private final double ZERO_SPEED = 0;
+    private final double ZERO_SPEED = 0.0;
 
-    private final int LAUNCHER_MAX_HEIGHT_DEGREES = 70; // TODO, in degrees from
-                                                        // horizontal
-    private final int LAUNCHER_MIN_HEIGHT_DEGREES = -10; // TODO, in degrees
-                                                         // from horizontal
+    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 35.0; // TODO, in degrees
+                                                             // from
+    // horizontal
+    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -10.0; // TODO, in
+                                                              // degrees
+    // from horizontal
 
     private final double LAUNCHER_MAX_HEIGHT_TICKS = 900.0; // TODO, in
                                                             // potentiometer
@@ -32,13 +35,15 @@ public class IntakeLauncher extends Subsystem {
     private final double LAUNCHER_MIN_HEIGHT_TICKS = 100.0; // TODO, in
                                                             // potentiometer
                                                             // volts
+    private final double LAUNCHER_NEUTRAL_HEIGHT_DEGREES = 20.0; // TODO, in degrees
+
 
     private final double JOYSTICK_SCALE = 10.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
 
     private final double SERVO_LAUNCH_POSITION = 1.0;
-    private final double SERVO_NEUTRAL_POSITION = 1.0;
+    private final double SERVO_NEUTRAL_POSITION = -1.0;
 
     private double setPoint; // in potentiometer volts
     private boolean forceLauncherNeutral = false;
@@ -62,8 +67,8 @@ public class IntakeLauncher extends Subsystem {
     @Override
     protected void initDefaultCommand() {
 
-        setDefaultCommand(new AimLauncherCommand());
-        // setDefaultCommand(new BackUpJoystickControlCommand());
+        // setDefaultCommand(new AimLauncherCommand());
+        setDefaultCommand(new BackUpJoystickControlCommand());
     }
 
     // Sets the speed on the flywheels to suck in the boulder
@@ -84,13 +89,24 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void activateLauncherServos() {
-        this.launcherServoLeft.set(SERVO_LAUNCH_POSITION);
+        this.launcherServoLeft.set(-SERVO_LAUNCH_POSITION);
         this.launcherServoRight.set(SERVO_LAUNCH_POSITION);
     }
 
     public void retractLauncherServos() {
-        this.launcherServoLeft.set(SERVO_NEUTRAL_POSITION);
+        this.launcherServoLeft.set(-SERVO_NEUTRAL_POSITION);
         this.launcherServoRight.set(SERVO_NEUTRAL_POSITION);
+    }
+    
+    public void launch() {
+        setSpeedLaunch();
+        activateLauncherServos();
+    }
+    
+    public void launchEnd() {
+        retractLauncherServos();
+        stopWheels();
+        launcherSetNeutralPosition();
     }
 
     public void readSetPoint() { // TODO rename
@@ -106,6 +122,7 @@ public class IntakeLauncher extends Subsystem {
     public void offsetSetPoint(double offset) {
         readSetPoint();
         setPoint += offset;
+        System.out.println("Current SetPoint: " + setPoint);
     }
 
     // sets the set point with the joystick and moves to set point
@@ -137,6 +154,7 @@ public class IntakeLauncher extends Subsystem {
     public void moveToSetPoint() {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
+        System.out.println("aimMotor.set(" + setPoint + ")");
         aimMotor.set(setPoint);
     }
 
@@ -173,14 +191,14 @@ public class IntakeLauncher extends Subsystem {
         return aimMotor.isFwdLimitSwitchClosed();
     }
 
-    public double degreesToVolts(int degrees) {
+    public double degreesToTicks(double degrees) {
         double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
         return LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * heightRatio;
     }
 
-    public int voltsToDegrees(double volts) {
+    public double ticksToDegrees(double volts) {
         double heightRatio = (volts - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
-        return LAUNCHER_MIN_HEIGHT_DEGREES + (int) ((LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio);
+        return LAUNCHER_MIN_HEIGHT_DEGREES + (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio;
     }
 
     public boolean getForceLauncherNeutral() {
@@ -195,8 +213,13 @@ public class IntakeLauncher extends Subsystem {
         aimMotor.changeControlMode(TalonControlMode.PercentVbus);
         aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
     }
+    
+    public void launcherSetNeutralPosition() {
+        setSetPoint(degreesToTicks(LAUNCHER_NEUTRAL_HEIGHT_DEGREES));
+    }
 
     public double getPosition() {
+        System.out.println("Current Position: " + aimMotor.getPosition());
         return aimMotor.getPosition();
     }
 
