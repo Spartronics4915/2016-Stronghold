@@ -142,7 +142,7 @@ class TargetState:
 
                 if nearest:
                     self.m_kp = nearest
-            if 0:
+            if 1:
             	#go to most stable keypoint (has issues when moving)
             	self.m_kpHistory.extend(kplist)
             	self.m_kpHistory = self.m_kpHistory[:50]
