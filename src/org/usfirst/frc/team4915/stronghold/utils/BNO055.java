@@ -2,6 +2,8 @@ package org.usfirst.frc.team4915.stronghold.utils;
 
 import java.util.TimerTask;
 
+import javax.xml.bind.DatatypeConverter;
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -96,6 +98,10 @@ public class BNO055 {
     private volatile byte[] headingVector = new byte[6];
     private volatile long turns = 0;
     private volatile double[] m_heading = new double[3];
+    
+/*    private volatile byte[] calDataStore = new byte[22];
+ *    public String calDataStoreString = "fill me with gibberish";
+ */
 
     public class SystemStatus {
         public int system_status;
@@ -686,6 +692,23 @@ public class BNO055 {
         data.mag = (byte) (rawCalData & 0x03);
 
         return data;
+    }
+    
+/*    public void getCalibrationData() {
+        setMode(opmode_t.OPERATION_MODE_CONFIG.getVal());
+        readLen(reg_t.ACCEL_OFFSET_X_LSB_ADDR, calDataStore);
+        DatatypeConverter.printHexBinary(calDataStore);
+        System.out.println(DatatypeConverter.printHexBinary(calDataStore));
+        
+        setMode(opmode_t.OPERATION_MODE_IMUPLUS);
+    }
+    
+    public void setCalibrationData() {
+        setMode(opmode_t.OPERATION_MODE_CONFIG.getVal());
+        calDataStore = DatatypeConverter.parseHexBinary(calDataStoreString);
+        retVal = imu.write(reg_t.ACCEL_OFFSET_X_LSB_ADDR.getVal(), 22);
+        
+        setMode(opmode_t.OPERATION_MODE_IMUPLUS);
     }
 
     /**
