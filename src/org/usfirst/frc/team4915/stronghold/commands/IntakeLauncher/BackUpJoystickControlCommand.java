@@ -3,21 +3,25 @@ package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class ActivateLauncherPneumaticCommand extends Command {
+/**
+ *
+ */
+public class BackUpJoystickControlCommand extends Command {
 
-    public ActivateLauncherPneumaticCommand() {
+    public BackUpJoystickControlCommand() {
         requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.activatePneumatic();
+
     }
 
     protected void execute() {
+        Robot.intakeLauncher.backUpJoystickMethod();
     }
 
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     protected void end() {
@@ -25,6 +29,6 @@ public class ActivateLauncherPneumaticCommand extends Command {
     }
 
     protected void interrupted() {
-
+        System.out.println("Interrupted");
     }
 }

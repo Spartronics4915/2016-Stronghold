@@ -1,12 +1,13 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
+
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoRotateDegrees extends Command {
 
@@ -34,6 +35,7 @@ public class AutoRotateDegrees extends Command {
 
     @Override
     public void execute() {
+
         Robot.driveTrain.turn(goLeft);
         SmartDashboard.putNumber("Robot Angle", robotAngle);
     }
@@ -53,7 +55,5 @@ public class AutoRotateDegrees extends Command {
     @Override
     protected void interrupted() {
         end();
-
     }
-
 }

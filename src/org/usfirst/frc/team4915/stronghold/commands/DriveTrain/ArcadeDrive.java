@@ -1,20 +1,26 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.List;
+
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcadeDrive extends Command {
 
     public Joystick joystickDrive;
     private double joystickX;
     private double joystickY;
+    public static List<CANTalon> motors = Robot.driveTrain.motors;
+    public double[] oldVelocity = new double[3];
+    public double[] distTraveled = new double[3];
+    public double distFromOrigin;
 
     public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -24,6 +30,9 @@ public class ArcadeDrive extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+    	 for (int i = 0; i < motors.size(); i++) {
+             motors.get(i).setEncPosition(0);
+    	 }
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -41,7 +50,15 @@ public class ArcadeDrive extends Command {
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
 
         
-        if (!VisionState.getInstance().followTargetX(Robot.driveTrain) ){
+        if (VisionState.getInstance().wantsControl()) {
+        	if (VisionState.getInstance().TargetX <= -1){
+    			Robot.driveTrain.turn(false);
+    		}
+    		else {
+    			Robot.driveTrain.turn(true);
+    		}
+        }
+        else {
     	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
                Robot.driveTrain.stop();
            } 
@@ -53,7 +70,9 @@ public class ArcadeDrive extends Command {
     	   
     	   BNO055.CalData calData = RobotMap.imu.getCalibration();
     	   int num = (int)(.5 + RobotMap.imu.getHeading());
+    	   distFromOrigin = BNO055.getInstance().getDistFromOrigin();
     	   
+    	   SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
     	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
     	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
     	   SmartDashboard.putNumber("IMU heading", num);
@@ -70,12 +89,17 @@ public class ArcadeDrive extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+    	Robot.driveTrain.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+    	end();
     }
+    
+  //Call every 100th of a sec
+    
 
 }

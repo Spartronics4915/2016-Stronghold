@@ -94,7 +94,7 @@ class App:
             'threshold':         [75, 0, 0, 0, 0, 0],
             'huerange*valrange': [55, 100, 255, 255, 0, 0], # works for g LED
             'canny':             [10, 200, 0, 0, 0, 0],
-            'simpleblob':        [75, 150, 5, 150, 0, 0], 
+            'simpleblob':        [75, 150, 20, 40**2, 0, 0], 
                           # minThresh
                           # maxThresh
                           # thresStep
@@ -121,7 +121,7 @@ class App:
             			  #X(degrees)
             			  #Y(degrees)
             			  #Not rotating correctly (not interpreting correctly)
-            'gamma':		[1,0,0,0,0,0],
+            'gamma':		[34,0,0,0,0,0],
             			  #alpha
             			  #beta
             'r': self.zeros,
@@ -210,7 +210,7 @@ class App:
       "  2: threshold          (thresh,inv)\n"\
       "  3: huerange*valrange  (hmin,hmax,vmin,vmax)\n"\
       "  4: canny edges        (thresh/10, range)\n"\
-      "  5: simple blobs       (thresh0,thresh1,minA,aMult,colorthresh)\n"\
+      "  5: simple blobs       (thresh0,thresh1,treshStep,minA,colorthresh)\n"\
       "  6: houghlines         (rho,theta,thresh,minlen,maxgap)\n"\
       "  7: contours           (mode:0-3,method:0-3,offset,id(-1:all),depth)\n"\
       "  8: ORB features       (nfeatures,scaleFactor(0->255)],patchSize)\n"\
@@ -229,10 +229,15 @@ class App:
           )
 
         if not self.fnpat:
-            vsrc = cv2.VideoCapture(0)
-            if not vsrc or not vsrc.isOpened():
-                print("Problem opening video source")
-                vsrc = None
+            for i in range(0, 4):
+                vsrc = cv2.VideoCapture(i)
+                if not vsrc or not vsrc.isOpened():
+                    print("Problem opening video source %d" % i)
+                    vsrc = None
+                else:
+                    break
+
+            if not vsrc:
                 exit(1)
             else:
                 ret1 = vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 1280)
@@ -478,7 +483,7 @@ class App:
                     # Filter by Area.
                     bp.filterByArea = True
                     bp.minArea = values[3]       # 500
-                    bp.maxArea = (640 * 480) / 3   
+                    bp.maxArea = (640 * 480) / 5   
 
                     # Filter by Circularity
                     bp.filterByCircularity = False
@@ -495,8 +500,7 @@ class App:
                     detector = cv2.SimpleBlobDetector(bp)
                     self.algostate["blobdetector"] = detector
                 else:
-                    detector = self.algostate["blobdetector"] 
-
+                    detector = self.algostate["blobdetector"]
                 if 0:
                     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 elif 0:
@@ -507,13 +511,14 @@ class App:
                     frame,s,v = cv2.split(hsv)
                     frame = cv2.inRange(frame, hvals[0], hvals[1])
                 else:
-                	gamma = 1 + 10*values[0]/100.0
-                	self.putNotice('gamma: %f' % gamma)
-            		for i in range(0, 256):
-            			self.LUT[i] = 255 * ((i/255.0) ** gamma)
-            		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            		frame = cv2.LUT(gray, self.LUT)
-
+                    gvals = self.getCmodeValues('gamma')
+                    gamma = 1 + 10*gvals[0]/100.0
+                    self.putNotice('gamma: %f' % gamma)
+                    for i in range(0, 256):
+                        self.LUT[i] = 255 * ((i/255.0) ** gamma)
+                    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                    frame = cv2.LUT(gray, self.LUT)
+   
                 keypoints = detector.detect(frame) # we'll draw them
                 keypoints = self.robotCnx.NewKeypoints(keypoints)
             elif cmode == "houghlines":

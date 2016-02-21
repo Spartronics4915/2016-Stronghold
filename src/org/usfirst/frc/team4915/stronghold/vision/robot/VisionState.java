@@ -95,6 +95,7 @@ public class VisionState implements NamedSendable {
         m_table.addTableListenerEx(m_listener, ITable.NOTIFY_NEW | ITable.NOTIFY_IMMEDIATE);
 
         this.AutoAimEnabled = m_table.getBoolean("AutoAimEnabled", false);
+        this.TargetHigh = m_table.getBoolean("TargetHigh", true);
         this.FPS = (int) m_table.getNumber("FPS", 0.);
         this.TargetsAcquired = (int) m_table.getNumber("TargetsAcquired", 0);
         this.TargetX = (int) m_table.getNumber("TargetX", 0);
@@ -109,14 +110,16 @@ public class VisionState implements NamedSendable {
     	if(toggleEnable) {
     		this.AutoAimEnabled = !this.AutoAimEnabled;
     		m_table.putBoolean("AutoAimEnabled", this.AutoAimEnabled);
+    		System.out.println("AutoAimEnabled:" + this.AutoAimEnabled);
     	}
     	if(toggleTarget) {
     		this.TargetHigh = !this.TargetHigh;
-    		m_table.putBoolean("TargetHigh", this.TargetHigh);
+    		//m_table.putBoolean("TargetHigh", this.TargetHigh);
+    		System.out.println("TargetHigh:" + this.TargetHigh);
     	}
     }
     
-    public boolean followTargetX(DriveTrain driveTrain) {
+    /*public boolean followTargetX(DriveTrain driveTrain) {
     	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
     		if (this.TargetX <= -1){
     			driveTrain.turn(false);
@@ -131,11 +134,15 @@ public class VisionState implements NamedSendable {
     
     public boolean followTargetY(IntakeLauncher intakeLauncher) {
     	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
-    		intakeLauncher.setPointInDegrees(TargetY);
+    		intakeLauncher.setSetPoint(intakeLauncher.degreesToVolts(TargetY));
     		return true;
     	}
     	else {
     		return false;
     	}
+    }*/
+    
+    public boolean wantsControl() {
+    	return AutoAimEnabled;
     }
 }

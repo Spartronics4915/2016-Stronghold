@@ -1,13 +1,17 @@
 package org.usfirst.frc.team4915.stronghold.commands.vision;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
+import edu.wpi.first.wpilibj.command.Command;
+
 public class AutoAimControlCommand extends Command{
+    
+    private boolean m_toggleEnable = true;
+    private boolean m_toggleTarget = false;
 	
 	public AutoAimControlCommand(boolean toggleEnable, boolean toggleTarget) {
-		VisionState vs = VisionState.getInstance();
-		vs.toggleAimState(toggleEnable, toggleTarget);
+        this.m_toggleEnable = toggleEnable;
+        this.m_toggleTarget = toggleTarget;
 	}
 	@Override
 	protected void initialize() {
@@ -16,21 +20,22 @@ public class AutoAimControlCommand extends Command{
 
 	@Override
 	protected void execute() {
-		System.out.println("The state of AutoAimEnabled has changed");
+		VisionState vs = VisionState.getInstance();
+		vs.toggleAimState(this.m_toggleEnable, this.m_toggleTarget);
 	}
 
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 
-	@Override
-	protected void end() {
-		// Do nothing
-	}
+    @Override
+    protected void end() {
+        // Do nothing
+    }
 
-	@Override
-	protected void interrupted() {
-		// TODO Auto-generated method stub
-	}	
+    @Override
+    protected void interrupted() {
+        // TODO Auto-generated method stub
+    }
 }

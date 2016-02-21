@@ -1,11 +1,13 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 import java.util.ArrayList;
 import java.util.List;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class MoveStraightPositionModeCommand extends Command {
 
@@ -57,7 +59,9 @@ public class MoveStraightPositionModeCommand extends Command {
             // All the motors are inverted/backwards. The ticks are moving down
             // when moving forward
             this.desiredTicksValue.add(ticksToMove);
-        SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
+	    SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
+	    System.out.println("Running MoveStraight");
+
         }
     }
 

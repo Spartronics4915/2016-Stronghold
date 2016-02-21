@@ -13,7 +13,7 @@ public class AimWithDashboardCommand extends Command {
     }
 
     protected void initialize() {
-    
+
     }
 
     protected void execute() {

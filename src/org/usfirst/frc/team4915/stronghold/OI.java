@@ -1,4 +1,5 @@
 package org.usfirst.frc.team4915.stronghold;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -7,24 +8,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherPneumaticCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherServosCommand;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherPneumaticCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SetSetPointFromSmartDashboardCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ZeroAimerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -37,21 +37,22 @@ public class OI {
     public static final int LAUNCHER_STICK_PORT = 1;
 
     // Button numbers for driveStick buttons
-    public static final int HIGH_SPEED_DRIVE_BUTTON = 4;
-    public static final int LOW_SPEED_DRIVE_BUTTON = 3;
-    public static final int INTAKE_BALL_BUTTON_NUMBER = 11;
+    public static final int HIGH_SPEED_DRIVE_BUTTON = 6;
+    public static final int LOW_SPEED_DRIVE_BUTTON = 4;
+    public static final int INTAKE_BALL_BUTTON_NUMBER = 3;
 
     // Button numbers for launching related buttons on the mechanism stick
-    public static final int LAUNCH_BALL_BUTTON_NUMBER = 1;
+    public static final int LAUNCH_BALL_BUTTON_NUMBER = 2;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
-    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; //Test
-    public static final int AUTO_AIM_BUTTON_NUMBER = 3;
+    public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; // Test
+    public static final int LAUNCHER_FORCE_DOWN_BUTTON_NUMBER = 1;
+    public static final int AUTO_AIM_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 8;
-    public static final int ACTIVATE_PNEUMATIC_TEST_BUTTON_NUMBER = 6; //Test Button
-    public static final int RETRACT_PNEUMATIC_TEST_BUTTON_NUMBER = 7; //Test Button
+    public static final int ACTIVATE_SERVOS_TEST_BUTTON_NUMBER = 6; // Test
+    public static final int RETRACT_SERVOS_TEST_BUTTON_NUMBER = 7; // Test
 
     // Button numbers for scaling related buttons on the mechanism joystick
-    public static final int SCALER_REACH_UP_BUTTON_NUMBER = 2;
+    public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
     public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
     public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
 
@@ -70,10 +71,11 @@ public class OI {
     public JoystickButton launcherZeroEncoderButton;
     public JoystickButton launcherSetSetpointForDashboardButton;
     public JoystickButton launcherJumpToPositionButton;
+    public JoystickButton launcherForceDownButton;
+    public JoystickButton activateServosTestButton;
+    public JoystickButton retractServosTestButton;
     public JoystickButton autoAimButton;
     public JoystickButton highLowButton;
-    public JoystickButton activatePneumaticTestButton;
-    public JoystickButton retractPneumaticTestButton;
 
     // Create buttons for the scaler on the mechanism stick
     public JoystickButton scalerExtendButton;
@@ -88,6 +90,7 @@ public class OI {
     public SendableChooser strategy;
 
     public OI() {
+
         // *****autonomous*****
         //***Three Sendable Choosers***
         //SendableChooser for the starting field position
@@ -117,9 +120,7 @@ public class OI {
         strategy.addObject("Drive across barrier", Autonomous.Strat.DRIVE_ACROSS);
         strategy.addObject("Drive and shoot high goal with vision", Autonomous.Strat.DRIVE_SHOOT_VISION);
         strategy.addObject("Drive and shoot high goal without vision", Autonomous.Strat.DRIVE_SHOOT_NO_VISION);
-        
-        
-       
+
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
 
@@ -145,9 +146,10 @@ public class OI {
             initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());
             initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
-            initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(2000));
-            initializeButton(this.activatePneumaticTestButton, aimStick, ACTIVATE_PNEUMATIC_TEST_BUTTON_NUMBER, new ActivateLauncherPneumaticCommand());
-            initializeButton(this.retractPneumaticTestButton, aimStick, RETRACT_PNEUMATIC_TEST_BUTTON_NUMBER, new RetractLauncherPneumaticCommand());
+            initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(500));
+            initializeButton(this.activateServosTestButton, aimStick, ACTIVATE_SERVOS_TEST_BUTTON_NUMBER, new ActivateLauncherServosCommand());
+            initializeButton(this.retractServosTestButton, aimStick, RETRACT_SERVOS_TEST_BUTTON_NUMBER, new RetractLauncherServosCommand());
+
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 

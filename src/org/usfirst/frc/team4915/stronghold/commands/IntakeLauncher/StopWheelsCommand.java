@@ -13,12 +13,13 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.setWheelsFinished(true);
+        SmartDashboard.putString("Flywheels spinning ", "nowhere");
+        Robot.intakeLauncher.stopWheels();
     }
 
     @Override
     protected void execute() {
-        SmartDashboard.putString("Flywheels spinning ", "nowhere");
+
     }
 
     @Override
@@ -28,7 +29,7 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void end() {
-        
+
     }
 
     @Override

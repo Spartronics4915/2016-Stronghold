@@ -1,58 +1,48 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.MoveToSetPointCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 public class IntakeLauncher extends Subsystem {
 
     // Ranges -1 to 1, negative values are reverse direction
-    // Negative speed indicates a wheel spinning inwards and positive speed
-    // indicates a wheel spinning outwards.
+    // Negative values indicate a wheel spinning outwards and positive values
+    // indicate a wheel spinning inwards.
     private final double FULL_SPEED_REVERSE = 1.0;
     private final double FULL_SPEED_FORWARD = -1.0;
+    private final double ZERO_SPEED = 0;
 
-    /*
-     * in encoder ticks Step 1: Find number of encoder ticks per cycle:
-     * 4(Quadrature Encoder) * 7(Cycles per revolution) = 28 Step 2: Find the
-     * planetary gear ratio(Ask your electrical team): 188:1 Step 2.5: Find
-     * other gear ratios: 56:14 = 4:1 Step 3: Convert ticks to degrees, multiply
-     * all ratios together: 28 * 188 * 4 = 21056 ticks per 360 degrees Step 3.5:
-     * Find ticks per 1 degree, divide by 360: 21056 / 360 = 58.489 There will
-     * be error
-     */
-    private final int TICKS_PER_CYCLE = 4 * 7;
-    private final int PLANETARY_GEAR_RATIO = 188 / 1;
-    private final int GEAR_RATIO = 56 / 14;
-    private final int TICKS_PER_360_DEGREES = TICKS_PER_CYCLE * PLANETARY_GEAR_RATIO * GEAR_RATIO;
-    private final double TICKS_PER_DEGREE = TICKS_PER_360_DEGREES / 360;
+    private final int LAUNCHER_MAX_HEIGHT_DEGREES = 70; // TODO, in degrees from
+                                                        // horizontal
+    private final int LAUNCHER_MIN_HEIGHT_DEGREES = -10; // TODO, in degrees
+                                                         // from horizontal
 
-    private final int MIN_ANGLE = -10; // deg from horiz
-    private final int MAX_ANGLE = 60; // deg from horiz
+    private final double LAUNCHER_MAX_HEIGHT_VOLTS = 1023.0; // TODO, in
+                                                             // potentiometer
+                                                             // volts
+    private final double LAUNCHER_MIN_HEIGHT_VOLTS = 0.0; // TODO, in
+                                                          // potentiometer volts
 
-    private final int LAUNCHER_MIN_HEIGHT = 0; // enc
-    private final int ENCODER_RANGE = 4000; // enc
-    private final int LAUNCHER_MAX_HEIGHT = LAUNCHER_MIN_HEIGHT + ENCODER_RANGE;
+    private final double LAUNCHER_NEUTRAL_HEIGHT_VOLTS = 200.0; // TODO, in
+                                                                // potentiometer
+                                                                // volts
 
-    /*
-     * Joystick Scale calculations: at max speed the joystick should go from 0
-     * to 90 in 2 seconds The talon set method units are in ticks per 10 ms when
-     * in speed mode In 10 ms we should move .45 degrees, which is 26.32 ticks
-     * The equation is motion range / time in ms * 10
-     */
-    private final int TIME_IN_MS_FOR_FULL_MOTION = 2000;
-    private final double JOYSTICK_SCALE = (LAUNCHER_MAX_HEIGHT - LAUNCHER_MIN_HEIGHT) / TIME_IN_MS_FOR_FULL_MOTION * 10; //
+    private final double JOYSTICK_SCALE = 1.0; // TODO
 
-    private int setPoint;
-    private boolean wheelsFinished = false;
+    private final double SERVO_LAUNCH_POSITION = 1.0;
+    private final double SERVO_NEUTRAL_POSITION = 1.0;
+
+    private double setPoint; // in potentiometer volts
+    private boolean forceLauncherNeutral = false;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -66,119 +56,139 @@ public class IntakeLauncher extends Subsystem {
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
-    public Solenoid launcherSolenoid = RobotMap.launcherSolenoid;
-    
-    // lowers the aimer so the encoder can zero when the robot turns on
-    // method commented for now so we can test
+    // These servos push the boulder into the launcher flywheels
+    public Servo launcherServoLeft = RobotMap.launcherServoLeft;
+    public Servo launcherServoRight = RobotMap.launcherServoRight;
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new MoveToSetPointCommand());
+        setDefaultCommand(new AimLauncherCommand());
+        // setDefaultCommand(new BackUpJoystickControlCommand());
     }
 
     // Sets the speed on the flywheels to suck in the boulder
     public void setSpeedIntake() {
         this.intakeLeftMotor.set(FULL_SPEED_REVERSE);
-        this.intakeRightMotor.set(-FULL_SPEED_REVERSE); // Right motor spins in
-                                                        // the wrong direction
+        this.intakeRightMotor.set(FULL_SPEED_REVERSE);
     }
 
     // Sets the speed on the flywheels to launch the boulder
     public void setSpeedLaunch() {
         this.intakeLeftMotor.set(FULL_SPEED_FORWARD);
-        this.intakeRightMotor.set(-FULL_SPEED_FORWARD); // Right motor spins in
-                                                        // the wrong direction
-    }
-    
-    public boolean areWheelsFinished() {
-        return wheelsFinished;
-    }
-    
-    public void setWheelsFinished(boolean wheelsFinished) {
-        this.wheelsFinished = wheelsFinished;
+        this.intakeRightMotor.set(FULL_SPEED_FORWARD);
     }
 
-    public void activatePneumatic() {
-        this.launcherSolenoid.set(true);
-    }
-    
-    public void retractPneumatic() {
-        this.launcherSolenoid.set(false);
+    public void stopWheels() {
+        this.intakeLeftMotor.set(ZERO_SPEED);
+        this.intakeRightMotor.set(ZERO_SPEED);
     }
 
-    public void initAimer() {
-        if (Robot.intakeLauncher.aimMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != null) {
-            aimMotor.changeControlMode(TalonControlMode.PercentVbus);
-            aimMotor.set(FULL_SPEED_FORWARD);
-        }
+    public void activateLauncherServos() {
+        this.launcherServoLeft.set(SERVO_LAUNCH_POSITION);
+        this.launcherServoRight.set(SERVO_LAUNCH_POSITION);
     }
 
-    public boolean isLauncherAtAngle(double angle) {
-        double angleMotorPosition = aimMotor.getEncPosition() * TICKS_PER_DEGREE;
-        return angleMotorPosition < angle + 5 && angleMotorPosition > angle - 5;
+    public void retractLauncherServos() {
+        this.launcherServoLeft.set(SERVO_NEUTRAL_POSITION);
+        this.launcherServoRight.set(SERVO_NEUTRAL_POSITION);
     }
 
-    public void readSetPoint() {
-        setPoint = getEncoderPosition();
+    public void readSetPoint() { // TODO rename
+        setPoint = aimMotor.getPosition();
     }
 
-    public void setSetPoint(int newSetPoint) {
+    // changes the set point to a value
+    public void setSetPoint(double newSetPoint) {
         setPoint = newSetPoint;
     }
 
-    public void offsetSetPoint(int offset) {
+    // changes the set point based on an offset
+    public void offsetSetPoint(double offset) {
         readSetPoint();
         setPoint += offset;
     }
 
-    public void offsetSetPoint() {
-        double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
-        if (Math.abs(joystickY) > .1) {
-            offsetSetPoint((int) (joystickY * 1000));
-        }
-    }
-    
-    public void moveToSetPoint() {
-        keepSetPointInRange();
-        if (isLauncherAtBottom()) {
-            setEncoderPosition(0);
-        }
-        aimMotor.changeControlMode(TalonControlMode.Position);
-        aimMotor.set(setPoint);
-    }
-    
-    public void keepSetPointInRange() {
-        if (setPoint > LAUNCHER_MAX_HEIGHT) {
-            setPoint = LAUNCHER_MAX_HEIGHT;
-        }
-        if (setPoint < LAUNCHER_MIN_HEIGHT) {
-            setPoint = LAUNCHER_MIN_HEIGHT;
-        }
-    }
-    
-    public void aimWithDashboard() {
-        setSetPoint((int) SmartDashboard.getNumber("Launcher Set Point: "));
+    // sets the set point with the joystick and moves to set point
+    public void trackJoystick() {
+        moveLauncherWithJoystick();
         moveToSetPoint();
     }
-    
+
+    // sets the set point with vision and moves to set point
+    public void trackVision() {
+        moveLauncherWithVision();
+        moveToSetPoint();
+    }
+
+    // changes the set point based on vision
+    public void moveLauncherWithVision() {
+        offsetSetPoint(VisionState.getInstance().TargetY);
+    }
+
+    // changes the set point based on the joystick
+    public void moveLauncherWithJoystick() {
+        double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
+        if (Math.abs(joystickY) > .1) {
+            offsetSetPoint(joystickY * JOYSTICK_SCALE);
+        }
+    }
+
+    // sets the launcher position to the current set point
+    public void moveToSetPoint() {
+        keepSetPointInRange();
+        aimMotor.changeControlMode(TalonControlMode.Position);
+        aimMotor.set(LAUNCHER_NEUTRAL_HEIGHT_VOLTS);
+    }
+
+    // Checks to see if joystick control or vision control is needed and
+    // controls motion
+    public void aimLauncher() {
+        if (VisionState.getInstance().wantsControl()) {
+            trackVision();
+        } else {
+            trackJoystick();
+        }
+    }
+
+    // makes sure the set point doesn't go outside its max or min range
+    public void keepSetPointInRange() {
+        if (setPoint > LAUNCHER_MAX_HEIGHT_VOLTS) {
+            setPoint = LAUNCHER_MAX_HEIGHT_VOLTS;
+        }
+        if (setPoint < LAUNCHER_MIN_HEIGHT_VOLTS) {
+            setPoint = LAUNCHER_MIN_HEIGHT_VOLTS;
+        }
+    }
+
+    public void aimWithDashboard() {
+        setSetPoint(SmartDashboard.getNumber("Launcher Set Point: "));
+        moveToSetPoint();
+    }
+
     public boolean isLauncherAtBottom() {
         return aimMotor.isRevLimitSwitchClosed();
     }
 
-    public int degreesToTicks(int degrees) {
-        return (int)(degrees * TICKS_PER_DEGREE);
-    }
-    
-    public void setPointInDegrees(int TargetY) {
-        TargetY = degreesToTicks(TargetY);
-        setSetPoint(TargetY);
+    public double degreesToVolts(int degrees) {
+        double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
+        return LAUNCHER_MIN_HEIGHT_VOLTS + (LAUNCHER_MAX_HEIGHT_VOLTS - LAUNCHER_MIN_HEIGHT_VOLTS) * heightRatio;
     }
 
-    public int getEncoderPosition() {
-        return aimMotor.getEncPosition();
+    public int voltsToDegrees(double volts) {
+        double heightRatio = (volts - LAUNCHER_MIN_HEIGHT_VOLTS) / (LAUNCHER_MAX_HEIGHT_VOLTS - LAUNCHER_MIN_HEIGHT_VOLTS);
+        return LAUNCHER_MIN_HEIGHT_DEGREES + (int) ((LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio);
     }
 
-    public void setEncoderPosition(int encoderPosition) {
-        aimMotor.setEncPosition(encoderPosition);
+    public boolean getForceLauncherNeutral() {
+        return forceLauncherNeutral;
+    }
+
+    public void setForceLauncherNeutral(boolean forceLauncherNeutral) {
+        this.forceLauncherNeutral = forceLauncherNeutral;
+    }
+
+    public void backUpJoystickMethod() {
+        aimMotor.changeControlMode(TalonControlMode.PercentVbus);
+        aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
     }
 }

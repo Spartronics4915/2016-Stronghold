@@ -6,18 +6,18 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 /**
  *
  */
-public class RetractLauncherPneumaticCommand extends Command {
+public class RetractLauncherServosCommand extends Command {
 
-    public RetractLauncherPneumaticCommand() {
+    public RetractLauncherServosCommand() {
         requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.retractPneumatic();
+        Robot.intakeLauncher.retractLauncherServos();
     }
 
     protected void execute() {
-    
+
     }
 
     protected boolean isFinished() {
@@ -25,9 +25,10 @@ public class RetractLauncherPneumaticCommand extends Command {
     }
 
     protected void end() {
-        Robot.intakeLauncher.setWheelsFinished(true);
+        
     }
 
     protected void interrupted() {
+    
     }
 }
