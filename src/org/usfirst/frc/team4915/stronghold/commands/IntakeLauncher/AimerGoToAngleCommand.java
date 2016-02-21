@@ -6,15 +6,15 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class AimerGoToAngleCommand extends Command {
 
-    private double setPoint;
+    private double angle;
 
-    public AimerGoToAngleCommand(double setPoint) {
-        this.setPoint = setPoint;
-        SmartDashboard.putNumber("Aimer setPoint", this.setPoint);
+    public AimerGoToAngleCommand(double angle) {
+        this.angle = angle;
+        SmartDashboard.putNumber("Aimer angle: ", this.angle);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.setSetPoint(setPoint);
+        Robot.intakeLauncher.setSetPoint(Robot.intakeLauncher.degreesToTicks(angle));
     }
 
     protected void execute() {

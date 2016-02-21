@@ -5,14 +5,11 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherServosCommand;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
@@ -143,9 +140,9 @@ public class OI {
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());
+            initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new LaunchBallCommand());
             initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
-            initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
+            initializeButton(this.grabBallButton, aimStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommand());
             initializeButton(this.launcherJumpToPositionButton, aimStick, LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER, new AimerGoToAngleCommand(500));
             initializeButton(this.activateServosTestButton, aimStick, ACTIVATE_SERVOS_TEST_BUTTON_NUMBER, new ActivateLauncherServosCommand());
             initializeButton(this.retractServosTestButton, aimStick, RETRACT_SERVOS_TEST_BUTTON_NUMBER, new RetractLauncherServosCommand());

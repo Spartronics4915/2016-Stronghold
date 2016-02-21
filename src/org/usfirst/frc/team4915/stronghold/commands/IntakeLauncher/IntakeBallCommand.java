@@ -34,6 +34,7 @@ public class IntakeBallCommand extends Command {
     protected void end() {
         SmartDashboard.putString("Boulder in Basket: ", "Yes");
         Robot.intakeLauncher.stopWheels();
+        Robot.intakeLauncher.launcherSetNeutralPosition();
     }
 
     @Override
