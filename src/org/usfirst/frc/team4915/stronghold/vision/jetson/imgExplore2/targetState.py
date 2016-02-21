@@ -49,6 +49,23 @@ class TargetState:
             return 0
         else:
             return 1
+            
+    def kpCompareByStability(self, kp1, kp2):
+    	kp1Frequency = 0
+    	kp2Frequency = 0
+    	for kp in self.m_56kpHistory:
+    		if (kp.pt[0]-3 < kp1.pt[0] < kp.pt[0]+3) and 
+    		(kp.pt[1]-3 < kp1.pt[1] < kp.pt[1]+3):
+    			kp1Frequency += 1
+    		if (kp.pt[0]-3 < kp2.pt[0] < kp.pt[0]+3) and \ 
+    		(kp.pt[1]-3 < kp2.pt[1] < kp.pt[1]+3):
+    			kp2Frequency += 1
+        if kp1Frequency > kp2Frequency:  # sort most frequent to front of list
+            return -1
+        elif kp1.size == kp2.size:
+            return 0
+        else:
+            return 1 
     
     def SetFPS(self, fps):
         self.m_visTab.putInt("FPS", fps)
@@ -88,8 +105,9 @@ class TargetState:
                 if len(kplist) > 0:
                     kplist.sort(self.kpcompare)
                     self.m_kp = kplist[0]
-            if 1:
-                #average 5 most recent keypoints (in progress)
+            if 0:
+                #average 5 most recent keypoints (not very useful because 
+                #creating a new keypoint is unsafe)
                 kplist.sort(self.kpcompare)
                 self.m_kp = kplist[0]
                 self.m_kpHistory.append(self.m_kp)
@@ -104,13 +122,18 @@ class TargetState:
                 self.m_kpHistory = kplist
             if 0: 
                 nearest = None
+                size = None
                 nearestD = 10000
+                nearestSize = 0
                 if self.m_kp:
                     # old valid kp... just search near
+                    # search near but also consider size
                     for kp in kplist:
                         dist = self.calcDist(self.m_kp, kp)
-                        if dist < nearestD and dist < 125:
+                        size = kp.size
+                        if (1/dist)*size>(1/nearestD)*nearestSize and dist<125:
                             nearest = kp
+                            nearestSize = size
                             nearestD = dist
 
                 if not nearest:
@@ -119,6 +142,13 @@ class TargetState:
 
                 if nearest:
                     self.m_kp = nearest
+            if 0:
+            	#go to most stable keypoint (has issues when moving)
+            	self.m_kpHistory.extend(kplist)
+            	self.m_kpHistory = self.m_kpHistory[:50]
+            	kplist.sort(self.kpCompareByStability)
+                self.m_kp = kplist[0]
+            	
             # append and trucate to fixed length:
             # self.m_kpHistory = self.m_kpHistory.append(self.m_kp)[-5:]
 
