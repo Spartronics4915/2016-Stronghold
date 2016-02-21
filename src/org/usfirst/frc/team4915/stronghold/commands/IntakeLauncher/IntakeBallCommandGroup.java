@@ -6,6 +6,6 @@ public class IntakeBallCommandGroup extends CommandGroup {
 
     public IntakeBallCommandGroup() {
         addSequential(new IntakeBallCommand());
-        //addSequential(new StopWheelsCommand());
+        //addSequential(new StopWheelsCommand()); //This might not be necessary because motors stop automatically
     }
 }

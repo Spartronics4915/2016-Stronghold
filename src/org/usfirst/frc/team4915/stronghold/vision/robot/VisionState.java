@@ -114,7 +114,7 @@ public class VisionState implements NamedSendable {
     	}
     }
     
-    public boolean followTargetX(DriveTrain driveTrain) {
+    /*public boolean followTargetX(DriveTrain driveTrain) {
     	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
     		if (this.TargetX <= -1){
     			driveTrain.turn(false);
@@ -129,11 +129,15 @@ public class VisionState implements NamedSendable {
     
     public boolean followTargetY(IntakeLauncher intakeLauncher) {
     	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
-    		intakeLauncher.setPointInDegrees(TargetY);
+    		intakeLauncher.setSetPoint(intakeLauncher.degreesToVolts(TargetY));
     		return true;
     	}
     	else {
     		return false;
     	}
+    }*/
+    
+    public boolean wantsControl() {
+    	return AutoAimEnabled;
     }
 }

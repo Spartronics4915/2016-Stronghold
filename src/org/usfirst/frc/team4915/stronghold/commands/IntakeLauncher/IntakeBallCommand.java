@@ -1,9 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class IntakeBallCommand extends Command {
 
@@ -15,27 +14,30 @@ public class IntakeBallCommand extends Command {
     @Override
     protected void initialize() {
         System.out.println("Intake Ball Command");
+        setTimeout(10); //TODO finalize time
     }
 
     @Override
     protected void execute() {
         Robot.intakeLauncher.setSpeedIntake();
-        SmartDashboard.putString("Flywheels spinning ", "inward"); 
+        SmartDashboard.putString("Flywheels spinning ", "inward");
     }
 
     @Override
     protected boolean isFinished() {
-        // ends once the ball is in the basket and presses the limit switch
-        return(Robot.intakeLauncher.boulderSwitch.get() || Robot.intakeLauncher.areWheelsFinished());
+        // ends once the ball is in the basket and presses the limit switch or
+        // the stop wheels button is pressed
+        return (Robot.intakeLauncher.boulderSwitch.get() || isTimedOut());
     }
 
     @Override
     protected void end() {
         SmartDashboard.putString("Boulder in Basket: ", "Yes");
+        Robot.intakeLauncher.stopWheels();
     }
 
     @Override
     protected void interrupted() {
-
+        end();
     }
 }
