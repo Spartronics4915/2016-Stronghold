@@ -28,14 +28,14 @@ public class AutoCommand1 extends CommandGroup {
 		switch(strat){
         	case DRIVE_SHOOT_VISION: //sets us up to use vision to shoot a high goal. 
          		addParallel(new ArcadeDrive());
-                addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
+               // addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
                 addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
                 if (ModuleManager.VISION_MODULE_ON){
         			addSequential(new AutoAimControlCommand(true, true));
                 }
         		break;
         	case DRIVE_SHOOT_NO_VISION:
-                addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
+              //  addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
                 addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
                 if (ModuleManager.VISION_MODULE_ON){
         			addSequential(new AutoAimControlCommand(false, true));
