@@ -26,12 +26,12 @@ public class RobotMap {
     public final static int GYRO_PORT = 0;
 
     // Define channels for IntakeLauncher motors
-    private static final int INTAKE_LEFT_MOTOR_ID = 14;
-    private static final int INTAKE_RIGHT_MOTOR_ID = 15;
+    private static final int INTAKE_LEFT_MOTOR_ID = 15;
+    private static final int INTAKE_RIGHT_MOTOR_ID = 14;
     private static final int AIM_MOTOR_ID = 16;
 
     // Define port for the boulder switch
-    private static final int BOULDER_SWITCH_PORT = 2;
+    private static final int BOULDER_SWITCH_PORT = 0;
 
     // Define ports for the launcher servos
     private static final int LAUNCHER_SERVO_LEFT_PORT = 0;
@@ -62,8 +62,8 @@ public class RobotMap {
     //public static BNO055 imuLinAcc;
 
     // Create the motor controllers for the IntakeLauncher
-    public static CANTalon intakeLeftMotor;
-    public static CANTalon intakeRightMotor;
+    public static CANTalon intakeLeftMotorCAN15;
+    public static CANTalon intakeRightMotorCAN14;
     public static CANTalon aimMotor;
 
     // Create the boulder switch
@@ -108,11 +108,11 @@ public class RobotMap {
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_ID);
-            intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
-            intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
-            intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
-            intakeRightMotor.reverseSensor(true);
+            intakeLeftMotorCAN15 = new CANTalon(INTAKE_LEFT_MOTOR_ID);
+            intakeRightMotorCAN14 = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
+            intakeLeftMotorCAN15.changeControlMode(TalonControlMode.PercentVbus);
+            intakeRightMotorCAN14.changeControlMode(TalonControlMode.PercentVbus);
+            intakeLeftMotorCAN15.reverseSensor(true);
             aimMotor = new CANTalon(AIM_MOTOR_ID);
             aimMotor.changeControlMode(TalonControlMode.Position);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);

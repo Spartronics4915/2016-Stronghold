@@ -153,6 +153,7 @@ public class Robot extends IterativeRobot {
             SmartDashboard.putNumber("Aimer Set Point: ", intakeLauncher.getSetPoint());
             SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
             SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
+            SmartDashboard.putBoolean("Boulder Limit Switch ", Robot.intakeLauncher.boulderLoaded());
         }
     }
 }

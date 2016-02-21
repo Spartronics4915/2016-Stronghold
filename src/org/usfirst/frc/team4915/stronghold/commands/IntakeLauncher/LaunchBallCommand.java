@@ -12,26 +12,32 @@ public class LaunchBallCommand extends Command {
         requires(Robot.intakeLauncher);
     }
 
+    private boolean shouldQuit = false;
     @Override
     protected void initialize() {
-        setTimeout(2); //TODO finalize time
+        setTimeout(1); //TODO finalize time
     }
 
     @Override
     protected void execute() {
-        Robot.intakeLauncher.launch();
-        SmartDashboard.putString("Flywheels spinning ", "outward");
+        Robot.intakeLauncher.setSpeedLaunch();
+        if (!shouldQuit && isTimedOut())
+        {
+            Robot.intakeLauncher.activateLauncherServos();
+            setTimeout(5);
+            shouldQuit = true;
+        }
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return (shouldQuit && isTimedOut());
     }
 
     @Override
     protected void end() {
-        SmartDashboard.putString("Boulder in Basket: ", "No");
         System.out.println("Launch Command Ended");
+        Robot.intakeLauncher.launchEnd();
     }
 
     @Override
