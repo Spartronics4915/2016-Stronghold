@@ -1,14 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
-
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.NamedSendable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 
@@ -50,7 +43,11 @@ public class VisionState implements NamedSendable {
             System.out.println(key + " " + value + " " + value.getClass().getName());
             if (key.equals("~TYPE~")) {
                 return;
-            } else {
+            }
+            else if (key.equals(("AutoAimEnabled"))) {
+            	s_instance.AutoAimEnabled = (Boolean) value;
+            } 
+            else {
                 // System.out.println(key + " " + value);
                 double num = (Double) value;
                 int ival = (int) num;
@@ -111,6 +108,7 @@ public class VisionState implements NamedSendable {
     		this.AutoAimEnabled = !this.AutoAimEnabled;
     		m_table.putBoolean("AutoAimEnabled", this.AutoAimEnabled);
     		System.out.println("AutoAimEnabled:" + this.AutoAimEnabled);
+            setLight(this.AutoAimEnabled);
     	}
     	if(toggleTarget) {
     		this.TargetHigh = !this.TargetHigh;
@@ -134,7 +132,7 @@ public class VisionState implements NamedSendable {
     
     public boolean followTargetY(IntakeLauncher intakeLauncher) {
     	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
-    		intakeLauncher.setSetPoint(intakeLauncher.degreesToVolts(TargetY));
+    		intakeLauncher.setPointInDegrees(TargetY);
     		return true;
     	}
     	else {
@@ -144,5 +142,14 @@ public class VisionState implements NamedSendable {
     
     public boolean wantsControl() {
     	return AutoAimEnabled;
+    }
+
+    /**
+     * Enable or disable the "photonic cannon" on the robot.
+     *
+     * @param on True to turn on, false to turn off
+     */
+    public void setLight(boolean on) {
+        RobotMap.PHOTONIC_CANNON.set(on);
     }
 }

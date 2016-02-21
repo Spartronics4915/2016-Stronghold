@@ -1,14 +1,16 @@
 package org.usfirst.frc.team4915.stronghold;
 
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
+
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
@@ -40,6 +42,8 @@ public class RobotMap {
     // Define channels for scaling motors
     private static final int SCALING_MOTOR_ID = 18; // TODO
     private static final int SCALING_WINCH_ID = 19; // TODO
+
+    private static final int PHOTONIC_CANNON_ID = 4;
 
     // private static final int AIMER_P = 0; //TODO uncomment
     // private static final int AIMER_I = 0; //TODO uncomment
@@ -76,6 +80,8 @@ public class RobotMap {
     // Create the motor controllers for the Scaler
     public static CANTalon scalingMotor;
     public static CANTalon scalingWinch;
+
+    public static final DigitalOutput PHOTONIC_CANNON = new DigitalOutput(PHOTONIC_CANNON_ID);
 
     // Initialize the various robot modules
     public static void init() {

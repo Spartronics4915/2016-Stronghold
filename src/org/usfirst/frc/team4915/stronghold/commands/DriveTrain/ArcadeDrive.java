@@ -48,9 +48,10 @@ public class ArcadeDrive extends Command {
 
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-
+        
         
         if (VisionState.getInstance().wantsControl()) {
+        	System.out.println("Arcade Drive: driving with vision \n");
         	if (VisionState.getInstance().TargetX <= -1){
     			Robot.driveTrain.turn(false);
     		}
@@ -67,17 +68,20 @@ public class ArcadeDrive extends Command {
     	   }
     	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
     	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
+
+    	   if(ModuleManager.IMU_MODULE_ON) {
+    		   BNO055.CalData calData = RobotMap.imu.getCalibration();
+    	   	   int num = (int)(.5 + RobotMap.imu.getHeading());
+    	       distFromOrigin = BNO055.getInstance().getDistFromOrigin();
     	   
-    	   BNO055.CalData calData = RobotMap.imu.getCalibration();
-    	   int num = (int)(.5 + RobotMap.imu.getHeading());
-    	   distFromOrigin = BNO055.getInstance().getDistFromOrigin();
-    	   
-    	   SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
-    	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-    	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
-    	   SmartDashboard.putNumber("IMU heading", num);
-    	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
-       }
+	    	   SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
+	    	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
+	    	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+	    	   SmartDashboard.putNumber("IMU heading", num);
+	    	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
+       
+    	    }
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
