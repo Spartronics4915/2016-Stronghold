@@ -26,15 +26,11 @@ public class IntakeLauncher extends Subsystem {
     private final int LAUNCHER_MIN_HEIGHT_DEGREES = -10; // TODO, in degrees
                                                          // from horizontal
 
-    private final double LAUNCHER_MAX_HEIGHT_VOLTS = 1023.0; // TODO, in
+    private final double LAUNCHER_MAX_HEIGHT_TICKS = 900.0; // TODO, in
                                                              // potentiometer
                                                              // volts
-    private final double LAUNCHER_MIN_HEIGHT_VOLTS = 0.0; // TODO, in
+    private final double LAUNCHER_MIN_HEIGHT_TICKS = 100.0; // TODO, in
                                                           // potentiometer volts
-
-    private final double LAUNCHER_NEUTRAL_HEIGHT_VOLTS = 200.0; // TODO, in
-                                                                // potentiometer
-                                                                // volts
 
     private final double JOYSTICK_SCALE = 1.0; // TODO
 
@@ -62,6 +58,8 @@ public class IntakeLauncher extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
+        
+        
         setDefaultCommand(new AimLauncherCommand());
         // setDefaultCommand(new BackUpJoystickControlCommand());
     }
@@ -94,7 +92,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void readSetPoint() { // TODO rename
-        setPoint = aimMotor.getPosition();
+        setPoint = getPosition();
     }
 
     // changes the set point to a value
@@ -137,26 +135,26 @@ public class IntakeLauncher extends Subsystem {
     public void moveToSetPoint() {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
-        aimMotor.set(LAUNCHER_NEUTRAL_HEIGHT_VOLTS);
+        aimMotor.set(setPoint);
     }
 
     // Checks to see if joystick control or vision control is needed and
     // controls motion
     public void aimLauncher() {
-        if (VisionState.getInstance().wantsControl()) {
-            trackVision();
-        } else {
+        //if (VisionState.getInstance().wantsControl()) {
+          //  trackVision();
+        //} else {
             trackJoystick();
-        }
+       //}
     }
 
     // makes sure the set point doesn't go outside its max or min range
     public void keepSetPointInRange() {
-        if (setPoint > LAUNCHER_MAX_HEIGHT_VOLTS) {
-            setPoint = LAUNCHER_MAX_HEIGHT_VOLTS;
+        if (setPoint > LAUNCHER_MAX_HEIGHT_TICKS) {
+            setPoint = LAUNCHER_MAX_HEIGHT_TICKS;
         }
-        if (setPoint < LAUNCHER_MIN_HEIGHT_VOLTS) {
-            setPoint = LAUNCHER_MIN_HEIGHT_VOLTS;
+        if (setPoint < LAUNCHER_MIN_HEIGHT_TICKS) {
+            setPoint = LAUNCHER_MIN_HEIGHT_TICKS;
         }
     }
 
@@ -171,11 +169,11 @@ public class IntakeLauncher extends Subsystem {
 
     public double degreesToVolts(int degrees) {
         double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
-        return LAUNCHER_MIN_HEIGHT_VOLTS + (LAUNCHER_MAX_HEIGHT_VOLTS - LAUNCHER_MIN_HEIGHT_VOLTS) * heightRatio;
+        return LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * heightRatio;
     }
 
     public int voltsToDegrees(double volts) {
-        double heightRatio = (volts - LAUNCHER_MIN_HEIGHT_VOLTS) / (LAUNCHER_MAX_HEIGHT_VOLTS - LAUNCHER_MIN_HEIGHT_VOLTS);
+        double heightRatio = (volts - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
         return LAUNCHER_MIN_HEIGHT_DEGREES + (int) ((LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio);
     }
 
@@ -190,5 +188,9 @@ public class IntakeLauncher extends Subsystem {
     public void backUpJoystickMethod() {
         aimMotor.changeControlMode(TalonControlMode.PercentVbus);
         aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
+    }
+    
+    public double getPosition() {
+        return aimMotor.getPosition();
     }
 }
