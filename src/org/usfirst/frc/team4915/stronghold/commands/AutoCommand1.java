@@ -130,7 +130,7 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 20;
                 break;
             case CHEVAL_DE_FRISE:
-                distance = 30;
+                distance = 0;
                 break;
             case MOAT:
                 distance = 15;
