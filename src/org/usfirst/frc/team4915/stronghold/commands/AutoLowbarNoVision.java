@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinLaunchWheelsOutCommand;
 
 /**
  *
@@ -40,7 +40,7 @@ public class AutoLowbarNoVision extends CommandGroup {
         // just put in a random number and gets the aimer ready to shoot
         addSequential(new AimerGoToAngleCommand(520));
         // launches ball
-        addSequential(new LaunchBallCommand());
+        addSequential(new SpinLaunchWheelsOutCommand());
 
     }
 }
