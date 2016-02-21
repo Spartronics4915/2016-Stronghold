@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class AutoAimControlCommand extends Command {
 
-    private boolean m_toggleEnable = true;
+    private boolean m_toggleEnable = false;
     private boolean m_toggleTarget = false;
 
     public AutoAimControlCommand(boolean toggleEnable, boolean toggleTarget) {

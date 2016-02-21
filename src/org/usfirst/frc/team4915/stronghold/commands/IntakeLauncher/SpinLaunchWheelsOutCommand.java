@@ -15,7 +15,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void initialize() {
-      
+
     }
 
     @Override

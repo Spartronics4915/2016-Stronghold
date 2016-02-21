@@ -6,6 +6,7 @@ import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinLaunchWheelsOutCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
@@ -23,6 +24,7 @@ public class AutoCommand1 extends CommandGroup {
         this.position = position;
         this.type = type;
         System.out.println("Angle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
+
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             Robot.intakeLauncher.launcherSetNeutralPosition(); // placeholder
                                                                // for setting
@@ -49,8 +51,7 @@ public class AutoCommand1 extends CommandGroup {
                 }
                 if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
                     addSequential(new AimerGoToAngleCommand(25));
-                    addSequential(new SpinLaunchWheelsOutCommand());
-                }
+                    addSequential(new LaunchBallCommandGroup());                }
                 break;
             case DRIVE_ACROSS:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
@@ -137,7 +138,7 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 20;
                 break;
             case CHEVAL_DE_FRISE:
-                distance = 30;
+                distance = 0;
                 break;
             case MOAT:
                 distance = 15;
