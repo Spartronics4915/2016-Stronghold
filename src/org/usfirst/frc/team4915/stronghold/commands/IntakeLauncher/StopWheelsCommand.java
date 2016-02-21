@@ -1,9 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class StopWheelsCommand extends Command {
 
@@ -14,12 +13,13 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.setWheelsFinished(true);
+        SmartDashboard.putString("Flywheels spinning ", "nowhere");
+        Robot.intakeLauncher.stopWheels();
     }
 
     @Override
     protected void execute() {
-        SmartDashboard.putString("Flywheels spinning ", "nowhere");
+
     }
 
     @Override
@@ -29,7 +29,7 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void end() {
-        
+
     }
 
     @Override

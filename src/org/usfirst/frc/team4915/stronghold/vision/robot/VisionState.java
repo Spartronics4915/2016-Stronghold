@@ -134,7 +134,7 @@ public class VisionState implements NamedSendable {
     
     public boolean followTargetY(IntakeLauncher intakeLauncher) {
     	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
-    		intakeLauncher.setPointInDegrees(TargetY);
+    		intakeLauncher.setSetPoint(intakeLauncher.degreesToVolts(TargetY));
     		return true;
     	}
     	else {

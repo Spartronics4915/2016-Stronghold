@@ -24,18 +24,18 @@ public class AutoAimControlCommand extends Command{
 		vs.toggleAimState(this.m_toggleEnable, this.m_toggleTarget);
 	}
 
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 
-	@Override
-	protected void end() {
-		// Do nothing
-	}
+    @Override
+    protected void end() {
+        // Do nothing
+    }
 
-	@Override
-	protected void interrupted() {
-		// TODO Auto-generated method stub
-	}	
+    @Override
+    protected void interrupted() {
+        // TODO Auto-generated method stub
+    }
 }

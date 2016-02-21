@@ -1,35 +1,34 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 /**
  *
  */
-public class ZeroAimerCommand extends Command {
+public class BackUpJoystickControlCommand extends Command {
 
-    public ZeroAimerCommand() {
+    public BackUpJoystickControlCommand() {
         requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        System.out.println("Zero Aimer Command");
+
     }
 
     protected void execute() {
-        Robot.intakeLauncher.initAimer();
+        Robot.intakeLauncher.backUpJoystickMethod();
     }
 
     protected boolean isFinished() {
-        return Robot.intakeLauncher.aimMotor.isRevLimitSwitchClosed();
+        return false;
     }
 
     protected void end() {
-        Robot.intakeLauncher.aimMotor.setEncPosition(0);
+
     }
 
     protected void interrupted() {
-
+        System.out.println("Interrupted");
     }
 }
