@@ -1,4 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
+
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 
 import edu.wpi.first.wpilibj.NamedSendable;
@@ -43,11 +44,9 @@ public class VisionState implements NamedSendable {
             System.out.println(key + " " + value + " " + value.getClass().getName());
             if (key.equals("~TYPE~")) {
                 return;
-            }
-            else if (key.equals(("AutoAimEnabled"))) {
-            	s_instance.AutoAimEnabled = (Boolean) value;
-            } 
-            else {
+            } else if (key.equals(("AutoAimEnabled"))) {
+                s_instance.AutoAimEnabled = (Boolean) value;
+            } else {
                 // System.out.println(key + " " + value);
                 double num = (Double) value;
                 int ival = (int) num;
@@ -102,46 +101,33 @@ public class VisionState implements NamedSendable {
         this.TargetClass = (int) m_table.getNumber("TargetClass", 0);
 
     }
-    
+
     public void toggleAimState(boolean toggleEnable, boolean toggleTarget) {
-    	if(toggleEnable) {
-    		this.AutoAimEnabled = !this.AutoAimEnabled;
-    		m_table.putBoolean("AutoAimEnabled", this.AutoAimEnabled);
-    		System.out.println("AutoAimEnabled:" + this.AutoAimEnabled);
+        if (toggleEnable) {
+            this.AutoAimEnabled = !this.AutoAimEnabled;
+            m_table.putBoolean("AutoAimEnabled", this.AutoAimEnabled);
+            System.out.println("AutoAimEnabled:" + this.AutoAimEnabled);
             setLight(this.AutoAimEnabled);
-    	}
-    	if(toggleTarget) {
-    		this.TargetHigh = !this.TargetHigh;
-    		//m_table.putBoolean("TargetHigh", this.TargetHigh);
-    		System.out.println("TargetHigh:" + this.TargetHigh);
-    	}
+        }
+        if (toggleTarget) {
+            this.TargetHigh = !this.TargetHigh;
+            // m_table.putBoolean("TargetHigh", this.TargetHigh);
+            System.out.println("TargetHigh:" + this.TargetHigh);
+        }
     }
-    
-    /*public boolean followTargetX(DriveTrain driveTrain) {
-    	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
-    		if (this.TargetX <= -1){
-    			driveTrain.turn(false);
-    		}
-    		else {
-    			driveTrain.turn(true);
-    		}
-    		return true;
-    	}
-    	return false;
-    }
-    
-    public boolean followTargetY(IntakeLauncher intakeLauncher) {
-    	if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
-    		intakeLauncher.setPointInDegrees(TargetY);
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
-    }*/
-    
+
+    /*
+     * public boolean followTargetX(DriveTrain driveTrain) {
+     * if(this.AutoAimEnabled && this.TargetsAcquired > 0) { if (this.TargetX <=
+     * -1){ driveTrain.turn(false); } else { driveTrain.turn(true); } return
+     * true; } return false; } public boolean followTargetY(IntakeLauncher
+     * intakeLauncher) { if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
+     * intakeLauncher.setPointInDegrees(TargetY); return true; } else { return
+     * false; } }
+     */
+
     public boolean wantsControl() {
-    	return AutoAimEnabled;
+        return AutoAimEnabled;
     }
 
     /**

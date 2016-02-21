@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4915.stronghold;
 
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
-
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
@@ -11,6 +9,7 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
@@ -60,10 +59,10 @@ public class RobotMap {
 
     // Create the gyro
     public static AnalogGyro gyro;
-    
-    //Create IMU
+
+    // Create IMU
     public static BNO055 imu;
-    //public static BNO055 imuLinAcc;
+    // public static BNO055 imuLinAcc;
 
     // Create the motor controllers for the IntakeLauncher
     public static CANTalon intakeLeftMotorCAN15;
@@ -151,7 +150,9 @@ public class RobotMap {
         if (ModuleManager.IMU_MODULE_ON) {
             System.out.println("ModuleManager RobotMap Initialize: IMU");
             imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_EULER);
-            //imuLinAcc = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_LINEARACCEL);
+            // imuLinAcc =
+            // BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
+            // BNO055.vector_type_t.VECTOR_LINEARACCEL);
         }
     }
 }
