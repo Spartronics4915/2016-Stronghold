@@ -2,7 +2,9 @@ package org.usfirst.frc.team4915.stronghold.commands;
 
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -16,13 +18,24 @@ public class AutoCommand1 extends CommandGroup {
         this.strat = strat;
         this.position = position;
         this.type = type;
+        System.out.println("ANgle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
         
         addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
-        addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+        addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); // these two commands can move you across barriers and roughly turn an angle towards the goal
+        switch(strat){
+        	case DRIVE_SHOOT_VISION: //sets us up to use vision to shoot a high goal. 
+        		addSequential(new AutoAimControlCommand(true, true));
+        		break;
+        	default:
+        		addSequential(new AutoAimControlCommand(false, true));
+        		addSequential(new AimerGoToAngleCommand(300));
+        		break;
+        }
     }
 
 
     public static boolean getLeft(Autonomous.Position position) {
+    	System.out.println(position);
         boolean left = true;
         switch (position) {
             case ONE:
@@ -47,6 +60,7 @@ public class AutoCommand1 extends CommandGroup {
 
     public static int getDegrees(Autonomous.Position position) {
         int degrees;
+        System.out.println(position);
         switch (position) {
             case ONE:
                 degrees = 45;
@@ -70,6 +84,7 @@ public class AutoCommand1 extends CommandGroup {
     }
 
     public static boolean getStrategy(Autonomous.Strat strat) {
+    	System.out.println(strat);
         boolean vision = true;
         switch (strat) {
             case NONE:
@@ -90,6 +105,7 @@ public class AutoCommand1 extends CommandGroup {
 
     public static int getDistance(Autonomous.Type type) {
         int distance;
+        System.out.println(type);
         switch (type) {
             case LOWBAR:
                 distance = 200;
