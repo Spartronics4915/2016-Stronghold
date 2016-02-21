@@ -549,7 +549,7 @@ public class BNO055 {
 
         // calculate turns
         headingDiff = m_heading[0] - head[0];
-        if (Math.abs(headingDiff) >= 350) {
+        if (Math.abs(headingDiff) >= 360) {
             // We've traveled past the zero heading position
             if (headingDiff > 0) {
                 turns++;
@@ -762,7 +762,7 @@ public class BNO055 {
      * degrees
      *
      * For continuous rotation heading (doesn't roll over between 360/0) see the
-     * getHeading() method.
+     * getCumulativeHeading() method.
      *
      * Maximum data output rates for Fusion modes - See 3.6.3
      * 
@@ -783,8 +783,12 @@ public class BNO055 {
      * 
      * @return heading in degrees
      */
-    public double getHeading() {
+    public double getCumulativeHeading() {
         return m_heading[0] + turns * 360;
+    }
+    
+    public double getHeading() {
+        return m_heading[0];
     }
 
     public double getDistFromOrigin() {
