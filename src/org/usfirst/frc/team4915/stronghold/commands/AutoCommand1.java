@@ -1,9 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.commands;
-
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCommand1 extends CommandGroup {
@@ -20,7 +20,6 @@ public class AutoCommand1 extends CommandGroup {
         addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
         addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
     }
-
 
     public static boolean getLeft(Autonomous.Position position) {
         boolean left = true;
