@@ -15,7 +15,7 @@ public class AutoRotateDegrees extends Command {
     RobotDrive robotDrive = DriveTrain.robotDrive;
     private boolean goLeft;
     double robotAngle;
-    //creates new IMU variable
+    // creates new IMU variable
     BNO055 imu = RobotMap.imu;
 
     // autonomous rotate command

@@ -1,4 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +17,13 @@ public class MoveStraightPositionModeCommand extends Command {
     private DriveTrain driveTrain = Robot.driveTrain;
     private List<Double> desiredTicksValue;
     private double driveStraightValue = 0.5;
-    //variables for the ticks to move equation
+    // variables for the ticks to move equation
     private static double cyclesPerRotation = 256;
-    private static double approxCircumference = 45;//in inches
+    private static double approxCircumference = 45;// in inches
     private static double shaftRatio = 3.2;
     private static double gearBoxRatio = 4;
     private static double pulsesPerCycle = 4;
-    
+
     public MoveStraightPositionModeCommand(double inputDistanceInches) {
 
         requires(this.driveTrain);
@@ -45,12 +46,13 @@ public class MoveStraightPositionModeCommand extends Command {
 
         this.desiredTicksValue = new ArrayList<Double>();
 
-        //new equation
-        double ticksToMove = ((this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle)/ (approxCircumference)) /2;
+        // new equation
+        double ticksToMove =
+                ((this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle) / (approxCircumference)) / 2;
         System.out.println("ticksToMove: " + ticksToMove);
-        //double startingTickValue;
-        //double endValue;
-        
+        // double startingTickValue;
+        // double endValue;
+
         // get the starting encoder value
         // move motors and read new encoder value
         for (int i = 0; i < motors.size(); i++) {
@@ -59,8 +61,8 @@ public class MoveStraightPositionModeCommand extends Command {
             // All the motors are inverted/backwards. The ticks are moving down
             // when moving forward
             this.desiredTicksValue.add(ticksToMove);
-	    SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
-	    System.out.println("Running MoveStraight");
+            SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
+            System.out.println("Running MoveStraight");
 
         }
     }
@@ -79,7 +81,7 @@ public class MoveStraightPositionModeCommand extends Command {
         } else {
             this.driveTrain.driveStraight(-this.driveStraightValue);
         }
-    SmartDashboard.putNumber("Drive Straight: Input distance", this.inputDistanceInches);
+        SmartDashboard.putNumber("Drive Straight: Input distance", this.inputDistanceInches);
     }
 
     @Override

@@ -1,4 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.commands;
+
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
@@ -22,39 +23,45 @@ public class AutoCommand1 extends CommandGroup {
         this.position = position;
         this.type = type;
         System.out.println("Angle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
-		if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-			Robot.intakeLauncher.launcherSetNeutralPosition(); //placeholder for setting the launcher to neutral driving position
-		}
-		switch(strat){
-        	case DRIVE_SHOOT_VISION: //sets us up to use vision to shoot a high goal. 
-         		addParallel(new ArcadeDrive());
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+            Robot.intakeLauncher.launcherSetNeutralPosition(); // placeholder
+                                                               // for setting
+                                                               // the launcher
+                                                               // to neutral
+                                                               // driving
+                                                               // position
+        }
+        switch (strat) {
+            case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
+                                     // goal.
+                addParallel(new ArcadeDrive());
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
-                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
-                if (ModuleManager.VISION_MODULE_ON){
-        			addSequential(new AutoAimControlCommand(true, true));
+                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+                if (ModuleManager.VISION_MODULE_ON) {
+                    addSequential(new AutoAimControlCommand(true, true));
                 }
-        		break;
-        	case DRIVE_SHOOT_NO_VISION:
+                break;
+            case DRIVE_SHOOT_NO_VISION:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
-                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position))); 
-                if (ModuleManager.VISION_MODULE_ON){
-        			addSequential(new AutoAimControlCommand(false, true));
+                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+                if (ModuleManager.VISION_MODULE_ON) {
+                    addSequential(new AutoAimControlCommand(false, true));
                 }
-        		if (ModuleManager.INTAKELAUNCHER_MODULE_ON){
-        			addSequential(new AimerGoToAngleCommand(25));
-        			addSequential(new LaunchBallCommand());
-        		}
-        		break;
-        	case DRIVE_ACROSS:
+                if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+                    addSequential(new AimerGoToAngleCommand(25));
+                    addSequential(new LaunchBallCommand());
+                }
+                break;
+            case DRIVE_ACROSS:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
-        		break;
-        	default:
-        		break;
+                break;
+            default:
+                break;
         }
     }
 
     public static boolean getLeft(Autonomous.Position position) {
-    	System.out.println(position);
+        System.out.println(position);
         boolean left = true;
         switch (position) {
             case ONE:
@@ -103,7 +110,7 @@ public class AutoCommand1 extends CommandGroup {
     }
 
     public static boolean getStrategy(Autonomous.Strat strat) {
-    	System.out.println(strat);
+        System.out.println(strat);
         boolean vision = true;
         switch (strat) {
             case NONE:
@@ -116,8 +123,8 @@ public class AutoCommand1 extends CommandGroup {
             case DRIVE_SHOOT_NO_VISION:
                 vision = false;
                 break;
-             default:
-                 vision = true;
+            default:
+                vision = true;
         }
         return vision;
     }

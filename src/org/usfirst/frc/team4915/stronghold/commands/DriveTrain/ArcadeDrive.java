@@ -1,4 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
+
 import java.util.List;
 
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
@@ -30,9 +31,9 @@ public class ArcadeDrive extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	 for (int i = 0; i < motors.size(); i++) {
-             motors.get(i).setEncPosition(0);
-    	 }
+        for (int i = 0; i < motors.size(); i++) {
+            motors.get(i).setEncPosition(0);
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -41,46 +42,51 @@ public class ArcadeDrive extends Command {
         this.joystickDrive = Robot.oi.getJoystickDrive();
         this.joystickX = this.joystickDrive.getAxis(Joystick.AxisType.kX);
         this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
-        
-        if (ModuleManager.GYRO_MODULE_ON){
+
+        if (ModuleManager.GYRO_MODULE_ON) {
             Robot.driveTrain.trackGyro();
         }
 
-
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-        
-        
-        if (VisionState.getInstance().wantsControl()) {
-        	System.out.println("Arcade Drive: driving with vision \n");
-        	if (VisionState.getInstance().TargetX <= -1){
-    			Robot.driveTrain.turn(false);
-    		}
-    		else {
-    			Robot.driveTrain.turn(true);
-    		}
-        }
-        else {
-    	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
-               Robot.driveTrain.stop();
-           } 
-    	   else {
-               Robot.driveTrain.arcadeDrive(this.joystickDrive);
-    	   }
-    	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
-    	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
 
-    	   if(ModuleManager.IMU_MODULE_ON) {
-    		   BNO055.CalData calData = RobotMap.imu.getCalibration();
-    	   	   int num = (int)(.5 + RobotMap.imu.getHeading());
-    	       distFromOrigin = BNO055.getInstance().getDistFromOrigin();
-    	   
-	    	   SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
-	    	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-	    	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
-	    	   SmartDashboard.putNumber("IMU heading", num);
-	    	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
-       
-    	    }
+        if (VisionState.getInstance().wantsControl()) {
+            System.out.println("Arcade Drive: driving with vision \n");
+            if (VisionState.getInstance().TargetX <= -1) {
+                Robot.driveTrain.turn(false);
+            } else {
+                Robot.driveTrain.turn(true);
+            }
+        } else {
+            if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
+                Robot.driveTrain.stop();
+            } else {
+                Robot.driveTrain.arcadeDrive(this.joystickDrive);
+            }
+            SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
+            SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
+
+            if (ModuleManager.IMU_MODULE_ON) {
+                BNO055.CalData calData = RobotMap.imu.getCalibration();
+                int num = (int) (.5 + RobotMap.imu.getHeading());
+                distFromOrigin = BNO055.getInstance().getDistFromOrigin();
+
+                SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
+                SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
+                SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+                SmartDashboard.putNumber("IMU heading", num);
+                SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro * 10 + calData.mag)); // Calibration
+                                                                                                                                      // values
+                                                                                                                                      // range
+                                                                                                                                      // from
+                                                                                                                                      // 0-3,
+                                                                                                                                      // Right
+                                                                                                                                      // to
+                                                                                                                                      // left:
+                                                                                                                                      // mag,
+                                                                                                                                      // gyro,
+                                                                                                                                      // accel
+
+            }
         }
     }
 
@@ -93,17 +99,16 @@ public class ArcadeDrive extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-    	Robot.driveTrain.stop();
+        Robot.driveTrain.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-    	end();
+        end();
     }
-    
-  //Call every 100th of a sec
-    
+
+    // Call every 100th of a sec
 
 }

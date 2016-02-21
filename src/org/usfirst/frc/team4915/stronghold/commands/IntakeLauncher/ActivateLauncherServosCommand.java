@@ -15,7 +15,7 @@ public class ActivateLauncherServosCommand extends Command {
     }
 
     protected void execute() {
-    
+
     }
 
     protected boolean isFinished() {

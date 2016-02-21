@@ -60,7 +60,7 @@ public class DriveTrain extends Subsystem {
     }
 
     public double modifyThrottle() {
-        //255 is the max number on the throttle
+        // 255 is the max number on the throttle
         double modifiedThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
         if (modifiedThrottle != this.joystickThrottle) {
             SmartDashboard.putNumber("Throttle: ", modifiedThrottle);
@@ -74,8 +74,8 @@ public class DriveTrain extends Subsystem {
     }
 
     public void arcadeDrive(Joystick stick) {
-        
-        if (ModuleManager.GYRO_MODULE_ON){
+
+        if (ModuleManager.GYRO_MODULE_ON) {
             Robot.driveTrain.trackGyro();
         }
         robotDrive.arcadeDrive(stick);
@@ -101,13 +101,12 @@ public class DriveTrain extends Subsystem {
     }
 
     public void driveStraight(double speed) {
-      
 
         robotDrive.arcadeDrive(speed, 0);
     }
 
     public void turn(boolean left) {
-        if (ModuleManager.GYRO_MODULE_ON){
+        if (ModuleManager.GYRO_MODULE_ON) {
             trackGyro();
         }
         if (left) {
