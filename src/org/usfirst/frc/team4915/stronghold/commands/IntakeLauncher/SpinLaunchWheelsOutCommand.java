@@ -1,9 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class SpinLaunchWheelsOutCommand extends Command {
 
@@ -15,7 +14,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.setWheelsFinished(false);
+        setTimeout(2); //TODO finalize time
     }
 
     @Override
@@ -26,13 +25,14 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        // Ends once the command to retract the pneumatic ends
-        return Robot.intakeLauncher.areWheelsFinished();
+        return isTimedOut();
     }
 
     @Override
     protected void end() {
+        Robot.intakeLauncher.stopWheels();
         SmartDashboard.putString("Boulder in Basket: ", "No");
+        System.out.println("Launch Command Ended");
     }
 
     @Override

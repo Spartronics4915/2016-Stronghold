@@ -1,20 +1,23 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+/**
+ *
+ */
+public class RetractLauncherServosCommand extends Command {
 
-public class ActivateLauncherPneumaticCommand extends Command {
-
-    public ActivateLauncherPneumaticCommand() {
+    public RetractLauncherServosCommand() {
         requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.activatePneumatic();
+        Robot.intakeLauncher.retractLauncherServos();
     }
 
     protected void execute() {
+
     }
 
     protected boolean isFinished() {
@@ -22,10 +25,10 @@ public class ActivateLauncherPneumaticCommand extends Command {
     }
 
     protected void end() {
-
+        
     }
 
     protected void interrupted() {
-
+    
     }
 }
