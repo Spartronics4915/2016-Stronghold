@@ -11,6 +11,7 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCom
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToIntakePositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinLaunchWheelsOutCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
@@ -49,10 +50,12 @@ public class OI {
     //public static final int ACTIVATE_SERVOS_TEST_BUTTON_NUMBER = 6; // Test
     //public static final int RETRACT_SERVOS_TEST_BUTTON_NUMBER = 1; // Test
 
+    public static final int SPIN_WHEELS_BUTTON_NUMBER = 10;
+    
     // Button numbers for scaling related buttons on the mechanism joystick
-    public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
-    public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
-    public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
+    //public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
+    //public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
+    //public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
 
     // Create joysticks for driving and aiming the launcher
     public Joystick driveStick;
@@ -71,6 +74,7 @@ public class OI {
     public JoystickButton launcherJumpToAngleButton;
     public JoystickButton activateServosTestButton;
     public JoystickButton retractServosTestButton;
+    public JoystickButton spinWheelsButton;
     public JoystickButton autoAimButton;
     public JoystickButton highLowButton;
 
@@ -148,6 +152,7 @@ public class OI {
             initializeButton(this.launcherJumpToAngleButton, aimStick, 1, new LauncherGoToAngleCommand(10));
             //initializeButton(this.activateServosTestButton, aimStick, ACTIVATE_SERVOS_TEST_BUTTON_NUMBER, new ActivateLauncherServosCommand());
             //initializeButton(this.retractServosTestButton, aimStick, RETRACT_SERVOS_TEST_BUTTON_NUMBER, new RetractLauncherServosCommand());
+            initializeButton(this.spinWheelsButton, aimStick, SPIN_WHEELS_BUTTON_NUMBER, new SpinLaunchWheelsOutCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 
@@ -169,9 +174,9 @@ public class OI {
         if (ModuleManager.SCALING_MODULE_ON) {
             SmartDashboard.putData("Scaler Winch", RobotMap.scalingWinch);
             SmartDashboard.putData("Scaler Tape Measure Motor", RobotMap.scalingMotor);
-            initializeButton(this.scalerReachUpButton, aimStick, SCALER_REACH_UP_BUTTON_NUMBER, new ScalerCommand(State.REACHING_UP));
-            initializeButton(this.scalerLiftButton, aimStick, SCALER_LIFT_BUTTON_NUMBER, new ScalerCommand(State.LIFTING));
-            initializeButton(this.scalerReachDownButton, aimStick, SCALER_REACH_DOWN_BUTTON_NUMBER, new ScalerCommand(State.REACHING_DOWN));
+            //initializeButton(this.scalerReachUpButton, aimStick, SCALER_REACH_UP_BUTTON_NUMBER, new ScalerCommand(State.REACHING_UP));
+            //initializeButton(this.scalerLiftButton, aimStick, SCALER_LIFT_BUTTON_NUMBER, new ScalerCommand(State.LIFTING));
+            //initializeButton(this.scalerReachDownButton, aimStick, SCALER_REACH_DOWN_BUTTON_NUMBER, new ScalerCommand(State.REACHING_DOWN));
         }
 
         if (ModuleManager.IMU_MODULE_ON) {
