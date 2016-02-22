@@ -135,16 +135,16 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 100;
                 break;
             case MOAT:
-                distance = 15;
+                distance = 100;
                 break;
             case RAMPARTS:
-                distance = 35;
+                distance = 100;
                 break;
             case ROUGH_TERRAIN:
-                distance = 40;
+                distance = 100;
                 break;
             case ROCK_WALL:
-                distance = 5;
+                distance = 100;
                 break;
             default:
                 distance = 0;
