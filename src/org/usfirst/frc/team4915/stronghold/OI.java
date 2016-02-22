@@ -8,6 +8,7 @@ import java.util.jar.Manifest;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinLaunchWheelsOutCommand;
@@ -136,7 +137,7 @@ public class OI {
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new SpinLaunchWheelsOutCommand());
+            initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());
             initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.grabBallButton, driveStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommand());
             initializeButton(this.launcherJumpToNeutralButton, aimStick, LAUNCHER_JUMP_TO_NEUTRAl_BUTTON_NUMBER,
