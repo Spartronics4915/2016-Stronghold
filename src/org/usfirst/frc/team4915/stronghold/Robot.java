@@ -57,6 +57,7 @@ public class Robot extends IterativeRobot {
             SmartDashboard.putNumber("Launcher Set Point: ", intakeLauncher.aimMotor.getPosition());
             SmartDashboard.putString("Module Manager", "IntakeLauncher Initialized");
             System.out.println("ModuleManager initialized: IntakeLauncher");
+            System.out.println(intakeLauncher.getSetPoint());
         }
         if (ModuleManager.GYRO_MODULE_ON) {
             RobotMap.gyro.initGyro();
