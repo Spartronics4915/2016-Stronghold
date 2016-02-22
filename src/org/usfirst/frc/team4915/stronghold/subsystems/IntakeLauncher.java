@@ -1,5 +1,4 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
-
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
@@ -110,7 +109,6 @@ public class IntakeLauncher extends Subsystem {
 
     // changes the set point based on an offset
     private void offsetSetPoint(double offset) {
-        readSetPoint();
         setPoint += offset;
         SmartDashboard.putNumber("Offset: ", offset);
         SmartDashboard.putNumber("Moving to setPoint", getSetPoint());
@@ -130,14 +128,15 @@ public class IntakeLauncher extends Subsystem {
 
     // changes the set point based on vision
     private void moveLauncherWithVision() {
-        offsetSetPoint(VisionState.getInstance().TargetY);
+        offsetSetPoint(-VisionState.getInstance().TargetY);
     }
 
     // changes the set point based on the joystick
     private void moveLauncherWithJoystick() {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
         if (Math.abs(joystickY) > MIN_JOYSTICK_MOTION) {
-            offsetSetPoint(joystickY * JOYSTICK_SCALE);
+            readSetPoint();
+            offsetSetPoint(-joystickY * JOYSTICK_SCALE);
         }
     }
 
