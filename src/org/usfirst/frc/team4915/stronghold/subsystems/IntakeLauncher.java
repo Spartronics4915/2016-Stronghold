@@ -1,5 +1,4 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
-
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
@@ -17,24 +16,25 @@ public class IntakeLauncher extends Subsystem {
     // Ranges -1 to 1, negative values are reverse direction
     // Negative values indicate a wheel spinning outwards and positive values
     // indicate a wheel spinning inwards.
-    private final double FULL_SPEED_REVERSE = .750;
+    private final double FULL_SPEED_REVERSE = .60;
     private final double FULL_SPEED_FORWARD = -1;
     private final double ZERO_SPEED = 0.0;
 
-    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // TODO, in degrees
+    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 48.0; // TODO, in degrees
                                                              // from horizontal
-    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -16.0; // TODO, in
+    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -18.0; // TODO, in
                                                               // degrees from
                                                               // horizontal
-    private final double LAUNCHER_MAX_HEIGHT_TICKS = 350.0; // TODO, in
+    private final double LAUNCHER_MAX_HEIGHT_TICKS = 303.0; // TODO, in
                                                             // potentiometer
                                                             // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 0.0; // TODO, in
+    private final double LAUNCHER_MIN_HEIGHT_TICKS = 53.0; // TODO, in
                                                         // potentiometer
                                                         // ticks
-    private final double LAUNCHER_NEUTRAL_HEIGHT_DEGREES = 20.0; // TODO, in
+    private final double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 161.0; // TODO, in
                                                                  // degrees from
                                                                  // horizontal
+    private final double LAUNCHER_INTAKE_HEIGHT_TICKS = 76.0;
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.05;
@@ -110,7 +110,6 @@ public class IntakeLauncher extends Subsystem {
 
     // changes the set point based on an offset
     private void offsetSetPoint(double offset) {
-        readSetPoint();
         setPoint += offset;
         SmartDashboard.putNumber("Offset: ", offset);
         SmartDashboard.putNumber("Moving to setPoint", getSetPoint());
@@ -130,14 +129,15 @@ public class IntakeLauncher extends Subsystem {
 
     // changes the set point based on vision
     private void moveLauncherWithVision() {
-        offsetSetPoint(VisionState.getInstance().TargetY);
+        offsetSetPoint(-VisionState.getInstance().TargetY);
     }
 
     // changes the set point based on the joystick
     private void moveLauncherWithJoystick() {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
         if (Math.abs(joystickY) > MIN_JOYSTICK_MOTION) {
-            offsetSetPoint(joystickY * JOYSTICK_SCALE);
+            readSetPoint();
+            offsetSetPoint(-joystickY * JOYSTICK_SCALE);
         }
     }
 
@@ -165,11 +165,15 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void launcherSetNeutralPosition() {
-        setSetPoint(-degreesToTicks(LAUNCHER_NEUTRAL_HEIGHT_DEGREES));
+        setSetPoint(-LAUNCHER_NEUTRAL_HEIGHT_TICKS);
     }
     
     public void launcherJumpToAngle(double angle) {
         setSetPoint(-degreesToTicks(angle));
+    }
+    
+    public void launcherJumpToIntake() {
+        setSetPoint(-LAUNCHER_INTAKE_HEIGHT_TICKS);
     }
 
     // makes sure the set point doesn't go outside its max or min range
