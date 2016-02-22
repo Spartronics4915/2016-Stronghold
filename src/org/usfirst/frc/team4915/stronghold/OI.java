@@ -10,6 +10,7 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.ActivateLaunc
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.Scaler.ScalerCommand;
@@ -40,6 +41,7 @@ public class OI {
 
     // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2;
+    public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
     public static final int LAUNCHER_JUMP_TO_POSITION_BUTTON_NUMBER = 4; // Test
     public static final int LAUNCHER_FORCE_DOWN_BUTTON_NUMBER = 1;
@@ -73,6 +75,7 @@ public class OI {
     public JoystickButton retractServosTestButton;
     public JoystickButton autoAimButton;
     public JoystickButton highLowButton;
+    public JoystickButton lightSwitchButton;
 
     // Create buttons for the scaler on the mechanism stick
     public JoystickButton scalerExtendButton;
@@ -163,6 +166,7 @@ public class OI {
             SmartDashboard.putData(VisionState.getInstance());
             initializeButton(this.autoAimButton, aimStick, AUTO_AIM_BUTTON_NUMBER, new AutoAimControlCommand(true, false));
             initializeButton(this.highLowButton, aimStick, HIGH_LOW_BUTTON_NUMBER, new AutoAimControlCommand(false, true));
+            initializeButton(this.lightSwitchButton, aimStick, LIGHT_SWITCH_BUTTON_NUMBER, new LightSwitchCommand());
             System.out.println("ModuleManager OI: Initialize Vision!");
         }
 
