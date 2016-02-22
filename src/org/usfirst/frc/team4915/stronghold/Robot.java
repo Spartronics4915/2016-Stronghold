@@ -7,7 +7,7 @@ import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
-
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -72,10 +72,16 @@ public class Robot extends IterativeRobot {
             scaler = new Scaler();
         }
         if (ModuleManager.IMU_MODULE_ON) {
-
-            SmartDashboard.putString("Module Manager", "imu Initialized");
-            System.out.println("Module Manager initialized: imu");
-
+            BNO055.CalData calData = RobotMap.imu.getCalibration();
+            SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
+            SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+            SmartDashboard.putNumber("IMU calibration status", 
+                    (calData.sys * 1000 + 
+                    calData.accel * 100 + 
+                    calData.gyro * 10 + 
+                    calData.mag)); 
+            // Calibration values range from 0-3, 
+            // Right to left: mag, gyro, accel
         }
         oi = new OI(); // 3. Construct OI after subsystems created
     }
