@@ -8,7 +8,7 @@ import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
-
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -55,9 +55,7 @@ public class Robot extends IterativeRobot {
         }
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             intakeLauncher = new IntakeLauncher();
-            intakeLauncher.readSetPoint();
             SmartDashboard.putNumber("Launcher Set Point: ", intakeLauncher.aimMotor.getPosition());
-            intakeLauncher.readSetPoint();
             SmartDashboard.putString("Module Manager", "IntakeLauncher Initialized");
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
@@ -91,7 +89,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
 
         // schedule the autonomous command
-        autonomousCommand = new MoveStraightPositionModeCommand(30);
+        autonomousCommand = new MoveStraightPositionModeCommand(100, 0.5);
                 //new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
                 //(Autonomous.Position) oi.startingFieldPosition.getSelected());
 
@@ -114,6 +112,11 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
+      //set speed
+        
+       // RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+       // RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+        
         if (this.autonomousCommand != null) {
             this.autonomousCommand.cancel();
         }
@@ -155,6 +158,7 @@ public class Robot extends IterativeRobot {
             SmartDashboard.putNumber("Aimer Set Point: ", intakeLauncher.getSetPoint());
             SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
             SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
+            SmartDashboard.putBoolean("Boulder Limit Switch ", Robot.intakeLauncher.boulderLoaded());
         }
     }
 }

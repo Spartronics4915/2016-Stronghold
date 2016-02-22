@@ -54,13 +54,13 @@ public class DriveTrain extends Subsystem {
         // checking to see the encoder values
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
-            for (int i = 0; i < motors.size(); i++) {
+           
             }
         }
-    }
+    
 
     public double modifyThrottle() {
-        //255 is the max number on the throttle
+        // 255 is the max number on the throttle
         double modifiedThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
         if (modifiedThrottle != this.joystickThrottle) {
             SmartDashboard.putNumber("Throttle: ", modifiedThrottle);
@@ -74,8 +74,8 @@ public class DriveTrain extends Subsystem {
     }
 
     public void arcadeDrive(Joystick stick) {
-        
-        if (ModuleManager.GYRO_MODULE_ON){
+
+        if (ModuleManager.GYRO_MODULE_ON) {
             Robot.driveTrain.trackGyro();
         }
         robotDrive.arcadeDrive(stick);
@@ -101,13 +101,12 @@ public class DriveTrain extends Subsystem {
     }
 
     public void driveStraight(double speed) {
-      
 
         robotDrive.arcadeDrive(speed, 0);
     }
 
     public void turn(boolean left) {
-        if (ModuleManager.GYRO_MODULE_ON){
+        if (ModuleManager.GYRO_MODULE_ON) {
             trackGyro();
         }
         if (left) {
@@ -116,4 +115,25 @@ public class DriveTrain extends Subsystem {
             robotDrive.arcadeDrive(0, .7);
         }
     }
+
+    // autoturn is just a gentler version of (joystick) turn.
+    public void autoturn(boolean left) {
+        if (ModuleManager.GYRO_MODULE_ON) {
+            trackGyro();
+        }
+        if (left) {
+            robotDrive.arcadeDrive(0, -.2);
+        } else {
+            robotDrive.arcadeDrive(0, .2);
+        }
+    }
+
+    public void turnToward(double heading) {
+        double deltaHeading = RobotMap.imu.getHeading() - heading;
+        if (Math.abs(deltaHeading) < 1.0)
+            this.stop();
+        else
+            this.autoturn(deltaHeading < 0.0);
+    }
+
 }

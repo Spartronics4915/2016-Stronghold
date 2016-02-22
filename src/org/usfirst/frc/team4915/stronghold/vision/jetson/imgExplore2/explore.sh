@@ -21,7 +21,7 @@ exploredir="/home/ubuntu/vision/jetson/imgExplore2"
 cd $exploredir
 
 python ./imgExplore.py \
-        --algorithm 5 \
+        --algorithm 9 \
         --stashinterval `f_getinterval $1` \
         --nodisplay \
         --daemonize >> /var/tmp/imgExplore.log 2>&1

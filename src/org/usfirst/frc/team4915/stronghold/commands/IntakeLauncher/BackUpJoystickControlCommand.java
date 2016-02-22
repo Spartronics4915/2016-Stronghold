@@ -1,7 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
@@ -30,5 +31,6 @@ public class BackUpJoystickControlCommand extends Command {
 
     protected void interrupted() {
         System.out.println("Interrupted");
+        end();
     }
 }

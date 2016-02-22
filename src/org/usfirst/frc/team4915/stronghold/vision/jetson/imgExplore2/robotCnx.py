@@ -28,6 +28,7 @@ class RobotCnx:
             self.targetState = targetState.TargetState(self.visTable)
             self.targetHigh = True
             self.autoAimEnabled = False
+            self.imuHeading = 0
 
         except:
             xcpt = sys.exc_info()
@@ -36,6 +37,9 @@ class RobotCnx:
 
     def GetTargetState(self):
         return self.targetState
+
+    def GetIMUHeading(self):
+        return self.imuHeading
 
     def SetFPS(self, fps):
         self.targetState.SetFPS(fps)
@@ -53,12 +57,17 @@ class RobotCnx:
 
     @staticmethod
     def visValueChanged(table, key, value, isNew):
-        #This is where we can be woken up if the driver station (or robot) wants to talk to us
+        # This is where we can be woken up if the driver station 
+        # (or robot) wants to talk to us. This method fires only
+        # on changes to /SmartDashboard/Vision/*
         if key == 'TargetHigh':
         	self.targetHigh = value
             #print(value)
         elif key == 'AutoAimEnabled':
         	self.autoAimEnabled = value
+            #print(value)
+        elif key == 'IMUHeading':
+        	self.imuHeading = value
             #print(value)
         else:
             pass

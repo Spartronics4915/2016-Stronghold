@@ -1,7 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
@@ -25,7 +26,7 @@ public class AimWithDashboardCommand extends Command {
     }
 
     protected void end() {
-        Robot.intakeLauncher.readSetPoint();
+        // Robot.intakeLauncher.readSetPoint();
     }
 
     protected void interrupted() {
