@@ -47,9 +47,6 @@ public class AutoCommand1 extends CommandGroup {
 		case DRIVE_SHOOT_NO_VISION:
 			addSequential(new MoveStraightPositionModeCommand(getDistance(type)));
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
-			if (ModuleManager.VISION_MODULE_ON) {
-				addSequential(new AutoAimControlCommand(false, true));
-			}
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addSequential(new LauncherGoToAngleCommand(25));
 				addSequential(new LaunchBallCommandGroup());
