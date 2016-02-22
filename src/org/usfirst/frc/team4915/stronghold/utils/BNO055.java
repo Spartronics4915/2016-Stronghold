@@ -552,8 +552,10 @@ public class BNO055 {
         if (Math.abs(headingDiff) >= 360) {
             // We've traveled past the zero heading position
             if (headingDiff > 0) {
+                head[0] = head[0] - 360;
                 turns++;
             } else {
+                head[0] = head[0] + 360;
                 turns--;
             }
         }
