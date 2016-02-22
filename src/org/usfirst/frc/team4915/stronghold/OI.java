@@ -101,7 +101,6 @@ public class OI {
         barrierType = new SendableChooser();
         SmartDashboard.putData("Barrier Type for autonomous", barrierType);
         barrierType.addDefault("Low Bar", Autonomous.Type.LOWBAR);
-        barrierType.addObject("Cheval De Frise", Autonomous.Type.CHEVAL_DE_FRISE);
         barrierType.addObject("Moat", Autonomous.Type.MOAT);
         barrierType.addObject("Ramparts", Autonomous.Type.RAMPARTS);
         barrierType.addObject("Rough Terrain", Autonomous.Type.ROUGH_TERRAIN);
