@@ -24,9 +24,6 @@ public class RobotMap {
     private static final int SOLENOID_CHANNEL_PRIMARY = 0;
     private static final int SOLENOID_CHANNEL_SECONDARY = 1;
 
-    // Define port for the gyro
-    public final static int GYRO_PORT = 0;
-
     // Define channels for IntakeLauncher motors
     private static final int INTAKE_LEFT_MOTOR_ID = 15;
     private static final int INTAKE_RIGHT_MOTOR_ID = 14;
@@ -138,11 +135,6 @@ public class RobotMap {
             LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
         }
 
-        if (ModuleManager.GYRO_MODULE_ON) {
-            System.out.println("ModuleManager RobotMap initalize. Initialize Gyro!");
-            gyro = new AnalogGyro(GYRO_PORT);
-        }
-
         if (ModuleManager.SCALING_MODULE_ON) {
             System.out.println("ModuleManager RobotMap Initialize: Scaling");
             scalingMotor = new CANTalon(SCALING_MOTOR_ID);
@@ -150,7 +142,8 @@ public class RobotMap {
         }
         if (ModuleManager.IMU_MODULE_ON) {
             System.out.println("ModuleManager RobotMap Initialize: IMU");
-            imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_EULER);
+            imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, 
+                                    BNO055.vector_type_t.VECTOR_EULER);
             // imuLinAcc =
             // BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
             // BNO055.vector_type_t.VECTOR_LINEARACCEL);

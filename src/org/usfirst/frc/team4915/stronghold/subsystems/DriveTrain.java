@@ -75,9 +75,6 @@ public class DriveTrain extends Subsystem {
 
     public void arcadeDrive(Joystick stick) {
 
-        if (ModuleManager.GYRO_MODULE_ON) {
-            Robot.driveTrain.trackGyro();
-        }
         robotDrive.arcadeDrive(stick);
         // checking to see the encoder values
         // this can be removed later. Used to debug
@@ -92,23 +89,12 @@ public class DriveTrain extends Subsystem {
         robotDrive.stopMotor();
     }
 
-    // Methods for Gyro
-    public double trackGyro() {
-        this.gyroHeading = -(gyro.getAngle()) + this.startingAngle;
-        SmartDashboard.putNumber("Gyro heading", this.gyroHeading);
-        SmartDashboard.putData("Gyro", RobotMap.gyro);
-        return this.gyroHeading;
-    }
-
     public void driveStraight(double speed) {
 
         robotDrive.arcadeDrive(speed, 0);
     }
 
     public void turn(boolean left) {
-        if (ModuleManager.GYRO_MODULE_ON) {
-            trackGyro();
-        }
         if (left) {
             robotDrive.arcadeDrive(0, -.7);
         } else {
@@ -118,9 +104,6 @@ public class DriveTrain extends Subsystem {
 
     // autoturn is just a gentler version of (joystick) turn.
     public void autoturn(boolean left) {
-        if (ModuleManager.GYRO_MODULE_ON) {
-            trackGyro();
-        }
         if (left) {
             robotDrive.arcadeDrive(0, -.2);
         } else {

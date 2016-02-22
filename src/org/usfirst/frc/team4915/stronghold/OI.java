@@ -145,14 +145,6 @@ public class OI {
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 
-        if (ModuleManager.GYRO_MODULE_ON) {
-            System.out.println("ModuleManager OI TODO: Initialize Gyro!"); // TODO:
-                                                                           // OI
-                                                                           // init
-                                                                           // Gyro
-            SmartDashboard.putData("Gyro", RobotMap.gyro);
-        }
-
         if (ModuleManager.VISION_MODULE_ON) {
             SmartDashboard.putData(VisionState.getInstance());
             initializeButton(this.autoAimButton, aimStick, AUTO_AIM_BUTTON_NUMBER, new AutoAimControlCommand(true, false));

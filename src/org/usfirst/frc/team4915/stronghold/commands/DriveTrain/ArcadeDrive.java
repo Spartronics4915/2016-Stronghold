@@ -43,10 +43,6 @@ public class ArcadeDrive extends Command {
         this.joystickX = this.joystickDrive.getAxis(Joystick.AxisType.kX);
         this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
 
-        if (ModuleManager.GYRO_MODULE_ON) {
-            Robot.driveTrain.trackGyro();
-        }
-
         VisionState vs = VisionState.getInstance();
         double heading;
         if (ModuleManager.IMU_MODULE_ON) {
