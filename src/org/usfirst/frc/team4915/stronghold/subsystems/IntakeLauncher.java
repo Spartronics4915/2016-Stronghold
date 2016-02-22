@@ -16,24 +16,25 @@ public class IntakeLauncher extends Subsystem {
     // Ranges -1 to 1, negative values are reverse direction
     // Negative values indicate a wheel spinning outwards and positive values
     // indicate a wheel spinning inwards.
-    private final double FULL_SPEED_REVERSE = .750;
+    private final double FULL_SPEED_REVERSE = .60;
     private final double FULL_SPEED_FORWARD = -1;
     private final double ZERO_SPEED = 0.0;
 
-    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // TODO, in degrees
+    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 48.0; // TODO, in degrees
                                                              // from horizontal
-    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -16.0; // TODO, in
+    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -18.0; // TODO, in
                                                               // degrees from
                                                               // horizontal
-    private final double LAUNCHER_MAX_HEIGHT_TICKS = 350.0; // TODO, in
+    private final double LAUNCHER_MAX_HEIGHT_TICKS = 303.0; // TODO, in
                                                             // potentiometer
                                                             // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 0.0; // TODO, in
+    private final double LAUNCHER_MIN_HEIGHT_TICKS = 53.0; // TODO, in
                                                         // potentiometer
                                                         // ticks
-    private final double LAUNCHER_NEUTRAL_HEIGHT_DEGREES = 20.0; // TODO, in
+    private final double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 161.0; // TODO, in
                                                                  // degrees from
                                                                  // horizontal
+    private final double LAUNCHER_INTAKE_HEIGHT_TICKS = 76.0;
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.05;
@@ -164,11 +165,15 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void launcherSetNeutralPosition() {
-        setSetPoint(-degreesToTicks(LAUNCHER_NEUTRAL_HEIGHT_DEGREES));
+        setSetPoint(-LAUNCHER_NEUTRAL_HEIGHT_TICKS);
     }
     
     public void launcherJumpToAngle(double angle) {
         setSetPoint(-degreesToTicks(angle));
+    }
+    
+    public void launcherJumpToIntake() {
+        setSetPoint(-LAUNCHER_INTAKE_HEIGHT_TICKS);
     }
 
     // makes sure the set point doesn't go outside its max or min range
