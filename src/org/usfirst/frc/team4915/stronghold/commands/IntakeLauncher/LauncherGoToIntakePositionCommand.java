@@ -1,20 +1,20 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+public class LauncherGoToIntakePositionCommand extends Command {
 
-public class LauncherGoToNeutralPositionCommand extends Command {
-
-    public LauncherGoToNeutralPositionCommand() {
-
+    public LauncherGoToIntakePositionCommand() {
+        requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.launcherSetNeutralPosition();
+        Robot.intakeLauncher.launcherSetIntakePosition();
     }
 
     protected void execute() {
+    
     }
 
     protected boolean isFinished() {
@@ -22,10 +22,10 @@ public class LauncherGoToNeutralPositionCommand extends Command {
     }
 
     protected void end() {
-
+    
     }
 
     protected void interrupted() {
-
+    
     }
 }

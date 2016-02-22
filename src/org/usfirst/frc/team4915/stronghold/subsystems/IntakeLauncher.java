@@ -1,4 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
+
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
@@ -16,35 +17,34 @@ public class IntakeLauncher extends Subsystem {
     // Ranges -1 to 1, negative values are reverse direction
     // Negative values indicate a wheel spinning outwards and positive values
     // indicate a wheel spinning inwards.
-    private final double FULL_SPEED_REVERSE = .60;
-    private final double FULL_SPEED_FORWARD = -1;
+    private final double FULL_SPEED_REVERSE = -.60;
+    private final double FULL_SPEED_FORWARD = 1;
     private final double ZERO_SPEED = 0.0;
 
-    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 48.0; // TODO, in degrees
-                                                             // from horizontal
-    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -18.0; // TODO, in
-                                                              // degrees from
+    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 48.0; // in degrees from
+                                                             // horizontal
+    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -18.0; // in degrees from
                                                               // horizontal
-    private final double LAUNCHER_MAX_HEIGHT_TICKS = 303.0; // TODO, in
-                                                            // potentiometer
+    private final double LAUNCHER_MAX_HEIGHT_TICKS = 244.0; // in potentiometer
                                                             // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 53.0; // TODO, in
-                                                        // potentiometer
-                                                        // ticks
-    private final double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 161.0; // TODO, in
-                                                                 // degrees from
-                                                                 // horizontal
-    private final double LAUNCHER_INTAKE_HEIGHT_TICKS = 76.0;
+    private final double LAUNCHER_MIN_HEIGHT_TICKS = 19.0; // in potentiometer
+                                                           // ticks
+    private final double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 161.0; // in
+                                                                // potentiomter
+                                                                // ticks
+    private final double LAUNCHER_INTAKE_HEIGHT_TICKS = 26.0; // in
+                                                              // potentiometer
+                                                              // ticks
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
-    private final double MIN_JOYSTICK_MOTION = 0.05;
+    private final double MIN_JOYSTICK_MOTION = 0.1;
 
     private final double SERVO_LEFT_LAUNCH_POSITION = .45;
     private final double SERVO_RIGHT_LAUNCH_POSITION = .65;
     private final double SERVO_LEFT_NEUTRAL_POSITION = .7;
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4;
 
-    private double setPoint; // in potentiometer volts
+    private double setPoint; // in potentiometer ticks
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -168,13 +168,13 @@ public class IntakeLauncher extends Subsystem {
     public void launcherSetNeutralPosition() {
         setSetPoint(-LAUNCHER_NEUTRAL_HEIGHT_TICKS);
     }
-    
+
+    public void launcherSetIntakePosition() {
+        setSetPoint(-LAUNCHER_INTAKE_HEIGHT_TICKS);
+    }
+
     public void launcherJumpToAngle(double angle) {
         setSetPoint(-degreesToTicks(angle));
-    }
-    
-    public void launcherJumpToIntake() {
-        setSetPoint(-LAUNCHER_INTAKE_HEIGHT_TICKS);
     }
 
     // makes sure the set point doesn't go outside its max or min range
@@ -207,7 +207,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public double getPosition() {
-        //return aimMotor.getAnalogInPosition(); 
+        // return aimMotor.getAnalogInPosition();
         return Math.abs(aimMotor.getPosition());
     }
 
