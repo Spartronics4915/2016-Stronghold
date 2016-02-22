@@ -1,11 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
-
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -31,16 +29,15 @@ public class IntakeLauncher extends Subsystem {
     private final double LAUNCHER_MAX_HEIGHT_TICKS = 350.0; // TODO, in
                                                             // potentiometer
                                                             // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 0; // TODO, in
+    private final double LAUNCHER_MIN_HEIGHT_TICKS = 0.0; // TODO, in
                                                         // potentiometer
                                                         // ticks
     private final double LAUNCHER_NEUTRAL_HEIGHT_DEGREES = 20.0; // TODO, in
                                                                  // degrees from
                                                                  // horizontal
-
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
-    private final double MIN_JOYSTICK_MOTION = 0.1;
+    private final double MIN_JOYSTICK_MOTION = 0.05;
 
     private final double SERVO_LEFT_LAUNCH_POSITION = .45;
     private final double SERVO_RIGHT_LAUNCH_POSITION = .65;
@@ -67,9 +64,12 @@ public class IntakeLauncher extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-
         setDefaultCommand(new AimLauncherCommand());
         // setDefaultCommand(new BackUpJoystickControlCommand());
+    }
+
+    public IntakeLauncher() {
+        readSetPoint();
     }
 
     // Sets the speed on the flywheels to suck in the boulder
@@ -99,17 +99,6 @@ public class IntakeLauncher extends Subsystem {
         this.launcherServoRight.set(SERVO_RIGHT_NEUTRAL_POSITION);
     }
 
-    public void launch() {
-        setSpeedLaunch();
-        activateLauncherServos();
-    }
-
-    public void launchEnd() {
-        retractLauncherServos();
-        stopWheels();
-        // launcherSetNeutralPosition();
-    }
-
     private void readSetPoint() { // TODO rename
         setPoint = -getPosition();
     }
@@ -120,38 +109,35 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // changes the set point based on an offset
-    public void offsetSetPoint(double offset) {
+    private void offsetSetPoint(double offset) {
         readSetPoint();
         setPoint += offset;
         SmartDashboard.putNumber("Offset: ", offset);
         SmartDashboard.putNumber("Moving to setPoint", getSetPoint());
-        // System.out.println("Offset: " + offset);
-        // System.out.println("Current SetPoint: " + getSetPoint());
     }
 
     // sets the set point with the joystick and moves to set point
-    public void trackJoystick() {
+    private void trackJoystick() {
         moveLauncherWithJoystick();
         moveToSetPoint();
     }
 
     // sets the set point with vision and moves to set point
-    public void trackVision() {
+    private void trackVision() {
         moveLauncherWithVision();
         moveToSetPoint();
     }
 
     // changes the set point based on vision
-    public void moveLauncherWithVision() {
+    private void moveLauncherWithVision() {
         offsetSetPoint(VisionState.getInstance().TargetY);
     }
 
     // changes the set point based on the joystick
-    public void moveLauncherWithJoystick() {
+    private void moveLauncherWithJoystick() {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
         if (Math.abs(joystickY) > MIN_JOYSTICK_MOTION) {
             offsetSetPoint(joystickY * JOYSTICK_SCALE);
-
         }
     }
 
@@ -166,18 +152,28 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // sets the launcher position to the current set point
-    public void moveToSetPoint() {
+    private void moveToSetPoint() {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
+        if (isLauncherAtBottom()) {
+            aimMotor.setAnalogPosition((int) LAUNCHER_MIN_HEIGHT_TICKS);
+        }
+        if (isLauncherAtTop()) {
+            aimMotor.setAnalogPosition((int) LAUNCHER_MAX_HEIGHT_TICKS);
+        }
     }
 
     public void launcherSetNeutralPosition() {
         setSetPoint(-degreesToTicks(LAUNCHER_NEUTRAL_HEIGHT_DEGREES));
     }
+    
+    public void launcherJumpToAngle(double angle) {
+        setSetPoint(-degreesToTicks(angle));
+    }
 
     // makes sure the set point doesn't go outside its max or min range
-    public void keepSetPointInRange() {
+    private void keepSetPointInRange() {
         if (getSetPoint() > LAUNCHER_MAX_HEIGHT_TICKS) {
             setPoint = -LAUNCHER_MAX_HEIGHT_TICKS;
         }
@@ -186,13 +182,14 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
-    public double degreesToTicks(double degrees) {
+    private double degreesToTicks(double degrees) {
         double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
         return LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * heightRatio;
     }
 
-    public double ticksToDegrees(double volts) {
-        double heightRatio = (volts - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
+    @SuppressWarnings("unused")
+    private double ticksToDegrees(double ticks) {
+        double heightRatio = (ticks - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
         return LAUNCHER_MIN_HEIGHT_DEGREES + (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio;
     }
 
@@ -205,7 +202,8 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public double getPosition() {
-        return Math.abs(aimMotor.getPosition()); // TODO will explain later
+        //return aimMotor.getAnalogInPosition(); 
+        return Math.abs(aimMotor.getPosition());
     }
 
     public double getSetPoint() {

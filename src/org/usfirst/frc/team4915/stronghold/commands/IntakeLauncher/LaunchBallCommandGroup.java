@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
  *
  */
 public class LaunchBallCommandGroup extends CommandGroup {
-    
-    public  LaunchBallCommandGroup() {
+
+    public LaunchBallCommandGroup() {
         addParallel(new SpinLaunchWheelsOutCommand());
         addSequential(new WaitCommand(.5));
         addSequential(new ActivateLauncherServosCommand());
@@ -16,5 +16,5 @@ public class LaunchBallCommandGroup extends CommandGroup {
         addSequential(new RetractLauncherServosCommand());
         addSequential(new StopWheelsCommand());
     }
-    
+
 }

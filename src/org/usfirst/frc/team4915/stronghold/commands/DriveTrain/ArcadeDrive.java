@@ -51,7 +51,7 @@ public class ArcadeDrive extends Command {
         double heading;
         if (ModuleManager.IMU_MODULE_ON) {
             heading = RobotMap.imu.getHeading();
-            SmartDashboard.putNumber("IMU heading", (int)(heading+.5));
+            SmartDashboard.putNumber("IMU heading", (int) (heading + .5));
             vs.updateIMUHeading(heading);
         } else {
             heading = 0.0;
@@ -71,8 +71,8 @@ public class ArcadeDrive extends Command {
                 Robot.driveTrain.turnToward(vs.TargetX);
             }
         } else {
-            if ((Math.abs(this.joystickX) < 0.075) && 
-                (Math.abs(this.joystickY) < 0.075)) {
+            if ((Math.abs(this.joystickX) < 0.075) &&
+                    (Math.abs(this.joystickY) < 0.075)) {
                 Robot.driveTrain.stop();
             } else {
                 Robot.driveTrain.arcadeDrive(this.joystickDrive);
@@ -80,20 +80,8 @@ public class ArcadeDrive extends Command {
             SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
             SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
 
-            if (ModuleManager.IMU_MODULE_ON) {
-                BNO055.CalData calData = RobotMap.imu.getCalibration();
-                distFromOrigin = BNO055.getInstance().getDistFromOrigin();
-                SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
-                SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-                SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
-                SmartDashboard.putNumber("IMU calibration status", 
-                        (1000 + (calData.accel * 100) + 
-                        calData.gyro * 10 + 
-                        calData.mag)); 
-                // Calibration values range from 0-3, 
-                // Right to left: mag, gyro, accel
-            }
         }
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
