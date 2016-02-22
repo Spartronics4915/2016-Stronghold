@@ -51,6 +51,9 @@ class RobotCnx:
 
     def NewKeypoints(self, kplist):
         return self.targetState.NewKeypoints(kplist)
+        
+    def NewTarget(self, target):
+        return self.targetState.NewTarget(target)
 
     def NewLines(self, llist):
         return self.targetState.NewLines(llist)
