@@ -45,9 +45,7 @@ public class AutoCommand1 extends CommandGroup {
             case DRIVE_SHOOT_NO_VISION:
                 addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
                 addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
-                if (ModuleManager.VISION_MODULE_ON) {
-                    addSequential(new AutoAimControlCommand(false, true));
-                }
+                
                 if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
                     addSequential(new AimerGoToAngleCommand(25));
                     addSequential(new LaunchBallCommand());                }
@@ -84,8 +82,8 @@ public class AutoCommand1 extends CommandGroup {
         return left;
     }
 
-    public static int getDegrees(Autonomous.Position position) {
-        int degrees;
+    public static double getDegrees(Autonomous.Position position) {
+        double degrees;
         System.out.println(position);
         switch (position) {
             case ONE://low bar
@@ -130,11 +128,11 @@ public class AutoCommand1 extends CommandGroup {
     }
 
     public static int getDistance(Autonomous.Type type) {
-        int distance;
+        int distance; //in inches
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 20;
+                distance = 100;
                 break;
             case MOAT:
                 distance = 15;
