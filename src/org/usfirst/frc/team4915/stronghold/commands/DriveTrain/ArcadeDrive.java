@@ -60,7 +60,7 @@ public class ArcadeDrive extends Command {
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
 
         if (vs.wantsControl()) {
-            if (vs.RelativeTargetingMode) {
+            if (vs.RelativeTargetingMode == 1) {
                 if (Math.abs(vs.TargetX) < 3) {
                     Robot.driveTrain.stop(); // close enough
                 } else {
