@@ -11,6 +11,8 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCom
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToIntakePositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinLaunchWheelsOutCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
@@ -39,6 +41,7 @@ public class OI {
 
     // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2;
+    public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
     public static final int LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 10; // Test
     public static final int LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 6;
@@ -75,6 +78,7 @@ public class OI {
     public JoystickButton spinWheelsButton;
     public JoystickButton autoAimButton;
     public JoystickButton highLowButton;
+    public JoystickButton lightSwitchButton;
 
     // Create buttons for the scaler on the mechanism stick
     public JoystickButton scalerExtendButton;
@@ -180,6 +184,8 @@ public class OI {
         if (ModuleManager.IMU_MODULE_ON) {
             System.out.println("ModuleManager initialized: imu");
         }
+
+        initializeButton(this.lightSwitchButton, aimStick, LIGHT_SWITCH_BUTTON_NUMBER, new LightSwitchCommand());
 
         /*
          * VERSION STRING!!
