@@ -11,7 +11,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
     // this command spins the launch wheels outwards so they will launch the
     // ball
     public SpinLaunchWheelsOutCommand() {
-        requires(Robot.intakeLauncher);
+        setTimeout(5);
     }
 
     @Override
@@ -26,12 +26,12 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     @Override
     protected void end() {
-
+        Robot.intakeLauncher.stopWheels();
     }
 
     @Override

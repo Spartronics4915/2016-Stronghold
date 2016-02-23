@@ -1,32 +1,32 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 
-public class ActivateLauncherServosCommand extends Command {
+public class LightSwitchCommand extends Command {
 
-    public ActivateLauncherServosCommand() {
-        
-    }
+    private boolean enabled = false;
 
+    @Override
     protected void initialize() {
-        Robot.intakeLauncher.activateLauncherServos();
     }
 
+    @Override
     protected void execute() {
-
+        RobotMap.PHOTONIC_CANNON.set(enabled = !enabled);
     }
 
+    @Override
     protected boolean isFinished() {
         return true;
     }
 
+    @Override
     protected void end() {
-
     }
 
+    @Override
     protected void interrupted() {
-
     }
+
 }

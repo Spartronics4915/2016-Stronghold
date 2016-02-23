@@ -7,6 +7,7 @@ import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
@@ -49,7 +50,7 @@ public class AutoCommand1 extends CommandGroup {
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addSequential(new LauncherGoToAngleCommand(25));
-				addSequential(new LaunchBallCommandGroup());
+				addSequential(new AutoLaunchCommand());
 			}
 			break;
 		case DRIVE_ACROSS:
