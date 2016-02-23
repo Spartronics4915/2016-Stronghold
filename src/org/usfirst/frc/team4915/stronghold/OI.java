@@ -171,7 +171,6 @@ public class OI {
             SmartDashboard.putData(VisionState.getInstance());
             initializeButton(this.autoAimButton, aimStick, AUTO_AIM_BUTTON_NUMBER, new AutoAimControlCommand(true, false));
             initializeButton(this.highLowButton, aimStick, HIGH_LOW_BUTTON_NUMBER, new AutoAimControlCommand(false, true));
-            initializeButton(this.lightSwitchButton, aimStick, LIGHT_SWITCH_BUTTON_NUMBER, new LightSwitchCommand());
             System.out.println("ModuleManager OI: Initialize Vision!");
         }
 
@@ -186,6 +185,8 @@ public class OI {
         if (ModuleManager.IMU_MODULE_ON) {
             System.out.println("ModuleManager initialized: imu");
         }
+
+        initializeButton(this.lightSwitchButton, aimStick, LIGHT_SWITCH_BUTTON_NUMBER, new LightSwitchCommand());
 
         /*
          * VERSION STRING!!
