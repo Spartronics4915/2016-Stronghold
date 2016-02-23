@@ -52,14 +52,14 @@ public class ArcadeDrive extends Command {
             Robot.driveTrain.trackGyro();
         }
         VisionState vs = null;
-        if (ModuleManager.VISION_MODULE_ON){
-        vs = VisionState.getInstance();
+        if (ModuleManager.VISION_MODULE_ON) {
+            vs = VisionState.getInstance();
         }
         double heading;
         if (ModuleManager.IMU_MODULE_ON) {
             heading = RobotMap.imu.getHeading();
             SmartDashboard.putNumber("IMU heading", (int) (heading + .5));
-            if (ModuleManager.VISION_MODULE_ON){
+            if (ModuleManager.VISION_MODULE_ON) {
                 vs.updateIMUHeading(heading);
             }
         } else {
@@ -70,7 +70,7 @@ public class ArcadeDrive extends Command {
 
         if (vs != null && vs.wantsControl()) {
             if (vs.RelativeTargetingMode == 1) {
-                
+
                 if (Math.abs(vs.TargetX) < 3) {
                     Robot.driveTrain.stop(); // close enough
                 } else {
@@ -92,26 +92,35 @@ public class ArcadeDrive extends Command {
 
         }
         {
-    	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
-               Robot.driveTrain.stop();
-           } 
-    	   else {
-               Robot.driveTrain.arcadeDrive(this.joystickDrive);
-    	   }
-    	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
-    	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-    	   
-    	   //checks if imu is on
-    	   if (ModuleManager.IMU_MODULE_ON){
-    	   BNO055.CalData calData = RobotMap.imu.getCalibration();
-    	   int num = (int)(.5 + RobotMap.imu.getHeading());
-    	   distFromOrigin = BNO055.getInstance().getDistFromOrigin();
-    	   SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
-    	   SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-    	   SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
-    	   SmartDashboard.putNumber("IMU heading", num);
-    	   SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); //Calibration values range from 0-3, Right to left: mag, gyro, accel
-       }
+            if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
+                Robot.driveTrain.stop();
+            } else {
+                Robot.driveTrain.arcadeDrive(this.joystickDrive);
+            }
+            SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
+            SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
+
+            // checks if imu is on
+            if (ModuleManager.IMU_MODULE_ON) {
+                BNO055.CalData calData = RobotMap.imu.getCalibration();
+                int num = (int) (.5 + RobotMap.imu.getHeading());
+                distFromOrigin = BNO055.getInstance().getDistFromOrigin();
+                SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
+                SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
+                SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+                SmartDashboard.putNumber("IMU heading", num);
+                SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro * 10 + calData.mag)); // Calibration
+                                                                                                                                      // values
+                                                                                                                                      // range
+                                                                                                                                      // from
+                                                                                                                                      // 0-3,
+                                                                                                                                      // Right
+                                                                                                                                      // to
+                                                                                                                                      // left:
+                                                                                                                                      // mag,
+                                                                                                                                      // gyro,
+                                                                                                                                      // accel
+            }
         }
     }
 
