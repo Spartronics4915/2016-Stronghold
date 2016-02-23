@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
@@ -94,9 +96,10 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
 
         // schedule the autonomous command
-        autonomousCommand = new MoveStraightPositionModeCommand(100, 0.5);
-                //new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
-                //(Autonomous.Position) oi.startingFieldPosition.getSelected());
+        //autonomousCommand = new MoveStraightPositionModeCommand(50, 0.5);
+        autonomousCommand = new AutoCommand1(Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(), (Autonomous.Position) oi.startingFieldPosition.getSelected());
+        //autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
+          //      (Autonomous.Position) oi.startingFieldPosition.getSelected());
 
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();

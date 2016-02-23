@@ -51,23 +51,7 @@ public class MoveStraightPositionModeCommand extends Command {
                 ((this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle) / (approxCircumference)) ;
 
         System.out.println("ticksToMove: " + ticksToMove);
-        // double startingTickValue;
-        // double endValue;
 
-        // get the starting encoder value
-        // move motors and read new encoder value
-        /*for (int i = 0; i < motors.size(); i++) {
-            motors.get(i).setEncPosition(0);
-            //System.out.println("motor " + i + " reset to " + motors.get(i).getEncPosition());
-            System.out.println("motor " + 1 + " reset to " + motors.get(1).getEncPosition());
-            System.out.println("motor " + 3 + " reset to " + motors.get(3).getEncPosition());
-            // All the motors are inverted/backwards. The ticks are moving down
-            // when moving forward
-            
-            SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
-            System.out.println("Running MoveStraight");
-
-        }*/
         this.desiredTicksValue.add(ticksToMove);
         //prints out the starting encoder value
         motors.get(1).setEncPosition(0);
@@ -105,8 +89,8 @@ public class MoveStraightPositionModeCommand extends Command {
     public boolean isFinished() {
         // Checking if all the motors have reached the desired tick values
         
-        //return isAverageMotorFinished();
-        return isMotorFinished(1) || isMotorFinished(3) ;
+        return isAverageMotorFinished();
+        //return isMotorFinished(1) || isMotorFinished(3) ;
     }
     
     private boolean isAverageMotorFinished(){

@@ -20,7 +20,6 @@ public class Autonomous extends Subsystem {
         RAMPARTS,
         ROUGH_TERRAIN,
         ROCK_WALL,
-        CHEVAL_DE_FRISE
 
     }
 

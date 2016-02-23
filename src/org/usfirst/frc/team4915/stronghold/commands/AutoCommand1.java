@@ -8,7 +8,6 @@ import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
@@ -37,7 +36,7 @@ public class AutoCommand1 extends CommandGroup {
     	switch (strat) {
 		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
 									// goal.
-			addSequential(new MoveStraightPositionModeCommand(getDistance(type),0.5));
+			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
 			if (ModuleManager.VISION_MODULE_ON) {
 				addSequential(new AutoAimControlCommand(true, true));
@@ -46,21 +45,44 @@ public class AutoCommand1 extends CommandGroup {
 			}
 			break;
 		case DRIVE_SHOOT_NO_VISION:
-			addSequential(new MoveStraightPositionModeCommand(getDistance(type), 0.5));
+			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-				addSequential(new LauncherGoToAngleCommand(25));
+				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
 				addSequential(new AutoLaunchCommand());
 			}
 			break;
 		case DRIVE_ACROSS:
-			addSequential(new MoveStraightPositionModeCommand(getDistance(type), 0.5));
+			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
 			break;
 		default:
 			break;
 		}
 	}
-   
+    public static double getAimAngle(Autonomous.Position position) {
+        System.out.println(position);
+        double angle = 0;
+        switch (position) {
+            case ONE:
+                angle = 30;
+                break;
+            case TWO:
+                angle = 30;
+                break;
+            case THREE:
+                break;
+            case FOUR:
+                angle = 30;
+                break;
+            case FIVE:
+                angle = 30;
+                break;
+            default:
+                angle = 30;
+        }
+        return angle;
+    }
+    
     public static boolean getLeft(Autonomous.Position position) {
         System.out.println(position);
         boolean left = true;
