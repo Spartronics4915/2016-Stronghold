@@ -22,17 +22,23 @@ public class MoveStraightPositionModeCommand extends Command {
     private static double shaftRatio = 3.2;
     private static double gearBoxRatio = 4;
     private static double pulsesPerCycle = 4;
-
+    public static double ticksToMove;
     public MoveStraightPositionModeCommand(double inputDistanceInches, double speed) {
 
-        this.driveStraightValue = speed;
+        
         
         requires(this.driveTrain);
 
         System.out.println("***MoveStraightPositionModeCommand inputDistance: " + inputDistanceInches + "*******");
 
         this.inputDistanceInches = inputDistanceInches;
-
+        this.driveStraightValue = speed;
+        System.out.println("drive straight value " + driveStraightValue);
+        
+        for (int i = 0; i < motors.size(); i++){
+            motors.get(i).setEncPosition(0);
+            System.out.println("MOTOR " + i + " set to " + motors.get(i).getEncPosition());  
+        }
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -47,25 +53,14 @@ public class MoveStraightPositionModeCommand extends Command {
 
         this.desiredTicksValue = new ArrayList<Double>();
         // new equation
-        double ticksToMove =
+       ticksToMove =
                 ((this.inputDistanceInches * shaftRatio * gearBoxRatio * cyclesPerRotation * pulsesPerCycle) / (approxCircumference)) ;
 
         System.out.println("ticksToMove: " + ticksToMove);
-
-        this.desiredTicksValue.add(ticksToMove);
-        //prints out the starting encoder value
-        motors.get(1).setEncPosition(0);
-        System.out.println("motor " + 1 + " reset to " + motors.get(1).getEncPosition());
-        motors.get(3).setEncPosition(0);
-        System.out.println("motor " + 3 + " reset to " + motors.get(3).getEncPosition());
-        this.desiredTicksValue.add(ticksToMove);
         
-        motors.get(0).setEncPosition(0);
-        System.out.println("motor " + 0 + " reset to " + motors.get(0).getEncPosition());
-        motors.get(2).setEncPosition(0);
-        System.out.println("motor " + 2 + " reset to " + motors.get(2).getEncPosition());
-        SmartDashboard.putNumber("Drive Straight: Goal amount of Ticks", ticksToMove);
-        System.out.println("Running MoveStraight");
+       
+        this.desiredTicksValue.add(ticksToMove);
+      
     }
 
     /**
@@ -77,6 +72,8 @@ public class MoveStraightPositionModeCommand extends Command {
     @Override
     public void execute() {
         System.out.println("Executing move straight");
+        System.out.println("MOTOR 1 POSITION: " + motors.get(1).getEncPosition());
+        System.out.println("MOTOR 3 POSITION: " + motors.get(3).getEncPosition());
         if (this.inputDistanceInches < 0) {
             this.driveTrain.driveStraight(this.driveStraightValue);
         } else {
@@ -99,11 +96,11 @@ public class MoveStraightPositionModeCommand extends Command {
         boolean finished = false;
         double total;
         double average;
-        double desiredPosition = this.desiredTicksValue.get(1);// all the same but we didn't want to change everything
+        double desiredPosition = ticksToMove;//this.desiredTicksValue.get(1);// all the same but we didn't want to change everything
         //prints out the motors value
-        System.out.println("Motor 1" + motors.get(1).getEncPosition());
-        System.out.println("Motor 3" + motors.get(3).getEncPosition());
-        total = Math.abs(motors.get(1).getEncPosition()) + Math.abs(motors.get(3).getEncPosition());
+        System.out.println("Motor 1 " + motors.get(1).getEncPosition());
+        System.out.println("Motor 3 " + motors.get(3).getEncPosition());
+        total = Math.abs(Math.abs(motors.get(1).getEncPosition()) + Math.abs(motors.get(3).getEncPosition()));
         average = total/2;
         System.out.println("Average of motors" + average);
         // drive backwards

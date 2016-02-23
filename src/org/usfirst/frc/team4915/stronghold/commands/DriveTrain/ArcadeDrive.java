@@ -33,6 +33,12 @@ public class ArcadeDrive extends Command {
         for (int i = 0; i < motors.size(); i++) {
             motors.get(i).setEncPosition(0);
         }
+        /*
+         * motors.get(1).setEncPosition(0); System.out.println("motor " + 1 +
+         * " reset to " + motors.get(1).getEncPosition());
+         * motors.get(3).setEncPosition(0); System.out.println("motor " + 3 +
+         * " reset to " + motors.get(3).getEncPosition());
+         */
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -45,21 +51,26 @@ public class ArcadeDrive extends Command {
         if (ModuleManager.GYRO_MODULE_ON) {
             Robot.driveTrain.trackGyro();
         }
-
-        VisionState vs = VisionState.getInstance();
+        VisionState vs = null;
+        if (ModuleManager.VISION_MODULE_ON){
+        vs = VisionState.getInstance();
+        }
         double heading;
         if (ModuleManager.IMU_MODULE_ON) {
             heading = RobotMap.imu.getHeading();
             SmartDashboard.putNumber("IMU heading", (int) (heading + .5));
-            vs.updateIMUHeading(heading);
+            if (ModuleManager.VISION_MODULE_ON){
+                vs.updateIMUHeading(heading);
+            }
         } else {
             heading = 0.0;
         }
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
 
-        if (vs.wantsControl()) {
+        if (vs != null && vs.wantsControl()) {
             if (vs.RelativeTargetingMode == 1) {
+                
                 if (Math.abs(vs.TargetX) < 3) {
                     Robot.driveTrain.stop(); // close enough
                 } else {

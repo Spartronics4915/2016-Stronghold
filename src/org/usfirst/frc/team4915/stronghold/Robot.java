@@ -96,12 +96,10 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
 
         // schedule the autonomous command
-        //autonomousCommand = new MoveStraightPositionModeCommand(50, 0.5);
-        //autonomousCommand = new AutoCommand1(Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(), (Autonomous.Position) oi.startingFieldPosition.getSelected());
+        autonomousCommand = new MoveStraightPositionModeCommand(100, 0.5);
+    
         //autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
-          //      (Autonomous.Position) oi.startingFieldPosition.getSelected());
-        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
-                      (Autonomous.Position) oi.startingFieldPosition.getSelected());
+          //            (Autonomous.Position) oi.startingFieldPosition.getSelected());
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }
