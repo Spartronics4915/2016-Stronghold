@@ -59,19 +59,12 @@ public class Robot extends IterativeRobot {
             System.out.println("ModuleManager initialized: IntakeLauncher");
             System.out.println(intakeLauncher.getSetPoint());
         }
-        if (ModuleManager.GYRO_MODULE_ON) {
-            RobotMap.gyro.initGyro();
-            // Sensitivity in VEX Yaw Rate Gyro data sheet: 0.0011
-            RobotMap.gyro.setSensitivity(0.0011);
-            RobotMap.gyro.calibrate();
-            SmartDashboard.putString("Module Manager", "initialize gyro");
-            System.out.println("ModuleManager initialize gyro: " + RobotMap.gyro.getAngle());
-            RobotMap.gyro.reset();
-        }
+
         if (ModuleManager.SCALING_MODULE_ON) {
             scaler = new Scaler();
         }
         if (ModuleManager.IMU_MODULE_ON) {
+        	// imu is initialized in RobotMap.init()
             BNO055.CalData calData = RobotMap.imu.getCalibration();
             SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
             SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
@@ -95,10 +88,11 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
 
         // schedule the autonomous command
-        autonomousCommand = new MoveStraightPositionModeCommand(100, 0.5);
+        //autonomousCommand = new MoveStraightPositionModeCommand(100, 0.5);
     
-        //autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
-          //            (Autonomous.Position) oi.startingFieldPosition.getSelected());
+        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
+                      (Autonomous.Position) oi.startingFieldPosition.getSelected());
+        
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }
