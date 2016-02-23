@@ -1,25 +1,20 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+public class LauncherGoToIntakePositionCommand extends Command {
 
-/**
- *
- */
-public class SetSetPointFromSmartDashboardCommand extends Command {
-
-    public SetSetPointFromSmartDashboardCommand() {
-
+    public LauncherGoToIntakePositionCommand() {
+        requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.setSetPoint(SmartDashboard.getNumber("Launcher Set Point: "));
+        Robot.intakeLauncher.launcherSetIntakePosition();
     }
 
     protected void execute() {
-
+    
     }
 
     protected boolean isFinished() {
@@ -27,10 +22,10 @@ public class SetSetPointFromSmartDashboardCommand extends Command {
     }
 
     protected void end() {
-
+    
     }
 
     protected void interrupted() {
-
+    
     }
 }

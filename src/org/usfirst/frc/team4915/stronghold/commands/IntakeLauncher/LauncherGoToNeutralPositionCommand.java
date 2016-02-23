@@ -1,12 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-/**
- *
- */
 public class LauncherGoToNeutralPositionCommand extends Command {
 
     public LauncherGoToNeutralPositionCommand() {

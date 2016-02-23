@@ -1,16 +1,16 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimerGoToAngleCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
-
-import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCommand1 extends CommandGroup {
 
@@ -32,32 +32,34 @@ public class AutoCommand1 extends CommandGroup {
                                                                // driving
                                                                // position
         }
-        switch (strat) {
-            case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
-                                     // goal.
-                addParallel(new ArcadeDrive());
-                addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
-                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
-                if (ModuleManager.VISION_MODULE_ON) {
-                    addSequential(new AutoAimControlCommand(true, true));
-                }
-                break;
-            case DRIVE_SHOOT_NO_VISION:
-                addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
-                addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
-                
-                if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-                    addSequential(new AimerGoToAngleCommand(25));
-                    addSequential(new LaunchBallCommand());                }
-                break;
-            case DRIVE_ACROSS:
-                addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
-                break;
-            default:
-                break;
-        }
-    }
 
+    	switch (strat) {
+		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
+									// goal.
+			addSequential(new MoveStraightPositionModeCommand(getDistance(type),0.5));
+			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+			if (ModuleManager.VISION_MODULE_ON) {
+				addSequential(new AutoAimControlCommand(true, true));
+				addParallel(new ArcadeDrive());
+				addParallel(new AimLauncherCommand());
+			}
+			break;
+		case DRIVE_SHOOT_NO_VISION:
+			addSequential(new MoveStraightPositionModeCommand(getDistance(type), 0.5));
+			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+				addSequential(new LauncherGoToAngleCommand(25));
+				addSequential(new LaunchBallCommandGroup());
+			}
+			break;
+		case DRIVE_ACROSS:
+			addSequential(new MoveStraightPositionModeCommand(getDistance(type), 0.5));
+			break;
+		default:
+			break;
+		}
+	}
+   
     public static boolean getLeft(Autonomous.Position position) {
         System.out.println(position);
         boolean left = true;
@@ -132,7 +134,7 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 100;
+                distance = 20;
                 break;
             case MOAT:
                 distance = 100;

@@ -1,9 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.utils;
 
-import java.util.TimerTask;
-
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
+
+import java.util.TimerTask;
 
 /**
  * BNO055 IMU for the FIRST Robotics Competition. References throughout the code
@@ -95,6 +95,10 @@ public class BNO055 {
     private volatile byte[] headingVector = new byte[6];
     private volatile long turns = 0;
     private volatile double[] m_heading = new double[3];
+    
+/*    private volatile byte[] calDataStore = new byte[22];
+ *    public String calDataStoreString = "fill me with gibberish";
+ */
 
     public class SystemStatus {
 
@@ -543,11 +547,13 @@ public class BNO055 {
 
         // calculate turns
         headingDiff = m_heading[0] - head[0];
-        if (Math.abs(headingDiff) >= 350) {
+        if (Math.abs(headingDiff) >= 360) {
             // We've traveled past the zero heading position
             if (headingDiff > 0) {
+                head[0] = head[0] - 360;
                 turns++;
             } else {
+                head[0] = head[0] + 360;
                 turns--;
             }
         }
@@ -681,6 +687,23 @@ public class BNO055 {
 
         return data;
     }
+    
+/*    public void getCalibrationData() {
+        setMode(opmode_t.OPERATION_MODE_CONFIG.getVal());
+        readLen(reg_t.ACCEL_OFFSET_X_LSB_ADDR, calDataStore);
+        DatatypeConverter.printHexBinary(calDataStore);
+        System.out.println(DatatypeConverter.printHexBinary(calDataStore));
+        
+        setMode(opmode_t.OPERATION_MODE_IMUPLUS);
+    }
+    
+    public void setCalibrationData() {
+        setMode(opmode_t.OPERATION_MODE_CONFIG.getVal());
+        calDataStore = DatatypeConverter.parseHexBinary(calDataStoreString);
+        retVal = imu.write(reg_t.ACCEL_OFFSET_X_LSB_ADDR.getVal(), 22);
+        
+        setMode(opmode_t.OPERATION_MODE_IMUPLUS);
+    }
 
     /**
      * Returns true if all required sensors (accelerometer, magnetometer,
@@ -739,7 +762,7 @@ public class BNO055 {
      * degrees
      *
      * For continuous rotation heading (doesn't roll over between 360/0) see the
-     * getHeading() method.
+     * getCumulativeHeading() method.
      *
      * Maximum data output rates for Fusion modes - See 3.6.3
      * 
@@ -760,8 +783,12 @@ public class BNO055 {
      * 
      * @return heading in degrees
      */
-    public double getHeading() {
+    public double getCumulativeHeading() {
         return m_heading[0] + turns * 360;
+    }
+    
+    public double getHeading() {
+        return m_heading[0];
     }
 
     public double getDistFromOrigin() {

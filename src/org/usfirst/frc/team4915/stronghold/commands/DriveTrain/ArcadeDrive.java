@@ -1,17 +1,16 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
-import java.util.List;
-
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.List;
 
 public class ArcadeDrive extends Command {
 
@@ -51,7 +50,7 @@ public class ArcadeDrive extends Command {
         double heading;
         if (ModuleManager.IMU_MODULE_ON) {
             heading = RobotMap.imu.getHeading();
-            SmartDashboard.putNumber("IMU heading", (int)(heading+.5));
+            SmartDashboard.putNumber("IMU heading", (int) (heading + .5));
             vs.updateIMUHeading(heading);
         } else {
             heading = 0.0;
@@ -71,8 +70,8 @@ public class ArcadeDrive extends Command {
                 Robot.driveTrain.turnToward(vs.TargetX);
             }
         } else {
-            if ((Math.abs(this.joystickX) < 0.075) && 
-                (Math.abs(this.joystickY) < 0.075)) {
+            if ((Math.abs(this.joystickX) < 0.075) &&
+                    (Math.abs(this.joystickY) < 0.075)) {
                 Robot.driveTrain.stop();
             } else {
                 Robot.driveTrain.arcadeDrive(this.joystickDrive);
@@ -80,21 +79,8 @@ public class ArcadeDrive extends Command {
             SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
             SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
 
-            if (ModuleManager.IMU_MODULE_ON) {
-                BNO055.CalData calData = RobotMap.imu.getCalibration();
-                distFromOrigin = BNO055.getInstance().getDistFromOrigin();
-                SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
-                SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-                SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
-                SmartDashboard.putNumber("IMU calibration status", 
-                        (1000 + (calData.accel * 100) + 
-                        calData.gyro * 10 + 
-                        calData.mag)); 
-                // Calibration values range from 0-3, 
-                // Right to left: mag, gyro, accel
-            }
         }
-         {
+        {
     	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
                Robot.driveTrain.stop();
            } 

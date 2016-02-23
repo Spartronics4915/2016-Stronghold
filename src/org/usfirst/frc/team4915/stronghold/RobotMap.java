@@ -132,7 +132,7 @@ public class RobotMap {
                 aimMotor.enableLimitSwitch(true, true);
                 aimMotor.enableBrakeMode(true);
                 aimMotor.reverseSensor(true);
-                aimMotor.setAllowableClosedLoopErr(5);
+                aimMotor.setAllowableClosedLoopErr(15);
                 // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO uncomment
             }
             LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);

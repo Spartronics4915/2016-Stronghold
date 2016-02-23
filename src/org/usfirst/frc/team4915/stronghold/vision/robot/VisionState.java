@@ -1,10 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-
 import edu.wpi.first.wpilibj.NamedSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 
 /*
  * The VisionState class provides access within the Robot and the
@@ -24,7 +23,7 @@ public class VisionState implements NamedSendable {
     // these values originate from robot / driverstation
     public boolean AutoAimEnabled = false;
     public boolean TargetHigh = true;
-    public int IMUHeading = 0; 
+    public int IMUHeading = 0;
 
     // these values originate from jetson
     public boolean RelativeTargetingMode = true;
@@ -36,14 +35,12 @@ public class VisionState implements NamedSendable {
     public double TargetResponse = 0;
     public int TargetClass = 0;
 
-
     private ITable m_table = null;
     private final ITableListener m_listener = new ITableListener() {
 
         @Override
-        public void valueChanged(ITable table, String key, Object value, 
-                                boolean isNew) 
-        {
+        public void valueChanged(ITable table, String key, Object value,
+                boolean isNew) {
             /*
              * All numbers are stored as doubles in the network tables, event
              * those posted as int, float.
@@ -52,9 +49,9 @@ public class VisionState implements NamedSendable {
             if (key.equals("~TYPE~")) {
                 return;
             } else if (key.equals(("AutoAimEnabled"))) {
-                s_instance.AutoAimEnabled = (Boolean) value;
+                s_instance.AutoAimEnabled = (boolean) value;
             } else if (key.equals(("RelativeTargetingMode"))) {
-                s_instance.RelativeTargetingMode = (Boolean) value;
+                s_instance.RelativeTargetingMode = (boolean) value;
             } else {
                 // System.out.println(key + " " + value);
                 double num = (Double) value;
@@ -76,8 +73,8 @@ public class VisionState implements NamedSendable {
                 else if (key.equals("TargetClass"))
                     s_instance.TargetClass = ival;
                 else
-                    System.out.println(key + " " + value + " " + 
-                                       value.getClass().getName());
+                    System.out.println(key + " " + value + " " +
+                            value.getClass().getName());
             }
         }
     };
@@ -102,11 +99,11 @@ public class VisionState implements NamedSendable {
         if (this.m_table != null)
             this.m_table.removeTableListener(m_listener);
         this.m_table = subtable;
-        m_table.addTableListenerEx(m_listener, 
-                                  ITable.NOTIFY_NEW|ITable.NOTIFY_IMMEDIATE);
+        m_table.addTableListenerEx(m_listener,
+                ITable.NOTIFY_NEW | ITable.NOTIFY_IMMEDIATE);
         this.AutoAimEnabled = m_table.getBoolean("AutoAimEnabled", false);
-        this.RelativeTargetingMode =    
-                        m_table.getBoolean("RelativeTargetingMode", true);
+        this.RelativeTargetingMode =
+                m_table.getBoolean("RelativeTargetingMode", true);
         this.TargetHigh = m_table.getBoolean("TargetHigh", true);
         this.FPS = (int) m_table.getNumber("FPS", 0.);
         this.IMUHeading = (int) m_table.getNumber("IMUHeading", 0.);
@@ -132,7 +129,7 @@ public class VisionState implements NamedSendable {
     }
 
     public void updateIMUHeading(double heading) {
-        m_table.putNumber("IMUHeading", (int)(heading+.5));
+        m_table.putNumber("IMUHeading", (int) (heading + .5));
     }
 
     /*
