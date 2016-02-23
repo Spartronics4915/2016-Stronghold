@@ -1,9 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class GearShiftCommand extends Command {
 
