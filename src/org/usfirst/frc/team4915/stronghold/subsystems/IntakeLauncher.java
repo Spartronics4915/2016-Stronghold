@@ -21,14 +21,14 @@ public class IntakeLauncher extends Subsystem {
     private final double FULL_SPEED_FORWARD = 1;
     private final double ZERO_SPEED = 0.0;
 
-    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 48.0; // in degrees from
+    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // in degrees from
                                                              // horizontal
-    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -18.0; // in degrees from
+    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -11.0; // in degrees from
                                                               // horizontal
-    private final double LAUNCHER_MAX_HEIGHT_TICKS = 244.0; // in potentiometer
+    private final double LAUNCHER_MAX_HEIGHT_TICKS = 325.0; // in potentiometer
                                                             // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 19.0; // in potentiometer
-                                                           // ticks
+    private final double LAUNCHER_MIN_HEIGHT_TICKS = 110.0; // in potentiometer
+                                                            // ticks
     private final double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 115.0; // in
                                                                 // potentiomter
                                                                 // ticks
@@ -41,7 +41,7 @@ public class IntakeLauncher extends Subsystem {
 
     private final double SERVO_LEFT_LAUNCH_POSITION = .45;
     private final double SERVO_RIGHT_LAUNCH_POSITION = .65;
-    private final double SERVO_LEFT_NEUTRAL_POSITION = .7;
+    private final double SERVO_LEFT_NEUTRAL_POSITION = .8;
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4;
 
     private double setPoint; // in potentiometer ticks
@@ -61,8 +61,6 @@ public class IntakeLauncher extends Subsystem {
     // These servos push the boulder into the launcher flywheels
     public Servo launcherServoLeft = RobotMap.launcherServoLeft;
     public Servo launcherServoRight = RobotMap.launcherServoRight;
-    
-    public boolean shouldStopWheels = false;
 
     @Override
     protected void initDefaultCommand() {
@@ -146,7 +144,7 @@ public class IntakeLauncher extends Subsystem {
     // Checks to see if joystick control or vision control is needed and
     // controls motion
     public void aimLauncher() {
-        SmartDashboard.putNumber("Launch Angle", ticksToDegrees(getPosition()));
+        SmartDashboard.putNumber("Launch Angle", (int) ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
             trackVision();
         } else {
@@ -226,6 +224,7 @@ public class IntakeLauncher extends Subsystem {
     public double getLaunchSpeed() {
         return intakeLeftMotor.getSpeed();
     }
+
     public void backUpJoystickMethod() {
         aimMotor.changeControlMode(TalonControlMode.PercentVbus);
         aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));

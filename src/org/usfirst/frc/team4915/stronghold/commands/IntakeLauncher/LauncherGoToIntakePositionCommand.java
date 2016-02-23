@@ -6,7 +6,7 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 public class LauncherGoToIntakePositionCommand extends Command {
 
     public LauncherGoToIntakePositionCommand() {
-        requires(Robot.intakeLauncher);
+
     }
 
     protected void initialize() {

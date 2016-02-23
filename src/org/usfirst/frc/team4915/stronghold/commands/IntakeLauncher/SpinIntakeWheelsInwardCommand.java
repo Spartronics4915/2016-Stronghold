@@ -4,10 +4,10 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SpinLaunchWheelsInwardCommand extends Command {
+public class SpinIntakeWheelsInwardCommand extends Command {
 
     // this command spins the intake flywheels inward to retrieve the ball
-    public SpinLaunchWheelsInwardCommand() {
+    public SpinIntakeWheelsInwardCommand() {
         requires(Robot.intakeLauncher);
     }
 
@@ -31,11 +31,10 @@ public class SpinLaunchWheelsInwardCommand extends Command {
     @Override
     protected void end() {
         Robot.intakeLauncher.stopWheels();
-        // Robot.intakeLauncher.launcherSetNeutralPosition();
     }
 
     @Override
     protected void interrupted() {
-        end();
+
     }
 }

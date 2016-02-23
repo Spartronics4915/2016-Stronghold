@@ -23,7 +23,7 @@ public class AimLauncherCommand extends Command {
     }
 
     protected void end() {
-        System.out.println("Interrupted");
+        System.out.println("Aimer Interrupted");
     }
 
     protected void interrupted() {

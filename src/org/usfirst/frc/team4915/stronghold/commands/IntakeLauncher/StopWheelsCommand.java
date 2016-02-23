@@ -16,7 +16,6 @@ public class StopWheelsCommand extends Command {
     protected void initialize() {
         SmartDashboard.putString("Flywheels spinning ", "nowhere");
         Robot.intakeLauncher.stopWheels();
-        Robot.intakeLauncher.shouldStopWheels = true;
     }
 
     @Override

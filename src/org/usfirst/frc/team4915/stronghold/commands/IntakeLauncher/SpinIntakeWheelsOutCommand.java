@@ -4,19 +4,18 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SpinLaunchWheelsOutCommand extends Command {
-
-    public boolean shouldActivateServos = true;
+public class SpinIntakeWheelsOutCommand extends Command {
 
     // this command spins the launch wheels outwards so they will launch the
     // ball
-    public SpinLaunchWheelsOutCommand() {
+    public SpinIntakeWheelsOutCommand() {
         setTimeout(5);
+        requires(Robot.intakeLauncher);
     }
 
     @Override
     protected void initialize() {
-        Robot.intakeLauncher.shouldStopWheels = false;
+ 
     }
 
     @Override
@@ -26,7 +25,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || Robot.intakeLauncher.shouldStopWheels;
+        return isTimedOut();
     }
 
     @Override
@@ -36,6 +35,6 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void interrupted() {
-        end();
+        
     }
 }
