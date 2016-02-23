@@ -104,6 +104,7 @@ public class MoveStraightPositionModeCommand extends Command {
         average = total/2;
         System.out.println("Average of motors" + average);
         // drive backwards
+        System.out.println("desired position" + desiredPosition);
         if (this.inputDistanceInches < 0) {
             finished = average <= desiredPosition;
         } else {
