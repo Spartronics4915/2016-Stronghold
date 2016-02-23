@@ -1,13 +1,15 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MoveStraightPositionModeCommand extends Command {
 
@@ -43,6 +45,12 @@ public class MoveStraightPositionModeCommand extends Command {
             motors.get(i).setEncPosition(0);
             System.out.println("MOTOR " + i + " set to " + motors.get(i).getEncPosition());
         }
+        // changing the motors to Position mode for encoder tracking
+        //RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+        //RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+        System.out.println("robot is now in position mode");
+
+        driveTrain.robotDrive.setMaxOutput(175.0);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -108,6 +116,7 @@ public class MoveStraightPositionModeCommand extends Command {
         average = total / 2;
         System.out.println("Average of motors" + average);
         // drive backwards
+        System.out.println("desired position" + desiredPosition);
         if (this.inputDistanceInches < 0) {
             finished = average <= desiredPosition;
         } else {

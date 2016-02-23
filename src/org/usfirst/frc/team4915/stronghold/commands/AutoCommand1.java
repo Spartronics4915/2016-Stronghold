@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
@@ -11,6 +10,8 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCom
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCommand1 extends CommandGroup {
 
