@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
+import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 
 import edu.wpi.first.wpilibj.NamedSendable;
@@ -134,7 +135,7 @@ public class VisionState implements NamedSendable {
     }
 
     public void updateIMUHeading(double heading) {
-        m_table.putNumber("IMUHeading", (int) (heading + .5));
+    	m_table.putNumber("IMUHeading", (int) (heading + .5));
     }
 
     /*
