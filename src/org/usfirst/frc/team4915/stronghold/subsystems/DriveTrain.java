@@ -1,13 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.usfirst.frc.team4915.stronghold.ModuleManager;
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -15,6 +7,13 @@ import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.ModuleManager;
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class DriveTrain extends Subsystem {
 
@@ -30,6 +29,7 @@ public class DriveTrain extends Subsystem {
     public double gyroHeading = 0;
     public double startingAngle = 0;
 
+    
     // motors
     public static List<CANTalon> motors =
             Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
@@ -54,10 +54,10 @@ public class DriveTrain extends Subsystem {
         // checking to see the encoder values
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
-            for (int i = 0; i < motors.size(); i++) {
+           
             }
         }
-    }
+    
 
     public double modifyThrottle() {
         // 255 is the max number on the throttle
@@ -130,10 +130,13 @@ public class DriveTrain extends Subsystem {
 
     public void turnToward(double heading) {
         double deltaHeading = RobotMap.imu.getHeading() - heading;
-        if (Math.abs(deltaHeading) < 1.0)
+        if (Math.abs(deltaHeading) < 1.0) {
             this.stop();
-        else
-            this.autoturn(deltaHeading < 0.0);
+        }
+        else {
+        	System.out.println(deltaHeading);
+        	SmartDashboard.putNumber("deltaHeading", deltaHeading);
+            //this.autoturn(deltaHeading < 0.0);
+        }
     }
-
 }

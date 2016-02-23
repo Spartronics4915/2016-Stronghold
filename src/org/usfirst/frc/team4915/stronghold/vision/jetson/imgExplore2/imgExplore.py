@@ -566,12 +566,13 @@ class App:
                 keypoints = orb.detect(gray, None)
                 self.putNotice('ORB features: %d' % len(keypoints))
                 frame = gray
-            elif cmode == 'dance0':
-            	t = common.clock()*2*math.pi/5
-            	x = math.sin(t)*values[0]/27*320 + 320 #[0, 640]s/
-            	kp = cv2.KeyPoint(x, 240, 10)
-            	keypoints = self.robotCnx.NewKeypoints([kp])
             elif cmode == 'dance1':
+            	t = common.clock()*2*math.pi/15
+            	x = math.sin(t)*22
+            	y = 60 * 1+math.sin(t)
+            	kp = cv2.KeyPoint(x, 240, 10)
+            	keypoints = self.robotCnx.NewTarget(kp)
+            elif cmode == 'dance2':
             	t = common.clock()*2*math.pi/15
             	x = 22 * math.sin(t) + 320
             	#[0, 640]s/

@@ -1,9 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 
 public class GearShift extends Subsystem {
 
