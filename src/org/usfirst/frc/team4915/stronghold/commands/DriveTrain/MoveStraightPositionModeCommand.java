@@ -46,14 +46,11 @@ public class MoveStraightPositionModeCommand extends Command {
             System.out.println("MOTOR " + i + " set to " + motors.get(i).getEncPosition());
         }
         // changing the motors to Position mode for encoder tracking
-        RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-        RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-        // manipulating the motor power
-        RobotMap.rightBackMotor.configNominalOutputVoltage(+0,  -0);
-        RobotMap.rightBackMotor.configPeakOutputVoltage(+3, -3);
-        RobotMap.leftBackMotor.configNominalOutputVoltage(+0,  -0);
-        RobotMap.leftBackMotor.configPeakOutputVoltage(+3, -3);
+        //RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+        //RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+        System.out.println("robot is now in position mode");
 
+        driveTrain.robotDrive.setMaxOutput(175.0);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

@@ -1,7 +1,8 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
+import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
+import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
