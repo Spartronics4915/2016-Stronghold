@@ -14,6 +14,7 @@ public class LightSwitchCommand extends Command {
     @Override
     protected void execute() {
         RobotMap.PHOTONIC_CANNON.set(enabled = !enabled);
+        System.out.println("Light is now " + enabled);
     }
 
     @Override
