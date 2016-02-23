@@ -1,10 +1,11 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinLaunchWheelsOutCommand;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *

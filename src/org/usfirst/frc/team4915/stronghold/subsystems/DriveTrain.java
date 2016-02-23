@@ -1,5 +1,13 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.usfirst.frc.team4915.stronghold.ModuleManager;
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -7,13 +15,6 @@ import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.ModuleManager;
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class DriveTrain extends Subsystem {
 
@@ -38,7 +39,10 @@ public class DriveTrain extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         System.out.println("INFO: Initializing the ArcadeDrive");
-
+        System.out.println(RobotMap.leftFrontMotor.getControlMode());
+        System.out.println(RobotMap.rightFrontMotor.getControlMode());
+        System.out.println(RobotMap.leftBackMotor.getControlMode());
+        System.out.println(RobotMap.rightBackMotor.getControlMode());
         setDefaultCommand(new ArcadeDrive());
         /*
          * FIXME: robotDrive static field access instead of:
