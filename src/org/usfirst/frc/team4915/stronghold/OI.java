@@ -40,9 +40,9 @@ public class OI {
 
     // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2;
-    public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
-    public static final int LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 10; // Test
-    public static final int LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 6;
+    public static final int STOP_WHEELS_BUTTON_NUMBER = 5; //add driver 5
+    public static final int LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 10; // add driver 6
+    public static final int LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 6; //add driver 4
     
     public static final int AUTO_AIM_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 8;

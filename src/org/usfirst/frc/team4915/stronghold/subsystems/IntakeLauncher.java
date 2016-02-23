@@ -61,6 +61,8 @@ public class IntakeLauncher extends Subsystem {
     // These servos push the boulder into the launcher flywheels
     public Servo launcherServoLeft = RobotMap.launcherServoLeft;
     public Servo launcherServoRight = RobotMap.launcherServoRight;
+    
+    public boolean shouldStopWheels = false;
 
     @Override
     protected void initDefaultCommand() {
@@ -129,7 +131,7 @@ public class IntakeLauncher extends Subsystem {
 
     // changes the set point based on vision
     private void moveLauncherWithVision() {
-        offsetSetPoint(-VisionState.getInstance().TargetY);
+        offsetSetPoint(degreesToTicks(-VisionState.getInstance().TargetY));
     }
 
     // changes the set point based on the joystick
@@ -221,6 +223,9 @@ public class IntakeLauncher extends Subsystem {
         return boulderSwitch.get();
     }
 
+    public double getLaunchSpeed() {
+        return intakeLeftMotor.getSpeed();
+    }
     public void backUpJoystickMethod() {
         aimMotor.changeControlMode(TalonControlMode.PercentVbus);
         aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));

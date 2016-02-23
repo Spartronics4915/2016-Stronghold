@@ -16,7 +16,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected void initialize() {
-
+        Robot.intakeLauncher.shouldStopWheels = false;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class SpinLaunchWheelsOutCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return isTimedOut() || Robot.intakeLauncher.shouldStopWheels;
     }
 
     @Override
