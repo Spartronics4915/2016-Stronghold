@@ -157,7 +157,7 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 20;
+                distance = 50;
                 break;
             case MOAT:
                 distance = 100;
