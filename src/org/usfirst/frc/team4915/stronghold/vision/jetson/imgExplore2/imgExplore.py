@@ -568,7 +568,8 @@ class App:
                 frame = gray
             elif cmode == 'dance1':
             	t = common.clock()*2*math.pi/15
-            	x = math.sin(t)*values[0]/27*320 + 320 #[0, 640]s/
+            	x = math.sin(t)*22
+            	y = 60 * 1+math.sin(t)
             	kp = cv2.KeyPoint(x, 240, 10)
             	keypoints = self.robotCnx.NewTarget(kp)
             elif cmode == 'dance2':

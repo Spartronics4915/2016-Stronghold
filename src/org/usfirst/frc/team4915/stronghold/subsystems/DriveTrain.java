@@ -130,10 +130,13 @@ public class DriveTrain extends Subsystem {
 
     public void turnToward(double heading) {
         double deltaHeading = RobotMap.imu.getHeading() - heading;
-        if (Math.abs(deltaHeading) < 1.0)
+        if (Math.abs(deltaHeading) < 1.0) {
             this.stop();
-        else
-            this.autoturn(deltaHeading < 0.0);
+        }
+        else {
+        	System.out.println(deltaHeading);
+        	SmartDashboard.putNumber("deltaHeading", deltaHeading);
+            //this.autoturn(deltaHeading < 0.0);
+        }
     }
-
 }

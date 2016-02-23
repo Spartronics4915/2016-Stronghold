@@ -27,7 +27,7 @@ public class VisionState implements NamedSendable {
     public int IMUHeading = 0;
 
     // these values originate from jetson
-    public boolean RelativeTargetingMode = true;
+    public int RelativeTargetingMode = 1;
     public int FPS = 0;
     public int TargetsAcquired = 0;
     public int TargetX = 0;
@@ -50,9 +50,10 @@ public class VisionState implements NamedSendable {
             if (key.equals("~TYPE~")) {
                 return;
             } else if (key.equals(("AutoAimEnabled"))) {
-                s_instance.AutoAimEnabled = (Boolean) value;
+                s_instance.AutoAimEnabled = (boolean) value;
             } else if (key.equals(("RelativeTargetingMode"))) {
-                s_instance.RelativeTargetingMode = (Boolean) value;
+            	
+                s_instance.RelativeTargetingMode = (int) value;
             } else {
                 // System.out.println(key + " " + value);
                 double num = (Double) value;
@@ -103,8 +104,8 @@ public class VisionState implements NamedSendable {
         m_table.addTableListenerEx(m_listener,
                 ITable.NOTIFY_NEW | ITable.NOTIFY_IMMEDIATE);
         this.AutoAimEnabled = m_table.getBoolean("AutoAimEnabled", false);
-        this.RelativeTargetingMode =
-                m_table.getBoolean("RelativeTargetingMode", true);
+        this.RelativeTargetingMode = (int)
+                m_table.getNumber("RelativeTargetingMode", 1);
         this.TargetHigh = m_table.getBoolean("TargetHigh", true);
         this.FPS = (int) m_table.getNumber("FPS", 0.);
         this.IMUHeading = (int) m_table.getNumber("IMUHeading", 0.);
