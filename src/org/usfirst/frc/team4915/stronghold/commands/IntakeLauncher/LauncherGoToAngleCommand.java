@@ -5,17 +5,17 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AimerGoToAngleCommand extends Command {
+public class LauncherGoToAngleCommand extends Command {
 
     private double angle;
 
-    public AimerGoToAngleCommand(double angle) {
+    public LauncherGoToAngleCommand(double angle) {
         this.angle = angle;
         SmartDashboard.putNumber("Aimer angle: ", this.angle);
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.setSetPoint(Robot.intakeLauncher.degreesToTicks(angle));
+        Robot.intakeLauncher.launcherJumpToAngle(angle);
     }
 
     protected void execute() {
