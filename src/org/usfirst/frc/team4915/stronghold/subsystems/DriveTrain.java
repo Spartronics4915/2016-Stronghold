@@ -28,6 +28,7 @@ public class DriveTrain extends Subsystem {
     public double deltaGyro = 0;
     public double gyroHeading = 0;
     public double startingAngle = 0;
+	private boolean turnLeft = false;
 
     // motors
     public static List<CANTalon> motors =
@@ -127,15 +128,30 @@ public class DriveTrain extends Subsystem {
         }
     }
 
-    public void turnToward(double heading) {
-        double deltaHeading = RobotMap.imu.getHeading() - heading;
+    public void turnToward(double targetHeading) {
+    	targetHeading = (targetHeading+360) % 360;
+    	double currentHeading = RobotMap.imu.getHeading();
+    	int currentTurns = RobotMap.imu.getTurns();
+    	currentHeading = currentHeading - 360*currentTurns;
+    	currentHeading = (currentHeading+360) % 360;
+        double deltaHeading =  targetHeading - currentHeading;
         if (Math.abs(deltaHeading) < 1.0) {
             this.stop();
+            return;
+        }
+        else if(deltaHeading < 0) {
+        	turnLeft = true;
         }
         else {
-        	System.out.println(deltaHeading);
-        	SmartDashboard.putNumber("deltaHeading", deltaHeading);
-            //this.autoturn(deltaHeading < 0.0);
+        	turnLeft = false;
         }
+        
+        if(Math.abs(deltaHeading) > 180) {
+        	turnLeft = !turnLeft;
+        }
+       	System.out.println(deltaHeading);
+      	SmartDashboard.putNumber("deltaHeading", deltaHeading);
+        this.autoturn(turnLeft);
+
     }
 }

@@ -134,7 +134,9 @@ public class VisionState implements NamedSendable {
     }
 
     public void updateIMUHeading(double heading) {
-    	m_table.putNumber("IMUHeading", (int) (heading + .5));
+    	if(m_table != null) {
+    		m_table.putNumber("IMUHeading", (int) (heading + .5));
+    	}
     }
 
     /*

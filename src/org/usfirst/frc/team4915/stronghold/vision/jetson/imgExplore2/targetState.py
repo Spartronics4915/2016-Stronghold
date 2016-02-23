@@ -100,6 +100,7 @@ class TargetState:
     
     def NewTarget(self, target):
         self.updateVisionTableAbsolute(target)
+        return [target]
 
     def NewKeypoints(self, kplist):
         if len(kplist) > 0:
@@ -190,8 +191,8 @@ class TargetState:
             self.m_visTab.putInt("TargetsAcquired", 0)
         else:
             self.m_visTab.putInt("TargetsAcquired", 1)
-            self.m_visTab.putInt("TargetX", int(.5+target[0]))
-            self.m_visTab.putInt("TargetY", int(.5+target[1]))
+            self.m_visTab.putInt("TargetX", int(.5+target.pt[0]))
+            self.m_visTab.putInt("TargetY", int(.5+target.pt[1]))
             self.m_visTab.putNumber("TargetSize", 0)
             self.m_visTab.putNumber("TargetResponse", 0)
             self.m_visTab.putInt("TargetClass", -1)
