@@ -129,7 +129,8 @@ public class IntakeLauncher extends Subsystem {
 
     // changes the set point based on vision
     private void moveLauncherWithVision() {
-        offsetSetPoint(-VisionState.getInstance().TargetY);
+    	double TargetY = degreesToTicks(VisionState.getInstance().TargetY);
+        offsetSetPoint(-TargetY);
     }
 
     // changes the set point based on the joystick

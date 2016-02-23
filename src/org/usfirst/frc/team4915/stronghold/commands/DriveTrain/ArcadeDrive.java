@@ -34,11 +34,11 @@ public class ArcadeDrive extends Command {
             motors.get(i).setEncPosition(0);
         }
         /*
-        motors.get(1).setEncPosition(0);
-        System.out.println("motor " + 1 + " reset to " + motors.get(1).getEncPosition());
-        motors.get(3).setEncPosition(0);
-        System.out.println("motor " + 3 + " reset to " + motors.get(3).getEncPosition());
-        */
+         * motors.get(1).setEncPosition(0); System.out.println("motor " + 1 +
+         * " reset to " + motors.get(1).getEncPosition());
+         * motors.get(3).setEncPosition(0); System.out.println("motor " + 3 +
+         * " reset to " + motors.get(3).getEncPosition());
+         */
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -69,7 +69,8 @@ public class ArcadeDrive extends Command {
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
 
         if (vs != null && vs.wantsControl()) {
-            if (vs.RelativeTargetingMode) {
+            if (vs.RelativeTargetingMode == 1) {
+                
                 if (Math.abs(vs.TargetX) < 3) {
                     Robot.driveTrain.stop(); // close enough
                 } else {
