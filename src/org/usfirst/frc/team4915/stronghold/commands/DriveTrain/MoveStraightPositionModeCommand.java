@@ -18,14 +18,19 @@ public class MoveStraightPositionModeCommand extends Command {
     private double driveStraightValue;
     public static double ticksToMove;
     // variables for the ticks to move equation
-   private static double ticksPerShaft = 4096;
-   private static double approxCirc = 44;
-   private static double gearBoxRatio = 3.2; 
+    private static double ticksPerCycle = 4; // number of encoder ticks per
+                                             // cycle that encoder reads
+    private static double gearRatio = 3; // ratio between the encoder and the
+                                         // shaft
+    private static double cyclesPerRotation = 256; // total cycles on encoder
+                                                   // per one rotation
+    private static double circumference = (14 * Math.PI); // 14 inch diameter
+                                                          // wheel
+    private static double gearBoxRatio = 3.2; // ration between the gear and the
+                                              // shaft
 
     public MoveStraightPositionModeCommand(double inputDistanceInches, double speed) {
 
-        
-        
         requires(this.driveTrain);
 
         System.out.println("***MoveStraightPositionModeCommand inputDistance: " + inputDistanceInches + "*******");
@@ -33,10 +38,10 @@ public class MoveStraightPositionModeCommand extends Command {
         this.inputDistanceInches = inputDistanceInches;
         this.driveStraightValue = speed;
         System.out.println("drive straight value " + driveStraightValue);
-        
-        for (int i = 0; i < motors.size(); i++){
+
+        for (int i = 0; i < motors.size(); i++) {
             motors.get(i).setEncPosition(0);
-            System.out.println("MOTOR " + i + " set to " + motors.get(i).getEncPosition());  
+            System.out.println("MOTOR " + i + " set to " + motors.get(i).getEncPosition());
         }
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -52,14 +57,12 @@ public class MoveStraightPositionModeCommand extends Command {
 
         this.desiredTicksValue = new ArrayList<Double>();
         // new equation
-       ticksToMove =
-                ((this.inputDistanceInches * ticksPerShaft * gearBoxRatio)/ (approxCirc)) ;
+        ticksToMove =
+                ((this.inputDistanceInches * cyclesPerRotation * ticksPerCycle * gearBoxRatio * gearRatio) / (circumference));
 
         System.out.println("ticksToMove: " + ticksToMove);
-        
-       
         this.desiredTicksValue.add(ticksToMove);
-      
+
     }
 
     /**
@@ -85,23 +88,24 @@ public class MoveStraightPositionModeCommand extends Command {
     @Override
     public boolean isFinished() {
         // Checking if all the motors have reached the desired tick values
-        System.out.println(isAverageMotorFinished());
         return isAverageMotorFinished();
-        //return isMotorFinished(1) || isMotorFinished(3) ;
+        // return isMotorFinished(1) || isMotorFinished(3) ;
     }
-    
-    private boolean isAverageMotorFinished(){
-        //averages the motors
+
+    private boolean isAverageMotorFinished() {
+        // averages the motors
         System.out.println("in isAverageMotorFinished");
         boolean finished = false;
         double total;
         double average;
-        double desiredPosition = ticksToMove;//this.desiredTicksValue.get(1);// all the same but we didn't want to change everything
-        //prints out the motors value
+        double desiredPosition = ticksToMove;// this.desiredTicksValue.get(1);//
+                                             // all the same but we didn't want
+                                             // to change everything
+        // prints out the motors value
         System.out.println("Motor 1 " + motors.get(1).getEncPosition());
         System.out.println("Motor 3 " + motors.get(3).getEncPosition());
         total = Math.abs(Math.abs(motors.get(1).getEncPosition()) + Math.abs(motors.get(3).getEncPosition()));
-        average = total/2;
+        average = total / 2;
         System.out.println("Average of motors" + average);
         // drive backwards
         if (this.inputDistanceInches < 0) {
@@ -113,7 +117,7 @@ public class MoveStraightPositionModeCommand extends Command {
     }
 
     private boolean isMotorFinished(int i) {
-        
+
         boolean finished = false;
         double desiredPosition = this.desiredTicksValue.get(0);
         System.out.println("in isMotorFinished");
