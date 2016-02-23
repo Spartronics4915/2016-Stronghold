@@ -33,7 +33,7 @@ public class AutoLowbarNoVision extends CommandGroup {
         // arm.
 
         // moves under the low bar
-        addSequential(new MoveStraightPositionModeCommand(168));
+        addSequential(new MoveStraightPositionModeCommand(168, 0.5));
         // not exact degree number (rotates robot to get ready to shoot)
         addSequential(new AutoRotateDegrees(false, 30));
         // volts to degrees...

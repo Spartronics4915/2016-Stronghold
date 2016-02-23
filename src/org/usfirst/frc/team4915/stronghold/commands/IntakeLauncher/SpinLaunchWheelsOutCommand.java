@@ -1,8 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import org.usfirst.frc.team4915.stronghold.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class SpinLaunchWheelsOutCommand extends Command {
 
