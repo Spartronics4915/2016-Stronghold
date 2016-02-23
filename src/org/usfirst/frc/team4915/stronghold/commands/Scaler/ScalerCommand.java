@@ -1,10 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.commands.Scaler;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler.State;
-
-import edu.wpi.first.wpilibj.command.Command;
 
 public class ScalerCommand extends Command {
 

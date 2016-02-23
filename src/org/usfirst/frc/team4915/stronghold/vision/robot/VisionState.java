@@ -1,10 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-
 import edu.wpi.first.wpilibj.NamedSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 
 /*
  * The VisionState class provides access within the Robot and the
@@ -27,7 +26,7 @@ public class VisionState implements NamedSendable {
     public int IMUHeading = 0;
 
     // these values originate from jetson
-    public boolean RelativeTargetingMode = true;
+    public int RelativeTargetingMode = 1;
     public int FPS = 0;
     public int TargetsAcquired = 0;
     public int TargetX = 0;
@@ -49,11 +48,15 @@ public class VisionState implements NamedSendable {
             // System.out.println();
             if (key.equals("~TYPE~")) {
                 return;
-            } else if (key.equals(("AutoAimEnabled"))) {
-                s_instance.AutoAimEnabled = (Boolean) value;
-            } else if (key.equals(("RelativeTargetingMode"))) {
-                s_instance.RelativeTargetingMode = (Boolean) value;
-            } else {
+            } else if (key.equals("AutoAimEnabled")) {
+                s_instance.AutoAimEnabled = (boolean) value;
+            } 
+            else if (key.equals("RelativeTargetingMode")) {
+            	double num = (Double) value;
+                int ival = (int) num;
+                s_instance.RelativeTargetingMode = ival;
+            } 
+            else {
                 // System.out.println(key + " " + value);
                 double num = (Double) value;
                 int ival = (int) num;
@@ -103,8 +106,8 @@ public class VisionState implements NamedSendable {
         m_table.addTableListenerEx(m_listener,
                 ITable.NOTIFY_NEW | ITable.NOTIFY_IMMEDIATE);
         this.AutoAimEnabled = m_table.getBoolean("AutoAimEnabled", false);
-        this.RelativeTargetingMode =
-                m_table.getBoolean("RelativeTargetingMode", true);
+        this.RelativeTargetingMode = (int)
+                m_table.getNumber("RelativeTargetingMode", 1);
         this.TargetHigh = m_table.getBoolean("TargetHigh", true);
         this.FPS = (int) m_table.getNumber("FPS", 0.);
         this.IMUHeading = (int) m_table.getNumber("IMUHeading", 0.);

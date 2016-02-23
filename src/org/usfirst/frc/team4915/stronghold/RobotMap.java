@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4915.stronghold;
 
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
-
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
@@ -11,6 +9,7 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
@@ -55,12 +54,8 @@ public class RobotMap {
     // Create solenoid for the drivetrain
     public static DoubleSolenoid doubleSolenoid;
 
-    // Create the gyro
-    public static AnalogGyro gyro;
-
     // Create IMU
     public static BNO055 imu;
-    // public static BNO055 imuLinAcc;
 
     // Create the motor controllers for the IntakeLauncher
     public static CANTalon intakeLeftMotorCAN15;
@@ -103,7 +98,8 @@ public class RobotMap {
             // follow mode for left side
             leftFrontMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
             leftFrontMotor.set(leftBackMotor.getDeviceID());
-
+            
+            
             System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
         }
         if (ModuleManager.GEARSHIFT_MODULE_ON) {
@@ -129,7 +125,7 @@ public class RobotMap {
                 aimMotor.enableLimitSwitch(true, true);
                 aimMotor.enableBrakeMode(true);
                 aimMotor.reverseSensor(true);
-                aimMotor.setAllowableClosedLoopErr(5);
+                aimMotor.setAllowableClosedLoopErr(15);
                 // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO uncomment
             }
             LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
