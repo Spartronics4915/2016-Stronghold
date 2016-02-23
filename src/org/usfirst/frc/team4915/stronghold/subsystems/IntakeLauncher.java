@@ -29,7 +29,7 @@ public class IntakeLauncher extends Subsystem {
                                                             // ticks
     private final double LAUNCHER_MIN_HEIGHT_TICKS = 19.0; // in potentiometer
                                                            // ticks
-    private final double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 161.0; // in
+    private final double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 115.0; // in
                                                                 // potentiomter
                                                                 // ticks
     private final double LAUNCHER_INTAKE_HEIGHT_TICKS = 26.0; // in
@@ -144,7 +144,7 @@ public class IntakeLauncher extends Subsystem {
     // Checks to see if joystick control or vision control is needed and
     // controls motion
     public void aimLauncher() {
-        SmartDashboard.putNumber("Launch Angle", degreesToTicks(getPosition()));
+        SmartDashboard.putNumber("Launch Angle", ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
             trackVision();
         } else {
@@ -192,7 +192,6 @@ public class IntakeLauncher extends Subsystem {
         return LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * heightRatio;
     }
 
-    @SuppressWarnings("unused")
     private double ticksToDegrees(double ticks) {
         double heightRatio = (ticks - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
         return LAUNCHER_MIN_HEIGHT_DEGREES + (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio;

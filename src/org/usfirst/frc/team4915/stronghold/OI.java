@@ -40,7 +40,7 @@ public class OI {
     // Button numbers for launching related buttons on the mechanism stick
     public static final int LAUNCH_BALL_BUTTON_NUMBER = 2;
     public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
-    public static final int LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 4; // Test
+    public static final int LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 10; // Test
     public static final int LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 6;
     
     public static final int AUTO_AIM_BUTTON_NUMBER = 7;
@@ -48,12 +48,12 @@ public class OI {
     //public static final int ACTIVATE_SERVOS_TEST_BUTTON_NUMBER = 6; // Test
     //public static final int RETRACT_SERVOS_TEST_BUTTON_NUMBER = 1; // Test
 
-    public static final int SPIN_WHEELS_BUTTON_NUMBER = 10;
+    public static final int SPIN_WHEELS_BUTTON_NUMBER = 4;
     
     // Button numbers for scaling related buttons on the mechanism joystick
-    //public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
-    //public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
-    //public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
+    public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
+    public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
+    public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
 
     // Create joysticks for driving and aiming the launcher
     public Joystick driveStick;

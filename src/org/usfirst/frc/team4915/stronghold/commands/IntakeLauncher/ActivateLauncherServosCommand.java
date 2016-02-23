@@ -6,7 +6,7 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 public class ActivateLauncherServosCommand extends Command {
 
     public ActivateLauncherServosCommand() {
-        requires(Robot.intakeLauncher);
+        
     }
 
     protected void initialize() {
