@@ -49,7 +49,7 @@ public class ArcadeDrive extends Command {
         this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
 
         VisionState vs = null;
-        if (ModuleManager.VISION_MODULE_ON){
+        if (ModuleManager.VISION_MODULE_ON) {
             vs = VisionState.getInstance();
         }
 
@@ -57,7 +57,7 @@ public class ArcadeDrive extends Command {
         if (ModuleManager.IMU_MODULE_ON) {
             heading = RobotMap.imu.getHeading();
             SmartDashboard.putNumber("IMU heading", (int) (heading + .5));
-            if (ModuleManager.VISION_MODULE_ON){
+            if (ModuleManager.VISION_MODULE_ON) {
                 vs.updateIMUHeading(heading);
             }
         } else {
@@ -68,7 +68,7 @@ public class ArcadeDrive extends Command {
 
         if (vs != null && vs.wantsControl()) {
             if (vs.RelativeTargetingMode == 1) {
-                
+
                 if (Math.abs(vs.TargetX) < 3) {
                     Robot.driveTrain.stop(); // close enough
                 } else {
@@ -88,17 +88,6 @@ public class ArcadeDrive extends Command {
             SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
             SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
 
-        }
-        {
-    	   if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
-               Robot.driveTrain.stop();
-           } 
-    	   else {
-               Robot.driveTrain.arcadeDrive(this.joystickDrive);
-    	   }
-    	   SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
-    	   SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-    	   
     	   //checks if imu is on
     	   if (ModuleManager.IMU_MODULE_ON) {
                BNO055.CalData calData = RobotMap.imu.getCalibration();
