@@ -41,6 +41,8 @@ public class MoveStraightPositionModeCommand extends Command {
         this.driveStraightValue = speed;
         System.out.println("drive straight value " + driveStraightValue);
 
+        motors.get(0).setEncPosition(0);
+        motors.get(2).setEncPosition(0);
         for (int i = 0; i < motors.size(); i++) {
             motors.get(i).setEncPosition(0);
             System.out.println("MOTOR " + i + " set to " + motors.get(i).getEncPosition());
@@ -48,9 +50,10 @@ public class MoveStraightPositionModeCommand extends Command {
         // changing the motors to Position mode for encoder tracking
         //RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Position);
         //RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-        System.out.println("robot is now in position mode");
-
-        driveTrain.robotDrive.setMaxOutput(175.0);
+       // System.out.println("robot is now in position mode");
+        //driveTrain.robotDrive.setMaxOutput(175.0);
+        
+        
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -83,8 +86,8 @@ public class MoveStraightPositionModeCommand extends Command {
     public void execute() {
         System.out.println("Executing move straight");
         System.out.println("TICKS TO MOVE: " + ticksToMove);
-        System.out.println("MOTOR 1 POSITION: " + motors.get(1).getEncPosition());
-        System.out.println("MOTOR 3 POSITION: " + motors.get(3).getEncPosition());
+        System.out.println("MOTOR 0 POSITION: " + motors.get(0).getEncPosition());
+        System.out.println("MOTOR 2 POSITION: " + motors.get(2).getEncPosition());
         if (this.inputDistanceInches < 0) {
             this.driveTrain.driveStraight(this.driveStraightValue);
         } else {
@@ -97,7 +100,7 @@ public class MoveStraightPositionModeCommand extends Command {
     public boolean isFinished() {
         // Checking if all the motors have reached the desired tick values
         return isAverageMotorFinished();
-        // return isMotorFinished(1) || isMotorFinished(3) ;
+        // return isMotorFinished(0) || isMotorFinished(2) ;
     }
 
     private boolean isAverageMotorFinished() {
@@ -110,9 +113,9 @@ public class MoveStraightPositionModeCommand extends Command {
                                              // all the same but we didn't want
                                              // to change everything
         // prints out the motors value
-        System.out.println("Motor 1 " + motors.get(1).getEncPosition());
-        System.out.println("Motor 3 " + motors.get(3).getEncPosition());
-        total = Math.abs(Math.abs(motors.get(1).getEncPosition()) + Math.abs(motors.get(3).getEncPosition()));
+        System.out.println("Motor 0 " + motors.get(0).getEncPosition());
+        System.out.println("Motor 2 " + motors.get(2).getEncPosition());
+        total = Math.abs(Math.abs(motors.get(0).getEncPosition()) + Math.abs(motors.get(2).getEncPosition()));
         average = total / 2;
         System.out.println("Average of motors" + average);
         // drive backwards
@@ -154,6 +157,8 @@ public class MoveStraightPositionModeCommand extends Command {
     // subsystems is scheduled to run
     @Override
     public void interrupted() {
+    	System.out.println("Move Straight interrupted");
         end();
+        System.out.println("Move Straight Interrupted");
     }
 }

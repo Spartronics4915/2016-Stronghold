@@ -4,7 +4,6 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -21,50 +20,49 @@ public class IntakeLauncher extends Subsystem {
     private final double FULL_SPEED_REVERSE = -.60;
     private final double FULL_SPEED_FORWARD = 1;
     private final double ZERO_SPEED = 0.0;
-
-    private final double LAUNCH_SPEED = 11;
+    private final double LAUNCH_SPEED = 11; // in bus volts
 
     private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // in degrees from
                                                              // horizontal
     private final double LAUNCHER_MIN_HEIGHT_DEGREES = -11.0; // in degrees from
                                                               // horizontal
-    private double LAUNCHER_MAX_HEIGHT_TICKS = 325.0; // in potentiometer
+    private final double SERVO_LEFT_LAUNCH_POSITION = .45; // in servo units
+    private final double SERVO_RIGHT_LAUNCH_POSITION = .65; // in servo units
+    private final double SERVO_LEFT_NEUTRAL_POSITION = .75; // in servo units
+    private final double SERVO_RIGHT_NEUTRAL_POSITION = .4; // in servo units
+
+    private double launcherMaxHeightTicks = 94.0; // in potentiometer
+                                                   // ticks
+    private double launcherMinHeightTicks = 5.0; // in potentiometer
+                                                   // ticks
+    private double launcherNeutralHeightTicks = 50.0; // in
+                                                       // potentiometer
+                                                       // ticks
+    private double launcherIntakeHeightTicks = 10.0; // in
+                                                      // potentiometer
                                                       // ticks
-    private double LAUNCHER_MIN_HEIGHT_TICKS = 110.0; // in potentiometer
-                                                      // ticks
-    private double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 200.0; // in
-                                                          // potentiometer
-                                                          // ticks
-    private double LAUNCHER_INTAKE_HEIGHT_TICKS = 120.0; // in
-                                                         // potentiometer
-                                                         // ticks
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
-
-    private final double SERVO_LEFT_LAUNCH_POSITION = .45;
-    private final double SERVO_RIGHT_LAUNCH_POSITION = .65;
-    private final double SERVO_LEFT_NEUTRAL_POSITION = .8;
-    private final double SERVO_RIGHT_NEUTRAL_POSITION = .4;
 
     private double setPoint; // in potentiometer ticks
     private boolean autoCalibrate = false;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
-    private CANTalon intakeLeftMotor = RobotMap.intakeLeftMotorCAN15;
-    private CANTalon intakeRightMotor = RobotMap.intakeRightMotorCAN14;
+    private CANTalon intakeLeftMotor = RobotMap.intakeLeftMotor; // ID 15
+    private CANTalon intakeRightMotor = RobotMap.intakeRightMotor; // ID 14
 
     // This motor adjusts the angle of the launcher for shooting
-    public CANTalon aimMotor = RobotMap.aimMotor;
+    public CANTalon aimMotor = RobotMap.aimMotor; // ID 16
 
     // limitswitch in the back of the basket that tells the robot when the
     // boulder is secure
     public DigitalInput boulderSwitch = RobotMap.boulderSwitch;
 
     // These servos push the boulder into the launcher flywheels
-    public Servo launcherServoLeft = RobotMap.launcherServoLeft;
-    public Servo launcherServoRight = RobotMap.launcherServoRight;
+    public Servo launcherServoLeft = RobotMap.launcherServoLeft; // port 0
+    public Servo launcherServoRight = RobotMap.launcherServoRight; // port 1
 
     @Override
     protected void initDefaultCommand() {
@@ -185,11 +183,11 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void launcherSetNeutralPosition() {
-        setSetPoint(-LAUNCHER_NEUTRAL_HEIGHT_TICKS);
+        setSetPoint(-launcherNeutralHeightTicks);
     }
 
     public void launcherSetIntakePosition() {
-        setSetPoint(-LAUNCHER_INTAKE_HEIGHT_TICKS);
+        setSetPoint(-launcherIntakeHeightTicks);
     }
 
     public void launcherJumpToAngle(double angle) {
@@ -198,36 +196,35 @@ public class IntakeLauncher extends Subsystem {
 
     // makes sure the set point doesn't go outside its max or min range
     private void keepSetPointInRange() {
-        if (getSetPoint() > LAUNCHER_MAX_HEIGHT_TICKS) {
-            setPoint = -LAUNCHER_MAX_HEIGHT_TICKS;
+        if (getSetPoint() > launcherMaxHeightTicks) {
+            setPoint = -launcherMaxHeightTicks;
         }
-        if (getSetPoint() < LAUNCHER_MIN_HEIGHT_TICKS) {
-            setPoint = -LAUNCHER_MIN_HEIGHT_TICKS;
+        if (getSetPoint() < launcherMinHeightTicks) {
+            setPoint = -launcherMinHeightTicks;
         }
     }
 
     private double degreesToTicks(double degrees) {
         double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
-        return LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * heightRatio;
+        return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * heightRatio;
     }
 
     private double ticksToDegrees(double ticks) {
-        double heightRatio = (ticks - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
+        double heightRatio = (ticks - launcherMinHeightTicks) / (launcherMaxHeightTicks - launcherMinHeightTicks);
         return LAUNCHER_MIN_HEIGHT_DEGREES + (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio;
     }
 
     private void autoCalibratePotentiometer() {
-        double neutralHeightRatio = (LAUNCHER_NEUTRAL_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
-        double intakeHeightRatio = (LAUNCHER_INTAKE_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
+        double neutralHeightRatio = (launcherNeutralHeightTicks - launcherMinHeightTicks) / (launcherMaxHeightTicks - launcherMinHeightTicks);
+        double intakeHeightRatio = (launcherIntakeHeightTicks - launcherMinHeightTicks) / (launcherMaxHeightTicks - launcherMinHeightTicks);
         if (isLauncherAtBottom()) {
-            LAUNCHER_MIN_HEIGHT_TICKS = getPosition();
+            launcherMinHeightTicks = getPosition();
         }
         if (isLauncherAtTop()) {
-            LAUNCHER_MAX_HEIGHT_TICKS = getPosition();
+            launcherMaxHeightTicks = getPosition();
         }
-        LAUNCHER_NEUTRAL_HEIGHT_TICKS = LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * neutralHeightRatio;
-        LAUNCHER_INTAKE_HEIGHT_TICKS = LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * intakeHeightRatio;
-
+        launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * neutralHeightRatio;
+        launcherIntakeHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * intakeHeightRatio;
     }
 
     public boolean isLauncherAtTop() {
@@ -238,23 +235,20 @@ public class IntakeLauncher extends Subsystem {
         return aimMotor.isFwdLimitSwitchClosed();
     }
 
+    public boolean isLaunchReady() {
+        return intakeLeftMotor.getBusVoltage() > LAUNCH_SPEED;
+    }
+    
+    public boolean isBoulderLoaded() {
+        return boulderSwitch.get();
+    }
+    
     public double getPosition() {
         return Math.abs(aimMotor.getPosition());
     }
 
     public double getSetPoint() {
-        return Math.abs(setPoint); // TODO will explain later
-    }
-
-    public boolean boulderLoaded() {
-        SmartDashboard.putBoolean("Boulder Limit Switch ", boulderSwitch.get()); // TODO
-                                                                                 // Flip
-                                                                                 // polarity
-        return boulderSwitch.get();
-    }
-
-    public boolean isLaunchReady() {
-        return intakeLeftMotor.getBusVoltage() > LAUNCH_SPEED;
+        return Math.abs(setPoint); 
     }
 
     public CANTalon getIntakeMotorLeft() {

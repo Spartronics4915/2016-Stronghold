@@ -8,18 +8,15 @@ public class SpinIntakeWheelsOutCommand extends Command {
 
     // this command spins the launch wheels outwards so they will launch the
     // ball
-    double startTime;
 
     public SpinIntakeWheelsOutCommand() {
-        setTimeout(10); // TODO
-        requires(Robot.intakeLauncher);
-        SmartDashboard.putString("Flywheels spinning ", "outward");
+        requires(Robot.intakeLauncher); 
     }
 
     @Override
     protected void initialize() {
-        this.startTime = (double) System.currentTimeMillis();
-        SmartDashboard.putNumber("Time Since Wheels Start: ", 0.0);
+        setTimeout(10); // TODO
+        SmartDashboard.putString("Flywheels spinning ", "outward");
     }
 
     @Override
@@ -42,6 +39,6 @@ public class SpinIntakeWheelsOutCommand extends Command {
 
     @Override
     protected void interrupted() {
-        end();
+        
     }
 }
