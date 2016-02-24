@@ -157,6 +157,7 @@ public class MoveStraightPositionModeCommand extends Command {
     // subsystems is scheduled to run
     @Override
     public void interrupted() {
+    	System.out.println("Move Straight interrupted");
         end();
     }
 }

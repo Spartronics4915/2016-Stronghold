@@ -26,7 +26,7 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println("Angle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            Robot.intakeLauncher.launcherSetNeutralPosition(); // placeholder
+          //  Robot.intakeLauncher.launcherSetNeutralPosition(); // placeholder
                                                                // for setting
                                                                // the launcher
                                                                // to neutral
@@ -46,6 +46,7 @@ public class AutoCommand1 extends CommandGroup {
 			}
 			break;
 		case DRIVE_SHOOT_NO_VISION: 
+			System.out.println("Starting Move Straight");
 			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
@@ -115,19 +116,19 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(position);
         switch (position) {
             case ONE://low bar
-                degrees = 90;
+                degrees = 80.4;
                 break;
             case TWO:
-                degrees = 45;
+                degrees = 41.08;
                 break;
             case THREE:
-                degrees = 45;
+                degrees = 11.95;
                 break;
             case FOUR:
-                degrees = 45;
+                degrees = 13.12;
                 break;
             case FIVE:
-                degrees = 45;
+                degrees = 57.75;
                 break;
             default:
                 degrees = 0;
@@ -160,19 +161,19 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 30;
+                distance = 120; 
                 break;
             case MOAT:
-                distance = 35;
+                distance = 120; 
                 break;
             case RAMPARTS:
-                distance = 40;
+                distance = 120; 
                 break;
             case ROUGH_TERRAIN:
-                distance = 30;
+                distance = 150; 
                 break;
             case ROCK_WALL:
-                distance = 50;
+                distance = 120; 
                 break;
             default:
                 distance = 25;
@@ -185,19 +186,19 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                speed = 0.5;
+                speed = 0.6;
                 break;
             case MOAT:
-                speed = 0.5;
+                speed = 0.65; 
                 break;
             case RAMPARTS:
-                speed = 0.5;
+                speed = 0.6;
                 break;
             case ROUGH_TERRAIN:
-                speed = 0.5;
+                speed = 0.65;
                 break;
             case ROCK_WALL:
-                speed = 0.6;
+                speed = 0.65;
                 break;
             default:
                 speed = 0;

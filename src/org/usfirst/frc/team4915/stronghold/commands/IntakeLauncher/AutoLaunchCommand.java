@@ -10,6 +10,7 @@ public class AutoLaunchCommand extends CommandGroup {
     
     public  AutoLaunchCommand() {
         addParallel(new SpinLaunchWheelsOutCommand());
+        addSequential(new SpinIntakeWheelsOutCommand());
         addSequential(new WaitCommand(3));
         addSequential(new ActivateLauncherServosCommand());
         addSequential(new WaitCommand(1));

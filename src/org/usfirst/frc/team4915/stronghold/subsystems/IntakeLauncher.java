@@ -22,30 +22,33 @@ public class IntakeLauncher extends Subsystem {
     private final double FULL_SPEED_FORWARD = 1;
     private final double ZERO_SPEED = 0.0;
 
-    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 48.0; // in degrees from
+    private final double LAUNCH_SPEED = 11;
+
+    private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // in degrees from
                                                              // horizontal
-    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -18.0; // in degrees from
+    private final double LAUNCHER_MIN_HEIGHT_DEGREES = -11.0; // in degrees from
                                                               // horizontal
-    private final double LAUNCHER_MAX_HEIGHT_TICKS = 244.0; // in potentiometer
-                                                            // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 19.0; // in potentiometer
-                                                           // ticks
-    private final double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 115.0; // in
-                                                                // potentiomter
-                                                                // ticks
-    private final double LAUNCHER_INTAKE_HEIGHT_TICKS = 26.0; // in
-                                                              // potentiometer
-                                                              // ticks
+    private double LAUNCHER_MAX_HEIGHT_TICKS = 325.0; // in potentiometer
+                                                      // ticks
+    private double LAUNCHER_MIN_HEIGHT_TICKS = 110.0; // in potentiometer
+                                                      // ticks
+    private double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 200.0; // in
+                                                          // potentiometer
+                                                          // ticks
+    private double LAUNCHER_INTAKE_HEIGHT_TICKS = 120.0; // in
+                                                         // potentiometer
+                                                         // ticks
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
 
     private final double SERVO_LEFT_LAUNCH_POSITION = .45;
     private final double SERVO_RIGHT_LAUNCH_POSITION = .65;
-    private final double SERVO_LEFT_NEUTRAL_POSITION = .7;
+    private final double SERVO_LEFT_NEUTRAL_POSITION = .8;
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4;
 
     private double setPoint; // in potentiometer ticks
+    private boolean autoCalibrate = false;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -130,8 +133,7 @@ public class IntakeLauncher extends Subsystem {
 
     // changes the set point based on vision
     private void moveLauncherWithVision() {
-    	double TargetY = degreesToTicks(VisionState.getInstance().TargetY);
-        offsetSetPoint(-TargetY);
+        offsetSetPoint(degreesToTicks(-VisionState.getInstance().TargetY));
     }
 
     // changes the set point based on the joystick
@@ -146,7 +148,7 @@ public class IntakeLauncher extends Subsystem {
     // Checks to see if joystick control or vision control is needed and
     // controls motion
     public void aimLauncher() {
-        SmartDashboard.putNumber("Launch Angle", ticksToDegrees(getPosition()));
+        SmartDashboard.putNumber("Launch Angle", (int) ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
             trackVision();
         } else {
@@ -156,14 +158,11 @@ public class IntakeLauncher extends Subsystem {
 
     // sets the launcher position to the current set point
     private void moveToSetPoint() {
-        keepSetPointInRange();
+        //keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
-        if (isLauncherAtBottom()) {
-            aimMotor.setAnalogPosition((int) LAUNCHER_MIN_HEIGHT_TICKS);
-        }
-        if (isLauncherAtTop()) {
-            aimMotor.setAnalogPosition((int) LAUNCHER_MAX_HEIGHT_TICKS);
+        if (autoCalibrate) {
+            autoCalibratePotentiometer();
         }
     }
 
@@ -199,6 +198,20 @@ public class IntakeLauncher extends Subsystem {
         return LAUNCHER_MIN_HEIGHT_DEGREES + (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio;
     }
 
+    private void autoCalibratePotentiometer() {
+        double neutralHeightRatio = (LAUNCHER_NEUTRAL_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
+        double intakeHeightRatio = (LAUNCHER_INTAKE_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
+        if (isLauncherAtBottom()) {
+            LAUNCHER_MIN_HEIGHT_TICKS = getPosition();
+        }
+        if (isLauncherAtTop()) {
+            LAUNCHER_MAX_HEIGHT_TICKS = getPosition();
+        }
+        LAUNCHER_NEUTRAL_HEIGHT_TICKS = LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * neutralHeightRatio;
+        LAUNCHER_INTAKE_HEIGHT_TICKS = LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * intakeHeightRatio;
+
+    }
+
     public boolean isLauncherAtTop() {
         return aimMotor.isRevLimitSwitchClosed();
     }
@@ -208,7 +221,6 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public double getPosition() {
-        // return aimMotor.getAnalogInPosition();
         return Math.abs(aimMotor.getPosition());
     }
 
@@ -221,6 +233,14 @@ public class IntakeLauncher extends Subsystem {
                                                                                  // Flip
                                                                                  // polarity
         return boulderSwitch.get();
+    }
+
+    public boolean isLaunchReady() {
+        return intakeLeftMotor.getBusVoltage() > LAUNCH_SPEED;
+    }
+
+    public CANTalon getIntakeMotorLeft() {
+        return intakeLeftMotor;
     }
 
     public void backUpJoystickMethod() {

@@ -12,7 +12,7 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToA
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToIntakePositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinLaunchWheelsOutCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinIntakeWheelsOutCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
@@ -35,24 +35,21 @@ public class OI {
     public static final int LAUNCHER_STICK_PORT = 1;
 
     // Button numbers for driveStick buttons
-    public static final int HIGH_SPEED_DRIVE_BUTTON = 6;
-    public static final int LOW_SPEED_DRIVE_BUTTON = 4;
+    public static final int HIGH_SPEED_DRIVE_BUTTON = 11;
+    public static final int LOW_SPEED_DRIVE_BUTTON = 12;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 3;
+    public static final int DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
+    public static final int DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 6;
+    public static final int DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 4;
 
     // Button numbers for launching related buttons on the mechanism stick
-    public static final int LAUNCH_BALL_BUTTON_NUMBER = 2;
+    public static final int KICK_BALL_BUTTON_NUMBER = 3;
+    public static final int MECH_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
+    public static final int SPIN_INTAKE_WHEELS_OUT_BUTTON_NUMBER = 4;
     public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
-    public static final int STOP_WHEELS_BUTTON_NUMBER = 5;
-    public static final int LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 10; // Test
-    public static final int LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 6;
-    
     public static final int AUTO_AIM_BUTTON_NUMBER = 7;
-    public static final int HIGH_LOW_BUTTON_NUMBER = 8;
-    //public static final int ACTIVATE_SERVOS_TEST_BUTTON_NUMBER = 6; // Test
-    //public static final int RETRACT_SERVOS_TEST_BUTTON_NUMBER = 1; // Test
+    public static final int HIGH_LOW_BUTTON_NUMBER = 6;
 
-    public static final int SPIN_WHEELS_BUTTON_NUMBER = 4;
-    
     // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
     public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
@@ -66,16 +63,15 @@ public class OI {
     public JoystickButton speedUpButton;
     public JoystickButton slowDownButton;
     public JoystickButton grabBallButton;
+    public JoystickButton driveLauncherJumpToNeutralButton;
+    public JoystickButton driveLauncherJumpToIntakeButton;
+    public JoystickButton driveStopIntakeWheelsButton;
 
     // Create buttons for the launcher on the mechanism stick
-    public JoystickButton launchBallButton;
-    public JoystickButton stopWheelsButton;
-    public JoystickButton launcherJumpToNeutralButton;
-    public JoystickButton launcherJumpToIntakeButton;
+    public JoystickButton kickBallButton;
+    public JoystickButton mechStopWheelsButton;
     public JoystickButton launcherJumpToAngleButton;
-    public JoystickButton activateServosTestButton;
-    public JoystickButton retractServosTestButton;
-    public JoystickButton spinWheelsButton;
+    public JoystickButton spinIntakeWheelsOutButton;
     public JoystickButton autoAimButton;
     public JoystickButton highLowButton;
     public JoystickButton lightSwitchButton;
@@ -145,16 +141,14 @@ public class OI {
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            initializeButton(this.launchBallButton, aimStick, LAUNCH_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());
-            initializeButton(this.stopWheelsButton, aimStick, STOP_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
+            initializeButton(this.kickBallButton, aimStick, KICK_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());
+            initializeButton(this.mechStopWheelsButton, aimStick, MECH_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.grabBallButton, driveStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
-            initializeButton(this.launcherJumpToNeutralButton, aimStick, LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER,
-                    new LauncherGoToNeutralPositionCommand());
-            initializeButton(this.launcherJumpToIntakeButton, aimStick, LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER, new LauncherGoToIntakePositionCommand());
             initializeButton(this.launcherJumpToAngleButton, aimStick, 1, new LauncherGoToAngleCommand(10));
-            //initializeButton(this.activateServosTestButton, aimStick, ACTIVATE_SERVOS_TEST_BUTTON_NUMBER, new ActivateLauncherServosCommand());
-            //initializeButton(this.retractServosTestButton, aimStick, RETRACT_SERVOS_TEST_BUTTON_NUMBER, new RetractLauncherServosCommand());
-            initializeButton(this.spinWheelsButton, aimStick, SPIN_WHEELS_BUTTON_NUMBER, new SpinLaunchWheelsOutCommand());
+            initializeButton(this.spinIntakeWheelsOutButton, aimStick, SPIN_INTAKE_WHEELS_OUT_BUTTON_NUMBER, new SpinIntakeWheelsOutCommand());
+            initializeButton(this.driveLauncherJumpToIntakeButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER, new LauncherGoToIntakePositionCommand());
+            initializeButton(this.driveLauncherJumpToNeutralButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER, new LauncherGoToNeutralPositionCommand());
+            initializeButton(this.driveStopIntakeWheelsButton, driveStick, DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 
@@ -168,9 +162,14 @@ public class OI {
         if (ModuleManager.SCALING_MODULE_ON) {
             SmartDashboard.putData("Scaler Winch", RobotMap.scalingWinch);
             SmartDashboard.putData("Scaler Tape Measure Motor", RobotMap.scalingMotor);
-            //initializeButton(this.scalerReachUpButton, aimStick, SCALER_REACH_UP_BUTTON_NUMBER, new ScalerCommand(State.REACHING_UP));
-            //initializeButton(this.scalerLiftButton, aimStick, SCALER_LIFT_BUTTON_NUMBER, new ScalerCommand(State.LIFTING));
-            //initializeButton(this.scalerReachDownButton, aimStick, SCALER_REACH_DOWN_BUTTON_NUMBER, new ScalerCommand(State.REACHING_DOWN));
+            // initializeButton(this.scalerReachUpButton, aimStick,
+            // SCALER_REACH_UP_BUTTON_NUMBER, new
+            // ScalerCommand(State.REACHING_UP));
+            // initializeButton(this.scalerLiftButton, aimStick,
+            // SCALER_LIFT_BUTTON_NUMBER, new ScalerCommand(State.LIFTING));
+            // initializeButton(this.scalerReachDownButton, aimStick,
+            // SCALER_REACH_DOWN_BUTTON_NUMBER, new
+            // ScalerCommand(State.REACHING_DOWN));
         }
 
         if (ModuleManager.IMU_MODULE_ON) {
