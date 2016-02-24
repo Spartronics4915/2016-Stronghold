@@ -1,16 +1,17 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.List;
+
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-import java.util.List;
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcadeDrive extends Command {
 
@@ -48,13 +49,11 @@ public class ArcadeDrive extends Command {
         this.joystickX = this.joystickDrive.getAxis(Joystick.AxisType.kX);
         this.joystickY = this.joystickDrive.getAxis(Joystick.AxisType.kY);
 
-        if (ModuleManager.GYRO_MODULE_ON) {
-            Robot.driveTrain.trackGyro();
-        }
         VisionState vs = null;
         if (ModuleManager.VISION_MODULE_ON) {
             vs = VisionState.getInstance();
         }
+
         double heading;
         if (ModuleManager.IMU_MODULE_ON) {
             heading = RobotMap.imu.getHeading();
@@ -90,37 +89,19 @@ public class ArcadeDrive extends Command {
             SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
             SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
 
-        }
-        {
-            if ((Math.abs(this.joystickX) < Math.abs(0.075)) && (Math.abs(this.joystickY) < Math.abs(0.075))) {
-                Robot.driveTrain.stop();
-            } else {
-                Robot.driveTrain.arcadeDrive(this.joystickDrive);
-            }
-            SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
-            SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-
-            // checks if imu is on
-            if (ModuleManager.IMU_MODULE_ON) {
-                BNO055.CalData calData = RobotMap.imu.getCalibration();
-                int num = (int) (.5 + RobotMap.imu.getHeading());
-                distFromOrigin = BNO055.getInstance().getDistFromOrigin();
-                SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
-                SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-                SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
-                SmartDashboard.putNumber("IMU heading", num);
-                SmartDashboard.putNumber("IMU calibration status", (1000 + (calData.accel * 100) + calData.gyro * 10 + calData.mag)); // Calibration
-                                                                                                                                      // values
-                                                                                                                                      // range
-                                                                                                                                      // from
-                                                                                                                                      // 0-3,
-                                                                                                                                      // Right
-                                                                                                                                      // to
-                                                                                                                                      // left:
-                                                                                                                                      // mag,
-                                                                                                                                      // gyro,
-                                                                                                                                      // accel
-            }
+    	   //checks if imu is on
+    	   if (ModuleManager.IMU_MODULE_ON) {
+               BNO055.CalData calData = RobotMap.imu.getCalibration();
+               int num = (int)(.5 + RobotMap.imu.getHeading());
+               distFromOrigin = BNO055.getInstance().getDistFromOrigin();
+               SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
+               SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
+               SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+               SmartDashboard.putNumber("IMU heading", num);
+               SmartDashboard.putNumber("IMU calibration status", 
+                                    (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); 
+                                    //Calibration values range from 0-3, Right to left: mag, gyro, accel
+           }
         }
     }
 

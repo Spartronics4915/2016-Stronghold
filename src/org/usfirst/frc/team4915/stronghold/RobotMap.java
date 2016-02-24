@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
@@ -9,7 +10,6 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 public class RobotMap {
 
@@ -22,9 +22,6 @@ public class RobotMap {
     // Define channels for two speed gear system for the drive train
     private static final int SOLENOID_CHANNEL_PRIMARY = 0;
     private static final int SOLENOID_CHANNEL_SECONDARY = 1;
-
-    // Define port for the gyro
-    public final static int GYRO_PORT = 0;
 
     // Define channels for IntakeLauncher motors
     private static final int INTAKE_LEFT_MOTOR_ID = 15;
@@ -57,12 +54,8 @@ public class RobotMap {
     // Create solenoid for the drivetrain
     public static DoubleSolenoid doubleSolenoid;
 
-    // Create the gyro
-    public static AnalogGyro gyro;
-
     // Create IMU
     public static BNO055 imu;
-    // public static BNO055 imuLinAcc;
 
     // Create the motor controllers for the IntakeLauncher
     public static CANTalon intakeLeftMotorCAN15;
@@ -138,11 +131,6 @@ public class RobotMap {
             LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
         }
 
-        if (ModuleManager.GYRO_MODULE_ON) {
-            System.out.println("ModuleManager RobotMap initalize. Initialize Gyro!");
-            gyro = new AnalogGyro(GYRO_PORT);
-        }
-
         if (ModuleManager.SCALING_MODULE_ON) {
             System.out.println("ModuleManager RobotMap Initialize: Scaling");
             scalingMotor = new CANTalon(SCALING_MOTOR_ID);
@@ -150,7 +138,8 @@ public class RobotMap {
         }
         if (ModuleManager.IMU_MODULE_ON) {
             System.out.println("ModuleManager RobotMap Initialize: IMU");
-            imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_EULER);
+            imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, 
+                                    BNO055.vector_type_t.VECTOR_EULER);
             // imuLinAcc =
             // BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
             // BNO055.vector_type_t.VECTOR_LINEARACCEL);

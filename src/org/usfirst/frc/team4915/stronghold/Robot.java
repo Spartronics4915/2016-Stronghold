@@ -1,6 +1,14 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
+import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
+import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,14 +16,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
-import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
-import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
-import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -60,19 +60,12 @@ public class Robot extends IterativeRobot {
             System.out.println("ModuleManager initialized: IntakeLauncher");
             System.out.println(intakeLauncher.getSetPoint());
         }
-        if (ModuleManager.GYRO_MODULE_ON) {
-            RobotMap.gyro.initGyro();
-            // Sensitivity in VEX Yaw Rate Gyro data sheet: 0.0011
-            RobotMap.gyro.setSensitivity(0.0011);
-            RobotMap.gyro.calibrate();
-            SmartDashboard.putString("Module Manager", "initialize gyro");
-            System.out.println("ModuleManager initialize gyro: " + RobotMap.gyro.getAngle());
-            RobotMap.gyro.reset();
-        }
+
         if (ModuleManager.SCALING_MODULE_ON) {
             scaler = new Scaler();
         }
         if (ModuleManager.IMU_MODULE_ON) {
+        	// imu is initialized in RobotMap.init()
             BNO055.CalData calData = RobotMap.imu.getCalibration();
             SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
             SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
@@ -96,10 +89,11 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
 
         // schedule the autonomous command
-        autonomousCommand = new MoveStraightPositionModeCommand(100, 0.5);
+        //autonomousCommand = new MoveStraightPositionModeCommand(100, 0.5);
     
-        //autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
-          //            (Autonomous.Position) oi.startingFieldPosition.getSelected());
+        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
+                      (Autonomous.Position) oi.startingFieldPosition.getSelected());
+        
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }

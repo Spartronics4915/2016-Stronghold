@@ -6,6 +6,7 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class SpinIntakeWheelsInwardCommand extends Command {
 
+
     // this command spins the intake flywheels inward to retrieve the ball
     public SpinIntakeWheelsInwardCommand() {
         requires(Robot.intakeLauncher);
