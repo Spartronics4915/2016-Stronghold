@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class LauncherGoToIntakePositionCommand extends Command {
 
     public LauncherGoToIntakePositionCommand() {
-        requires(Robot.intakeLauncher);
+
     }
 
     protected void initialize() {
@@ -15,11 +15,11 @@ public class LauncherGoToIntakePositionCommand extends Command {
     }
 
     protected void execute() {
-    
+
     }
 
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     protected void end() {

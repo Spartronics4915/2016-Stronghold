@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RetractLauncherServosCommand extends Command {
 
     public RetractLauncherServosCommand() {
-    
+        requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
