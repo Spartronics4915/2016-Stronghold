@@ -6,6 +6,7 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
@@ -49,6 +50,7 @@ public class OI {
     public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
     public static final int AUTO_AIM_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 6;
+    public static final int AUTO_LAUNCH_TEST_BUTTON_NUMBER = 10;
 
     // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
@@ -75,6 +77,7 @@ public class OI {
     public JoystickButton autoAimButton;
     public JoystickButton highLowButton;
     public JoystickButton lightSwitchButton;
+    public JoystickButton autoLaunchTestButton;
 
     // Create buttons for the scaler on the mechanism stick
     public JoystickButton scalerExtendButton;
@@ -149,6 +152,7 @@ public class OI {
             initializeButton(this.driveLauncherJumpToIntakeButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER, new LauncherGoToIntakePositionCommand());
             initializeButton(this.driveLauncherJumpToNeutralButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER, new LauncherGoToNeutralPositionCommand());
             initializeButton(this.driveStopIntakeWheelsButton, driveStick, DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
+            initializeButton(this.autoLaunchTestButton, aimStick, AUTO_LAUNCH_TEST_BUTTON_NUMBER, new AutoLaunchCommand());
             System.out.println("ModuleManager initialized: IntakeLauncher");
         }
 

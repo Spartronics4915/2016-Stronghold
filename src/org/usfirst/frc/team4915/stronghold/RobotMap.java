@@ -58,8 +58,8 @@ public class RobotMap {
     public static BNO055 imu;
 
     // Create the motor controllers for the IntakeLauncher
-    public static CANTalon intakeLeftMotorCAN15;
-    public static CANTalon intakeRightMotorCAN14;
+    public static CANTalon intakeLeftMotor;
+    public static CANTalon intakeRightMotor;
     public static CANTalon aimMotor;
 
     // Create the boulder switch
@@ -107,11 +107,11 @@ public class RobotMap {
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            intakeLeftMotorCAN15 = new CANTalon(INTAKE_LEFT_MOTOR_ID);
-            intakeRightMotorCAN14 = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
-            intakeLeftMotorCAN15.changeControlMode(TalonControlMode.PercentVbus);
-            intakeRightMotorCAN14.changeControlMode(TalonControlMode.PercentVbus);
-            intakeLeftMotorCAN15.reverseSensor(true);
+            intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_ID);
+            intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
+            intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
+            intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
+            intakeLeftMotor.reverseSensor(true);
             aimMotor = new CANTalon(AIM_MOTOR_ID);
             aimMotor.changeControlMode(TalonControlMode.Position);
             boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
