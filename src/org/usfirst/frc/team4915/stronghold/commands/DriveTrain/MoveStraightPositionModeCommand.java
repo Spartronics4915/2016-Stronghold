@@ -159,5 +159,6 @@ public class MoveStraightPositionModeCommand extends Command {
     public void interrupted() {
     	System.out.println("Move Straight interrupted");
         end();
+        System.out.println("Move Straight Interrupted");
     }
 }
