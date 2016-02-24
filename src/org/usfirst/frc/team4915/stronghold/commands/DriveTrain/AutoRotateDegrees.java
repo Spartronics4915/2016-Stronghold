@@ -35,14 +35,19 @@ public class AutoRotateDegrees extends Command {
 
     @Override
     public void execute() {
-
+    	System.out.println("Executing the rotate degrees");
         Robot.driveTrain.turn(goLeft);
         SmartDashboard.putNumber("Robot Angle", robotAngle);
     }
 
     @Override
     protected boolean isFinished() {
-        double gyroDelta = Math.abs(imu.getHeading() - startingGyroValue);
+//        double gyroDelta = Math.abs(imu.getHeading() - startingGyroValue);
+    	double gyroDelta = 0;
+    	if (imu.getHeading() <= 180)
+    		gyroDelta = Math.abs(imu.getHeading() - startingGyroValue);
+    	else 
+    		gyroDelta = Math.abs((360 - imu.getHeading()) - startingGyroValue);
         System.out.println("Current IMU heading:" + imu.getHeading() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
         return gyroDelta >= robotAngle;
     }

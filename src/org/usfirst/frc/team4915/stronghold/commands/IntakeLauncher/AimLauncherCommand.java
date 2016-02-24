@@ -16,6 +16,7 @@ public class AimLauncherCommand extends Command {
 
     protected void execute() {
         Robot.intakeLauncher.aimLauncher();
+        System.out.println("Launcher Aiming");
     }
 
     protected boolean isFinished() {

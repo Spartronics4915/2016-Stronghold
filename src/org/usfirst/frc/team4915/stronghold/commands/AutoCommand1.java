@@ -26,7 +26,7 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println("Angle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            Robot.intakeLauncher.launcherSetNeutralPosition(); // placeholder
+          //  Robot.intakeLauncher.launcherSetNeutralPosition(); // placeholder
                                                                // for setting
                                                                // the launcher
                                                                // to neutral
@@ -45,12 +45,12 @@ public class AutoCommand1 extends CommandGroup {
 				addParallel(new AimLauncherCommand());
 			}
 			break;
-		case DRIVE_SHOOT_NO_VISION:
-		    System.out.println("Driving straight");
+		case DRIVE_SHOOT_NO_VISION: 
+			System.out.println("Starting Move Straight");
 			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
-			System.out.println("Rotating");
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+				addParallel(new AimLauncherCommand());
 				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
 				addSequential(new AutoLaunchCommand());
 			}
@@ -67,21 +67,22 @@ public class AutoCommand1 extends CommandGroup {
         double angle = 0;
         switch (position) {
             case ONE:
-                angle = 30;
+                angle = 40;
                 break;
             case TWO:
-                angle = 30;
+                angle = 40;
                 break;
             case THREE:
+            	angle = 30;
                 break;
             case FOUR:
-                angle = 30;
+                angle = 40;
                 break;
             case FIVE:
-                angle = 30;
+                angle = 40;
                 break;
             default:
-                angle = 30;
+                angle = 40;
         }
         return angle;
     }
@@ -99,7 +100,7 @@ public class AutoCommand1 extends CommandGroup {
             case THREE:
                 break;
             case FOUR:
-                left = true;
+                left = false;
                 break;
             case FIVE:
                 left = true;
@@ -115,19 +116,19 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(position);
         switch (position) {
             case ONE://low bar
-                degrees = 90;
+                degrees = 80.4;
                 break;
             case TWO:
-                degrees = 15;
+                degrees = 41.08;
                 break;
             case THREE:
-                degrees = 15;
+                degrees = 11.95;
                 break;
             case FOUR:
-                degrees = 15;
+                degrees = 13.12;
                 break;
             case FIVE:
-                degrees = 15;
+                degrees = 57.75;
                 break;
             default:
                 degrees = 0;
@@ -160,22 +161,22 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 150;
+                distance = 120; 
                 break;
             case MOAT:
-                distance = 100;
+                distance = 120; 
                 break;
             case RAMPARTS:
-                distance = 100;
+                distance = 120; 
                 break;
             case ROUGH_TERRAIN:
-                distance = 100;
+                distance = 150; 
                 break;
             case ROCK_WALL:
-                distance = 100;
+                distance = 120; 
                 break;
             default:
-                distance = 0;
+                distance = 25;
         }
         return distance;
     }
@@ -185,19 +186,19 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                speed = 0.5;
+                speed = 0.6;
                 break;
             case MOAT:
-                speed = 0.5;
+                speed = 0.65; 
                 break;
             case RAMPARTS:
-                speed = 0.5;
+                speed = 0.6;
                 break;
             case ROUGH_TERRAIN:
-                speed = 0.5;
+                speed = 0.65;
                 break;
             case ROCK_WALL:
-                speed = 0.6;
+                speed = 0.65;
                 break;
             default:
                 speed = 0;
