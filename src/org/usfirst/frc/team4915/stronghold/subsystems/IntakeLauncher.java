@@ -38,7 +38,7 @@ public class IntakeLauncher extends Subsystem {
     private double launcherNeutralHeightTicks = 50.0; // in
                                                        // potentiometer
                                                        // ticks
-    private double launcherIntakeHeightTicks = 0.0; // in
+    private double launcherIntakeHeightTicks = 10.0; // in
                                                       // potentiometer
                                                       // ticks
     private final double JOYSTICK_SCALE = 50.0; // TODO
