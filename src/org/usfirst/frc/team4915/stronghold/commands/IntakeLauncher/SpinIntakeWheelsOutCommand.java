@@ -39,6 +39,6 @@ public class SpinIntakeWheelsOutCommand extends Command {
 
     @Override
     protected void interrupted() {
-        end();
+        
     }
 }
