@@ -21,20 +21,22 @@ public class IntakeLauncher extends Subsystem {
     private final double FULL_SPEED_FORWARD = 1;
     private final double ZERO_SPEED = 0.0;
 
+    private final double LAUNCH_SPEED = 11;
+
     private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // in degrees from
                                                              // horizontal
     private final double LAUNCHER_MIN_HEIGHT_DEGREES = -11.0; // in degrees from
                                                               // horizontal
     private double LAUNCHER_MAX_HEIGHT_TICKS = 325.0; // in potentiometer
-                                                            // ticks
+                                                      // ticks
     private double LAUNCHER_MIN_HEIGHT_TICKS = 110.0; // in potentiometer
-                                                            // ticks
+                                                      // ticks
     private double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 200.0; // in
-                                                                // potentiometer
-                                                                // ticks
+                                                          // potentiometer
+                                                          // ticks
     private double LAUNCHER_INTAKE_HEIGHT_TICKS = 120.0; // in
-                                                              // potentiometer
-                                                              // ticks
+                                                         // potentiometer
+                                                         // ticks
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
@@ -46,8 +48,6 @@ public class IntakeLauncher extends Subsystem {
 
     private double setPoint; // in potentiometer ticks
     private boolean autoCalibrate = false;
-    
-    private boolean shouldStopWheels = false;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -64,7 +64,7 @@ public class IntakeLauncher extends Subsystem {
     // These servos push the boulder into the launcher flywheels
     public Servo launcherServoLeft = RobotMap.launcherServoLeft;
     public Servo launcherServoRight = RobotMap.launcherServoRight;
-    
+
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new AimLauncherCommand());
@@ -160,7 +160,7 @@ public class IntakeLauncher extends Subsystem {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
-        if(autoCalibrate) {
+        if (autoCalibrate) {
             autoCalibratePotentiometer();
         }
     }
@@ -196,19 +196,19 @@ public class IntakeLauncher extends Subsystem {
         double heightRatio = (ticks - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
         return LAUNCHER_MIN_HEIGHT_DEGREES + (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio;
     }
-    
+
     private void autoCalibratePotentiometer() {
-        double neutralHeightRatio = (LAUNCHER_NEUTRAL_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS ) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
+        double neutralHeightRatio = (LAUNCHER_NEUTRAL_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
         double intakeHeightRatio = (LAUNCHER_INTAKE_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
-        if(isLauncherAtBottom()) {
+        if (isLauncherAtBottom()) {
             LAUNCHER_MIN_HEIGHT_TICKS = getPosition();
         }
-        if(isLauncherAtTop()) {
+        if (isLauncherAtTop()) {
             LAUNCHER_MAX_HEIGHT_TICKS = getPosition();
         }
         LAUNCHER_NEUTRAL_HEIGHT_TICKS = LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * neutralHeightRatio;
         LAUNCHER_INTAKE_HEIGHT_TICKS = LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * intakeHeightRatio;
-        
+
     }
 
     public boolean isLauncherAtTop() {
@@ -234,16 +234,12 @@ public class IntakeLauncher extends Subsystem {
         return boulderSwitch.get();
     }
 
+    public boolean isLaunchReady() {
+        return intakeLeftMotor.getBusVoltage() > LAUNCH_SPEED;
+    }
+
     public CANTalon getIntakeMotorLeft() {
         return intakeLeftMotor;
-    }
-    
-    public boolean shouldStopWheels() {
-        return shouldStopWheels;
-    }
-    
-    public void setShouldStopWheels(boolean shouldStopWheels) {
-        this.shouldStopWheels = shouldStopWheels;
     }
 
     public void backUpJoystickMethod() {

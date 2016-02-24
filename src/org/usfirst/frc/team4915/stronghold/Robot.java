@@ -151,7 +151,7 @@ public class Robot extends IterativeRobot {
             SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
             SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
             SmartDashboard.putNumber("Intake Motor Left Voltage", intakeLauncher.getIntakeMotorLeft().getBusVoltage());
-            SmartDashboard.putBoolean("Launch Wheels Ready to Launch: ", intakeLauncher.getIntakeMotorLeft().getBusVoltage() > 11);
+            SmartDashboard.putBoolean("Launch Wheels Ready to Launch: ", intakeLauncher.isLaunchReady());
         }
     }
 

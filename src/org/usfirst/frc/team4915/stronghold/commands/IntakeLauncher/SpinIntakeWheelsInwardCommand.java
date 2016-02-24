@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class SpinIntakeWheelsInwardCommand extends Command {
@@ -13,7 +14,7 @@ public class SpinIntakeWheelsInwardCommand extends Command {
     @Override
     protected void initialize() {
         setTimeout(10); // TODO finalize time
-        Robot.intakeLauncher.setShouldStopWheels(false);
+        SmartDashboard.putString("Flywheels spinning ", "inward");
     }
 
     @Override
@@ -38,6 +39,6 @@ public class SpinIntakeWheelsInwardCommand extends Command {
 
     @Override
     protected void interrupted() {
-
+        end();
     }
 }
