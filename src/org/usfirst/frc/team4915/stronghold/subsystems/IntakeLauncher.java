@@ -25,14 +25,14 @@ public class IntakeLauncher extends Subsystem {
                                                              // horizontal
     private final double LAUNCHER_MIN_HEIGHT_DEGREES = -11.0; // in degrees from
                                                               // horizontal
-    private final double LAUNCHER_MAX_HEIGHT_TICKS = 325.0; // in potentiometer
+    private double LAUNCHER_MAX_HEIGHT_TICKS = 325.0; // in potentiometer
                                                             // ticks
-    private final double LAUNCHER_MIN_HEIGHT_TICKS = 110.0; // in potentiometer
+    private double LAUNCHER_MIN_HEIGHT_TICKS = 110.0; // in potentiometer
                                                             // ticks
-    private final double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 115.0; // in
-                                                                // potentiomter
+    private double LAUNCHER_NEUTRAL_HEIGHT_TICKS = 200.0; // in
+                                                                // potentiometer
                                                                 // ticks
-    private final double LAUNCHER_INTAKE_HEIGHT_TICKS = 26.0; // in
+    private double LAUNCHER_INTAKE_HEIGHT_TICKS = 120.0; // in
                                                               // potentiometer
                                                               // ticks
     private final double JOYSTICK_SCALE = 50.0; // TODO
@@ -45,6 +45,9 @@ public class IntakeLauncher extends Subsystem {
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4;
 
     private double setPoint; // in potentiometer ticks
+    private boolean autoCalibrate = false;
+    
+    private boolean shouldStopWheels = false;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -61,7 +64,7 @@ public class IntakeLauncher extends Subsystem {
     // These servos push the boulder into the launcher flywheels
     public Servo launcherServoLeft = RobotMap.launcherServoLeft;
     public Servo launcherServoRight = RobotMap.launcherServoRight;
-
+    
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new AimLauncherCommand());
@@ -157,11 +160,8 @@ public class IntakeLauncher extends Subsystem {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
-        if (isLauncherAtBottom()) {
-            aimMotor.setAnalogPosition((int) LAUNCHER_MIN_HEIGHT_TICKS);
-        }
-        if (isLauncherAtTop()) {
-            aimMotor.setAnalogPosition((int) LAUNCHER_MAX_HEIGHT_TICKS);
+        if(autoCalibrate) {
+            autoCalibratePotentiometer();
         }
     }
 
@@ -196,6 +196,20 @@ public class IntakeLauncher extends Subsystem {
         double heightRatio = (ticks - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
         return LAUNCHER_MIN_HEIGHT_DEGREES + (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES) * heightRatio;
     }
+    
+    private void autoCalibratePotentiometer() {
+        double neutralHeightRatio = (LAUNCHER_NEUTRAL_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS ) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
+        double intakeHeightRatio = (LAUNCHER_INTAKE_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) / (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS);
+        if(isLauncherAtBottom()) {
+            LAUNCHER_MIN_HEIGHT_TICKS = getPosition();
+        }
+        if(isLauncherAtTop()) {
+            LAUNCHER_MAX_HEIGHT_TICKS = getPosition();
+        }
+        LAUNCHER_NEUTRAL_HEIGHT_TICKS = LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * neutralHeightRatio;
+        LAUNCHER_INTAKE_HEIGHT_TICKS = LAUNCHER_MIN_HEIGHT_TICKS + (LAUNCHER_MAX_HEIGHT_TICKS - LAUNCHER_MIN_HEIGHT_TICKS) * intakeHeightRatio;
+        
+    }
 
     public boolean isLauncherAtTop() {
         return aimMotor.isRevLimitSwitchClosed();
@@ -206,7 +220,6 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public double getPosition() {
-        // return aimMotor.getAnalogInPosition();
         return Math.abs(aimMotor.getPosition());
     }
 
@@ -221,8 +234,16 @@ public class IntakeLauncher extends Subsystem {
         return boulderSwitch.get();
     }
 
-    public double getLaunchSpeed() {
-        return intakeLeftMotor.getSpeed();
+    public CANTalon getIntakeMotorLeft() {
+        return intakeLeftMotor;
+    }
+    
+    public boolean shouldStopWheels() {
+        return shouldStopWheels;
+    }
+    
+    public void setShouldStopWheels(boolean shouldStopWheels) {
+        this.shouldStopWheels = shouldStopWheels;
     }
 
     public void backUpJoystickMethod() {

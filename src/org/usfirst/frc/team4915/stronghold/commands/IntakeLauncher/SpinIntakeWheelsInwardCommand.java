@@ -13,11 +13,15 @@ public class SpinIntakeWheelsInwardCommand extends Command {
     @Override
     protected void initialize() {
         setTimeout(10); // TODO finalize time
+        Robot.intakeLauncher.setShouldStopWheels(false);
     }
 
     @Override
     protected void execute() {
         Robot.intakeLauncher.setSpeedIntake();
+        Robot.intakeLauncher.aimLauncher(); // this command interrupts
+                                            // AimLauncherCommand so we make
+                                            // sure the launcher always aims
     }
 
     @Override

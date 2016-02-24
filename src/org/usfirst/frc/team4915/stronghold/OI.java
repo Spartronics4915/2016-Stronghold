@@ -6,14 +6,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToIntakePositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.RetractLauncherServosCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinIntakeWheelsOutCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
@@ -36,8 +34,8 @@ public class OI {
     public static final int LAUNCHER_STICK_PORT = 1;
 
     // Button numbers for driveStick buttons
-    public static final int HIGH_SPEED_DRIVE_BUTTON = 10;
-    public static final int LOW_SPEED_DRIVE_BUTTON = 11;
+    public static final int HIGH_SPEED_DRIVE_BUTTON = 11;
+    public static final int LOW_SPEED_DRIVE_BUTTON = 12;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 3;
     public static final int DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
     public static final int DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 6;
@@ -46,12 +44,10 @@ public class OI {
     // Button numbers for launching related buttons on the mechanism stick
     public static final int KICK_BALL_BUTTON_NUMBER = 3;
     public static final int MECH_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
-    public static final int MECH_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 10;
-    public static final int MECH_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 6;
     public static final int SPIN_INTAKE_WHEELS_OUT_BUTTON_NUMBER = 4;
     public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
     public static final int AUTO_AIM_BUTTON_NUMBER = 7;
-    public static final int HIGH_LOW_BUTTON_NUMBER = 8;
+    public static final int HIGH_LOW_BUTTON_NUMBER = 6;
 
     // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
@@ -73,8 +69,6 @@ public class OI {
     // Create buttons for the launcher on the mechanism stick
     public JoystickButton kickBallButton;
     public JoystickButton mechStopWheelsButton;
-    public JoystickButton mechLauncherJumpToNeutralButton;
-    public JoystickButton mechLauncherJumpToIntakeButton;
     public JoystickButton launcherJumpToAngleButton;
     public JoystickButton spinIntakeWheelsOutButton;
     public JoystickButton autoAimButton;
@@ -148,9 +142,6 @@ public class OI {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             initializeButton(this.kickBallButton, aimStick, KICK_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());
             initializeButton(this.mechStopWheelsButton, aimStick, MECH_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
-            initializeButton(this.mechLauncherJumpToNeutralButton, aimStick, MECH_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER,
-                    new LauncherGoToNeutralPositionCommand());
-            initializeButton(this.mechLauncherJumpToIntakeButton, aimStick, MECH_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER, new LauncherGoToIntakePositionCommand());
             initializeButton(this.grabBallButton, driveStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
             initializeButton(this.launcherJumpToAngleButton, aimStick, 1, new LauncherGoToAngleCommand(10));
             initializeButton(this.spinIntakeWheelsOutButton, aimStick, SPIN_INTAKE_WHEELS_OUT_BUTTON_NUMBER, new SpinIntakeWheelsOutCommand());

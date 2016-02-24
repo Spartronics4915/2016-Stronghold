@@ -14,11 +14,11 @@ public class LauncherGoToIntakePositionCommand extends Command {
     }
 
     protected void execute() {
-    
+
     }
 
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     protected void end() {
