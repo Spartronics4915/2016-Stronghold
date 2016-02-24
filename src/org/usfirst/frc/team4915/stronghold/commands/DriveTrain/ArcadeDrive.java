@@ -53,22 +53,28 @@ public class ArcadeDrive extends Command {
             vs = VisionState.getInstance();
         }
 
-        double heading;
-        if (ModuleManager.IMU_MODULE_ON) {
+        double heading = 0;
+        //checks if imu is on
+ 	    if (ModuleManager.IMU_MODULE_ON) {
+            BNO055.CalData calData = RobotMap.imu.getCalibration();
             heading = RobotMap.imu.getHeading();
-            SmartDashboard.putNumber("IMU heading", (int) (heading + .5));
-            if (ModuleManager.VISION_MODULE_ON) {
-                vs.updateIMUHeading(heading);
-            }
-        } else {
-            heading = 0.0;
+            distFromOrigin = BNO055.getInstance().getDistFromOrigin();
+            SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
+            SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
+            SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
+            SmartDashboard.putNumber("IMU heading", (int) (0.5+heading));
+            SmartDashboard.putNumber("IMU calibration status", 
+                                 (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag));
+                                 //Calibration values range from 0-3, Right to left: mag, gyro, accel
+        }
+        if (ModuleManager.VISION_MODULE_ON) {
+            vs.updateIMUHeading(heading);
         }
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-
-        if (vs != null && vs.wantsControl()) {
+        if (vs != null && vs.wantsControl() && !vs.DriveLockedOnTarget) {
             if (vs.RelativeTargetingMode == 1) {
-
+            	
                 if (Math.abs(vs.TargetX) < 3) {
                     Robot.driveTrain.stop(); // close enough
                 } else {
@@ -78,29 +84,19 @@ public class ArcadeDrive extends Command {
                 /* absolute autotargeting */
                 Robot.driveTrain.turnToward(vs.TargetX);
             }
-        } else {
+        } 
+        else {
             if ((Math.abs(this.joystickX) < 0.075) &&
                     (Math.abs(this.joystickY) < 0.075)) {
                 Robot.driveTrain.stop();
-            } else {
+            } 
+            else {
                 Robot.driveTrain.arcadeDrive(this.joystickDrive);
             }
             SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
             SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
 
-    	   //checks if imu is on
-    	   if (ModuleManager.IMU_MODULE_ON) {
-               BNO055.CalData calData = RobotMap.imu.getCalibration();
-               int num = (int)(.5 + RobotMap.imu.getHeading());
-               distFromOrigin = BNO055.getInstance().getDistFromOrigin();
-               SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
-               SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-               SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
-               SmartDashboard.putNumber("IMU heading", num);
-               SmartDashboard.putNumber("IMU calibration status", 
-                                    (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); 
-                                    //Calibration values range from 0-3, Right to left: mag, gyro, accel
-           }
+    	   
         }
     }
 

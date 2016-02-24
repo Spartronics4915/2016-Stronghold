@@ -25,16 +25,15 @@ public class VisionState implements NamedSendable {
     public boolean AutoAimEnabled = false;
     public boolean TargetHigh = true;
     public int IMUHeading = 0;
+    public boolean DriveLockedOnTarget = false;
+    public boolean LauncherLockedOnTarget = false;
 
     // these values originate from jetson
     public int RelativeTargetingMode = 1;
     public int FPS = 0;
-    public int TargetsAcquired = 0;
+    public int TargetAcquired = 0;
     public int TargetX = 0;
     public int TargetY = 0;
-    public int TargetSize = 0;
-    public double TargetResponse = 0;
-    public int TargetClass = 0;
 
     private ITable m_table = null;
     private final ITableListener m_listener = new ITableListener() {
@@ -65,18 +64,12 @@ public class VisionState implements NamedSendable {
                     s_instance.FPS = ival;
                 else if (key.equals("IMUHeading"))
                     s_instance.IMUHeading = ival;
-                else if (key.equals("TargetsAcquired"))
-                    s_instance.TargetsAcquired = ival;
+                else if (key.equals("TargetAcquired"))
+                    s_instance.TargetAcquired = ival;
                 else if (key.equals("TargetX"))
                     s_instance.TargetX = ival;
                 else if (key.equals("TargetY"))
                     s_instance.TargetY = ival;
-                else if (key.equals("TargetSize"))
-                    s_instance.TargetSize = ival;
-                else if (key.equals("TargetResponse"))
-                    s_instance.TargetResponse = num;
-                else if (key.equals("TargetClass"))
-                    s_instance.TargetClass = ival;
                 else
                     System.out.println(key + " " + value + " " +
                             value.getClass().getName());
@@ -112,12 +105,9 @@ public class VisionState implements NamedSendable {
         this.TargetHigh = m_table.getBoolean("TargetHigh", true);
         this.FPS = (int) m_table.getNumber("FPS", 0.);
         this.IMUHeading = (int) m_table.getNumber("IMUHeading", 0.);
-        this.TargetsAcquired = (int) m_table.getNumber("TargetsAcquired", 0);
+        this.TargetAcquired = (int) m_table.getNumber("TargetAcquired", 0);
         this.TargetX = (int) m_table.getNumber("TargetX", 0);
         this.TargetY = (int) m_table.getNumber("TargetY", 0);
-        this.TargetSize = (int) m_table.getNumber("TargetSize", 0);
-        this.TargetResponse = m_table.getNumber("TargetResponse", 0.);
-        this.TargetClass = (int) m_table.getNumber("TargetClass", 0);
     }
 
     public void toggleAimState(boolean toggleEnable, boolean toggleTarget) {
@@ -131,6 +121,8 @@ public class VisionState implements NamedSendable {
             // m_table.putBoolean("TargetHigh", this.TargetHigh);
             System.out.println("TargetHigh:" + this.TargetHigh);
         }
+        DriveLockedOnTarget = false;
+        LauncherLockedOnTarget = false;
     }
 
     public void updateIMUHeading(double heading) {
@@ -141,10 +133,10 @@ public class VisionState implements NamedSendable {
 
     /*
      * public boolean followTargetX(DriveTrain driveTrain) {
-     * if(this.AutoAimEnabled && this.TargetsAcquired > 0) { if (this.TargetX <=
+     * if(this.AutoAimEnabled && this.TargetAcquired > 0) { if (this.TargetX <=
      * -1){ driveTrain.turn(false); } else { driveTrain.turn(true); } return
      * true; } return false; } public boolean followTargetY(IntakeLauncher
-     * intakeLauncher) { if(this.AutoAimEnabled && this.TargetsAcquired > 0) {
+     * intakeLauncher) { if(this.AutoAimEnabled && this.TargetAcquired > 0) {
      * intakeLauncher.setPointInDegrees(TargetY); return true; } else { return
      * false; } }
      */

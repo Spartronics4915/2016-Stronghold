@@ -567,8 +567,13 @@ class App:
                 self.putNotice('ORB features: %d' % len(keypoints))
                 frame = gray
             elif cmode == 'dance1':
-            	t = common.clock()*2*math.pi/15
-            	x = math.sin(t)*22
+            	#t = common.clock()*2*math.pi/15
+            	#x = (math.sin(t)*20) + 320
+            	t = common.clock()/5.0;
+            	if int(t)%2 == 1:
+            		x = -5
+            	else:
+            		x = 5
             	y = 60 * 1+math.sin(t)
             	kp = cv2.KeyPoint(x, 240, 10)
             	keypoints = self.robotCnx.NewTarget(kp)

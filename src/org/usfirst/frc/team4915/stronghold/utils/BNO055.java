@@ -546,7 +546,7 @@ public class BNO055 {
         m_distFromOrigin = Math.hypot(m_position[0], m_position[1]);
 
         // calculate turns
-        headingDiff = m_heading[0] - head[0];
+        headingDiff = head[0] - m_heading[0]; //new minus old
         if (Math.abs(headingDiff) >= 360) {
             // We've traveled past the zero heading position
             if (headingDiff > 0) {

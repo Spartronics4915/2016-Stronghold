@@ -10,6 +10,7 @@ import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import java.util.Arrays;
 import java.util.List;
@@ -98,20 +99,31 @@ public class DriveTrain extends Subsystem {
     public void autoturn(boolean left) {
         if (left) {
             robotDrive.arcadeDrive(0, -.2);
+            //System.out.println("left");
         } else {
             robotDrive.arcadeDrive(0, .2);
+            //System.out.println("right");
         }
     }
 
     public void turnToward(double targetHeading) {
     	boolean turnLeft;
-    	targetHeading = (targetHeading+360) % 360;
+    	//targetHeading = (targetHeading) % 360;
     	double currentHeading = RobotMap.imu.getHeading();
-    	int currentTurns = RobotMap.imu.getTurns();
-    	currentHeading = currentHeading - 360*currentTurns;
-    	currentHeading = (currentHeading+360) % 360;
+    	//int currentTurns = RobotMap.imu.getTurns();
+    	//currentHeading = currentHeading - 360*currentTurns;
+    	//currentHeading = (currentHeading+360) % 360;
         double deltaHeading =  targetHeading - currentHeading;
+        System.out.println("current: " + currentHeading);
+    	System.out.println("target: " + targetHeading);
+    	System.out.println("delta: " + deltaHeading);
+      	//System.out.println("deltaHeading: " + deltaHeading);
         if (Math.abs(deltaHeading) < 1.0) {
+        	System.out.println("Stopping!");
+        	/*System.out.println("current: " + currentHeading);
+        	System.out.println("target: " + targetHeading);
+        	System.out.println("delta: " + deltaHeading);*/
+        	VisionState.getInstance().DriveLockedOnTarget = true;
             this.stop();
             return;
         }
@@ -125,8 +137,8 @@ public class DriveTrain extends Subsystem {
         if(Math.abs(deltaHeading) > 180) {
         	turnLeft = !turnLeft;
         }
-       	System.out.println(deltaHeading);
-      	SmartDashboard.putNumber("deltaHeading", deltaHeading);
+       	//System.out.println(deltaHeading);
+       	//System.out.println(turnLeft);
         this.autoturn(turnLeft);
 
     }
