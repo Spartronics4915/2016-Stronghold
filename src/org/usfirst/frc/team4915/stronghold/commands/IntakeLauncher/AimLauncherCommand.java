@@ -11,11 +11,13 @@ public class AimLauncherCommand extends Command {
     }
 
     protected void initialize() {
-  
+        
     }
 
     protected void execute() {
         Robot.intakeLauncher.aimLauncher();
+        System.out.println("Aiming Launcher");
+        
     }
 
     protected boolean isFinished() {
@@ -28,5 +30,6 @@ public class AimLauncherCommand extends Command {
 
     protected void interrupted() {
         System.out.println("Aimer Interrupted");
+        
     }
 }
