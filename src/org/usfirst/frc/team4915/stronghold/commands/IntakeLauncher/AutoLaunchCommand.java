@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class AutoLaunchCommand extends CommandGroup {
     
     public  AutoLaunchCommand() {
-        addSequential(new SpinLaunchWheelsOutCommand());
+        addParallel(new SpinLaunchWheelsOutCommand());
         addSequential(new WaitCommand(3));
         addSequential(new ActivateLauncherServosCommand());
         addSequential(new WaitCommand(1));

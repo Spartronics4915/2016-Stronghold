@@ -45,12 +45,11 @@ public class AutoCommand1 extends CommandGroup {
 				addParallel(new AimLauncherCommand());
 			}
 			break;
-		case DRIVE_SHOOT_NO_VISION:
-		    System.out.println("Driving straight");
+		case DRIVE_SHOOT_NO_VISION: 
 			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
-			System.out.println("Rotating");
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+				addParallel(new AimLauncherCommand());
 				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
 				addSequential(new AutoLaunchCommand());
 			}
@@ -67,21 +66,22 @@ public class AutoCommand1 extends CommandGroup {
         double angle = 0;
         switch (position) {
             case ONE:
-                angle = 30;
+                angle = 40;
                 break;
             case TWO:
-                angle = 30;
+                angle = 40;
                 break;
             case THREE:
+            	angle = 30;
                 break;
             case FOUR:
-                angle = 30;
+                angle = 40;
                 break;
             case FIVE:
-                angle = 30;
+                angle = 40;
                 break;
             default:
-                angle = 30;
+                angle = 40;
         }
         return angle;
     }
@@ -99,7 +99,7 @@ public class AutoCommand1 extends CommandGroup {
             case THREE:
                 break;
             case FOUR:
-                left = true;
+                left = false;
                 break;
             case FIVE:
                 left = true;
@@ -118,16 +118,16 @@ public class AutoCommand1 extends CommandGroup {
                 degrees = 90;
                 break;
             case TWO:
-                degrees = 15;
+                degrees = 45;
                 break;
             case THREE:
-                degrees = 15;
+                degrees = 45;
                 break;
             case FOUR:
-                degrees = 15;
+                degrees = 45;
                 break;
             case FIVE:
-                degrees = 15;
+                degrees = 45;
                 break;
             default:
                 degrees = 0;
@@ -160,22 +160,22 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 150;
+                distance = 30;
                 break;
             case MOAT:
-                distance = 100;
+                distance = 35;
                 break;
             case RAMPARTS:
-                distance = 100;
+                distance = 40;
                 break;
             case ROUGH_TERRAIN:
-                distance = 100;
+                distance = 30;
                 break;
             case ROCK_WALL:
-                distance = 100;
+                distance = 50;
                 break;
             default:
-                distance = 0;
+                distance = 25;
         }
         return distance;
     }
