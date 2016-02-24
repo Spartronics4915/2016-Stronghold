@@ -188,7 +188,7 @@ class TargetState:
             self.m_visTab.putInt("TargetAcquired", 0)
         else:
             self.m_visTab.putInt("TargetAcquired", 1)
-            self.m_visTab.putInt("TargetX", int(.5+target.pt[0]))
-            self.m_visTab.putInt("TargetY", int(.5+target.pt[1]))
+            self.m_visTab.putInt("TargetX", int(target.pt[0]))
+            self.m_visTab.putInt("TargetY", int(target.pt[1]))
 
 

@@ -1,6 +1,14 @@
 
 package org.usfirst.frc.team4915.stronghold;
 
+import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
+import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
+import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
+import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,14 +16,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
-import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
-import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
-import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -89,10 +89,11 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
 
         // schedule the autonomous command
-        autonomousCommand = new MoveStraightPositionModeCommand(100, 0.5);
+        //autonomousCommand = new MoveStraightPositionModeCommand(100, 0.5);
     
-        //autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
-          //            (Autonomous.Position) oi.startingFieldPosition.getSelected());
+        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
+                      (Autonomous.Position) oi.startingFieldPosition.getSelected());
+        
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }
@@ -143,6 +144,8 @@ public class Robot extends IterativeRobot {
             SmartDashboard.putNumber("Aimer Set Point: ", intakeLauncher.getSetPoint());
             SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
             SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
+            SmartDashboard.putNumber("Intake Motor Left Voltage", intakeLauncher.getIntakeMotorLeft().getBusVoltage());
+            SmartDashboard.putBoolean("Launch Wheels Ready to Launch: ", intakeLauncher.isLaunchReady());
         }
     }
 

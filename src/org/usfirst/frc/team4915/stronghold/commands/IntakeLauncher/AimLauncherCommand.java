@@ -1,7 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.Robot;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 public class AimLauncherCommand extends Command {
 
@@ -10,7 +11,7 @@ public class AimLauncherCommand extends Command {
     }
 
     protected void initialize() {
-
+  
     }
 
     protected void execute() {
@@ -22,10 +23,10 @@ public class AimLauncherCommand extends Command {
     }
 
     protected void end() {
-        System.out.println("Interrupted");
+        
     }
 
     protected void interrupted() {
-
+        System.out.println("Aimer Interrupted");
     }
 }

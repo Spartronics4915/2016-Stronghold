@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class IntakeBallCommandGroup extends CommandGroup {
     
     public  IntakeBallCommandGroup() {
-        addSequential(new RetractLauncherServosCommand());
-        addSequential(new SpinLaunchWheelsInwardCommand());
+        addParallel(new RetractLauncherServosCommand());
+        addParallel(new LauncherGoToIntakePositionCommand());
+        addParallel(new SpinIntakeWheelsInwardCommand());
     }
 }

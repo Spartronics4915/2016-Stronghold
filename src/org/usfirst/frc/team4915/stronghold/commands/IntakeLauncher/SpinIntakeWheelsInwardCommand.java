@@ -1,23 +1,29 @@
 package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 
-public class SpinLaunchWheelsInwardCommand extends Command {
+public class SpinIntakeWheelsInwardCommand extends Command {
+
 
     // this command spins the intake flywheels inward to retrieve the ball
-    public SpinLaunchWheelsInwardCommand() {
+    public SpinIntakeWheelsInwardCommand() {
         requires(Robot.intakeLauncher);
     }
 
     @Override
     protected void initialize() {
         setTimeout(10); // TODO finalize time
+        SmartDashboard.putString("Flywheels spinning ", "inward");
     }
 
     @Override
     protected void execute() {
         Robot.intakeLauncher.setSpeedIntake();
+        Robot.intakeLauncher.aimLauncher(); // this command interrupts
+                                            // AimLauncherCommand so we make
+                                            // sure the launcher always aims
     }
 
     @Override
@@ -30,7 +36,6 @@ public class SpinLaunchWheelsInwardCommand extends Command {
     @Override
     protected void end() {
         Robot.intakeLauncher.stopWheels();
-        // Robot.intakeLauncher.launcherSetNeutralPosition();
     }
 
     @Override

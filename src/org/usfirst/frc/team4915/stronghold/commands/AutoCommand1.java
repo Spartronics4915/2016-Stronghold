@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
@@ -11,6 +10,8 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCom
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCommand1 extends CommandGroup {
 
@@ -45,7 +46,9 @@ public class AutoCommand1 extends CommandGroup {
 			}
 			break;
 		case DRIVE_SHOOT_NO_VISION:
+		    System.out.println("Driving straight");
 			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
+			System.out.println("Rotating");
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
@@ -112,7 +115,7 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(position);
         switch (position) {
             case ONE://low bar
-                degrees = 80;
+                degrees = 90;
                 break;
             case TWO:
                 degrees = 15;
@@ -157,7 +160,7 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 50;
+                distance = 150;
                 break;
             case MOAT:
                 distance = 100;

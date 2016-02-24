@@ -1,16 +1,17 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.List;
+
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-import java.util.List;
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcadeDrive extends Command {
 
@@ -72,18 +73,23 @@ public class ArcadeDrive extends Command {
         }
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-        if (vs != null && vs.wantsControl() && !vs.DriveLockedOnTarget) {
-            if (vs.RelativeTargetingMode == 1) {
-            	
-                if (Math.abs(vs.TargetX) < 3) {
-                    Robot.driveTrain.stop(); // close enough
-                } else {
-                    Robot.driveTrain.autoturn(vs.TargetX < 0);
-                }
-            } else {
-                /* absolute autotargeting */
-                Robot.driveTrain.turnToward(vs.TargetX);
-            }
+        if (vs != null && vs.wantsControl()) {
+        	if(!vs.DriveLockedOnTarget) {
+	            if (vs.RelativeTargetingMode == 1) {
+	            	
+	                if (Math.abs(vs.TargetX) < 3) {
+	                    Robot.driveTrain.stop(); // close enough
+	                } 
+	                else {
+	                    Robot.driveTrain.autoturn(vs.TargetX < 0);
+	                }
+	            } else {
+	                /* absolute autotargeting */
+	                Robot.driveTrain.turnToward(vs.TargetX);
+	            }
+        	}
+        	//else wait for launcher to shoot and exit auto mode
+        	// or toggle AutoAim
         } 
         else {
             if ((Math.abs(this.joystickX) < 0.075) &&

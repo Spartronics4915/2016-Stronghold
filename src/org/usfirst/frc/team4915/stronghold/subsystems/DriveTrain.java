@@ -1,19 +1,19 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.usfirst.frc.team4915.stronghold.Robot;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4915.stronghold.ModuleManager;
-import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class DriveTrain extends Subsystem {
 
@@ -31,7 +31,10 @@ public class DriveTrain extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         System.out.println("INFO: Initializing the ArcadeDrive");
-
+        System.out.println(RobotMap.leftFrontMotor.getControlMode());
+        System.out.println(RobotMap.rightFrontMotor.getControlMode());
+        System.out.println(RobotMap.leftBackMotor.getControlMode());
+        System.out.println(RobotMap.rightBackMotor.getControlMode());
         setDefaultCommand(new ArcadeDrive());
         /*
          * FIXME: robotDrive static field access instead of:
@@ -97,12 +100,13 @@ public class DriveTrain extends Subsystem {
 
     // autoturn is just a gentler version of (joystick) turn.
     public void autoturn(boolean left) {
+    	System.out.println("Autoturning left: " + left);
         if (left) {
-            robotDrive.arcadeDrive(0, -.2);
+            robotDrive.arcadeDrive(0, -1);
             //System.out.println("left");
         } else {
-            robotDrive.arcadeDrive(0, .2);
-            //System.out.println("right");
+            robotDrive.arcadeDrive(0, 1);
+            //System.out.println(+"right");
         }
     }
 
@@ -118,7 +122,7 @@ public class DriveTrain extends Subsystem {
     	System.out.println("target: " + targetHeading);
     	System.out.println("delta: " + deltaHeading);
       	//System.out.println("deltaHeading: " + deltaHeading);
-        if (Math.abs(deltaHeading) < 1.0) {
+        if (Math.abs(deltaHeading) < 5.0) {
         	System.out.println("Stopping!");
         	/*System.out.println("current: " + currentHeading);
         	System.out.println("target: " + targetHeading);
