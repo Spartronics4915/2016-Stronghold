@@ -20,8 +20,8 @@ public class DriveTrain extends Subsystem {
     // frontRightMotor, rearRightMotor
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftBackMotor, RobotMap.rightBackMotor);
-    public double joystickThrottle;
-
+    
+    private double lastTopSpeed=-1.;
     
     // motors
     public static List<CANTalon> motors =
@@ -30,13 +30,13 @@ public class DriveTrain extends Subsystem {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        System.out.println("ArcadeDrive getControlModes: " + 
+        System.out.println("ArcadeDrive getControlModes: " +
         			RobotMap.leftFrontMotor.getControlMode() + "  " +
         			RobotMap.rightFrontMotor.getControlMode() + "  " +
         			RobotMap.leftBackMotor.getControlMode() + "  " +
         			RobotMap.rightBackMotor.getControlMode());
         setDefaultCommand(new ArcadeDrive());
-        
+
         robotDrive.setSafetyEnabled(true);
         // inverting motors
         robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
@@ -45,18 +45,21 @@ public class DriveTrain extends Subsystem {
         robotDrive.stopMotor();
     }
 
-    public double modifyThrottle() {
-        double modifiedThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
-        if (modifiedThrottle != this.joystickThrottle) {
-            this.joystickThrottle = modifiedThrottle;
-            setMaxOutput(modifiedThrottle);
-        }
-        return modifiedThrottle;
+    public void applyThrottle() {
+        double newThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
+        setMaxOutput(newThrottle);
+    }
+
+    public void ignoreThrottle() {
+        setMaxOutput(1.0);
     }
 
     private void setMaxOutput(double topSpeed) {
-        SmartDashboard.putNumber("Drivetrain Throttle: ", topSpeed);
-        robotDrive.setMaxOutput(topSpeed);
+        if (topSpeed != this.lastTopSpeed) {
+        	SmartDashboard.putNumber("Drivetrin Throttle: ", topSpeed);
+        	robotDrive.setMaxOutput(topSpeed);
+        	this.lastTopSpeed = topSpeed;
+        }
     }
 
     public void arcadeDrive(Joystick stick) {
@@ -66,7 +69,7 @@ public class DriveTrain extends Subsystem {
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                SmartDashboard.putNumber("Drivetrain Encoder " + i, 
+                SmartDashboard.putNumber("Drivetrain Encoder " + i,
                 					motors.get(i).getEncPosition());
             }
         }

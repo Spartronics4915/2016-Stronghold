@@ -63,9 +63,8 @@ public class ArcadeDrive extends Command {
             heading = 0.0;
         }
 
-        Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
-
         if (vs != null && vs.wantsControl()) {
+        	Robot.driveTrain.ignoreThrottle();
             if (vs.RelativeTargetingMode == 1) {
 
                 if (Math.abs(vs.TargetX) < 3) {
@@ -78,6 +77,7 @@ public class ArcadeDrive extends Command {
                 Robot.driveTrain.turnToward(vs.TargetX);
             }
         } else {
+            Robot.driveTrain.applyThrottle();
             if ((Math.abs(this.joystickX) < 0.075) &&
                     (Math.abs(this.joystickY) < 0.075)) {
                 Robot.driveTrain.stop();
