@@ -5,7 +5,6 @@ import java.util.List;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -57,9 +56,8 @@ public class ArcadeDrive extends Command {
         double heading;
         if (ModuleManager.IMU_MODULE_ON) {
             heading = RobotMap.imu.getHeading();
-            SmartDashboard.putNumber("IMU heading", (int) (heading + .5));
             if (ModuleManager.VISION_MODULE_ON) {
-                vs.updateIMUHeading(heading);
+                vs.updateIMUHeading(heading); // broadcast to jetson
             }
         } else {
             heading = 0.0;
@@ -86,22 +84,8 @@ public class ArcadeDrive extends Command {
             } else {
                 Robot.driveTrain.arcadeDrive(this.joystickDrive);
             }
-            SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
-            SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-
-    	   //checks if imu is on
-    	   if (ModuleManager.IMU_MODULE_ON) {
-               BNO055.CalData calData = RobotMap.imu.getCalibration();
-               int num = (int)(.5 + RobotMap.imu.getHeading());
-               distFromOrigin = BNO055.getInstance().getDistFromOrigin();
-               SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
-               SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-               SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
-               SmartDashboard.putNumber("IMU heading", num);
-               SmartDashboard.putNumber("IMU calibration status", 
-                                    (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); 
-                                    //Calibration values range from 0-3, Right to left: mag, gyro, accel
-           }
+            SmartDashboard.putNumber("Drivetrain X", this.joystickX);
+            SmartDashboard.putNumber("Drivetrain Y", this.joystickY);
         }
     }
 
