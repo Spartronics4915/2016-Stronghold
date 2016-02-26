@@ -185,6 +185,7 @@ public class OI {
             String buildStr = "by: " + attributes.getValue("Built-By") +
     				          "  on: " + attributes.getValue("Built-At") +
     				          "  vers:" + attributes.getValue("Code-Version");
+            /* we'd like a single field on the smart dashboard for easier layout/tracking */
             SmartDashboard.putString("Build", buildStr);
             System.out.println("Build " + buildStr);
         } catch (IOException e) {
