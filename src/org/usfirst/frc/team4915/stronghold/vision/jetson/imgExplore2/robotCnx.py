@@ -8,7 +8,7 @@
 
 from networktables import NetworkTable
 import targetState
-import sys, traceback
+import sys, traceback, time
 
 class RobotCnx:
     def __init__(self, fakerobot):
@@ -29,6 +29,8 @@ class RobotCnx:
             self.targetHigh = True
             self.autoAimEnabled = False
             self.imuHeading = 0
+            self.fpsHistory = []
+            self.lastUpdate = time.time()
 
         except:
             xcpt = sys.exc_info()
@@ -42,7 +44,11 @@ class RobotCnx:
         return self.imuHeading
 
     def SetFPS(self, fps):
-        self.targetState.SetFPS(fps)
+        self.fpsHistory.append(fps)
+        self.fpsHistory = self.fpsHistory[-15*4:]
+        if time.time() - self.lastUpdate > 5:
+            self.targetState.SetFPS(sum(self.fpsHistory)/len(self.fpsHistory))
+            self.lastUpdate = time.time()
 
     def Shutdown(self):
         self.targetState.SetFPS(0)
@@ -52,8 +58,9 @@ class RobotCnx:
     def NewKeypoints(self, kplist):
         return self.targetState.NewKeypoints(kplist)
         
-    def NewTarget(self, target):
-        return self.targetState.NewTarget(target)
+    # NewTarget: we require that kp is in absolute, not screen-relative coords
+    def NewTarget(self, kp):
+        return self.targetState.NewTarget(kp)
 
     def NewLines(self, llist):
         return self.targetState.NewLines(llist)

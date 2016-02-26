@@ -1,5 +1,8 @@
 package org.usfirst.frc.team4915.stronghold;
 
+import java.util.ArrayList;
+
+import org.usfirst.frc.team4915.stronghold.CANProbe;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -77,6 +80,9 @@ public class RobotMap {
 
     // Initialize the various robot modules
     public static void init() {
+    	CANProbe cp = new CANProbe();
+    	ArrayList<String> canDevices = cp.Find();
+        System.out.println("RobotMap.init() CAN devices:"+canDevices);
         // conditionally initialize the modules
         if (ModuleManager.DRIVE_MODULE_ON) {
             leftBackMotor = new CANTalon(DRIVE_TRAIN_LEFT_BACK_MOTOR_ID);
@@ -100,49 +106,66 @@ public class RobotMap {
             leftFrontMotor.set(leftBackMotor.getDeviceID());
             
             
-            System.out.println("ModuleManager RobotMap Initialize: DriveTrain Nothing to initalize... Moving on!");
+            System.out.println("ModuleManager RobotMap Initialized: DriveTrain!");
         }
         if (ModuleManager.GEARSHIFT_MODULE_ON) {
             doubleSolenoid = new DoubleSolenoid(SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_ID);
-            intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
-            intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
-            intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
-            intakeLeftMotor.reverseSensor(true);
-            aimMotor = new CANTalon(AIM_MOTOR_ID);
-            aimMotor.changeControlMode(TalonControlMode.Position);
-            boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
-            launcherServoLeft = new Servo(LAUNCHER_SERVO_LEFT_PORT);
-            launcherServoRight = new Servo(LAUNCHER_SERVO_RIGHT_PORT);
-            System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
-
-            // setup the motor
-            if (aimMotor.isSensorPresent(FeedbackDevice.AnalogPot) != null) {
-                aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
-                aimMotor.enableLimitSwitch(true, true);
-                aimMotor.enableBrakeMode(true);
-                aimMotor.reverseSensor(true);
-                aimMotor.setAllowableClosedLoopErr(15);
-                // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO uncomment
+            /* here we look for signs that the launcher is present
+             * and disable it if signs aren't there.
+             */
+        	boolean intakeFound = false;
+            for(int i=0; i < canDevices.size(); i++) {
+            	if (canDevices.get(i) == "SRX 14") {
+            		intakeFound = true;
+            		break;
+            	}
             }
-            LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
+            if(intakeFound) {
+	            intakeLeftMotor = new CANTalon(INTAKE_LEFT_MOTOR_ID);
+	        	intakeRightMotor = new CANTalon(INTAKE_RIGHT_MOTOR_ID);
+	            intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
+	            intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
+	            intakeLeftMotor.reverseSensor(true);
+	            aimMotor = new CANTalon(AIM_MOTOR_ID);
+	            aimMotor.changeControlMode(TalonControlMode.Position);
+	            boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
+	            launcherServoLeft = new Servo(LAUNCHER_SERVO_LEFT_PORT);
+	            launcherServoRight = new Servo(LAUNCHER_SERVO_RIGHT_PORT);
+	
+	            // setup the motor
+	            if (aimMotor.isSensorPresent(FeedbackDevice.AnalogPot) != null) {
+	                aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
+	                aimMotor.enableLimitSwitch(true, true);
+	                aimMotor.enableBrakeMode(true);
+	                aimMotor.reverseSensor(true);
+	                aimMotor.setAllowableClosedLoopErr(15);
+	                // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO uncomment
+	            }
+	            LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
+	            System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
+            }
+            else {
+            	ModuleManager.INTAKELAUNCHER_MODULE_ON = false;
+	            System.out.println("RobotMap disabled IntakeLauncher (SRX 14 not found)");            	
+            }
+            	
         }
 
         if (ModuleManager.SCALING_MODULE_ON) {
-            System.out.println("ModuleManager RobotMap Initialize: Scaling");
             scalingMotor = new CANTalon(SCALING_MOTOR_ID);
             scalingWinch = new CANTalon(SCALING_WINCH_ID);
+            System.out.println("ModuleManager RobotMap Initialized: Scaling");
         }
         if (ModuleManager.IMU_MODULE_ON) {
-            System.out.println("ModuleManager RobotMap Initialize: IMU");
             imu = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, 
                                     BNO055.vector_type_t.VECTOR_EULER);
             // imuLinAcc =
             // BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
             // BNO055.vector_type_t.VECTOR_LINEARACCEL);
-        }
+            System.out.println("ModuleManager RobotMap Initialized: IMU");
+       }
     }
 }
