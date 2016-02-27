@@ -35,6 +35,7 @@ public class SpinIntakeWheelsOutCommand extends Command {
     @Override
     protected void end() {
         Robot.intakeLauncher.stopWheels();
+        System.out.println("End Spin Wheels Out");
     }
 
     @Override

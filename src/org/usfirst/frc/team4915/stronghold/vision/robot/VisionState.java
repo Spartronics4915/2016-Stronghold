@@ -25,8 +25,11 @@ public class VisionState implements NamedSendable {
     public boolean AutoAimEnabled = false;
     public boolean TargetHigh = true;
     public int IMUHeading = 0;
+
     public boolean DriveLockedOnTarget = false;
     public boolean LauncherLockedOnTarget = false;
+    // TODO: add states for DriveTrainTargetAcquired & LauncherTargetAcquired
+    //  these are *not* broadcast via networktables, robot-private state.
 
     // these values originate from jetson
     public int RelativeTargetingMode = 1;
@@ -45,8 +48,12 @@ public class VisionState implements NamedSendable {
              * All numbers are stored as doubles in the network tables, event
              * those posted as int, float.
              */
-            // System.out.println();
-            if (key.equals("~TYPE~")) {
+        	/* debug:
+        	System.out.println(key + " " + value + " " +
+                    value.getClass().getName());           
+        	*/
+        	
+        	if (key.equals("~TYPE~")) {
                 return;
             } else if (key.equals("AutoAimEnabled")) {
                 s_instance.AutoAimEnabled = (boolean) value;
@@ -68,7 +75,7 @@ public class VisionState implements NamedSendable {
                     s_instance.TargetAcquired = ival;
                 else if (key.equals("TargetX")) {
                 	System.out.println(s_instance.TargetX);
-                    s_instance.TargetX = ival;
+                	s_instance.TargetX = ival;
                 }
                 else if (key.equals("TargetY"))
                     s_instance.TargetY = ival;
@@ -99,13 +106,18 @@ public class VisionState implements NamedSendable {
         if (this.m_table != null)
             this.m_table.removeTableListener(m_listener);
         this.m_table = subtable;
-        m_table.addTableListenerEx(m_listener,
-                ITable.NOTIFY_NEW | ITable.NOTIFY_IMMEDIATE);
+        m_table.addTableListener(m_listener);
+        
+        // values expected to come from robot or dashboard
         this.AutoAimEnabled = m_table.getBoolean("AutoAimEnabled", false);
+        this.TargetHigh = m_table.getBoolean("TargetHigh", true);
+        this.IMUHeading = (int) m_table.getNumber("IMUHeading", 0.);
+        
+        // values expected to arrive from jetson
         this.RelativeTargetingMode = (int)
                 m_table.getNumber("RelativeTargetingMode", 1);
-        this.TargetHigh = m_table.getBoolean("TargetHigh", true);
         this.FPS = (int) m_table.getNumber("FPS", 0.);
+
         this.IMUHeading = (int) m_table.getNumber("IMUHeading", 0.);
         this.TargetAcquired = (int) m_table.getNumber("TargetAcquired", 0);
         this.TargetX = (int) m_table.getNumber("TargetX", 0);

@@ -97,50 +97,45 @@ public class OI {
         // ***Three Sendable Choosers***
         // SendableChooser for the starting field position
         startingFieldPosition = new SendableChooser();
-        SmartDashboard.putData("Starting Field Position for autonomous", startingFieldPosition);
-        startingFieldPosition.addDefault("Field Position 1: Low Bar", Autonomous.Position.ONE);
-        startingFieldPosition.addObject("Field Position 2", Autonomous.Position.TWO);
-        startingFieldPosition.addObject("Field Position 3:", Autonomous.Position.THREE);
-        startingFieldPosition.addObject("Field Position 4:", Autonomous.Position.FOUR);
-        startingFieldPosition.addObject("Field Position 5", Autonomous.Position.FIVE);
+        startingFieldPosition.addDefault("1: Low Bar", Autonomous.Position.ONE);
+        startingFieldPosition.addObject("2", Autonomous.Position.TWO);
+        startingFieldPosition.addObject("3", Autonomous.Position.THREE);
+        startingFieldPosition.addObject("4", Autonomous.Position.FOUR);
+        startingFieldPosition.addObject("5", Autonomous.Position.FIVE);
+        SmartDashboard.putData("AutoFieldPosition", startingFieldPosition);
 
         // SendableChooser for the barrier type
         // assigning each barrier to a number
         barrierType = new SendableChooser();
-        SmartDashboard.putData("Barrier Type for autonomous", barrierType);
         barrierType.addDefault("Low Bar", Autonomous.Type.LOWBAR);
         barrierType.addObject("Moat", Autonomous.Type.MOAT);
         barrierType.addObject("Ramparts", Autonomous.Type.RAMPARTS);
         barrierType.addObject("Rough Terrain", Autonomous.Type.ROUGH_TERRAIN);
         barrierType.addObject("Rock Wall", Autonomous.Type.ROCK_WALL);
+        //barrierType.addObject("Cheval", Autonomous.Type.CHEVAL_DE_FRISE);
+        //barrierType.addObject("Sally Port", Autonomous.Type.SALLY_PORT);
+        //barrierType.addObject("Drawbridge", Autonomous.Type.DRAWBRIDGE);
+        SmartDashboard.putData("AutoBarrierType", barrierType);
 
         // SendableChooser for the strategy
         strategy = new SendableChooser();
-        SmartDashboard.putData("Strategy for autonomous", strategy);
         strategy.addDefault("None", Autonomous.Strat.NONE);
-        strategy.addObject("Drive across barrier", Autonomous.Strat.DRIVE_ACROSS);
-        strategy.addObject("Drive and shoot high goal with vision", Autonomous.Strat.DRIVE_SHOOT_VISION);
-        strategy.addObject("Drive and shoot high goal without vision", Autonomous.Strat.DRIVE_SHOOT_NO_VISION);
+        strategy.addObject("Breach Only", Autonomous.Strat.DRIVE_ACROSS);
+        strategy.addObject("Breach, Vision Shot", Autonomous.Strat.DRIVE_SHOOT_VISION);
+        strategy.addObject("Breach, Blind Shot", Autonomous.Strat.DRIVE_SHOOT_NO_VISION);
+        SmartDashboard.putData("AutoStrategy", strategy);
 
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
 
         // Bind module commands to buttons
         if (ModuleManager.DRIVE_MODULE_ON) {
-            System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
-                                                                                 // OI
-                                                                                 // init
-                                                                                 // DriveTrain
+    
         }
 
         if (ModuleManager.GEARSHIFT_MODULE_ON) {
             initializeButton(this.speedUpButton, driveStick, HIGH_SPEED_DRIVE_BUTTON, new GearShiftCommand(true));
             initializeButton(this.speedUpButton, driveStick, LOW_SPEED_DRIVE_BUTTON, new GearShiftCommand(false));
-
-            System.out.println("ModuleManager OI initialized: TODO DriveTrain"); // TODO:
-                                                                                 // OI
-                                                                                 // init
-                                                                                 // DriveTrain
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
@@ -153,7 +148,7 @@ public class OI {
             initializeButton(this.driveLauncherJumpToNeutralButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER, new LauncherGoToNeutralPositionCommand());
             initializeButton(this.driveStopIntakeWheelsButton, driveStick, DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.autoLaunchTestButton, aimStick, AUTO_LAUNCH_TEST_BUTTON_NUMBER, new AutoLaunchCommand());
-            System.out.println("ModuleManager initialized: IntakeLauncher");
+            System.out.println("ModuleManager OI: Initialize IntakeLauncher");
         }
 
         if (ModuleManager.VISION_MODULE_ON) {
@@ -177,7 +172,7 @@ public class OI {
         }
 
         if (ModuleManager.IMU_MODULE_ON) {
-            System.out.println("ModuleManager initialized: imu");
+            System.out.println("ModuleManager OI: Initialized IMU");
         }
 
         initializeButton(this.lightSwitchButton, aimStick, LIGHT_SWITCH_BUTTON_NUMBER, new LightSwitchCommand());
@@ -187,16 +182,12 @@ public class OI {
          */
         try (InputStream manifest = getClass().getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF")) {
             Attributes attributes = new Manifest(manifest).getMainAttributes();
-
-            /* Print the attributes into form fields on the dashboard */
-            SmartDashboard.putString("Code Version", attributes.getValue("Code-Version"));
-            SmartDashboard.putString("Built At", attributes.getValue("Built-At"));
-            SmartDashboard.putString("Built By", attributes.getValue("Built-By"));
-
-            /* And print the attributes into the log. */
-            System.out.println("Code Version: " + attributes.getValue("Code-Version"));
-            System.out.println("Built At: " + attributes.getValue("Built-At"));
-            System.out.println("Built By: " + attributes.getValue("Built-By"));
+            String buildStr = "by: " + attributes.getValue("Built-By") +
+    				          "  on: " + attributes.getValue("Built-At") +
+    				          "  vers:" + attributes.getValue("Code-Version");
+            /* we'd like a single field on the smart dashboard for easier layout/tracking */
+            SmartDashboard.putString("Build", buildStr);
+            System.out.println("Build " + buildStr);
         } catch (IOException e) {
             e.printStackTrace();
         }

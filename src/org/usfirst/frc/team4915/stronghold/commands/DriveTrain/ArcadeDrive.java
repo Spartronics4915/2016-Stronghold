@@ -59,6 +59,7 @@ public class ArcadeDrive extends Command {
  	    if (ModuleManager.IMU_MODULE_ON) {
             BNO055.CalData calData = RobotMap.imu.getCalibration();
             heading = RobotMap.imu.getHeading();
+
             distFromOrigin = BNO055.getInstance().getDistFromOrigin();
             SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
             SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
@@ -69,7 +70,10 @@ public class ArcadeDrive extends Command {
                                  //Calibration values range from 0-3, Right to left: mag, gyro, accel
         }
         if (ModuleManager.VISION_MODULE_ON) {
-            vs.updateIMUHeading(heading);
+            vs.updateIMUHeading(heading); // broadcast to jetson
+        } 
+        else {
+            heading = 0.0;
         }
 
         Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
@@ -99,10 +103,8 @@ public class ArcadeDrive extends Command {
             else {
                 Robot.driveTrain.arcadeDrive(this.joystickDrive);
             }
-            SmartDashboard.putNumber("Drive joystick X position", this.joystickX);
-            SmartDashboard.putNumber("Drive joystick Y position", this.joystickY);
-
-    	   
+            SmartDashboard.putNumber("Drivetrain X", this.joystickX);
+            SmartDashboard.putNumber("Drivetrain Y", this.joystickY);
         }
     }
 
