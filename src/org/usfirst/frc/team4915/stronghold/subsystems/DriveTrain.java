@@ -20,9 +20,9 @@ public class DriveTrain extends Subsystem {
     // frontRightMotor, rearRightMotor
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftBackMotor, RobotMap.rightBackMotor);
-    
+
     private double lastTopSpeed=-1.;
-    
+
     // motors
     public static List<CANTalon> motors =
             Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
@@ -56,7 +56,7 @@ public class DriveTrain extends Subsystem {
 
     private void setMaxOutput(double topSpeed) {
         if (topSpeed != this.lastTopSpeed) {
-        	SmartDashboard.putNumber("Drivetrin Throttle: ", topSpeed);
+        	SmartDashboard.putNumber("Drivetrain Throttle: ", topSpeed);
         	robotDrive.setMaxOutput(topSpeed);
         	this.lastTopSpeed = topSpeed;
         }
@@ -94,21 +94,25 @@ public class DriveTrain extends Subsystem {
     // autoturn is just a gentler version of (joystick) turn.
     public void autoturn(boolean left) {
         if (left) {
-            robotDrive.arcadeDrive(0, -.2);
+            robotDrive.arcadeDrive(0, -.55);
         } else {
-            robotDrive.arcadeDrive(0, .2);
+            robotDrive.arcadeDrive(0, .55);
         }
     }
 
-    public void turnToward(double heading) {
-        double deltaHeading = RobotMap.imu.getNormalizedHeading() - heading;
-        if (Math.abs(deltaHeading) < 3.0) {
+    public void turnToward(double target) {
+        double heading = RobotMap.imu.getNormalizedHeading();
+        double delta =  target - heading;
+        System.out.println("target: " + target +
+                           " heading: " + heading +
+                           " delta: " + delta);
+        if (Math.abs(delta) < 3.0) {
+            SmartDashboard.putNumber("Vision Delta", 0);
             this.stop();
         }
         else {
-        	// System.out.println(deltaHeading);
-        	SmartDashboard.putNumber("Drivetrain DeltaHeading", deltaHeading);
-            //this.autoturn(deltaHeading < 0.0);
+            SmartDashboard.putNumber("Vision Delta", delta);
+            this.autoturn(delta < 0.0 /* turnleft */);
         }
     }
 }

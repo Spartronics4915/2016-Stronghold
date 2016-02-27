@@ -66,7 +66,6 @@ public class ArcadeDrive extends Command {
         if (vs != null && vs.wantsControl()) {
         	Robot.driveTrain.ignoreThrottle();
             if (vs.RelativeTargetingMode == 1) {
-
                 if (Math.abs(vs.TargetX) < 3) {
                     Robot.driveTrain.stop(); // close enough
                 } else {

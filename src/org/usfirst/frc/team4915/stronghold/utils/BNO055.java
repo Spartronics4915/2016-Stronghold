@@ -92,6 +92,7 @@ public class BNO055 {
 
     private volatile byte[] headingVector = new byte[6];
     private volatile double[] m_heading = new double[3];
+    private volatile double[] m_initialHeading = new double[3];
 
 /*    private volatile byte[] calDataStore = new byte[22];
  *    public String calDataStoreString = "fill me with gibberish";
@@ -350,14 +351,12 @@ public class BNO055 {
      */
     private BNO055(I2C.Port port, byte address) {
         imu = new I2C(port, address);
-
+        this.initialized = false;
+        thid.state = 0;
         executor = new java.util.Timer();
         executor.schedule(new BNO055UpdateTask(this), 0L, THREAD_PERIOD);
     }
 
-    public BNO055() {
-        // TODO Auto-generated constructor stub
-    }
 
     /**
      * Get an instance of the IMU object.
@@ -483,6 +482,8 @@ public class BNO055 {
                         state++;
                     }
                 case 9:
+                    calculateHeadingAndPosition();
+                    this.m_initialHeading = this.m_heading;
                     initialized = true;
                     break;
                 default:
@@ -547,7 +548,7 @@ public class BNO055 {
     public double[] getAccel() {
         return m_accel;
     }
-    
+
     public int getTurns() {
         return (int) (m_heading[0] / 360);
     }
@@ -562,7 +563,8 @@ public class BNO055 {
     //  -13 % 360 == 347
     //  -377 % 360 == 347
     public int getNormalizedHeading() {
-    	int h = (int) Math.round(m_heading[0] % 360);
+    	// int h = (int) Math.round((m_heading[0]-m_initialHeading[0]) % 360);
+        int h = (int) Math.round(m_heading[0] % 360);
     	if(h > 180)
     		h = -(360 - h);
         return h;
