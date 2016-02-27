@@ -93,7 +93,7 @@ public class BNO055 {
     private volatile double m_distFromOrigin = 0;
 
     private volatile byte[] headingVector = new byte[6];
-    private volatile long turns = 0;
+    private volatile int turns = 0;
     private volatile double[] m_heading = new double[3];
     
 /*    private volatile byte[] calDataStore = new byte[22];
@@ -546,14 +546,12 @@ public class BNO055 {
         m_distFromOrigin = Math.hypot(m_position[0], m_position[1]);
 
         // calculate turns
-        headingDiff = m_heading[0] - head[0];
+        headingDiff = head[0] - m_heading[0]; //new minus old
         if (Math.abs(headingDiff) >= 360) {
             // We've traveled past the zero heading position
             if (headingDiff > 0) {
-                head[0] = head[0] - 360;
                 turns++;
             } else {
-                head[0] = head[0] + 360;
                 turns--;
             }
         }
@@ -793,6 +791,10 @@ public class BNO055 {
 
     public double getDistFromOrigin() {
         return m_distFromOrigin;
+    }
+    
+    public int getTurns() {
+    	return turns;
     }
 
     /**

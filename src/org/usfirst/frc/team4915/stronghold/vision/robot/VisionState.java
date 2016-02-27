@@ -25,9 +25,12 @@ public class VisionState implements NamedSendable {
     public boolean AutoAimEnabled = false;
     public boolean TargetHigh = true;
     public int IMUHeading = 0;
+
+    public boolean DriveLockedOnTarget = false;
+    public boolean LauncherLockedOnTarget = false;
     // TODO: add states for DriveTrainTargetAcquired & LauncherTargetAcquired
     //  these are *not* broadcast via networktables, robot-private state.
-    
+
     // these values originate from jetson
     public int RelativeTargetingMode = 1;
     public int FPS = 0;
@@ -70,8 +73,10 @@ public class VisionState implements NamedSendable {
                     s_instance.IMUHeading = ival;
                 else if (key.equals("TargetAcquired"))
                     s_instance.TargetAcquired = ival;
-                else if (key.equals("TargetX"))
-                    s_instance.TargetX = ival;
+                else if (key.equals("TargetX")) {
+                	System.out.println(s_instance.TargetX);
+                	s_instance.TargetX = ival;
+                }
                 else if (key.equals("TargetY"))
                     s_instance.TargetY = ival;
                 else
@@ -112,10 +117,12 @@ public class VisionState implements NamedSendable {
         this.RelativeTargetingMode = (int)
                 m_table.getNumber("RelativeTargetingMode", 1);
         this.FPS = (int) m_table.getNumber("FPS", 0.);
+
+        this.IMUHeading = (int) m_table.getNumber("IMUHeading", 0.);
         this.TargetAcquired = (int) m_table.getNumber("TargetAcquired", 0);
         this.TargetX = (int) m_table.getNumber("TargetX", 0);
         this.TargetY = (int) m_table.getNumber("TargetY", 0);
-   }
+    }
 
     public void toggleAimState(boolean toggleEnable, boolean toggleTarget) {
         if (toggleEnable) {
@@ -128,10 +135,14 @@ public class VisionState implements NamedSendable {
             // m_table.putBoolean("TargetHigh", this.TargetHigh);
             System.out.println("TargetHigh:" + this.TargetHigh);
         }
+        DriveLockedOnTarget = false;
+        LauncherLockedOnTarget = false;
     }
 
     public void updateIMUHeading(double heading) {
-        m_table.putNumber("IMUHeading", (int) (heading + .5));
+    	if(m_table != null) {
+    		m_table.putNumber("IMUHeading", (int) (heading + .5));
+    	}
     }
 
     /*
