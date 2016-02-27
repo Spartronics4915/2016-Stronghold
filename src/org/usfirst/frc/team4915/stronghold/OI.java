@@ -112,9 +112,9 @@ public class OI {
         barrierType.addObject("Ramparts", Autonomous.Type.RAMPARTS);
         barrierType.addObject("Rough Terrain", Autonomous.Type.ROUGH_TERRAIN);
         barrierType.addObject("Rock Wall", Autonomous.Type.ROCK_WALL);
-        //barrierType.addObject("Cheval", Autonomous.Type.CHEVAL_DE_FRISE);
-        //barrierType.addObject("Sally Port", Autonomous.Type.SALLY_PORT);
-        //barrierType.addObject("Drawbridge", Autonomous.Type.DRAWBRIDGE);
+        barrierType.addObject("Cheval", Autonomous.Type.CHEVAL_DE_FRISE);
+        barrierType.addObject("Sally Port", Autonomous.Type.SALLY_PORT);
+        barrierType.addObject("Drawbridge", Autonomous.Type.DRAWBRIDGE);
         SmartDashboard.putData("AutoBarrierType", barrierType);
 
         // SendableChooser for the strategy
