@@ -127,7 +127,7 @@ public class DriveTrain extends Subsystem {
         	/*System.out.println("current: " + currentHeading);
         	System.out.println("target: " + targetHeading);
         	System.out.println("delta: " + deltaHeading);*/
-        	VisionState.getInstance().DriveLockedOnTarget = true;
+        	//VisionState.getInstance().DriveLockedOnTarget = true;
             this.stop();
             return;
         }

@@ -85,7 +85,7 @@ public class ArcadeDrive extends Command {
 	                }
 	            } else {
 	                /* absolute autotargeting */
-	                Robot.driveTrain.turnToward(vs.TargetX);
+	                Robot.driveTrain.turnToward(VisionState.getInstance().TargetX);
 	            }
         	}
         	//else wait for launcher to shoot and exit auto mode

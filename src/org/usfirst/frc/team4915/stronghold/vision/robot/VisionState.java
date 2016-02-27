@@ -66,8 +66,10 @@ public class VisionState implements NamedSendable {
                     s_instance.IMUHeading = ival;
                 else if (key.equals("TargetAcquired"))
                     s_instance.TargetAcquired = ival;
-                else if (key.equals("TargetX"))
+                else if (key.equals("TargetX")) {
+                	System.out.println(s_instance.TargetX);
                     s_instance.TargetX = ival;
+                }
                 else if (key.equals("TargetY"))
                     s_instance.TargetY = ival;
                 else
