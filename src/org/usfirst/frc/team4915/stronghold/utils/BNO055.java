@@ -352,7 +352,7 @@ public class BNO055 {
     private BNO055(I2C.Port port, byte address) {
         imu = new I2C(port, address);
         this.initialized = false;
-        thid.state = 0;
+        this.state = 0;
         executor = new java.util.Timer();
         executor.schedule(new BNO055UpdateTask(this), 0L, THREAD_PERIOD);
     }
@@ -542,8 +542,7 @@ public class BNO055 {
             m_velocity[i] = newVelocity[i];
         }
         m_distFromOrigin = Math.hypot(m_position[0], m_position[1]);
-
-     }
+    }
 
     public double[] getAccel() {
         return m_accel;
@@ -766,6 +765,7 @@ public class BNO055 {
     public int getTemp() {
         return (read8(reg_t.BNO055_TEMP_ADDR));
     }
+
 
     /**
      * Writes an 8 bit value over I2C

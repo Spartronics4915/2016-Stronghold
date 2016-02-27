@@ -6,6 +6,7 @@ import java.util.List;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
@@ -106,13 +107,11 @@ public class DriveTrain extends Subsystem {
         System.out.println("target: " + target +
                            " heading: " + heading +
                            " delta: " + delta);
-        if (Math.abs(delta) < 3.0) {
-            SmartDashboard.putNumber("Vision Delta", 0);
+        SmartDashboard.putNumber("Vision Delta", delta);
+        if (Math.abs(delta) < 5.0) {
             this.stop();
-        }
-        else {
-            SmartDashboard.putNumber("Vision Delta", delta);
-            this.autoturn(delta < 0.0 /* turnleft */);
+        } else {
+            this.autoturn(delta > 0.0 /*turn left*/ );
         }
     }
 }

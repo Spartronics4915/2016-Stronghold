@@ -130,8 +130,24 @@ public class IntakeLauncher extends Subsystem {
 
     // sets the set point with vision and moves to set point
     private void trackVision() {
-        moveLauncherWithVision();
-        moveToSetPoint();
+    	System.out.println(VisionState.getInstance().TargetY);
+    	if(!VisionState.getInstance().LauncherLockedOnTarget) {
+    		if(Math.abs(ticksToDegrees(getPosition())
+    				- VisionState.getInstance().TargetY) < 6) { 
+    			//TODO (change the 6)
+    			VisionState.getInstance().LauncherLockedOnTarget = true;
+    			System.out.println("Stopping launcher!");
+    		}
+    		moveLauncherWithVision();
+    		moveToSetPoint();
+    	}
+    	else if (VisionState.getInstance().DriveLockedOnTarget){
+    		//shoot
+    		//Leave AutoAimMode
+    	}
+    	else {
+    		//Do nothing, wait for driveTrain to get into position
+    	}
     }
 
     // changes the set point based on vision
@@ -151,8 +167,10 @@ public class IntakeLauncher extends Subsystem {
     // Checks to see if joystick control or vision control is needed and
     // controls motion
     public void aimLauncher() {
+    	//System.out.println("aimLauncher called");
         SmartDashboard.putNumber("Launch Angle", (int) ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
+        	//System.out.println("Tracking vision!");
             trackVision();
         } else {
             trackJoystick();

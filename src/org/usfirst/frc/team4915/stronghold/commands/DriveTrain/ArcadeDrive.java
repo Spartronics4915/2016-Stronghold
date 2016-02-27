@@ -5,6 +5,7 @@ import java.util.List;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -53,34 +54,35 @@ public class ArcadeDrive extends Command {
             vs = VisionState.getInstance();
         }
 
-        double heading;
-        if (ModuleManager.IMU_MODULE_ON) {
-            heading = RobotMap.imu.getHeading();
-            if (ModuleManager.VISION_MODULE_ON) {
-                vs.updateIMUHeading(heading); // broadcast to jetson
-            }
-        } else {
-            heading = 0.0;
-        }
-
         if (vs != null && vs.wantsControl()) {
-        	Robot.driveTrain.ignoreThrottle();
-            if (vs.RelativeTargetingMode == 1) {
-                if (Math.abs(vs.TargetX) < 3) {
-                    Robot.driveTrain.stop(); // close enough
-                } else {
-                    Robot.driveTrain.autoturn(vs.TargetX < 0);
-                }
-            } else {
-                /* absolute autotargeting */
-                Robot.driveTrain.turnToward(vs.TargetX);
+            Robot.driveTrain.ignoreThrottle();
+        	if(!vs.DriveLockedOnTarget) {
+	            if (vs.RelativeTargetingMode == 1) {
+
+	                if (Math.abs(vs.TargetX) < 3) {
+	                    Robot.driveTrain.stop(); // close enough
+	                }
+	                else {
+	                    Robot.driveTrain.autoturn(vs.TargetX < 0);
+	                }
+	            } else {
+	                /* absolute autotargeting */
+	                Robot.driveTrain.turnToward(vs.TargetX);
+	            }
+        	}
+            else {
+                // wait for launcher to shoot and exit auto mode
+                // or toggle AutoAim
+                Robot.driveTrain.stop(); // needed to keep driveTrain alive
             }
-        } else {
+        }
+        else {
             Robot.driveTrain.applyThrottle();
             if ((Math.abs(this.joystickX) < 0.075) &&
                     (Math.abs(this.joystickY) < 0.075)) {
                 Robot.driveTrain.stop();
-            } else {
+            }
+            else {
                 Robot.driveTrain.arcadeDrive(this.joystickDrive);
             }
             SmartDashboard.putNumber("Drivetrain X", this.joystickX);
