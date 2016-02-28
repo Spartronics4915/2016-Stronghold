@@ -1,12 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
-
 import java.util.Arrays;
 import java.util.List;
-
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -21,7 +18,6 @@ public class DriveTrain extends Subsystem {
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftBackMotor, RobotMap.rightBackMotor);
     public double joystickThrottle;
-
     
     // motors
     public static List<CANTalon> motors =
@@ -54,7 +50,6 @@ public class DriveTrain extends Subsystem {
             }
         }
     
-
     public double modifyThrottle() {
         // 255 is the max number on the throttle
         double modifiedThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
