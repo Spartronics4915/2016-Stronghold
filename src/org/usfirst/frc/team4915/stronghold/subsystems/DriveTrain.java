@@ -21,7 +21,8 @@ public class DriveTrain extends Subsystem {
     // frontRightMotor, rearRightMotor
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftBackMotor, RobotMap.rightBackMotor);
-    public double joystickThrottle;
+
+    private double lastTopSpeed=-1.;
 
     // motors
     public static List<CANTalon> motors =
@@ -30,13 +31,13 @@ public class DriveTrain extends Subsystem {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        System.out.println("ArcadeDrive getControlModes: " + 
+        System.out.println("ArcadeDrive getControlModes: " +
         			RobotMap.leftFrontMotor.getControlMode() + "  " +
         			RobotMap.rightFrontMotor.getControlMode() + "  " +
         			RobotMap.leftBackMotor.getControlMode() + "  " +
         			RobotMap.rightBackMotor.getControlMode());
         setDefaultCommand(new ArcadeDrive());
-        
+
         robotDrive.setSafetyEnabled(true);
         // inverting motors
         robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
@@ -45,18 +46,21 @@ public class DriveTrain extends Subsystem {
         robotDrive.stopMotor();
     }
 
-    public double modifyThrottle() {
-        double modifiedThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
-        if (modifiedThrottle != this.joystickThrottle) {
-            this.joystickThrottle = modifiedThrottle;
-            setMaxOutput(modifiedThrottle);
-        }
-        return modifiedThrottle;
+    public void applyThrottle() {
+        double newThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
+        setMaxOutput(newThrottle);
+    }
+
+    public void ignoreThrottle() {
+        setMaxOutput(1.0);
     }
 
     private void setMaxOutput(double topSpeed) {
-        SmartDashboard.putNumber("Drivetrain Throttle: ", topSpeed);
-        robotDrive.setMaxOutput(topSpeed);
+        if (topSpeed != this.lastTopSpeed) {
+        	SmartDashboard.putNumber("Drivetrain Throttle: ", topSpeed);
+        	robotDrive.setMaxOutput(topSpeed);
+        	this.lastTopSpeed = topSpeed;
+        }
     }
 
     public void arcadeDrive(Joystick stick) {
@@ -66,7 +70,7 @@ public class DriveTrain extends Subsystem {
         // this can be removed later. Used to debug
         if (motors.size() > 0) {
             for (int i = 0; i < motors.size(); i++) {
-                SmartDashboard.putNumber("Drivetrain Encoder " + i, 
+                SmartDashboard.putNumber("Drivetrain Encoder " + i,
                 					motors.get(i).getEncPosition());
             }
         }
@@ -90,53 +94,24 @@ public class DriveTrain extends Subsystem {
 
     // autoturn is just a gentler version of (joystick) turn.
     public void autoturn(boolean left) {
-    	System.out.println("Autoturning left: " + left);
         if (left) {
-            robotDrive.arcadeDrive(0, -1);
-            //System.out.println("left");
+            robotDrive.arcadeDrive(0, -.55);
         } else {
-            robotDrive.arcadeDrive(0, 1);
-            //System.out.println(+"right");
+            robotDrive.arcadeDrive(0, .55);
         }
     }
 
-    public void turnToward(double targetHeading) {
-    	boolean turnLeft;
-    	//targetHeading = (targetHeading) % 360;
-    	double currentHeading = RobotMap.imu.getHeading();
-    	//int currentTurns = RobotMap.imu.getTurns();
-    	//currentHeading = currentHeading - 360*currentTurns;
-    	//currentHeading = (currentHeading+360) % 360;
-        double deltaHeading =  targetHeading - currentHeading;
-        System.out.println("current: " + currentHeading);
-    	System.out.println("target: " + targetHeading);
-    	System.out.println("delta: " + deltaHeading);
-      	//System.out.println("deltaHeading: " + deltaHeading);
-        if (Math.abs(deltaHeading) < 5.0) {
-        	System.out.println("Stopping!");
-        	/*System.out.println("current: " + currentHeading);
-        	System.out.println("target: " + targetHeading);
-        	System.out.println("delta: " + deltaHeading);*/
-        	//VisionState.getInstance().DriveLockedOnTarget = true;
+    public void turnToward(double target) {
+        double heading = RobotMap.imu.getNormalizedHeading();
+        double delta =  target - heading;
+        System.out.println("target: " + target +
+                           " heading: " + heading +
+                           " delta: " + delta);
+        SmartDashboard.putNumber("Vision Delta", delta);
+        if (Math.abs(delta) < 5.0) {
             this.stop();
-            return;
+        } else {
+            this.autoturn(delta > 0.0 /*turn left*/ );
         }
-        else if(deltaHeading < 0) {
-        	turnLeft = true;
-        }
-        else {
-        	turnLeft = false;
-        	// System.out.println(deltaHeading);
-        	SmartDashboard.putNumber("Drivetrain DeltaHeading", deltaHeading);
-            //this.autoturn(deltaHeading < 0.0);
-        }
-        
-        if(Math.abs(deltaHeading) > 180) {
-        	turnLeft = !turnLeft;
-        }
-       	//System.out.println(deltaHeading);
-       	//System.out.println(turnLeft);
-        this.autoturn(turnLeft);
-
     }
 }

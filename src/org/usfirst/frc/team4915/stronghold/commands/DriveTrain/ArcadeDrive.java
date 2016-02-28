@@ -54,52 +54,34 @@ public class ArcadeDrive extends Command {
             vs = VisionState.getInstance();
         }
 
-        double heading = 0;
-        //checks if imu is on
- 	    if (ModuleManager.IMU_MODULE_ON) {
-            BNO055.CalData calData = RobotMap.imu.getCalibration();
-            heading = RobotMap.imu.getHeading();
-
-            distFromOrigin = BNO055.getInstance().getDistFromOrigin();
-            SmartDashboard.putNumber("DistFromOrigin", distFromOrigin);
-            SmartDashboard.putBoolean("IMU present", RobotMap.imu.isSensorPresent());
-            SmartDashboard.putBoolean("IMU initialized", RobotMap.imu.isInitialized());
-            SmartDashboard.putNumber("IMU heading", (int) (0.5+heading));
-            SmartDashboard.putNumber("IMU calibration status", 
-                                 (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag));
-                                 //Calibration values range from 0-3, Right to left: mag, gyro, accel
-        }
-        if (ModuleManager.VISION_MODULE_ON) {
-            vs.updateIMUHeading(heading); // broadcast to jetson
-        } 
-        else {
-            heading = 0.0;
-        }
-
-        Robot.driveTrain.joystickThrottle = Robot.driveTrain.modifyThrottle();
         if (vs != null && vs.wantsControl()) {
+            Robot.driveTrain.ignoreThrottle();
         	if(!vs.DriveLockedOnTarget) {
 	            if (vs.RelativeTargetingMode == 1) {
-	            	
+
 	                if (Math.abs(vs.TargetX) < 3) {
 	                    Robot.driveTrain.stop(); // close enough
-	                } 
+	                }
 	                else {
 	                    Robot.driveTrain.autoturn(vs.TargetX < 0);
 	                }
 	            } else {
 	                /* absolute autotargeting */
-	                Robot.driveTrain.turnToward(VisionState.getInstance().TargetX);
+	                Robot.driveTrain.turnToward(vs.TargetX);
 	            }
         	}
-        	//else wait for launcher to shoot and exit auto mode
-        	// or toggle AutoAim
-        } 
+            else {
+                // wait for launcher to shoot and exit auto mode
+                // or toggle AutoAim
+                Robot.driveTrain.stop(); // needed to keep driveTrain alive
+            }
+        }
         else {
+            Robot.driveTrain.applyThrottle();
             if ((Math.abs(this.joystickX) < 0.075) &&
                     (Math.abs(this.joystickY) < 0.075)) {
                 Robot.driveTrain.stop();
-            } 
+            }
             else {
                 Robot.driveTrain.arcadeDrive(this.joystickDrive);
             }

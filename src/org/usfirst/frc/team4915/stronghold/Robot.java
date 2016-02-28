@@ -182,7 +182,7 @@ public class Robot extends IterativeRobot {
 	public void updateIMUStatus() {
  	   if (ModuleManager.IMU_MODULE_ON) {
             BNO055.CalData calData = RobotMap.imu.getCalibration();
-            SmartDashboard.putNumber("IMU heading", RobotMap.imu.getHeading());
+            SmartDashboard.putNumber("IMU heading", RobotMap.imu.getNormalizedHeading());
             // SmartDashboard.putNumber("IMU dist to origin", RobotMap.imu.getDistFromOrigin());
             SmartDashboard.putNumber("IMU calibration", 
                                  (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); 
