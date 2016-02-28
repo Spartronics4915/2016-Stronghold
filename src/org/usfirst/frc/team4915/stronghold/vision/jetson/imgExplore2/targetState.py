@@ -26,7 +26,7 @@ class TargetState:
         self.m_fov = (54., 54. / ar)  # full angles
         self.m_center = (self.m_res[0]/2, self.m_res[1]/2)
         self.m_visTab.putString("~TYPE~", "Vision")
-        self.m_visTab.putInt("TargetsAcquired", 0)
+        self.m_visTab.putInt("TargetAcquired", 0)
         self.m_kpHistory = []
 
     # a key-point sorter:
@@ -97,9 +97,11 @@ class TargetState:
     	avgKeypointY += self.m_kpHistory[-1].pt[1]
     	self.m_kp.pt = (avgKeypointX / 5, avgKeypointY / 5)
     	return self.m_kp
-    
-    def NewTarget(self, target):
-        self.updateVisionTableAbsolute(target)
+
+    # NewTarget: we assume that kp is in absolute (not screen-rel) coords
+    def NewTarget(self, kp):
+        self.updateVisionTableAbsolute(kp)
+        return [target]
 
     def NewKeypoints(self, kplist):
         if len(kplist) > 0:
@@ -174,26 +176,30 @@ class TargetState:
     def updateVisionTable(self, kp):
         self.m_visTab.putInt("RelativeTargetingMode", 1)
         if not kp:
-            self.m_visTab.putInt("TargetsAcquired", 0)
+            self.m_visTab.putInt("TargetAcquired", 0)
         else:
             theta = self.pixelToAngle(kp.pt)
-            self.m_visTab.putInt("TargetsAcquired", 1)
+            self.m_visTab.putInt("TargetAcquired", 1)
             self.m_visTab.putInt("TargetX", int(.5+theta[0]))
             self.m_visTab.putInt("TargetY", int(.5+theta[1]))
-            self.m_visTab.putNumber("TargetSize", int(.5+kp.size))
-            self.m_visTab.putNumber("TargetResponse", kp.response)
-            self.m_visTab.putInt("TargetClass", kp.class_id)
 
-    def updateVisionTableAbsolute(self, target):
+    # here we assume that kp.pt has absolute angles, relative to IMU north
+    def updateVisionTableAbsolute(self, kp):
         self.m_visTab.putInt("RelativeTargetingMode", 0)
+<<<<<<< HEAD
         if not target:
-            self.m_visTab.putInt("TargetsAcquired", 0)
+            self.m_visTab.putInt("TargetAcquired", 0)
         else:
-            self.m_visTab.putInt("TargetsAcquired", 1)
-            self.m_visTab.putInt("TargetX", int(.5+target[0]))
-            self.m_visTab.putInt("TargetY", int(.5+target[1]))
-            self.m_visTab.putNumber("TargetSize", 0)
-            self.m_visTab.putNumber("TargetResponse", 0)
-            self.m_visTab.putInt("TargetClass", -1)
+            self.m_visTab.putInt("TargetAcquired", 1)
+            self.m_visTab.putInt("TargetX", int(target.pt[0]))
+            self.m_visTab.putInt("TargetY", int(target.pt[1]))
+=======
+        if not kp:
+            self.m_visTab.putInt("TargetAcquired", 0)
+        else:
+            self.m_visTab.putInt("TargetAcquired", 1)
+            self.m_visTab.putInt("TargetX", int(kp.pt[0]))
+            self.m_visTab.putInt("TargetY", int(kp.pt[1]))
+>>>>>>> 036c85265e5fd13d86bcab77f175de5a942d73da
 
 
