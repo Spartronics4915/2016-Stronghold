@@ -8,18 +8,18 @@ import edu.wpi.first.wpilibj.Timer;
 /**
  * BNO055 IMU for the FIRST Robotics Competition. References throughout the code
  * are to the following sensor documentation: http://git.io/vuOl1
- * 
+ *
  * To use the sensor, wire up to it over I2C on the roboRIO. Creating an
  * instance of this class will cause communications with the sensor to being.All
  * communications with the sensor occur in a separate thread from your robot
  * code to avoid blocking the main robot program execution.
- * 
+ *
  * Example: private static BNO055 imu;
- * 
+ *
  * public Robot() { imu =
  * BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
  * BNO055.vector_type_t.VECTOR_EULER); }
- * 
+ *
  * You can check the status of the sensor by using the following methods:
  * isSensorPresent(); //Checks if the code can talk to the sensor over I2C // If
  * this returns false, check your wiring. isInitialized(); //Checks if the
@@ -32,10 +32,10 @@ import edu.wpi.first.wpilibj.Timer;
  *
  * Once the sensor calibration is complete , you can get position data by by
  * using the getAccel() method. See this method definiton for usage info.
- * 
+ *
  * This code was originally ported from arduino source developed by Adafruit.
  * See the original comment header below.
- * 
+ *
  * @author james@team2168.org
  *
  *
@@ -77,7 +77,6 @@ public class BNO055 {
     private static I2C imu;
     private static int _mode;
     private static opmode_t requestedMode; // user requested mode of operation.
-    private static vector_type_t requestedVectorType;
 
     // State machine variables
     private volatile int state = 0;
@@ -89,13 +88,12 @@ public class BNO055 {
     private volatile double[] m_accel = new double[3];
     private volatile double[] m_velocity = new double[3];
     private volatile double[] m_position = new double[3];
-    private volatile double[] m_cumulativePosition = new double[3];
     private volatile double m_distFromOrigin = 0;
 
     private volatile byte[] headingVector = new byte[6];
-    private volatile long turns = 0;
     private volatile double[] m_heading = new double[3];
-    
+    private volatile double[] m_initialHeading = new double[3];
+
 /*    private volatile byte[] calDataStore = new byte[22];
  *    public String calDataStoreString = "fill me with gibberish";
  */
@@ -353,18 +351,16 @@ public class BNO055 {
      */
     private BNO055(I2C.Port port, byte address) {
         imu = new I2C(port, address);
-
+        this.initialized = false;
+        this.state = 0;
         executor = new java.util.Timer();
         executor.schedule(new BNO055UpdateTask(this), 0L, THREAD_PERIOD);
     }
 
-    public BNO055() {
-        // TODO Auto-generated constructor stub
-    }
 
     /**
      * Get an instance of the IMU object.
-     * 
+     *
      * @param mode the operating mode to run the sensor in.
      * @param port the physical port the sensor is plugged into on the roboRio
      * @param address the address the sensor is at (0x28 or 0x29)
@@ -376,14 +372,13 @@ public class BNO055 {
             instance = new BNO055(port, address);
         }
         requestedMode = mode;
-        requestedVectorType = vectorType;
         return instance;
     }
 
     /**
      * Get an instance of the IMU object plugged into the onboard I2C header.
      * Using the default address (0x28)
-     * 
+     *
      * @param mode the operating mode to run the sensor in.
      * @param vectorType the format the position vector data should be returned
      *        in (if you don't know use VECTOR_EULER).
@@ -487,6 +482,8 @@ public class BNO055 {
                         state++;
                     }
                 case 9:
+                    calculateHeadingAndPosition();
+                    this.m_initialHeading = this.m_heading;
                     initialized = true;
                     break;
                 default:
@@ -500,11 +497,8 @@ public class BNO055 {
     }
 
     private void calculateHeadingAndPosition() {
-        double[] head = new double[3];
-        double[] accel = new double[3];
         short hx = 0, hy = 0, hz = 0;
         short ax = 0, ay = 0, az = 0;
-        double headingDiff = 0.0;
 
         // Read vector data (6 bytes)
         readLen(reg_t.BNO055_EULER_H_LSB_ADDR.getVal(), headingVector);
@@ -518,9 +512,9 @@ public class BNO055 {
         hz = (short) ((headingVector[4] & 0xFF)
                 | ((headingVector[5] << 8) & 0xFF00));
         /* 1 degree = 16 LSB */
-        head[0] = ((double) hx) / 16.0;
-        head[1] = ((double) hy) / 16.0;
-        head[2] = ((double) hz) / 16.0;
+        m_heading[0] = ((double) hx) / 16.0;
+        m_heading[1] = ((double) hy) / 16.0;
+        m_heading[2] = ((double) hz) / 16.0;
 
         ax = (short) ((accelVector[0] & 0xFF)
                 | ((accelVector[1] << 8) & 0xFF00));
@@ -530,42 +524,58 @@ public class BNO055 {
                 | ((accelVector[5] << 8) & 0xFF00));
 
         /* 1m/s^2 = 100 LSB */
-        accel[0] = ((double) ax) / 100.0;
-        accel[1] = ((double) ay) / 100.0;
-        accel[2] = ((double) az) / 100.0;
+        m_accel[0] = ((double) ax) / 100.0;
+        m_accel[1] = ((double) ay) / 100.0;
+        m_accel[2] = ((double) az) / 100.0;
 
+        // note that this double-integration is too noisy
+        // to be useful.  This is, in part, due to the fact
+        // that generally the linear accelerator isn't properly
+        // calibrated (it needs to be recalibrated each power-on)
         double deltaT = THREAD_PERIOD / 1000.0;
         double[] deltaVelocity = new double[3];
         double[] newVelocity = new double[3];
         for (int i = 0; i < 3; i++) {
-            deltaVelocity[i] = accel[i] * deltaT;
+            deltaVelocity[i] = m_accel[i] * deltaT;
             newVelocity[i] = m_velocity[i] + deltaVelocity[i];
             m_position[i] += ((newVelocity[i] + m_velocity[i]) / 2 * deltaT);
             m_velocity[i] = newVelocity[i];
         }
         m_distFromOrigin = Math.hypot(m_position[0], m_position[1]);
+    }
 
-        // calculate turns
-        headingDiff = m_heading[0] - head[0];
-        if (Math.abs(headingDiff) >= 360) {
-            // We've traveled past the zero heading position
-            if (headingDiff > 0) {
-                head[0] = head[0] - 360;
-                turns++;
-            } else {
-                head[0] = head[0] + 360;
-                turns--;
-            }
-        }
+    public double[] getAccel() {
+        return m_accel;
+    }
 
-        // Update position vectors
-        m_heading = head;
-        m_accel = accel;
+    public int getTurns() {
+        return (int) (m_heading[0] / 360);
+    }
+
+    public double getHeading() {
+        return m_heading[0];
+    }
+
+    // we normalize on [-180, 180]
+    // see: http://goo.gl/L1cMeV  for modulo details in java
+    //  the sign of the result equals the sign of the dividend
+    //  -13 % 360 == 347
+    //  -377 % 360 == 347
+    public int getNormalizedHeading() {
+    	// int h = (int) Math.round((m_heading[0]-m_initialHeading[0]) % 360);
+        int h = (int) Math.round(m_heading[0] % 360);
+    	if(h > 180)
+    		h = -(360 - h);
+        return h;
+    }
+
+    public double getDistFromOrigin() {
+        return m_distFromOrigin;
     }
 
     /**
      * Puts the chip in the specified operating mode
-     * 
+     *
      * @param mode
      */
     public void setMode(opmode_t mode) {
@@ -579,7 +589,7 @@ public class BNO055 {
 
     /**
      * Gets the latest system status info
-     * 
+     *
      * @return
      */
     public SystemStatus getSystemStatus() {
@@ -651,7 +661,7 @@ public class BNO055 {
      * active. Note this method returns true after first establishing
      * communications with the sensor. Communications are not actively monitored
      * once sensor initialization has started.
-     * 
+     *
      * @return true if the sensor is found on the I2C bus
      */
     public boolean isSensorPresent() {
@@ -663,7 +673,7 @@ public class BNO055 {
      * this initialization period the sensor will not return position vector
      * data. Once initialization is complete, data can be read, although the
      * sensor may not have completed calibration. See isCalibrated.
-     * 
+     *
      * @return true when the sensor is initialized.
      */
     public boolean isInitialized() {
@@ -672,7 +682,7 @@ public class BNO055 {
 
     /**
      * Gets current calibration state.
-     * 
+     *
      * @return each value will be set to 0 if not calibrated, 3 if fully
      *         calibrated.
      */
@@ -687,21 +697,21 @@ public class BNO055 {
 
         return data;
     }
-    
+
 /*    public void getCalibrationData() {
         setMode(opmode_t.OPERATION_MODE_CONFIG.getVal());
         readLen(reg_t.ACCEL_OFFSET_X_LSB_ADDR, calDataStore);
         DatatypeConverter.printHexBinary(calDataStore);
         System.out.println(DatatypeConverter.printHexBinary(calDataStore));
-        
+
         setMode(opmode_t.OPERATION_MODE_IMUPLUS);
     }
-    
+
     public void setCalibrationData() {
         setMode(opmode_t.OPERATION_MODE_CONFIG.getVal());
         calDataStore = DatatypeConverter.parseHexBinary(calDataStoreString);
         retVal = imu.write(reg_t.ACCEL_OFFSET_X_LSB_ADDR.getVal(), 22);
-        
+
         setMode(opmode_t.OPERATION_MODE_IMUPLUS);
     }
 
@@ -710,7 +720,7 @@ public class BNO055 {
      * gyroscope) have completed their respective calibration sequence. Only
      * sensors required by the current operating mode are checked. See Section
      * 3.3.
-     * 
+     *
      * @return true if calibration is complete for all sensors required for the
      *         mode the sensor is currently operating in.
      */
@@ -749,55 +759,17 @@ public class BNO055 {
 
     /**
      * Get the sensors internal temperature.
-     * 
+     *
      * @return temperature in degrees celsius.
      */
     public int getTemp() {
         return (read8(reg_t.BNO055_TEMP_ADDR));
     }
 
-    /**
-     * Gets a vector representing the sensors position (heading, roll, pitch).
-     * heading: 0 to 360 degrees roll: -90 to +90 degrees pitch: -180 to +180
-     * degrees
-     *
-     * For continuous rotation heading (doesn't roll over between 360/0) see the
-     * getCumulativeHeading() method.
-     *
-     * Maximum data output rates for Fusion modes - See 3.6.3
-     * 
-     * Operating Mode Data Output Rate IMU 100 Hz COMPASS 20 Hz M4G 50 Hz
-     * NDOF_FMC_OFF 100 Hz NDOF 100 Hz
-     *
-     * @return a vector [heading, roll, pitch]
-     */
-    public double[] getAccel() {
-        return m_accel;
-    }
-
-    /**
-     * The heading of the sensor (x axis) in continuous format. Eg rotating the
-     * sensor clockwise two full rotations will return a value of 720 degrees.
-     * The getAccel method will return heading in a constrained 0 - 360 deg
-     * format if required.
-     * 
-     * @return heading in degrees
-     */
-    public double getCumulativeHeading() {
-        return m_heading[0] + turns * 360;
-    }
-    
-    public double getHeading() {
-        return m_heading[0];
-    }
-
-    public double getDistFromOrigin() {
-        return m_distFromOrigin;
-    }
 
     /**
      * Writes an 8 bit value over I2C
-     * 
+     *
      * @param reg the register to write the data to
      * @param value a byte of data to write
      * @return whatever I2CJNI.i2CWrite returns. It's not documented in the
@@ -813,7 +785,7 @@ public class BNO055 {
 
     /**
      * Reads an 8 bit value over I2C
-     * 
+     *
      * @param reg the register to read from.
      * @return
      */

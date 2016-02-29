@@ -7,7 +7,6 @@ import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoRotateDegrees extends Command {
 
@@ -20,34 +19,33 @@ public class AutoRotateDegrees extends Command {
 
     // autonomous rotate command
     public AutoRotateDegrees(boolean left, double robotAngle) {
-        System.out.println("Auto Rotate degrees");
         requires(Robot.driveTrain);
         goLeft = left;
         this.robotAngle = robotAngle;
-        System.out.println(robotAngle);
+        System.out.println("Auto Rotate degrees "+robotAngle);
     }
 
     @Override
     protected void initialize() {
-        robotDrive.setMaxOutput(1.0);
-        startingGyroValue = imu.getHeading();
+        robotDrive.setMaxOutput(1.0); // max the throttle
+        this.startingGyroValue = imu.getHeading();
     }
 
     @Override
     public void execute() {
     	System.out.println("Executing the rotate degrees");
         Robot.driveTrain.turn(goLeft);
-        SmartDashboard.putNumber("Robot Angle", robotAngle);
     }
 
     @Override
     protected boolean isFinished() {
-//        double gyroDelta = Math.abs(imu.getHeading() - startingGyroValue);
+    	// TODO: will this logic work if robotAngle is negative?
     	double gyroDelta = 0;
-    	if (imu.getHeading() <= 180)
-    		gyroDelta = Math.abs(imu.getHeading() - startingGyroValue);
+    	double heading = imu.getHeading();
+    	if (heading <= 180)
+    		gyroDelta = Math.abs(heading - startingGyroValue);
     	else 
-    		gyroDelta = Math.abs((360 - imu.getHeading()) - startingGyroValue);
+    		gyroDelta = Math.abs((360 - heading) - startingGyroValue);
         System.out.println("Current IMU heading:" + imu.getHeading() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
         return gyroDelta >= robotAngle;
     }

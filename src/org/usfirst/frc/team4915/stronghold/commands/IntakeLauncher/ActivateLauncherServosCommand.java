@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ActivateLauncherServosCommand extends Command {
 
     public ActivateLauncherServosCommand() {
-
+        requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
@@ -15,7 +15,7 @@ public class ActivateLauncherServosCommand extends Command {
     }
 
     protected void execute() {
-
+        
     }
 
     protected boolean isFinished() {
@@ -23,10 +23,10 @@ public class ActivateLauncherServosCommand extends Command {
     }
 
     protected void end() {
-
+        System.out.println("Ending Activate Launcher Servos");
     }
 
     protected void interrupted() {
-
+        end();
     }
 }
