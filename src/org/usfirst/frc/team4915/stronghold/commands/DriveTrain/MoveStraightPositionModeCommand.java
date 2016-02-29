@@ -1,10 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
-import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.CANTalon;
