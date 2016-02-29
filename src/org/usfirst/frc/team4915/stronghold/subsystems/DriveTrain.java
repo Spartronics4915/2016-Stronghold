@@ -1,12 +1,10 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
-
 import java.util.Arrays;
 import java.util.List;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
@@ -21,9 +19,9 @@ public class DriveTrain extends Subsystem {
     // frontRightMotor, rearRightMotor
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftBackMotor, RobotMap.rightBackMotor);
+    public double joystickThrottle;
 
     private double lastTopSpeed=-1.;
-
     // motors
     public static List<CANTalon> motors =
             Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);

@@ -2,7 +2,6 @@ package org.usfirst.frc.team4915.stronghold;
 
 import java.util.ArrayList;
 
-import org.usfirst.frc.team4915.stronghold.CANProbe;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 import edu.wpi.first.wpilibj.CANTalon;

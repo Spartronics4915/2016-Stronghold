@@ -7,7 +7,6 @@ import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoRotateDegrees extends Command {
 
