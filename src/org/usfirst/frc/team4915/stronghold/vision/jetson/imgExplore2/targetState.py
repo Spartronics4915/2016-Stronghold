@@ -186,20 +186,11 @@ class TargetState:
     # here we assume that kp.pt has absolute angles, relative to IMU north
     def updateVisionTableAbsolute(self, kp):
         self.m_visTab.putInt("RelativeTargetingMode", 0)
-<<<<<<< HEAD
-        if not target:
-            self.m_visTab.putInt("TargetAcquired", 0)
-        else:
-            self.m_visTab.putInt("TargetAcquired", 1)
-            self.m_visTab.putInt("TargetX", int(target.pt[0]))
-            self.m_visTab.putInt("TargetY", int(target.pt[1]))
-=======
         if not kp:
             self.m_visTab.putInt("TargetAcquired", 0)
         else:
             self.m_visTab.putInt("TargetAcquired", 1)
             self.m_visTab.putInt("TargetX", int(kp.pt[0]))
             self.m_visTab.putInt("TargetY", int(kp.pt[1]))
->>>>>>> 036c85265e5fd13d86bcab77f175de5a942d73da
 
 
