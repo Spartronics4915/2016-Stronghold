@@ -49,16 +49,18 @@ class TargetState:
             return 0
         else:
             return 1
+
+    def nearbyPt(self, p0, p1):
+        return (p0[0]-3 < p1[0] < p0[0]+3) and \
+               (p0[1]-3 < p1[1] < p0[1]+3)
             
     def kpCompareByStability(self, kp1, kp2):
     	kp1Frequency = 0
     	kp2Frequency = 0
-    	for kp in self.m_56kpHistory:
-    		if (kp.pt[0]-3 < kp1.pt[0] < kp.pt[0]+3) and \
-                (kp.pt[1]-3 < kp1.pt[1] < kp.pt[1]+3):
+    	for kp in self.m_kpHistory:
+    		if self.nearbyPt(kp.pt, kp1.pt):
     			kp1Frequency += 1
-    		if (kp.pt[0]-3 < kp2.pt[0] < kp.pt[0]+3) and \
-                (kp.pt[1]-3 < kp2.pt[1] < kp.pt[1]+3):
+    		if self.nearbyPt(kp, kp2.pt):
     			kp2Frequency += 1
         if kp1Frequency > kp2Frequency:  # sort most frequent to front of list
             return -1
