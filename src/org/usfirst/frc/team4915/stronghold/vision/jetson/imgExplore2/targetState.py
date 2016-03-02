@@ -103,7 +103,7 @@ class TargetState:
     # NewTarget: we assume that kp is in absolute (not screen-rel) coords
     def NewTarget(self, kp):
         self.updateVisionTableAbsolute(kp)
-        return [target]
+        return [kp]
 
     def NewKeypoints(self, kplist):
         if len(kplist) > 0:
