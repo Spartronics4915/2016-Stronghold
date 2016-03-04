@@ -27,13 +27,16 @@ import common
 class App:
     def __init__(self):
         self.args = self.parseArgs()
+        self.paused = False
+        self.frame = None
+        self.visWin = 'img'
         if self.args.daemonize:
             with daemon.DaemonContext():
-                self.go()
+                self.init()
         else:
-            self.go()
+            self.init()
 
-    def go(self):
+    def init(self):
         # args is argparser.Namespace: an object whose members are
         # accessed as:  self.args.cannedimages
 
@@ -240,28 +243,23 @@ class App:
             if not vsrc:
                 exit(1)
             else:
-                ret1 = vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 1280)
-                ret2 = vsrc.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 720)
-                print(ret1, ret2)
-                if 1:
-                    w = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
-                    h = vsrc.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)
-                    print("video res: %d %d" % (w,h))
+                ret1 = vsrc.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+                ret2 = vsrc.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+                w = vsrc.get(cv2.CAP_PROP_FRAME_WIDTH)
+                h = vsrc.get(cv2.CAP_PROP_FRAME_HEIGHT)
+                print("video res: %d %d" % (w,h))
         else:
             vsrc = None
 
         self.update = False
         while True:
-            while len(self.pending) > 0 and self.pending[0].ready():
-                frame,t0,keypoints,lines,contours = self.pending.popleft().get()
-                self.latency.update(common.clock() - t0)
-                self.robotCnx.SetFPS(int(1/self.frameT.value))
 
-                self.drawStr(frame, (20, 20),
-                    "latency       : %.1f ms" % (self.latency.value*1000))
-                self.drawStr(frame, (20, 40),
-                    "frame interval: %.1f ms" % (self.frameT.value*1000))
-                self.showImg(frame, keypoints, lines, contours)
+            while len(self.pending) > 0 and self.pending[0].ready():
+                # pull frames processed in other thread first
+                self.frame,t0,keypoints,lines,contours = \
+                                        self.pending.popleft().get()
+                self.latency.update(common.clock() - t0)
+                self.postProcessFrame(t0, keypoints,lines,contours)
 
             if vsrc:
                 # Here we have a video source... Capture the image in the
@@ -272,12 +270,19 @@ class App:
                     t = common.clock()
                     self.frameT.update(t - self.lastFrameTime)
                     self.lastFrameTime = t
-                    # pass a copy of the new frame to another thread for
-                    # processing this alows us to get back to the
-                    # time-consuming task of capturing the next video frame.
-                    task = self.pool.apply_async(processFrameCB,
+                    if 1:
+                        # pass a copy of the new frame to another thread for
+                        # processing this alows us to get back to the
+                        # time-consuming task of capturing the next video frame.
+                        task = self.pool.apply_async(processFrameCB,
                                             (self, self.mainImg.copy(), t))
-                    self.pending.append(task)
+                        self.pending.append(task)
+                    else:
+                        # or just process in this thread
+                        (self.frame, t0, keypts, lines, contours) = \
+                                self.processFrame(self.mainImg.copy(),
+                                                        common.clock())
+                        self.postProcessFrame(t0, keypts, lines, contours)
 
                 done,self.update,self.cmode,self.index,self.values,msg = \
                     self.checkKey(1, self.cmode, self.index, self.values)
@@ -314,21 +319,11 @@ class App:
                         self.putNotice(base)
 
                     self.mainImg = cv2.imread(fn, cv2.IMREAD_ANYCOLOR)
-                    (img, t0, keypts, lines, contours) = self.processFrame(
-                                                        self.mainImg.copy(),
+                    (self.frame, t0, keypts, lines, contours) = \
+                                self.processFrame(self.mainImg.copy(),
                                                         common.clock())
-                    self.frameT.update(common.clock() - t0)
-                    self.robotCnx.SetFPS(int(1 / self.frameT.value))
+                    self.postProcessFrame(t0, keypts, lines, contours, base)
 
-                    if not self.args.nodisplay:
-                        if self.cmode == 'rgb':
-                            str = "%s     (%.2f ms)" % \
-                                    (base,self.frameT.value*1000)
-                        else:
-                            str = "%s[%s] (%.2f ms)" % \
-                                    (base,self.cmode,self.frameT.value*1000)
-                        self.drawStr(img, (20, 20), str)
-                        self.showImg(img, keypts, lines, contours)
 
                     self.lastFn = fn
 
@@ -497,7 +492,7 @@ class App:
                     bp.filterByInertia = False
                     bp.minInertiaRatio = 0.01
 
-                    detector = cv2.SimpleBlobDetector(bp)
+                    detector = cv2.SimpleBlobDetector_create(bp)
                     self.algostate["blobdetector"] = detector
                 else:
                     detector = self.algostate["blobdetector"]
@@ -549,7 +544,8 @@ class App:
             elif cmode == 'ORB':
                 if not "ORB" in self.algostate or self.update:
                     sf = max(1, min(2, 1. + values[1]/255.)) # [1->2]
-                    self.algostate["ORB"] = cv2.ORB( nfeatures=values[0],
+                    self.algostate["ORB"] = cv2.ORB_create(
+                                                nfeatures=values[0],
                                                 scaleFactor=sf,
                                                 nlevels=values[2],
                                                 patchSize=values[3],
@@ -562,10 +558,9 @@ class App:
                 orb = self.algostate["ORB"]
                 #keypoints,descrs = orb.detectAndCompute(frame, None)
                 #gray = self.simpleThreshold(frame)
-                gray = self.hvRange(frame)
+                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 keypoints = orb.detect(gray, None)
                 self.putNotice('ORB features: %d' % len(keypoints))
-                frame = gray
             elif cmode == 'dance1':
                 period = 15.0 # seconds
                 t = common.clock()*2*math.pi/period
@@ -602,6 +597,26 @@ class App:
                 print("unknown cmode: " + cmode)
         return frame, t0, keypoints, lines, contours
 
+    def postProcessFrame(self, t0, kpts, lines, contours,base=None):
+        self.frameT.update(common.clock() - t0)
+        self.robotCnx.SetFPS(int(1 / self.frameT.value))
+        if not self.args.nodisplay:
+            if base:
+                if self.cmode == 'rgb':
+                    str = "%s     (%.2f ms)" % \
+                                (base,self.frameT.value*1000)
+                else:
+                    str = "%s[%s] (%.2f ms)" % \
+                            (base,self.cmode,self.frameT.value*1000)
+            else:
+                if not self.latency.value:
+                    self.latency.value = 0
+                str = "latency       : %02.2f ms, frame interval %02.2f" % \
+                    (self.latency.value*1000, self.frameT.value*1000)
+                
+            self.drawStr(self.frame, (20, 20), str)
+            self.showImg(self.frame, kpts, lines, contours)
+
     def showImg(self, frame, keypoints, lines, contours):
         if self.args.nodisplay and self.args.stashinterval == 0:
             return
@@ -610,12 +625,12 @@ class App:
             frame = cv2.drawKeypoints(frame, [keypoints[0]],
                                np.array([]),
                                (0,0,255),
-                               cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+                               0) #cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             if len(keypoints) > 1:
                 frame = cv2.drawKeypoints(frame, keypoints[1:],
                                np.array([]),
                                (255,205,25),
-                               cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+                               0) #cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
         if lines != None:
             for l in lines[0]:
                 cv2.line(frame, (l[0], l[1]), (l[2], l[3]), (20,255,255))
@@ -636,7 +651,11 @@ class App:
                                 maxLevel=maxlevel)
 
         if not self.args.nodisplay:
-           cv2.imshow("img", frame)
+            cv2.imshow(self.visWin, frame)
+            if not self.rectSelector:
+                self.rectSelector = common.RectSelector(self.visWin, 
+                                                    self.rectSelected)
+                self.tracker = planeTracker.PlaneTracker()
 
         if self.args.stashinterval != 0 and \
             (common.clock() - self.lastStashTime) > self.args.stashinterval:
