@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcadeDrive extends Command {
-    
+
     private double scaledThrottle;
     private double joystickX;
     private double joystickY;
@@ -27,7 +27,7 @@ public class ArcadeDrive extends Command {
     @Override
     protected void initialize() {
       Robot.driveTrain.setMaxOutput(Robot.driveTrain.getMaxOutput());
-       
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -36,7 +36,7 @@ public class ArcadeDrive extends Command {
         Joystick joystickDrive= Robot.oi.getJoystickDrive();
         this.joystickX = joystickDrive.getAxis(Joystick.AxisType.kX) * -1;
         this.joystickY = joystickDrive.getAxis(Joystick.AxisType.kY) *-1;
-        
+
         this.scaledThrottle = scaleThrottle(joystickDrive.getAxis(Joystick.AxisType.kThrottle));
         VisionState vs = null;
         if (ModuleManager.VISION_MODULE_ON) {
@@ -65,7 +65,7 @@ public class ArcadeDrive extends Command {
             }
         }
         else {
-            
+
             if ((Math.abs(this.joystickX) < 0.075) &&
                     (Math.abs(this.joystickY) < 0.075)) {
                 Robot.driveTrain.stop();
@@ -89,15 +89,15 @@ public class ArcadeDrive extends Command {
          * Then, add 1 to make the range 0-2 rather than -1 to +1
          * Then multiply by ((1-MIN_THROTTLE_SCALE)/2) to change the range to 0-(1-MIN_THROTTLE_SCALE)
          * Finally add MIN_THROTTLE_SCALE to change the range to MIN_THROTTLE_SCALE to 1
-         * 
+         *
          * Check the results are in the range of MIN_THROTTLE_SCALE to 1, and clip it in case the math went horribly wrong.
          */
         double scale = ((raw_throttle_value * -1) + 1) * ((1-MIN_THROTTLE_SCALE) / 2) + MIN_THROTTLE_SCALE;
 
         if (scale < MIN_THROTTLE_SCALE) {
             // Somehow our math was wrong. Our value was too low, so force it to the minimum
-            scale = MIN_THROTTLE_SCALE;            
-        } 
+            scale = MIN_THROTTLE_SCALE;
+        }
         else if (scale > 1) {
             // Somehow our math was wrong. Our value was too high, so force it to the maximum
             scale = 1.0;
