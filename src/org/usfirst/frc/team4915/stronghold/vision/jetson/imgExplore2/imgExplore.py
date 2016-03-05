@@ -652,10 +652,6 @@ class App:
 
         if not self.args.nodisplay:
             cv2.imshow(self.visWin, frame)
-            if not self.rectSelector:
-                self.rectSelector = common.RectSelector(self.visWin, 
-                                                    self.rectSelected)
-                self.tracker = planeTracker.PlaneTracker()
 
         if self.args.stashinterval != 0 and \
             (common.clock() - self.lastStashTime) > self.args.stashinterval:
