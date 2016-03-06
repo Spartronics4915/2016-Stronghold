@@ -1,17 +1,14 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
-import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.MoveStraightPositionModeCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
-
-import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCommand1 extends CommandGroup {
 
@@ -37,7 +34,7 @@ public class AutoCommand1 extends CommandGroup {
     	switch (strat) {
 		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
 									// goal.
-			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
+			addSequential(new AutoDriveStraight(getDistance(type)));
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
 			if (ModuleManager.VISION_MODULE_ON) {
 				addSequential(new AutoAimControlCommand(true, true));
@@ -47,7 +44,7 @@ public class AutoCommand1 extends CommandGroup {
 			break;
 		case DRIVE_SHOOT_NO_VISION: 
 			System.out.println("Starting Move Straight");
-			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
+			addSequential(new AutoDriveStraight(getDistance(type)));
 			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addParallel(new AimLauncherCommand());
@@ -56,7 +53,7 @@ public class AutoCommand1 extends CommandGroup {
 			}
 			break;
 		case DRIVE_ACROSS:
-			addSequential(new MoveStraightPositionModeCommand(getDistance(type), getSpeed(type)));
+			addSequential(new AutoDriveStraight(getDistance(type)));
 			break;
 		default:
 			break;
@@ -170,7 +167,7 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 120; 
                 break;
             case ROUGH_TERRAIN:
-                distance = 150; 
+                distance = 90; 
                 break;
             case ROCK_WALL:
                 distance = 120; 
@@ -180,31 +177,7 @@ public class AutoCommand1 extends CommandGroup {
         }
         return distance;
     }
-    
-    public static double getSpeed(Autonomous.Type type) {
-        double speed;
-        System.out.println(type);
-        switch (type) {
-            case LOWBAR:
-                speed = 0.6;
-                break;
-            case MOAT:
-                speed = 0.65; 
-                break;
-            case RAMPARTS:
-                speed = 0.6;
-                break;
-            case ROUGH_TERRAIN:
-                speed = 0.65;
-                break;
-            case ROCK_WALL:
-                speed = 0.65;
-                break;
-            default:
-                speed = 0;
-        }
-        return speed;
-    }
+ 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return false;

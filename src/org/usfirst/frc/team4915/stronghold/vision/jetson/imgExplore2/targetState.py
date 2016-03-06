@@ -49,16 +49,18 @@ class TargetState:
             return 0
         else:
             return 1
+
+    def nearbyPt(self, p0, p1):
+        return (p0[0]-3 < p1[0] < p0[0]+3) and \
+               (p0[1]-3 < p1[1] < p0[1]+3)
             
     def kpCompareByStability(self, kp1, kp2):
     	kp1Frequency = 0
     	kp2Frequency = 0
-    	for kp in self.m_56kpHistory:
-    		if (kp.pt[0]-3 < kp1.pt[0] < kp.pt[0]+3) and \
-                (kp.pt[1]-3 < kp1.pt[1] < kp.pt[1]+3):
+    	for kp in self.m_kpHistory:
+    		if self.nearbyPt(kp.pt, kp1.pt):
     			kp1Frequency += 1
-    		if (kp.pt[0]-3 < kp2.pt[0] < kp.pt[0]+3) and \
-                (kp.pt[1]-3 < kp2.pt[1] < kp.pt[1]+3):
+    		if self.nearbyPt(kp.pt, kp2.pt):
     			kp2Frequency += 1
         if kp1Frequency > kp2Frequency:  # sort most frequent to front of list
             return -1
@@ -101,7 +103,7 @@ class TargetState:
     # NewTarget: we assume that kp is in absolute (not screen-rel) coords
     def NewTarget(self, kp):
         self.updateVisionTableAbsolute(kp)
-        return [target]
+        return [kp]
 
     def NewKeypoints(self, kplist):
         if len(kplist) > 0:
@@ -110,7 +112,7 @@ class TargetState:
                 if len(kplist) > 0:
                     kplist.sort(self.kpcompare)
                     self.m_kp = kplist[0]
-            if 0:
+            elif 0:
                 #average 5 most recent keypoints (not very useful because 
                 #creating a new keypoint is unsafe)
                 kplist.sort(self.kpcompare)
@@ -118,14 +120,14 @@ class TargetState:
                 self.m_kpHistory.append(self.m_kp)
                 self.m_kpHistory = self.m_kpHistory[-4:]
                 self.m_kp = self.AverageKeypoints()
-            if 0:
+            elif 0:
                 #keep the 10 biggest keypoints ever found (not very good)
                 kplist.extend(self.m_kpHistory)
                 self.m_kpHistory = kplist
                 kplist.sort(self.kpcompare)
                 kplist = kplist[:10]
                 self.m_kpHistory = kplist
-            if 0: 
+            elif 0: 
                 nearest = None
                 size = None
                 nearestD = 10000
@@ -147,7 +149,7 @@ class TargetState:
 
                 if nearest:
                     self.m_kp = nearest
-            if 1:
+            elif 1:
             	#go to most stable keypoint (has issues when moving)
             	self.m_kpHistory.extend(kplist)
             	self.m_kpHistory = self.m_kpHistory[:50]
@@ -186,20 +188,11 @@ class TargetState:
     # here we assume that kp.pt has absolute angles, relative to IMU north
     def updateVisionTableAbsolute(self, kp):
         self.m_visTab.putInt("RelativeTargetingMode", 0)
-<<<<<<< HEAD
-        if not target:
-            self.m_visTab.putInt("TargetAcquired", 0)
-        else:
-            self.m_visTab.putInt("TargetAcquired", 1)
-            self.m_visTab.putInt("TargetX", int(target.pt[0]))
-            self.m_visTab.putInt("TargetY", int(target.pt[1]))
-=======
         if not kp:
             self.m_visTab.putInt("TargetAcquired", 0)
         else:
             self.m_visTab.putInt("TargetAcquired", 1)
             self.m_visTab.putInt("TargetX", int(kp.pt[0]))
             self.m_visTab.putInt("TargetY", int(kp.pt[1]))
->>>>>>> 036c85265e5fd13d86bcab77f175de5a942d73da
 
 

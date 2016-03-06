@@ -1,12 +1,10 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
-
 import java.util.Arrays;
 import java.util.List;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
@@ -17,63 +15,61 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
 
-    // Constructor for SpeedControllers: frontLeftMotor, rearLeftMotor,
-    // frontRightMotor, rearRightMotor
+    public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;         // 100.0 == ~13 ft/sec interpolated from observations
+    public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;         // 150.0 == ~20 ft/sec interpolated from observations
+
     public static RobotDrive robotDrive =
-            new RobotDrive(RobotMap.leftBackMotor, RobotMap.rightBackMotor);
+            new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);
 
-    private double lastTopSpeed=-1.;
-
-    // motors
-    public static List<CANTalon> motors =
-            Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
+    private double maxSpeed = 0;
 
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         System.out.println("ArcadeDrive getControlModes: " +
-        			RobotMap.leftFrontMotor.getControlMode() + "  " +
-        			RobotMap.rightFrontMotor.getControlMode() + "  " +
-        			RobotMap.leftBackMotor.getControlMode() + "  " +
-        			RobotMap.rightBackMotor.getControlMode());
+        			RobotMap.leftMasterMotor.getControlMode() + "  " +
+        			RobotMap.rightMasterMotor.getControlMode());
         setDefaultCommand(new ArcadeDrive());
 
         robotDrive.setSafetyEnabled(true);
-        // inverting motors
-        robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
-
-        robotDrive.setInvertedMotor(MotorType.kRearRight, true);
         robotDrive.stopMotor();
     }
 
-    public void applyThrottle() {
-        double newThrottle = 0.40 * (-1 * Robot.oi.getJoystickDrive().getAxis(Joystick.AxisType.kThrottle)) + 0.60;
-        setMaxOutput(newThrottle);
+    public void arcadeDrive(double driveYstick, double driveXstick) {
+        System.out.println("Arcade drive y: " + driveYstick + ", x " + driveXstick);
+        robotDrive.arcadeDrive(driveYstick, driveXstick);
+        System.out.println("Arcade drive get speed = " + RobotMap.leftMasterMotor.getSpeed());
     }
 
-    public void ignoreThrottle() {
-        setMaxOutput(1.0);
+    public void resetEncoders(){
+        RobotMap.leftMasterMotor.setEncPosition(0);
+        RobotMap.rightMasterMotor.setEncPosition(0);
     }
 
-    private void setMaxOutput(double topSpeed) {
-        if (topSpeed != this.lastTopSpeed) {
-        	SmartDashboard.putNumber("Drivetrain Throttle: ", topSpeed);
-        	robotDrive.setMaxOutput(topSpeed);
-        	this.lastTopSpeed = topSpeed;
+    /*
+     * Methods to get/set maximum top speed for our robot
+     */
+    public double getMaxOutput() {
+
+        if (maxSpeed == 0) {   /* not initialized, yet */
+            return DEFAULT_SPEED_MAX_OUTPUT;
+        }
+        else {
+            return maxSpeed;
         }
     }
 
-    public void arcadeDrive(Joystick stick) {
 
-        robotDrive.arcadeDrive(stick);
-        // checking to see the encoder values
-        // this can be removed later. Used to debug
-        if (motors.size() > 0) {
-            for (int i = 0; i < motors.size(); i++) {
-                SmartDashboard.putNumber("Drivetrain Encoder " + i,
-                					motors.get(i).getEncPosition());
-            }
+    public void setMaxOutput(double maxOutput) {
+
+        if (maxOutput > MAXIMUM_SPEED_MAX_OUTPUT) {
+            maxSpeed = MAXIMUM_SPEED_MAX_OUTPUT;
         }
+        else {
+            maxSpeed = maxOutput;
+        }
+
+        robotDrive.setMaxOutput(maxSpeed);
     }
 
     public void stop() {
@@ -81,14 +77,18 @@ public class DriveTrain extends Subsystem {
     }
 
     public void driveStraight(double speed) {
-        robotDrive.arcadeDrive(speed, 0);
+        RobotMap.leftMasterMotor.set(speed);
+        RobotMap.rightMasterMotor.set(-speed);
     }
 
-    public void turn(boolean left) {
+    public void turn(boolean left, double speed) {
         if (left) {
-            robotDrive.arcadeDrive(0, -.7);
+            RobotMap.leftMasterMotor.set(-speed);
+            RobotMap.rightMasterMotor.set(-speed);
         } else {
-            robotDrive.arcadeDrive(0, .7);
+            System.out.println("Turn right: " + speed);
+            RobotMap.leftMasterMotor.set(speed);
+            RobotMap.rightMasterMotor.set(speed);
         }
     }
 
