@@ -172,6 +172,9 @@ public class AutoCommand1 extends CommandGroup {
             case ROCK_WALL:
                 distance = 100; 
                 break;
+            case PORTCULLIS:
+                distance = 120;
+                break;
             default:
                 distance = 25;
         }
