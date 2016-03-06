@@ -29,7 +29,7 @@ public class AutoRotateDegrees extends Command {
     @Override
     protected void initialize() {
         Robot.driveTrain.setMaxOutput(Robot.driveTrain.getMaxOutput());
-        this.startingGyroValue = imu.getHeading();
+        this.startingGyroValue = imu.getNormalizedHeading();
     }
 
     @Override
@@ -42,12 +42,12 @@ public class AutoRotateDegrees extends Command {
     protected boolean isFinished() {
     	// TODO: will this logic work if robotAngle is negative?
     	double gyroDelta = 0;
-    	double heading = imu.getHeading();
+    	double heading = imu.getNormalizedHeading();
     	if (heading <= 180)
     		gyroDelta = Math.abs(heading - startingGyroValue);
     	else 
     		gyroDelta = Math.abs((360 - heading) - startingGyroValue);
-        System.out.println("Current IMU heading:" + imu.getHeading() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
+        System.out.println("Current IMU heading:" + imu.getNormalizedHeading() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
         return gyroDelta >= robotAngle;
     }
 
