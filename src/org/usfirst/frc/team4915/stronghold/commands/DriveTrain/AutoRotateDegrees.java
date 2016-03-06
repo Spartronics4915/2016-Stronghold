@@ -14,7 +14,7 @@ public class AutoRotateDegrees extends Command {
     RobotDrive robotDrive = DriveTrain.robotDrive;
     private boolean goLeft;
     double robotAngle;
-    public final static double AUTOSPEED = 45.0;
+    public final static double AUTOSPEED = 30.0;
     // creates new IMU variable
     BNO055 imu = RobotMap.imu;
 
@@ -43,12 +43,9 @@ public class AutoRotateDegrees extends Command {
     	// TODO: will this logic work if robotAngle is negative?
     	double gyroDelta = 0;
     	double heading = imu.getNormalizedHeading();
-    	if (heading <= 180)
-    		gyroDelta = Math.abs(heading - startingGyroValue);
-    	else 
-    		gyroDelta = Math.abs((360 - heading) - startingGyroValue);
+    	gyroDelta = Math.abs(heading - startingGyroValue); 
         System.out.println("Current IMU heading:" + imu.getNormalizedHeading() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
-        return gyroDelta >= robotAngle;
+        return gyroDelta >= (robotAngle);
     }
 
     @Override
