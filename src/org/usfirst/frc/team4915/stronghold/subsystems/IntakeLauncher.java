@@ -80,6 +80,9 @@ public class IntakeLauncher extends Subsystem {
     		readSetPoint();
     }
     
+    public boolean IsAlive() {
+    	return this.aimMotor.isAlive();
+    }
 
     // Sets the speed on the flywheels to suck in the boulder
     public void setSpeedIntake() {

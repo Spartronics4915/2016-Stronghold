@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
@@ -42,6 +44,8 @@ public class OI {
     public static final int DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
     public static final int DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 6;
     public static final int DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 4;
+    public static final int PORTCULLIS_BUTTON_NUMBER_UP = 7;
+    public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 9;
 
     // Button numbers for launching related buttons on the mechanism stick
     public static final int KICK_BALL_BUTTON_NUMBER = 3;
@@ -56,7 +60,8 @@ public class OI {
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
     public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
     public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
-
+    
+    
     // Create joysticks for driving and aiming the launcher
     public Joystick driveStick;
     public Joystick aimStick;
@@ -85,6 +90,11 @@ public class OI {
     public JoystickButton scalerReachUpButton;
     public JoystickButton scalerReachDownButton;
     public JoystickButton scalerLiftButton;
+    
+    //PORTCULLIS
+    
+    public JoystickButton portcullisButtonUp;
+    public JoystickButton portcullisButtonDown;
 
     // variables for the sendable chooser
     public SendableChooser startingFieldPosition;
@@ -112,6 +122,7 @@ public class OI {
         barrierType.addObject("Ramparts", Autonomous.Type.RAMPARTS);
         barrierType.addObject("Rough Terrain", Autonomous.Type.ROUGH_TERRAIN);
         barrierType.addObject("Rock Wall", Autonomous.Type.ROCK_WALL);
+        barrierType.addObject("Portcullis ", Autonomous.Type.PORTCULLIS);
         SmartDashboard.putData("AutoBarrierType", barrierType);
 
         // SendableChooser for the strategy
@@ -126,6 +137,10 @@ public class OI {
         this.aimStick = new Joystick(LAUNCHER_STICK_PORT);
 
         // Bind module commands to buttons
+        if (ModuleManager.PORTCULLIS_MODULE_ON){
+            initializeButton (this.portcullisButtonUp, driveStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisMoveUp());
+            initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
+        }
         if (ModuleManager.DRIVE_MODULE_ON) {
 
         }
