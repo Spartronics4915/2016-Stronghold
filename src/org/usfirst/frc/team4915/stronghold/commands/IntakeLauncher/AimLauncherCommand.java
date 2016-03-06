@@ -9,7 +9,7 @@ public class AimLauncherCommand extends Command {
     public AimLauncherCommand() {
         requires(Robot.intakeLauncher);
     }
-
+    
     protected void initialize() {
         
     }

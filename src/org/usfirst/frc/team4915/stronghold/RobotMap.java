@@ -189,8 +189,8 @@ public class RobotMap {
                 LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
                 System.out.println("ModuleManager RobotMap initialized: IntakeLauncher");
             } else {
-                ModuleManager.INTAKELAUNCHER_MODULE_ON = false;
-                System.out.println("RobotMap disabled IntakeLauncher (SRX 14 not found)");
+                //ModuleManager.INTAKELAUNCHER_MODULE_ON = false;
+                //System.out.println("RobotMap disabled IntakeLauncher (SRX 14 not found)");
             }
 
         }
