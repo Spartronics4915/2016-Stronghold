@@ -44,25 +44,27 @@ public class ArcadeDrive extends Command {
         }
 
         if (vs != null && vs.wantsControl()) {
-        	if(!vs.DriveLockedOnTarget) {
+        	//System.out.println("vs taking control!");
+        	if(vs.DriveLockedOnTarget) {
+        		// wait for launcher to shoot and exit auto mode
+                // or toggle AutoAim
+                Robot.driveTrain.stop(); // needed to keep driveTrain alive
+        	}
+            else {
 	            if (vs.RelativeTargetingMode == 1) {
-
 	                if (Math.abs(vs.TargetX) < 3) {
+	                	//System.out.println("target locked. stopping");
 	                    Robot.driveTrain.stop(); // close enough
 	                }
 	                else {
 	                    Robot.driveTrain.autoturn(vs.TargetX < 0);
 	                }
-	            } else {
+	            } 
+	            else {
 	                /* absolute autotargeting */
 	                Robot.driveTrain.turnToward(vs.TargetX);
 	            }
-        	}
-            else {
-                // wait for launcher to shoot and exit auto mode
-                // or toggle AutoAim
-                Robot.driveTrain.stop(); // needed to keep driveTrain alive
-            }
+        	}                
         }
         else {
 
