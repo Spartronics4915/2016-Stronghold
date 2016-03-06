@@ -159,9 +159,12 @@ public class RobotMap {
              */
             boolean intakeFound = false;
             for (int i = 0; i < canDevices.size(); i++) {
-                if (canDevices.get(i) == "SRX 14") {
+                if (canDevices.get(i).equals("SRX 14")) {
                     intakeFound = true;
                     break;
+                }                  
+                else {
+                  System.out.println(canDevices.get(i));
                 }
             }
             if (intakeFound) {
