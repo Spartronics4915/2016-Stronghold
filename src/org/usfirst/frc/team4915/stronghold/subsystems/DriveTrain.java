@@ -93,6 +93,7 @@ public class DriveTrain extends Subsystem {
 
     // autoturn is just a gentler version of (joystick) turn.
     public void autoturn(boolean left) {
+    	//System.out.println("autoturning left: " + left);
         if (left) {
             robotDrive.arcadeDrive(0, -.55);
         } else {
@@ -103,9 +104,9 @@ public class DriveTrain extends Subsystem {
     public void turnToward(double target) {
         double heading = RobotMap.imu.getNormalizedHeading();
         double delta =  target - heading;
-        System.out.println("target: " + target +
+        /*System.out.println("target: " + target +
                            " heading: " + heading +
-                           " delta: " + delta);
+                           " delta: " + delta);*/
         SmartDashboard.putNumber("Vision Delta", delta);
         if (Math.abs(delta) < 5.0) {
             this.stop();
