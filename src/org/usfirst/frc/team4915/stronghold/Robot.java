@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team4915.stronghold;
 import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
@@ -46,6 +47,10 @@ public class Robot extends IterativeRobot {
         RobotMap.init(); // 1. Initialize RobotMap prior to initializing modules
 
         // 2. conditionally create the modules
+        if (ModuleManager.PORTCULLIS_MODULE_ON){
+            new PortcullisMoveUp().start();
+            
+        }
         if (ModuleManager.DRIVE_MODULE_ON) {
             driveTrain = new DriveTrain();
             SmartDashboard.putString("Drivetrain Module", "initialized");

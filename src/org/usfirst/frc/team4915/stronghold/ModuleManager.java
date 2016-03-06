@@ -13,4 +13,5 @@ public final class ModuleManager {
 
     public static final boolean SCALING_MODULE_ON = false;
     public static final boolean GEARSHIFT_MODULE_ON = false;
+    public static final boolean PORTCULLIS_MODULE_ON = false;
 }
