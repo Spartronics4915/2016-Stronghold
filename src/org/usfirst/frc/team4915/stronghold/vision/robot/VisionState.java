@@ -54,7 +54,8 @@ public class VisionState implements NamedSendable {
 
         	if (key.equals("~TYPE~")) {
                 return;
-            } else if (key.equals("AutoAimEnabled")) {
+            } 
+        	else if (key.equals("AutoAimEnabled")) {
                 s_instance.AutoAimEnabled = (boolean) value;
             }
             else if (key.equals("RelativeTargetingMode")) {

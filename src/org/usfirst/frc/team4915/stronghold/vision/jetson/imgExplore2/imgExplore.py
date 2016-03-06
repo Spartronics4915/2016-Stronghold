@@ -242,7 +242,7 @@ class App:
 
             if not vsrc:
                 exit(1)
-            else:
+            elif 0:
                 ret1 = vsrc.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
                 ret2 = vsrc.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
                 w = vsrc.get(cv2.CAP_PROP_FRAME_WIDTH)
@@ -492,7 +492,7 @@ class App:
                     bp.filterByInertia = False
                     bp.minInertiaRatio = 0.01
 
-                    detector = cv2.SimpleBlobDetector_create(bp)
+                    detector = cv2.SimpleBlobDetector(bp)
                     self.algostate["blobdetector"] = detector
                 else:
                     detector = self.algostate["blobdetector"]
@@ -600,22 +600,23 @@ class App:
     def postProcessFrame(self, t0, kpts, lines, contours,base=None):
         self.frameT.update(common.clock() - t0)
         self.robotCnx.SetFPS(int(1 / self.frameT.value))
-        if not self.args.nodisplay:
-            if base:
-                if self.cmode == 'rgb':
-                    str = "%s     (%.2f ms)" % \
-                                (base,self.frameT.value*1000)
-                else:
-                    str = "%s[%s] (%.2f ms)" % \
-                            (base,self.cmode,self.frameT.value*1000)
+        if not self.args.nodisplay and self.args.stashinterval == 0:
+        	return
+        if base:
+            if self.cmode == 'rgb':
+                str = "%s     (%.2f ms)" % \
+                            (base,self.frameT.value*1000)
             else:
-                if not self.latency.value:
-                    self.latency.value = 0
-                str = "latency       : %02.2f ms, frame interval %02.2f" % \
-                    (self.latency.value*1000, self.frameT.value*1000)
-                
-            self.drawStr(self.frame, (20, 20), str)
-            self.showImg(self.frame, kpts, lines, contours)
+                str = "%s[%s] (%.2f ms)" % \
+                        (base,self.cmode,self.frameT.value*1000)
+        else:
+            if not self.latency.value:
+                self.latency.value = 0
+            str = "latency       : %02.2f ms, frame interval %02.2f" % \
+                (self.latency.value*1000, self.frameT.value*1000)
+            
+        self.drawStr(self.frame, (20, 20), str)
+        self.showImg(self.frame, kpts, lines, contours)
 
     def showImg(self, frame, keypoints, lines, contours):
         if self.args.nodisplay and self.args.stashinterval == 0:
