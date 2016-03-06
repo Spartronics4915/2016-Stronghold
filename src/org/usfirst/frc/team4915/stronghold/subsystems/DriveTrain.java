@@ -15,18 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
 
-<<<<<<< HEAD
-    // Constructor for SpeedControllers: frontLeftMotor, rearLeftMotor,
-    // frontRightMotor, rearRightMotor
-    public static RobotDrive robotDrive =
-            new RobotDrive(RobotMap.leftBackMotor, RobotMap.rightBackMotor);
-    public double joystickThrottle;
 
-    private double lastTopSpeed=-1.;
-    // motors
-    public static List<CANTalon> motors =
-            Arrays.asList(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
-=======
     public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;         // 100.0 == ~13 ft/sec interpolated from observations
     public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;         // 150.0 == ~20 ft/sec interpolated from observations
 
@@ -34,8 +23,6 @@ public class DriveTrain extends Subsystem {
             new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);
 
     private double maxSpeed = 0;
->>>>>>> 81e0108... position mode with autonomous drives striaght!
-
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
