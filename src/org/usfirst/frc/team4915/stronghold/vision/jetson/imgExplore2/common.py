@@ -185,8 +185,9 @@ class RectSelector:
         if not self.drag_rect:
             return False
         x0, y0, x1, y1 = self.drag_rect
-        cv2.rectangle(vis, (x0, y0), (x1, y1), (0, 255, 0), 2)
+        cv2.rectangle(vis, (x0, y0), (x1, y1), (0, 255, 0), 1)
         return True
+
     @property
     def dragging(self):
         return self.drag_rect is not None
