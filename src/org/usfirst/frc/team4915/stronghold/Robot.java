@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team4915.stronghold;
 import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
@@ -104,11 +105,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
 
-        // schedule the autonomous command
-
-        
-        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
-                   (Autonomous.Position) oi.startingFieldPosition.getSelected());
+        // schedule the autonomous command        
+       autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
+                (Autonomous.Position) oi.startingFieldPosition.getSelected());
         
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
