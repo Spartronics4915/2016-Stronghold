@@ -41,12 +41,17 @@ public class IntakeLauncher extends Subsystem {
     private double launcherIntakeHeightTicks = 10.0; // in
                                                       // potentiometer
                                                       // ticks
+    
+    private final double MAX_POTENTIOMETER_ERROR = 20;
+    
+    
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
 
     private double setPoint; // in potentiometer ticks
     private boolean autoCalibrate = false;
+    private boolean isPotentiometerScrewed = false;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -71,13 +76,9 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public IntakeLauncher() {
-    	if(IsAlive())
     		readSetPoint();
     }
     
-    public boolean IsAlive() {
-    	return this.intakeLeftMotor.isAlive();
-    }
 
     // Sets the speed on the flywheels to suck in the boulder
     public void setSpeedIntake() {
@@ -185,6 +186,7 @@ public class IntakeLauncher extends Subsystem {
         if (autoCalibrate) {
             autoCalibratePotentiometer();
         }
+        dangerTest();
     }
 
     public void launcherSetNeutralPosition() {
@@ -207,6 +209,12 @@ public class IntakeLauncher extends Subsystem {
         if (getSetPoint() < launcherMinHeightTicks) {
             setPoint = -launcherMinHeightTicks;
         }
+    }
+    
+    private void dangerTest() {
+        if((isLauncherAtBottom() && Math.abs(getPosition() - launcherMinHeightTicks) > MAX_POTENTIOMETER_ERROR) || (isLauncherAtTop() && Math.abs(getPosition() - launcherMaxHeightTicks) > MAX_POTENTIOMETER_ERROR)) {
+            isPotentiometerScrewed = true;
+        } 
     }
 
     private double degreesToTicks(double degrees) {
@@ -239,10 +247,6 @@ public class IntakeLauncher extends Subsystem {
     public boolean isLauncherAtBottom() {
         return aimMotor.isFwdLimitSwitchClosed();
     }
-
-    public boolean isLaunchReady() {
-        return intakeLeftMotor.getBusVoltage() > LAUNCH_SPEED;
-    }
     
     public boolean isBoulderLoaded() {
         return boulderSwitch.get();
@@ -255,9 +259,9 @@ public class IntakeLauncher extends Subsystem {
     public double getSetPoint() {
         return Math.abs(setPoint); 
     }
-
-    public CANTalon getIntakeMotorLeft() {
-        return intakeLeftMotor;
+    
+    public boolean getIsPotentiometerScrewed() {
+        return isPotentiometerScrewed;
     }
 
     public void backUpJoystickMethod() {

@@ -135,7 +135,7 @@ public class MoveStraightPositionModeCommand extends Command {
         System.out.println("in isMotorFinished");
         double currentPosition = Math.abs(motors.get(i).getEncPosition());
         System.out.println("Motor " + i + ": current position: " + currentPosition + ", desired position " + desiredPosition);
-
+        
         // drive backwards
         if (this.inputDistanceInches < 0) {
             finished = currentPosition <= desiredPosition;

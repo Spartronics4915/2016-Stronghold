@@ -192,13 +192,11 @@ public class Robot extends IterativeRobot {
 	
 	public void updateLauncherStatus() {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            SmartDashboard.putNumber("Launcher Set Point: ", intakeLauncher.aimMotor.getPosition());
             SmartDashboard.putNumber("aimMotor Potentiometer: ", intakeLauncher.getPosition());
 	        SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
 	        SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
-	        SmartDashboard.putNumber("Intake Motor Left Voltage: ", intakeLauncher.getIntakeMotorLeft().getBusVoltage());
-	        SmartDashboard.putBoolean("Launch Wheels Ready to Launch: ", intakeLauncher.isLaunchReady());
 	        SmartDashboard.putBoolean("Boulder Limit Switch: ", intakeLauncher.boulderSwitch.get()); 
+	        SmartDashboard.putBoolean("Potentiometer might be broken", intakeLauncher.getIsPotentiometerScrewed());
         }
 	}
 	
