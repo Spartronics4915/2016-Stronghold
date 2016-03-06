@@ -22,7 +22,6 @@ public class DriveTrain extends Subsystem {
             new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);
 
     private double maxSpeed = 0;
-
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
