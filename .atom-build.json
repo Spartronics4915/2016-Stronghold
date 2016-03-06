@@ -1,0 +1,8 @@
+{
+    "cmd": "ant",
+    "name": "Stronghold 2016",
+    "sh": true,
+    "errorMatch": [
+         "(?<file>([A-Za-z]:[-/\\\\.A-Za-z0-9]*)):(?<line>[0-9]*)"
+        ]
+}

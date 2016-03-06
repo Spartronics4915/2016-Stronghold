@@ -7,7 +7,6 @@ import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoRotateDegrees extends Command {
 
@@ -15,6 +14,7 @@ public class AutoRotateDegrees extends Command {
     RobotDrive robotDrive = DriveTrain.robotDrive;
     private boolean goLeft;
     double robotAngle;
+    public final static double AUTOSPEED = 45.0;
     // creates new IMU variable
     BNO055 imu = RobotMap.imu;
 
@@ -28,14 +28,14 @@ public class AutoRotateDegrees extends Command {
 
     @Override
     protected void initialize() {
-        robotDrive.setMaxOutput(1.0); // max the throttle
+        Robot.driveTrain.setMaxOutput(Robot.driveTrain.getMaxOutput());
         this.startingGyroValue = imu.getHeading();
     }
 
     @Override
     public void execute() {
     	System.out.println("Executing the rotate degrees");
-        Robot.driveTrain.turn(goLeft);
+        Robot.driveTrain.turn(goLeft, AUTOSPEED);
     }
 
     @Override

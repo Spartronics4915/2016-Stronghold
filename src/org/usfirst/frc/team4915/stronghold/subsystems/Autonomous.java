@@ -19,11 +19,8 @@ public class Autonomous extends Subsystem {
         MOAT,
         RAMPARTS,
         ROUGH_TERRAIN,
-        ROCK_WALL,
-        CHEVAL_DE_FRISE,
-        PORTCULLIS,
-        SALLY_PORT,
-        DRAWBRIDGE
+        ROCK_WALL
+        
     }
 
     public static enum Strat {

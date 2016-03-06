@@ -6,6 +6,7 @@ package org.usfirst.frc.team4915.stronghold;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.can.CANJNI;
 
 public class CANProbe {

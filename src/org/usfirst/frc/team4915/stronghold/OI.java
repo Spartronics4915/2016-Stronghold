@@ -112,9 +112,6 @@ public class OI {
         barrierType.addObject("Ramparts", Autonomous.Type.RAMPARTS);
         barrierType.addObject("Rough Terrain", Autonomous.Type.ROUGH_TERRAIN);
         barrierType.addObject("Rock Wall", Autonomous.Type.ROCK_WALL);
-        barrierType.addObject("Cheval", Autonomous.Type.CHEVAL_DE_FRISE);
-        barrierType.addObject("Sally Port", Autonomous.Type.SALLY_PORT);
-        barrierType.addObject("Drawbridge", Autonomous.Type.DRAWBRIDGE);
         SmartDashboard.putData("AutoBarrierType", barrierType);
 
         // SendableChooser for the strategy
@@ -130,7 +127,7 @@ public class OI {
 
         // Bind module commands to buttons
         if (ModuleManager.DRIVE_MODULE_ON) {
-    
+
         }
 
         if (ModuleManager.GEARSHIFT_MODULE_ON) {
@@ -172,7 +169,7 @@ public class OI {
         }
 
         if (ModuleManager.IMU_MODULE_ON) {
-            System.out.println("ModuleManager OI: Initialized IMU");
+            // IMU is initialized in RobotMap.java (and reported)
         }
 
         initializeButton(this.lightSwitchButton, aimStick, LIGHT_SWITCH_BUTTON_NUMBER, new LightSwitchCommand());
