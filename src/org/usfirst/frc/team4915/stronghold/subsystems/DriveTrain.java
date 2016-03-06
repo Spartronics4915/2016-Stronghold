@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
 
-
     public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;         // 100.0 == ~13 ft/sec interpolated from observations
     public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;         // 150.0 == ~20 ft/sec interpolated from observations
 
@@ -33,21 +32,21 @@ public class DriveTrain extends Subsystem {
 
         robotDrive.setSafetyEnabled(true);
         robotDrive.stopMotor();
-    }    
+    }
 
     public void arcadeDrive(double driveYstick, double driveXstick) {
         System.out.println("Arcade drive y: " + driveYstick + ", x " + driveXstick);
         robotDrive.arcadeDrive(driveYstick, driveXstick);
         System.out.println("Arcade drive get speed = " + RobotMap.leftMasterMotor.getSpeed());
     }
-    
+
     public void resetEncoders(){
         RobotMap.leftMasterMotor.setEncPosition(0);
         RobotMap.rightMasterMotor.setEncPosition(0);
     }
-       
+
     /*
-     * Methods to get/set maximum top speed for our robot 
+     * Methods to get/set maximum top speed for our robot
      */
     public double getMaxOutput() {
 
@@ -71,7 +70,7 @@ public class DriveTrain extends Subsystem {
 
         robotDrive.setMaxOutput(maxSpeed);
     }
-    
+
     public void stop() {
         robotDrive.stopMotor();
     }
