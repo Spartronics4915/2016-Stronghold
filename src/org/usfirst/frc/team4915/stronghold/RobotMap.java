@@ -52,17 +52,17 @@ public class RobotMap {
     public static CANTalon rightMasterMotor;
     public static CANTalon leftFollowerMotor;
     public static CANTalon rightFollowerMotor;
-    
+
     //motors for portcullis
     public static CANTalon portcullisLeftMasterMotor;
     public static CANTalon portcullisRightFollowerMotor;
-    
+
     public static final int PORTCULLIS_MASTER_MOTOR = 0;
     public static final int PORTCULLIS_FOLLOWER_MOTOR = 1;
-    
+
     public static int PORTCULLIS_TOP = 100;
     public static int PORTCULLIS_BOT = 0;
-    
+
     //portcullis limit switch
     public static DigitalInput portcullisSwitchTop;
     public static DigitalInput portcullisSwitchBottom;
@@ -97,10 +97,10 @@ public class RobotMap {
      * sprocket is connected to encoder via 3:1 geartrain (1 turn of 15T
      * sprocket is 3 turns of encoder). Encoder is 256 cycles per revolution.
      * Multiply by 4 to get 1024 counts per revolution at Talon.
-     * 
+     *
      * 1 wheel rotation = (48 / 15) * 3 * 1024 encoder ticks = 9830.4 encoder
      * ticks per wheel revolution
-     * 
+     *
      * Verified experimentally by rotating a wheel 360 degrees and comparing
      * before and after tick counts.
      */
@@ -114,25 +114,25 @@ public class RobotMap {
         CANProbe cp = new CANProbe();
         ArrayList<String> canDevices = cp.Find();
         System.out.println("RobotMap.init() CAN devices:" + canDevices);
-        
+
         if (ModuleManager.PORTCULLIS_MODULE_ON){
             //instantiate the motor controllers
             portcullisLeftMasterMotor = new CANTalon (PORTCULLIS_MASTER_MOTOR);
             portcullisRightFollowerMotor = new CANTalon (PORTCULLIS_FOLLOWER_MOTOR);
-            
+
             //master and follower
             portcullisRightFollowerMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
             portcullisRightFollowerMotor.set(portcullisLeftMasterMotor.getDeviceID());
-            
-            //set up speed control mode 
+
+            //set up speed control mode
             portcullisRightFollowerMotor.changeControlMode(CANTalon.TalonControlMode.Position);
             portcullisLeftMasterMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-            
+
             portcullisLeftMasterMotor.setForwardSoftLimit(PORTCULLIS_TOP);
             portcullisLeftMasterMotor.setReverseSoftLimit(PORTCULLIS_BOT);
             portcullisLeftMasterMotor.enableForwardSoftLimit(true);
             portcullisLeftMasterMotor.enableReverseSoftLimit(true);
-            
+
         }
         // conditionally initialize the modules
         if (ModuleManager.DRIVE_MODULE_ON) {
@@ -165,7 +165,7 @@ public class RobotMap {
             // STEP 5: Set PID values & closed loop error
             leftMasterMotor.setPID(0.22, 0, 0);
             rightMasterMotor.setPID(0.22, 0, 0);
-            
+
 
             // Add ramp up rate
             leftMasterMotor.setVoltageRampRate(48.0); // max allowable voltage
@@ -181,7 +181,7 @@ public class RobotMap {
             System.out.println("ModuleManager RobotMap Initialized: DriveTrain!");
 
         }
-        
+
         if (ModuleManager.GEARSHIFT_MODULE_ON) {
             doubleSolenoid = new DoubleSolenoid(SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
         }
@@ -193,12 +193,10 @@ public class RobotMap {
              */
             boolean intakeFound = false;
             for (int i = 0; i < canDevices.size(); i++) {
-                if (canDevices.get(i).equals("SRX 16")) {
+                String dev = canDevices.get(i);
+                if (dev.equals("SRX 16") || dev.equals("SRC 14")) {
                     intakeFound = true;
                     break;
-                }                  
-                else {
-                  System.out.println(canDevices.get(i));
                 }
             }
             if (intakeFound) {
