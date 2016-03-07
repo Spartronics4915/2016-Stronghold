@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
@@ -9,6 +8,8 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCom
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCommand1 extends CommandGroup {
 
@@ -158,19 +159,19 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 100; 
+                distance = 130; 
                 break;
             case MOAT:
-                distance = 100; 
+                distance = 145; 
                 break;
             case RAMPARTS:
                 distance = 100; 
                 break;
             case ROUGH_TERRAIN:
-                distance = 90; 
+                distance = 180; 
                 break;
             case ROCK_WALL:
-                distance = 100; 
+                distance = 150; 
                 break;
             case PORTCULLIS:
                 distance = 120;

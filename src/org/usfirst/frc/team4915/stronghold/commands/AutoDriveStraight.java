@@ -1,15 +1,16 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
+
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoDriveStraight extends Command {
 
     private StringBuilder _sb = new StringBuilder();
 
-    public final static double AUTOSPEED = 25.0;      // ~3-4 ft/sec
+    public final static double AUTOSPEED = 40.0;      // ~3-4 ft/sec
 
     private double desiredDistanceTicks;
     

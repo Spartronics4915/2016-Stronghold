@@ -1,10 +1,15 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
+=======
+/*
+ * 
+>>>>>>> c0cfe573a4258530e4eb860b6da772cfbcbb53fa
  */
 public class PortcullisMoveDown extends Command {
 
