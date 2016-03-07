@@ -193,7 +193,7 @@ public class RobotMap {
              */
             boolean intakeFound = false;
             for (int i = 0; i < canDevices.size(); i++) {
-                if (canDevices.get(i).equals("SRX 14")) {
+                if (canDevices.get(i).equals("SRX 16")) {
                     intakeFound = true;
                     break;
                 }                  

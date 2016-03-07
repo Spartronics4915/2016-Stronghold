@@ -10,10 +10,12 @@ public class StopWheelsCommand extends Command {
     // this command stops the intake flywheels
     public StopWheelsCommand() {
         requires(Robot.intakeLauncher);
+        
     }
 
     @Override
     protected void initialize() {
+        System.out.println("stop wheels command");
         SmartDashboard.putString("Flywheels spinning ", "nowhere");
         Robot.intakeLauncher.stopWheels();
     }

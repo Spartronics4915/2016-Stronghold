@@ -9,11 +9,12 @@ public class SpinIntakeWheelsOutForAutoCommand extends Command {
     public SpinIntakeWheelsOutForAutoCommand() {
         requires(Robot.intakeLauncher);
         setTimeout(2);
+        
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        
+        System.out.println("Auto launch command");
     }
 
     // Called repeatedly when this Command is scheduled to run
