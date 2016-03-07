@@ -6,7 +6,7 @@ public class IntakeBallCommandGroup extends CommandGroup {
     
     public  IntakeBallCommandGroup() {
         addSequential(new RetractLauncherServosCommand());
-        addParallel(new LauncherGoToIntakePositionCommand());
+        addParallel(new LauncherGoToTravelPositionCommand());
         addParallel(new SpinIntakeWheelsInwardCommand());
     }
 }
