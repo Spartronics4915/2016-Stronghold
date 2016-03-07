@@ -3,6 +3,7 @@ package org.usfirst.frc.team4915.stronghold.subsystems;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -32,14 +33,14 @@ public class IntakeLauncher extends Subsystem {
     private final double SERVO_LEFT_NEUTRAL_POSITION = .75; // in servo units
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4; // in servo units
 
-    private double launcherMaxHeightTicks = 94.0; // in potentiometer
+    private double launcherMaxHeightTicks = 829.0; // in potentiometer
                                                    // ticks
-    private double launcherMinHeightTicks = 5.0; // in potentiometer
+    private double launcherMinHeightTicks = 570.0; // in potentiometer
                                                    // ticks
-    private double launcherNeutralHeightTicks = 50.0; // in
+    private double launcherNeutralHeightTicks = 719.0; // in
                                                        // potentiometer
                                                        // ticks
-    private double launcherIntakeHeightTicks = 10.0; // in
+    private double launcherTravelHeightTicks = 585.0; // in
                                                       // potentiometer
                                                       // ticks
     
@@ -173,6 +174,8 @@ public class IntakeLauncher extends Subsystem {
     // controls motion
     public void aimLauncher() {
     	//System.out.println("aimLauncher called");
+        System.out.println(getPosition());
+        System.out.println(setPoint);
         SmartDashboard.putNumber("Launch Angle", (int) ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
         	//System.out.println("Tracking vision!");
@@ -184,7 +187,7 @@ public class IntakeLauncher extends Subsystem {
 
     // sets the launcher position to the current set point
     private void moveToSetPoint() {
-        //keepSetPointInRange();
+        keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
         if (autoCalibrate) {
@@ -198,7 +201,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void launcherSetIntakePosition() {
-        setSetPoint(-launcherIntakeHeightTicks);
+        setSetPoint(-launcherTravelHeightTicks);
     }
 
     public void launcherJumpToAngle(double angle) {
@@ -233,7 +236,7 @@ public class IntakeLauncher extends Subsystem {
 
     private void autoCalibratePotentiometer() {
         double neutralHeightRatio = (launcherNeutralHeightTicks - launcherMinHeightTicks) / (launcherMaxHeightTicks - launcherMinHeightTicks);
-        double intakeHeightRatio = (launcherIntakeHeightTicks - launcherMinHeightTicks) / (launcherMaxHeightTicks - launcherMinHeightTicks);
+        double intakeHeightRatio = (launcherTravelHeightTicks - launcherMinHeightTicks) / (launcherMaxHeightTicks - launcherMinHeightTicks);
         if (isLauncherAtBottom()) {
             launcherMinHeightTicks = getPosition();
         }
@@ -241,7 +244,7 @@ public class IntakeLauncher extends Subsystem {
             launcherMaxHeightTicks = getPosition();
         }
         launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * neutralHeightRatio;
-        launcherIntakeHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * intakeHeightRatio;
+        launcherTravelHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * intakeHeightRatio;
     }
 
     public boolean isLauncherAtTop() {

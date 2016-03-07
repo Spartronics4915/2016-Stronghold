@@ -17,10 +17,12 @@ public class SpinIntakeWheelsOutCommand extends Command {
     public SpinIntakeWheelsOutCommand() {
         requires(Robot.intakeLauncher);
         startTime = (int)System.currentTimeMillis();
+ 
     }
 
     @Override
     protected void initialize() {
+        System.out.println("Spin wheels out command");
         setTimeout(10); // TODO
         SmartDashboard.putString("Flywheels spinning ", "outward");
         SmartDashboard.putBoolean("Launch Ready ", System.currentTimeMillis() - startTime > WAIT_DURATION);

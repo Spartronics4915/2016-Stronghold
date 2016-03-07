@@ -11,6 +11,7 @@ public class ActivateLauncherServosCommand extends Command {
     }
 
     protected void initialize() {
+        System.out.println("Aim Launcher Servos");
         Robot.intakeLauncher.activateLauncherServos();
     }
 
