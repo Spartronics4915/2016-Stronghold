@@ -11,10 +11,11 @@ public class BackUpJoystickControlCommand extends Command {
 
     public BackUpJoystickControlCommand() {
         requires(Robot.intakeLauncher);
+        
     }
 
     protected void initialize() {
-
+        System.out.println("Back up Joystick Command");
     }
 
     protected void execute() {

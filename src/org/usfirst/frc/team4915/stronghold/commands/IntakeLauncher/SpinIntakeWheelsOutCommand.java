@@ -10,14 +10,22 @@ public class SpinIntakeWheelsOutCommand extends Command {
     // this command spins the launch wheels outwards so they will launch the
     // ball
 
+    boolean areLaunchWheelsReady;
+    int startTime;
+    final int WAIT_DURATION = 1500;
+    
     public SpinIntakeWheelsOutCommand() {
-        requires(Robot.intakeLauncher); 
+        requires(Robot.intakeLauncher);
+        startTime = (int)System.currentTimeMillis();
+ 
     }
 
     @Override
     protected void initialize() {
+        System.out.println("Spin wheels out command");
         setTimeout(10); // TODO
         SmartDashboard.putString("Flywheels spinning ", "outward");
+        SmartDashboard.putBoolean("Launch Ready ", System.currentTimeMillis() - startTime > WAIT_DURATION);
     }
 
     @Override

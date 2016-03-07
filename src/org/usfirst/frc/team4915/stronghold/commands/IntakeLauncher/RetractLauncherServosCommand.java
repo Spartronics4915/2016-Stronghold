@@ -12,6 +12,7 @@ public class RetractLauncherServosCommand extends Command {
 
     protected void initialize() {
         Robot.intakeLauncher.retractLauncherServos();
+        System.out.println("Retract Launcher Servos");
     }
 
     protected void execute() {

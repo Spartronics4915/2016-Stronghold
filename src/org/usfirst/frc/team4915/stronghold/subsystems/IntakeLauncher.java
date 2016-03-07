@@ -3,6 +3,7 @@ package org.usfirst.frc.team4915.stronghold.subsystems;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.BackUpJoystickControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -32,22 +33,27 @@ public class IntakeLauncher extends Subsystem {
     private final double SERVO_LEFT_NEUTRAL_POSITION = .75; // in servo units
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4; // in servo units
 
-    private double launcherMaxHeightTicks = 94.0; // in potentiometer
+    private double launcherMaxHeightTicks = 829.0; // in potentiometer
                                                    // ticks
-    private double launcherMinHeightTicks = 5.0; // in potentiometer
+    private double launcherMinHeightTicks = 570.0; // in potentiometer
                                                    // ticks
-    private double launcherNeutralHeightTicks = 50.0; // in
+    private double launcherNeutralHeightTicks = 719.0; // in
                                                        // potentiometer
                                                        // ticks
-    private double launcherIntakeHeightTicks = 10.0; // in
+    private double launcherTravelHeightTicks = 585.0; // in
                                                       // potentiometer
                                                       // ticks
+    
+    private final double MAX_POTENTIOMETER_ERROR = 20;
+    
+    
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
 
     private double setPoint; // in potentiometer ticks
     private boolean autoCalibrate = false;
+    private boolean isPotentiometerScrewed = false;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -72,7 +78,6 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public IntakeLauncher() {
-    	if(IsAlive())
     		readSetPoint();
     }
     
@@ -169,6 +174,8 @@ public class IntakeLauncher extends Subsystem {
     // controls motion
     public void aimLauncher() {
     	//System.out.println("aimLauncher called");
+        System.out.println(getPosition());
+        System.out.println(setPoint);
         SmartDashboard.putNumber("Launch Angle", (int) ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
         	//System.out.println("Tracking vision!");
@@ -180,12 +187,13 @@ public class IntakeLauncher extends Subsystem {
 
     // sets the launcher position to the current set point
     private void moveToSetPoint() {
-        //keepSetPointInRange();
+        keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
         if (autoCalibrate) {
             autoCalibratePotentiometer();
         }
+        dangerTest();
     }
 
     public void launcherSetNeutralPosition() {
@@ -193,7 +201,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void launcherSetIntakePosition() {
-        setSetPoint(-launcherIntakeHeightTicks);
+        setSetPoint(-launcherTravelHeightTicks);
     }
 
     public void launcherJumpToAngle(double angle) {
@@ -209,6 +217,12 @@ public class IntakeLauncher extends Subsystem {
             setPoint = -launcherMinHeightTicks;
         }
     }
+    
+    private void dangerTest() {
+        if((isLauncherAtBottom() && Math.abs(getPosition() - launcherMinHeightTicks) > MAX_POTENTIOMETER_ERROR) || (isLauncherAtTop() && Math.abs(getPosition() - launcherMaxHeightTicks) > MAX_POTENTIOMETER_ERROR)) {
+            isPotentiometerScrewed = true;
+        } 
+    }
 
     private double degreesToTicks(double degrees) {
         double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
@@ -222,7 +236,7 @@ public class IntakeLauncher extends Subsystem {
 
     private void autoCalibratePotentiometer() {
         double neutralHeightRatio = (launcherNeutralHeightTicks - launcherMinHeightTicks) / (launcherMaxHeightTicks - launcherMinHeightTicks);
-        double intakeHeightRatio = (launcherIntakeHeightTicks - launcherMinHeightTicks) / (launcherMaxHeightTicks - launcherMinHeightTicks);
+        double intakeHeightRatio = (launcherTravelHeightTicks - launcherMinHeightTicks) / (launcherMaxHeightTicks - launcherMinHeightTicks);
         if (isLauncherAtBottom()) {
             launcherMinHeightTicks = getPosition();
         }
@@ -230,7 +244,7 @@ public class IntakeLauncher extends Subsystem {
             launcherMaxHeightTicks = getPosition();
         }
         launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * neutralHeightRatio;
-        launcherIntakeHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * intakeHeightRatio;
+        launcherTravelHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * intakeHeightRatio;
     }
 
     public boolean isLauncherAtTop() {
@@ -239,10 +253,6 @@ public class IntakeLauncher extends Subsystem {
 
     public boolean isLauncherAtBottom() {
         return aimMotor.isFwdLimitSwitchClosed();
-    }
-
-    public boolean isLaunchReady() {
-        return intakeLeftMotor.getBusVoltage() > LAUNCH_SPEED;
     }
     
     public boolean isBoulderLoaded() {
@@ -256,9 +266,9 @@ public class IntakeLauncher extends Subsystem {
     public double getSetPoint() {
         return Math.abs(setPoint); 
     }
-
-    public CANTalon getIntakeMotorLeft() {
-        return intakeLeftMotor;
+    
+    public boolean getIsPotentiometerScrewed() {
+        return isPotentiometerScrewed;
     }
 
     public void backUpJoystickMethod() {

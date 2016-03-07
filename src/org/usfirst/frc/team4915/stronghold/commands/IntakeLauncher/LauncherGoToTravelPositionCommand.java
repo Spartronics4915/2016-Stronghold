@@ -4,9 +4,9 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class LauncherGoToIntakePositionCommand extends Command {
+public class LauncherGoToTravelPositionCommand extends Command {
 
-    public LauncherGoToIntakePositionCommand() {
+    public LauncherGoToTravelPositionCommand() {
 
     }
 

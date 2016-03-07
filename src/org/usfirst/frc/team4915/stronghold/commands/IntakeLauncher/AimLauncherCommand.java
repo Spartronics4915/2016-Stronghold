@@ -9,15 +9,13 @@ public class AimLauncherCommand extends Command {
     public AimLauncherCommand() {
         requires(Robot.intakeLauncher);
     }
-
+    
     protected void initialize() {
         
     }
 
     protected void execute() {
         Robot.intakeLauncher.aimLauncher();
-        System.out.println("Aiming Launcher");
-        
     }
 
     protected boolean isFinished() {
