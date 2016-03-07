@@ -9,7 +9,7 @@ public class AutoDriveStraight extends Command {
 
     private StringBuilder _sb = new StringBuilder();
 
-    public final static double AUTOSPEED = 25.0;      // ~3-4 ft/sec
+    public final static double AUTOSPEED = 40.0;      // ~3-4 ft/sec
 
     private double desiredDistanceTicks;
     
