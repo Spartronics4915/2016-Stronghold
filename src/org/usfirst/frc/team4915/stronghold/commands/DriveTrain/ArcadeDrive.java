@@ -22,8 +22,7 @@ public class ArcadeDrive extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-      Robot.driveTrain.setMaxOutput(Robot.driveTrain.getMaxOutput());
-
+        Robot.driveTrain.init();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -49,32 +48,19 @@ public class ArcadeDrive extends Command {
                 Robot.driveTrain.arcadeDrive(joystickY * scaledThrottle, joystickX * scaledThrottle);
             }
         } else {
-        	//System.out.println("vs taking control!");
         	if(vs.DriveLockedOnTarget) {
-        		// wait for launcher to shoot and exit auto mode
-                // or toggle AutoAim
+        		// wait for launcher to shoot and exit auto mode or toggle AutoAim
                 Robot.driveTrain.stop(); // needed to keep driveTrain alive
         	}
             else {
-	            if (vs.RelativeTargetingMode == 1) {
-	                if (Math.abs(vs.TargetX) < 2.5) {
-	                	//System.out.println("target locked. stopping");
-                        vs.DriveLockedOnTarget = true;
-	                    Robot.driveTrain.stop(); // close enough
-	                }
-	                else {
-	                    Robot.driveTrain.turn(vs.TargetX > 0 ? .55 : -.55);
-	                }
-	            }
-	            else {
-                    /// Absolute targeting mode...
-                    if (!Robot.driveTrain.isAutoTurning()) {
-                        Robot.driveTrain.startAutoTurn(vs.TargetX);
-                    } else if (Robot.driveTrain.isAutoTurnFinished()) {
-                        Robot.driveTrain.endAutoTurn();
-                        vs.DriveLockedOnTarget = true;
-                    } // else allow auto-turn to continue
-	            }
+                if (!Robot.driveTrain.isAutoTurning()) {
+                    double h = Robot.driveTrain.getCurrentHeading();
+                    double target = vs.getTargetHeading(h);
+                    Robot.driveTrain.startAutoTurn(target);
+                } else if (Robot.driveTrain.isAutoTurnFinished()) {
+                    Robot.driveTrain.endAutoTurn();
+                    vs.DriveLockedOnTarget = true;
+                } // else allow auto-turn to continue
         	}
         }
     }

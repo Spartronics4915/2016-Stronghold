@@ -34,7 +34,7 @@ public class AutoRotateDegrees extends Command {
     @Override
     public void execute() {
         // we're under pid control... so nothing to do here..
-        //  drivetrain's m_turnPID invokess tankDrive periodically.
+        //  drivetrain's m_turnPID invokes turn periodically.
         //  also: Robot.periodicStatusUpdate updates IMU
     }
 

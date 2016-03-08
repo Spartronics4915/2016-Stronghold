@@ -13,31 +13,30 @@ public class AutoDriveStraight extends Command {
     public final static double AUTOSPEED = 40.0;      // ~3-4 ft/sec
 
     private double desiredDistanceTicks;
-    
+
     private boolean isInitialized;
     private int initializeRetryCount;
     private final static int MAX_RETRIES = 10;
-    
+
     public AutoDriveStraight(double desiredDistanceInches) {
         requires(Robot.driveTrain);
         desiredDistanceTicks = inchesToTicks(desiredDistanceInches);
     }
 
     private int inchesToTicks(double inches) {
-        return (int)(inches * RobotMap.quadTicksPerInch); 
+        return (int)(inches * RobotMap.quadTicksPerInch);
     }
-    
+
     // Called just before this Command runs the first time
-    protected void initialize() {        
-        // initialize the encoders to 0
-        Robot.driveTrain.setMaxOutput(Robot.driveTrain.getMaxOutput());
+    protected void initialize() {
+        Robot.driveTrain.init();
         Robot.driveTrain.resetEncoders();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	updateSB();
-    	
+
     	if (!isInitialized){
     		isInitialized = RobotMap.leftMasterMotor.getEncPosition() == 0 && RobotMap.rightMasterMotor.getEncPosition() == 0;
     		initializeRetryCount++;
@@ -47,7 +46,7 @@ public class AutoDriveStraight extends Command {
             SmartDashboard.putString("AutoDriveStraight: ", "No Ticks");
         }
     }
-    
+
     private void updateSB() {
     	_sb.setLength(0);
         _sb.append("Left motor ticks: ");
@@ -63,15 +62,15 @@ public class AutoDriveStraight extends Command {
         _sb.append(RobotMap.rightMasterMotor.getControlMode());
         _sb.append(", speed: ");
         _sb.append(RobotMap.rightMasterMotor.getSpeed());
-        
+
         _sb.append(", max output " + Robot.driveTrain.getMaxOutput());
-        
+
         _sb.append(", initialized? " + isInitialized);
         _sb.append(", retry count " + initializeRetryCount);
-        
+
         SmartDashboard.putString("AutoDriveStraight: ", _sb.toString());
     }
-    
+
 
     // Make this return true when this Command no longer needs to run execute()
     // We are finished when either encoder has moved the requested autonomous distance (in ticks)

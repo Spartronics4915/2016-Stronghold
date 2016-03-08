@@ -11,8 +11,9 @@ import edu.wpi.first.wpilibj.PIDOutput;
 
 public class DriveTrain extends Subsystem {
 
-    public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;         // 100.0 == ~13 ft/sec interpolated from observations
-    public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;         // 150.0 == ~20 ft/sec interpolated from observations
+    public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;  // 100.0 == ~13 ft/sec interpolated from observations
+    public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;  // 150.0 == ~20 ft/sec interpolated from observations
+    public final static double MAXIMUM_TURN_SPEED = 40.0;         // ~3-4 ft/sec
 
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);
@@ -31,12 +32,16 @@ public class DriveTrain extends Subsystem {
         // TODO: would be nice to migrate stuff from RobotMap here.
 
         // m_turnPID is used to improve accuracy during auto-turn operations.
+        DriveTrain driveTrain = this; // need reference to this within pidWrite
         m_imu = new IMUPIDSource();
         m_turnPID = new PIDController(turnKp, turnKi, turnKd, turnKf,
                                       m_imu,
                                       new PIDOutput() {
                     public void pidWrite(double output) {
-                        robotDrive.tankDrive(-output, output);
+                        // output is [-1, 1]... we need to
+                        // convert this to a speed...
+                        driveTrain.turn(output * MAXIMUM_TURN_SPEED);
+                        // robotDrive.tankDrive(-output, output);
                     }
                 });
         m_turnPID.setOutputRange(-1, 1);
@@ -62,9 +67,8 @@ public class DriveTrain extends Subsystem {
     }
 
     public void arcadeDrive(double driveYstick, double driveXstick) {
-        // System.out.println("Arcade drive y: " + driveYstick + ", x " + driveXstick);
+        // robotDrive applies maxSpeed, but direct "set" doesn't
         robotDrive.arcadeDrive(driveYstick, driveXstick);
-        // System.out.println("Arcade drive get speed = " + RobotMap.leftMasterMotor.getSpeed());
     }
 
     public void resetEncoders(){
@@ -97,23 +101,29 @@ public class DriveTrain extends Subsystem {
         robotDrive.setMaxOutput(maxSpeed);
     }
 
+    public double getCurrentHeading() {
+        return m_imu.getHeading();
+    }
+
     public void stop() {
         robotDrive.stopMotor();
     }
 
     public void driveStraight(double speed) {
+        // nb: maxspeed isn't applied via set so
+        //  speed is measured in
         RobotMap.leftMasterMotor.set(speed);
         RobotMap.rightMasterMotor.set(-speed);
     }
 
     // turn takes a speed, not an angle...
     // A negative speed is interpretted as turn left.
-    // nb: this approach makes no guarantees about the accuracy of
-    // the amount turned.
+    // Note that we bypass application of setMaxOutput Which
+    // only applies to calls to robotDrive.
     public void turn(double speed) {
         // In order to turn left, we want the right wheels to go
         // forward and left wheels to go backward (cf: tankDrive)
-        // Oddly, our right master motor is reversed.
+        // Oddly, our right master motor is reversed, so we compensate here.
         //  speed < 0:  turn left:  rightmotor(negative) (forward),
         //                          leftmotor(negative)  (backward)
         //  speed > 0:  turn right: rightmotor(positive) (backward)
@@ -128,7 +138,7 @@ public class DriveTrain extends Subsystem {
         m_turnPID.enable();
         // Timer.delay(.2);
         System.out.println("start turning from "
-                + roundToHundredths(m_imu.getAngle())
+                + roundToHundredths(m_imu.getHeading())
                 + " to setpoint " + degrees);
     }
 
@@ -138,7 +148,7 @@ public class DriveTrain extends Subsystem {
 
     public boolean isAutoTurnFinished() {
         System.out.println("is turn done: " + m_turnPID.onTarget()
-                + " deg:" + roundToHundredths(m_imu.getAngle())
+                + " deg:" + roundToHundredths(m_imu.getHeading())
                 + " out:" + roundToHundredths(m_turnPID.get())
                 + " err:" + roundToHundredths(m_turnPID.getError()));
         return m_turnPID.onTarget();
@@ -149,9 +159,11 @@ public class DriveTrain extends Subsystem {
             m_turnPID.disable();
     }
 
-
     private double roundToHundredths(double x) {
-        return Math.floor(x * 100 + .5) / 100.0;
+        if(x > 0)
+            return Math.floor(x * 100 + .5) / 100.0;
+        else
+            return Math.floor(x * 100 - .5) / 100.0;
     }
 
 }

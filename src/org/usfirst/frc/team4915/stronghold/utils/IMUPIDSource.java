@@ -29,7 +29,7 @@ public class IMUPIDSource implements PIDSource {
         return this.m_imu.getNormalizedHeading();
     }
 
-    public double getAngle() {
+    public double getHeading() {
         return this.m_imu.getNormalizedHeading();
     }
 }
