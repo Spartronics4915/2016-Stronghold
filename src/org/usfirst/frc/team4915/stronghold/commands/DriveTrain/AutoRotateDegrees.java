@@ -10,47 +10,43 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class AutoRotateDegrees extends Command {
 
-    private double startingGyroValue;
-    RobotDrive robotDrive = DriveTrain.robotDrive;
-    private boolean goLeft;
-    double robotAngle;
     public final static double AUTOSPEED = 30.0;
-    // creates new IMU variable
-    BNO055 imu = RobotMap.imu;
+
+    private double startingGyroValue;
+    private boolean goLeft;
+    private double robotAngle;
+    private BNO055 imu = RobotMap.imu;
 
     // autonomous rotate command
-    public AutoRotateDegrees(boolean left, double robotAngle) {
-        requires(Robot.driveTrain);
-        goLeft = left;
-        this.robotAngle = robotAngle;
+    public AutoRotateDegrees(double robotAngle) {
         System.out.println("Auto Rotate degrees "+robotAngle);
+        requires(Robot.driveTrain);
+        this.robotAngle = robotAngle;
     }
 
     @Override
     protected void initialize() {
-        Robot.driveTrain.setMaxOutput(Robot.driveTrain.getMaxOutput());
         this.startingGyroValue = imu.getNormalizedHeading();
+        Robot.driveTrain.init();
+        Robot.driveTrain.startAutoTurn(this.robotAngle);
     }
 
     @Override
     public void execute() {
-    	System.out.println("Executing the rotate degrees");
-        Robot.driveTrain.turn(goLeft, AUTOSPEED);
+        // we're under pid control... so nothing to do here..
+        //  drivetrain's m_turnPID invokess tankDrive periodically.
+        //  also: Robot.periodicStatusUpdate updates IMU
     }
 
     @Override
     protected boolean isFinished() {
     	// TODO: will this logic work if robotAngle is negative?
-    	double gyroDelta = 0;
-    	double heading = imu.getNormalizedHeading();
-    	gyroDelta = Math.abs(heading - startingGyroValue); 
-        System.out.println("Current IMU heading:" + imu.getNormalizedHeading() + "\tDelta: " + gyroDelta + "\tDesired robot angle" + robotAngle);
-        return gyroDelta >= (robotAngle);
+    	return Robot.driveTrain.isAutoTurnFinished();
     }
 
     @Override
     protected void end() {
-        robotDrive.stopMotor();
+        Robot.driveTrain.endAutoTurn();
     }
 
     @Override

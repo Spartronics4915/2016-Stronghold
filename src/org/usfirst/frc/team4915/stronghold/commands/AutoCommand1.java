@@ -36,17 +36,17 @@ public class AutoCommand1 extends CommandGroup {
 		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
 									// goal.
 			addSequential(new AutoDriveStraight(getDistance(type)));
-			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+			addSequential(new AutoRotateDegrees(getDegrees(position)));
 			if (ModuleManager.VISION_MODULE_ON) {
 				addSequential(new AutoAimControlCommand(true, true));
 				addParallel(new ArcadeDrive());
 				addParallel(new AimLauncherCommand());
 			}
 			break;
-		case DRIVE_SHOOT_NO_VISION: 
+		case DRIVE_SHOOT_NO_VISION:
 			System.out.println("Starting Move Straight");
 			addSequential(new AutoDriveStraight(getDistance(type)));
-			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+			addSequential(new AutoRotateDegrees(getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addParallel(new AimLauncherCommand());
 				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
@@ -84,37 +84,12 @@ public class AutoCommand1 extends CommandGroup {
         }
         return angle;
     }
-    
-    public static boolean getLeft(Autonomous.Position position) {
-        System.out.println(position);
-        boolean left = true;
-        switch (position) {
-            case ONE:
-                left = false;
-                break;
-            case TWO:
-                left = false;
-                break;
-            case THREE:
-                break;
-            case FOUR:
-                left = false;
-                break;
-            case FIVE:
-                left = true;
-                break;
-            default:
-                left = true;
-        }
-        return left;
-    }
 
     public static double getDegrees(Autonomous.Position position) {
         double degrees;
-        System.out.println(position);
         switch (position) {
             case ONE://low bar
-                degrees = 80.4;
+                degrees = 80.4; // turn right
                 break;
             case TWO:
                 degrees = 41.08;
@@ -123,10 +98,10 @@ public class AutoCommand1 extends CommandGroup {
                 degrees = 11.95;
                 break;
             case FOUR:
-                degrees = 13.12;
+                degrees = -13.12; // turn left
                 break;
             case FIVE:
-                degrees = 57.75;
+                degrees = -57.75;
                 break;
             default:
                 degrees = 0;
@@ -135,7 +110,6 @@ public class AutoCommand1 extends CommandGroup {
     }
 
     public static boolean getStrategy(Autonomous.Strat strat) {
-        System.out.println(strat);
         boolean vision = true;
         switch (strat) {
             case NONE:
@@ -159,19 +133,19 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println(type);
         switch (type) {
             case LOWBAR:
-                distance = 130; 
+                distance = 130;
                 break;
             case MOAT:
-                distance = 145; 
+                distance = 145;
                 break;
             case RAMPARTS:
-                distance = 100; 
+                distance = 100;
                 break;
             case ROUGH_TERRAIN:
-                distance = 180; 
+                distance = 180;
                 break;
             case ROCK_WALL:
-                distance = 150; 
+                distance = 150;
                 break;
             case PORTCULLIS:
                 distance = 120;
@@ -181,7 +155,7 @@ public class AutoCommand1 extends CommandGroup {
         }
         return distance;
     }
- 
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return false;

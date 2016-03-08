@@ -33,13 +33,22 @@ public class ArcadeDrive extends Command {
         this.joystickX = joystickDrive.getAxis(Joystick.AxisType.kX) * -1;
         this.joystickY = joystickDrive.getAxis(Joystick.AxisType.kY) *-1;
 
-        this.scaledThrottle = scaleThrottle(joystickDrive.getAxis(Joystick.AxisType.kThrottle));
-        VisionState vs = null;
-        if (ModuleManager.VISION_MODULE_ON) {
-            vs = VisionState.getInstance();
-        }
+        VisionState vs = VisionState.getInstance();
 
-        if (vs != null && vs.wantsControl()) {
+        if (vs == null || !vs.wantsControl()) {
+            // endAutoTurn is harmless when not needed but required
+            //  if the driver changes her mind after initiating auto-targeting..
+            Robot.driveTrain.endAutoTurn();
+
+            this.scaledThrottle = scaleThrottle(joystickDrive.getAxis(Joystick.AxisType.kThrottle));
+            if ((Math.abs(this.joystickX) < 0.075) &&
+                    (Math.abs(this.joystickY) < 0.075)) {
+                Robot.driveTrain.stop();
+            }
+            else {
+                Robot.driveTrain.arcadeDrive(joystickY * scaledThrottle, joystickX * scaledThrottle);
+            }
+        } else {
         	//System.out.println("vs taking control!");
         	if(vs.DriveLockedOnTarget) {
         		// wait for launcher to shoot and exit auto mode
@@ -48,29 +57,25 @@ public class ArcadeDrive extends Command {
         	}
             else {
 	            if (vs.RelativeTargetingMode == 1) {
-	                if (Math.abs(vs.TargetX) < 3) {
+	                if (Math.abs(vs.TargetX) < 2.5) {
 	                	//System.out.println("target locked. stopping");
+                        vs.DriveLockedOnTarget = true;
 	                    Robot.driveTrain.stop(); // close enough
 	                }
 	                else {
-	                    Robot.driveTrain.autoturn(vs.TargetX < 0);
+	                    Robot.driveTrain.turn(vs.TargetX > 0 ? .55 : -.55);
 	                }
-	            } 
-	            else {
-	                /* absolute autotargeting */
-	                Robot.driveTrain.turnToward(vs.TargetX);
 	            }
-        	}                
-        }
-        else {
-
-            if ((Math.abs(this.joystickX) < 0.075) &&
-                    (Math.abs(this.joystickY) < 0.075)) {
-                Robot.driveTrain.stop();
-            }
-            else {
-                Robot.driveTrain.arcadeDrive(joystickY * scaledThrottle, joystickX * scaledThrottle);
-            }
+	            else {
+                    /// Absolute targeting mode...
+                    if (!Robot.driveTrain.isAutoTurning()) {
+                        Robot.driveTrain.startAutoTurn(vs.TargetX);
+                    } else if (Robot.driveTrain.isAutoTurnFinished()) {
+                        Robot.driveTrain.endAutoTurn();
+                        vs.DriveLockedOnTarget = true;
+                    } // else allow auto-turn to continue
+	            }
+        	}
         }
     }
 

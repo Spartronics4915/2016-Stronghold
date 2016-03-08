@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
 import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.ModuleManager;
 
 import edu.wpi.first.wpilibj.NamedSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
@@ -16,8 +17,10 @@ public class VisionState implements NamedSendable {
     private static VisionState s_instance;
 
     public synchronized static VisionState getInstance() {
-        if (s_instance == null)
-            s_instance = new VisionState();
+        if (ModuleManager.VISION_MODULE_ON) {
+            if (s_instance == null)
+                s_instance = new VisionState();
+        }
         return s_instance;
     }
 
@@ -54,7 +57,7 @@ public class VisionState implements NamedSendable {
 
         	if (key.equals("~TYPE~")) {
                 return;
-            } 
+            }
         	else if (key.equals("AutoAimEnabled")) {
                 s_instance.AutoAimEnabled = (boolean) value;
             }
@@ -141,7 +144,7 @@ public class VisionState implements NamedSendable {
 
     public void updateIMUHeading(double heading) {
     	if(m_table != null) {
-    		m_table.putNumber("IMUHeading", (int) (heading + .5));
+    		m_table.putNumber("IMUHeading", heading);
     	}
     }
 
