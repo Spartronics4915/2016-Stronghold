@@ -111,7 +111,10 @@ public class DriveTrain extends Subsystem {
 
     public void driveStraight(double speed) {
         // nb: maxspeed isn't applied via set so
-        //  speed is measured in
+        //  speed is supposedly measured in rpm but this depends on our
+        //  initialization establishing encoding ticks per revolution.
+        //  This is approximate so we rely on the observed values above.
+        //  (DEFAULT_SPEED_MAX_OUTPUT)
         RobotMap.leftMasterMotor.set(speed);
         RobotMap.rightMasterMotor.set(-speed);
     }
