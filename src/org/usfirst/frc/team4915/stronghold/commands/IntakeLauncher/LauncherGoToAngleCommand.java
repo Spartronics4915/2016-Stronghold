@@ -19,10 +19,11 @@ public class LauncherGoToAngleCommand extends Command {
     }
 
     protected void execute() {
-
+        // TODO: we probably need calls to moveToSetPoint here!
     }
 
     protected boolean isFinished() {
+        // TODO: we're only done when we have reached the target angle.
         return true;
     }
 

@@ -4,6 +4,7 @@ import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.VisionAimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
@@ -40,7 +41,8 @@ public class AutoCommand1 extends CommandGroup {
 			if (ModuleManager.VISION_MODULE_ON) {
 				addSequential(new AutoAimControlCommand(true, true));
 				addParallel(new ArcadeDrive());
-				addParallel(new AimLauncherCommand());
+				addParallel(new VisionAimLauncherCommand());
+                addSequential(new AutoLaunchCommand());
 			}
 			break;
 		case DRIVE_SHOOT_NO_VISION:

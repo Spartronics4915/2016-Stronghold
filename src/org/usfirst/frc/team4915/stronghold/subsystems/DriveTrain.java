@@ -52,6 +52,9 @@ public class DriveTrain extends Subsystem {
 
     public void init() {
         this.setMaxOutput(this.getMaxOutput());
+        // reset encoders
+        RobotMap.leftMasterMotor.setEncPosition(0);
+        RobotMap.rightMasterMotor.setEncPosition(0);
     }
 
     @Override
@@ -69,36 +72,6 @@ public class DriveTrain extends Subsystem {
     public void arcadeDrive(double driveYstick, double driveXstick) {
         // robotDrive applies maxSpeed, but direct "set" doesn't
         robotDrive.arcadeDrive(driveYstick, driveXstick);
-    }
-
-    public void resetEncoders(){
-        RobotMap.leftMasterMotor.setEncPosition(0);
-        RobotMap.rightMasterMotor.setEncPosition(0);
-    }
-
-    /*
-     * Methods to get/set maximum top speed for our robot
-     */
-    public double getMaxOutput() {
-
-        if (maxSpeed == 0) {   /* not initialized, yet */
-            return DEFAULT_SPEED_MAX_OUTPUT;
-        }
-        else {
-            return maxSpeed;
-        }
-    }
-
-    public void setMaxOutput(double maxOutput) {
-
-        if (maxOutput > MAXIMUM_SPEED_MAX_OUTPUT) {
-            maxSpeed = MAXIMUM_SPEED_MAX_OUTPUT;
-        }
-        else {
-            maxSpeed = maxOutput;
-        }
-
-        robotDrive.setMaxOutput(maxSpeed);
     }
 
     public double getCurrentHeading() {
@@ -161,6 +134,34 @@ public class DriveTrain extends Subsystem {
         if(m_turnPID.isEnabled())
             m_turnPID.disable();
     }
+
+    /*
+     * Methods to get/set maximum top speed for our robot.
+     * Note that this value is only applied by calls to
+     * robotDrive that assume [-1, 1] like arcadedrive, tankdrive, etc.
+     * When we issue direct set calls (this.driveStraight, etc),
+     * maxSpeed is ignored/bypassed.
+     */
+    private double getMaxOutput() {
+        if (maxSpeed == 0) {   /* not initialized, yet */
+            return DEFAULT_SPEED_MAX_OUTPUT;
+        }
+        else {
+            return maxSpeed;
+        }
+    }
+
+    private void setMaxOutput(double maxOutput) {
+        if (maxOutput > MAXIMUM_SPEED_MAX_OUTPUT) {
+            maxSpeed = MAXIMUM_SPEED_MAX_OUTPUT;
+        }
+        else {
+            maxSpeed = maxOutput;
+        }
+
+        robotDrive.setMaxOutput(maxSpeed);
+    }
+
 
     private double roundToHundredths(double x) {
         if(x > 0)

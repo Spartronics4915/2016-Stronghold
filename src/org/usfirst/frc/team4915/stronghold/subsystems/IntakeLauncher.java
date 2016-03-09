@@ -23,6 +23,7 @@ public class IntakeLauncher extends Subsystem {
     private final double FULL_SPEED_FORWARD = 1;
     private final double ZERO_SPEED = 0.0;
     private final double LAUNCH_SPEED = 11; // in bus volts
+    private final double AIM_DEGREES_SLOP = 2; // TODO: tune this number
 
     private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // in degrees from
                                                              // horizontal
@@ -119,6 +120,22 @@ public class IntakeLauncher extends Subsystem {
         setPoint = -getPosition();
     }
 
+    public void setElevationDegrees(double deg) {
+        setSetPoint(degreesToTicks(deg));
+    }
+
+    public double getElevationDegrees() {
+        return ticksToDegrees(getPosition());
+    }
+
+    public boolean elevationTargetReached(double targetDegrees) {
+        double currentElevation = getElevationDegrees();
+        if(Math.abs(this.visionTarget - currentElevation) < AIM_DEGREES_SLOP)
+            return true;
+        else
+            return false;
+    }
+
     // changes the set point to a value
     public void setSetPoint(double newSetPoint) {
         setPoint = newSetPoint;
@@ -143,13 +160,12 @@ public class IntakeLauncher extends Subsystem {
         if(vs == null) return;
 
     	if(!vs.LauncherLockedOnTarget) {
-            double currentElevation = ticksToDegrees(getPosition());
+            double currentElevation = getElevationDegrees();
             if(this.visionTarget == NO_VISION_TARGET) {
                 this.visionTarget = vs.getTargetElevation(currentElevation);
                 setSetPoint(degreesToTicks(this.visionTarget)); // TODO: verify sign
             }
-            if(Math.abs(this.visionTarget - currentElevation) < 3) {
-    			//TODO (tune the 3)
+            if(Math.abs(this.visionTarget - currentElevation) < AIM_DEGREES_SLOP) {
     			vs.LauncherLockedOnTarget = true;
                 this.visionTarget = NO_VISION_TARGET; // ok since we're locked
     			System.out.println("Stopping aimer!");
@@ -176,8 +192,10 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
+    // aimLauncher is invoked from AimLauncherCommand which is installed
+    // by AutoCommand1 when the associated strategy is chosen.
     // Checks to see if joystick control or vision control is needed and
-    // controls motion
+    // controls motion.
     public void aimLauncher() {
     	//System.out.println("aimLauncher called");
         System.out.println("aimLauncher current: " + getPosition() +
@@ -192,7 +210,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // sets the launcher position to the current set point
-    private void moveToSetPoint() {
+    public void moveToSetPoint() {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);

@@ -37,7 +37,6 @@ public class AutoDriveStraight extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.driveTrain.init();
-        Robot.driveTrain.resetEncoders();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -73,8 +72,6 @@ public class AutoDriveStraight extends Command {
         _sb.append(RobotMap.rightMasterMotor.getControlMode());
         _sb.append(", speed: ");
         _sb.append(RobotMap.rightMasterMotor.getSpeed());
-
-        _sb.append(", max output " + Robot.driveTrain.getMaxOutput());
 
         _sb.append(", initialized? " + isInitialized);
         _sb.append(", retry count " + initializeRetryCount);
