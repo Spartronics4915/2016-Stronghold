@@ -21,12 +21,13 @@ public class Autonomous extends Subsystem {
         ROUGH_TERRAIN,
         ROCK_WALL,
         PORTCULLIS
-        
+
     }
 
     public static enum Strat {
         NONE,
         DRIVE_ACROSS,
+        DRIVE_ACROSS_BACKWARD,
         DRIVE_SHOOT_VISION,
         DRIVE_SHOOT_NO_VISION
     }
