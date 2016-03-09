@@ -14,12 +14,19 @@ public class AutoDriveStraight extends Command {
 
     private double desiredDistanceTicks;
 
-    private boolean isInitialized;
+    private boolean isInitialized, goBackward;
+
     private int initializeRetryCount;
     private final static int MAX_RETRIES = 10;
 
     public AutoDriveStraight(double desiredDistanceInches) {
         requires(Robot.driveTrain);
+        if (desiredDistanceInches < 0) {
+            goBackward = true;
+            desiredDistanceInches = -desiredDistanceInches;
+        }
+        else
+            goBackward = false;
         desiredDistanceTicks = inchesToTicks(desiredDistanceInches);
     }
 
@@ -38,10 +45,14 @@ public class AutoDriveStraight extends Command {
     	updateSB();
 
     	if (!isInitialized){
-    		isInitialized = RobotMap.leftMasterMotor.getEncPosition() == 0 && RobotMap.rightMasterMotor.getEncPosition() == 0;
+    		isInitialized = (RobotMap.leftMasterMotor.getEncPosition() == 0 &&
+                             RobotMap.rightMasterMotor.getEncPosition() == 0);
     		initializeRetryCount++;
     	} else if (desiredDistanceTicks != 0) {
-            Robot.driveTrain.driveStraight(AUTOSPEED);
+            if (this.goBackward)
+                Robot.driveTrain.driveStraight(-AUTOSPEED);
+            else
+                Robot.driveTrain.driveStraight(AUTOSPEED);
         } else {
             SmartDashboard.putString("AutoDriveStraight: ", "No Ticks");
         }
@@ -84,8 +95,8 @@ public class AutoDriveStraight extends Command {
     		}
     		return false;
     	} else if ((desiredDistanceTicks == 0) ||
-                (Math.abs(RobotMap.leftMasterMotor.getEncPosition()) >= Math.abs(desiredDistanceTicks)) ||
-                (Math.abs(RobotMap.rightMasterMotor.getEncPosition()) >= Math.abs(desiredDistanceTicks))) {
+                (Math.abs(RobotMap.leftMasterMotor.getEncPosition()) >= desiredDistanceTicks) ||
+                (Math.abs(RobotMap.rightMasterMotor.getEncPosition()) >= desiredDistanceTicks)) {
             return true;
         }
         else {

@@ -56,10 +56,14 @@ public class AutoCommand1 extends CommandGroup {
 		case DRIVE_ACROSS:
 			addSequential(new AutoDriveStraight(getDistance(type)));
 			break;
+        case DRIVE_ACROSS_BACKWARD:
+			addSequential(new AutoDriveStraight(-getDistance(type)));
+			break;
 		default:
 			break;
 		}
 	}
+
     public static double getAimAngle(Autonomous.Position position) {
         System.out.println(position);
         double angle = 0;
