@@ -60,8 +60,8 @@ public class OI {
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
     public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
     public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
-    
-    
+
+
     // Create joysticks for driving and aiming the launcher
     public Joystick driveStick;
     public Joystick aimStick;
@@ -90,9 +90,9 @@ public class OI {
     public JoystickButton scalerReachUpButton;
     public JoystickButton scalerReachDownButton;
     public JoystickButton scalerLiftButton;
-    
+
     //PORTCULLIS
-    
+
     public JoystickButton portcullisButtonUp;
     public JoystickButton portcullisButtonDown;
 
@@ -129,8 +129,9 @@ public class OI {
         strategy = new SendableChooser();
         strategy.addDefault("None", Autonomous.Strat.NONE);
         strategy.addObject("Breach Only", Autonomous.Strat.DRIVE_ACROSS);
-        strategy.addObject("Breach, Vision Shot", Autonomous.Strat.DRIVE_SHOOT_VISION);
+        strategy.addObject("Breach Backward Only", Autonomous.Strat.DRIVE_ACROSS_BACKWARD);
         strategy.addObject("Breach, Blind Shot", Autonomous.Strat.DRIVE_SHOOT_NO_VISION);
+        strategy.addObject("Breach, Vision Shot", Autonomous.Strat.DRIVE_SHOOT_VISION);
         SmartDashboard.putData("AutoStrategy", strategy);
 
         this.driveStick = new Joystick(DRIVE_STICK_PORT);
