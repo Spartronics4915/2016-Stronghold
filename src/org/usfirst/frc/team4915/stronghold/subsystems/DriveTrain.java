@@ -158,7 +158,6 @@ public class DriveTrain extends Subsystem {
         else {
             maxSpeed = maxOutput;
         }
-
         robotDrive.setMaxOutput(maxSpeed);
     }
 
