@@ -12,8 +12,8 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCom
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToTravelPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToTravelPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinIntakeWheelsOutCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;

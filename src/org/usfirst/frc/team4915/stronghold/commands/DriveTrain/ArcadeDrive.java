@@ -30,7 +30,7 @@ public class ArcadeDrive extends Command {
     @Override
     protected void execute() {
         Joystick joystickDrive= Robot.oi.getJoystickDrive();
-        this.joystickX = joystickDrive.getAxis(Joystick.AxisType.kX) * -1;
+        this.joystickX = joystickDrive.getAxis(Joystick.AxisType.kX) * -0.75;
         this.joystickY = joystickDrive.getAxis(Joystick.AxisType.kY) *-1;
 
         this.scaledThrottle = scaleThrottle(joystickDrive.getAxis(Joystick.AxisType.kThrottle));
