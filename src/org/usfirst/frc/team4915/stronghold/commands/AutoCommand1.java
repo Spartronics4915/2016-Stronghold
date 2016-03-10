@@ -35,8 +35,12 @@ public class AutoCommand1 extends CommandGroup {
     	switch (strat) {
 		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
 									// goal.
-			addSequential(new AutoDriveStraight(getDistance(type)));
-			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+		    if (getDistance(type) < 0) {
+		        addSequential(new AutoDriveStraight(-getDistance(type), getSpeed(type)));
+		    }
+		    else
+			addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+			addSequential(new AutoRotateDegrees( getDegrees(position)));
 			if (ModuleManager.VISION_MODULE_ON) {
 				addSequential(new AutoAimControlCommand(true, true));
 				addParallel(new ArcadeDrive());
@@ -45,8 +49,8 @@ public class AutoCommand1 extends CommandGroup {
 			break;
 		case DRIVE_SHOOT_NO_VISION:
 			System.out.println("Starting Move Straight");
-			addSequential(new AutoDriveStraight(getDistance(type)));
-			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+			addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+			addSequential(new AutoRotateDegrees(getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addParallel(new AimLauncherCommand());
 				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
@@ -54,10 +58,7 @@ public class AutoCommand1 extends CommandGroup {
 			}
 			break;
 		case DRIVE_ACROSS:
-			addSequential(new AutoDriveStraight(getDistance(type)));
-			break;
-        case DRIVE_ACROSS_BACKWARD:
-			addSequential(new AutoDriveStraight(-getDistance(type)));
+			addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
 			break;
 		default:
 			break;
@@ -88,29 +89,6 @@ public class AutoCommand1 extends CommandGroup {
         return angle;
     }
 
-    public static boolean getLeft(Autonomous.Position position) {
-        System.out.println(position);
-        boolean left = true;
-        switch (position) {
-            case ONE:
-                left = false;
-                break;
-            case TWO:
-                left = false;
-                break;
-            case THREE:
-                break;
-            case FOUR:
-                left = false;
-                break;
-            case FIVE:
-                left = true;
-                break;
-            default:
-                left = true;
-        }
-        return left;
-    }
 
     public static double getDegrees(Autonomous.Position position) {
         double degrees;
@@ -126,10 +104,10 @@ public class AutoCommand1 extends CommandGroup {
                 degrees = 11.95;
                 break;
             case FOUR:
-                degrees = 13.12;
+                degrees = -13.12;
                 break;
             case FIVE:
-                degrees = 57.75;
+                degrees = -57.75;
                 break;
             default:
                 degrees = 0;
@@ -167,9 +145,6 @@ public class AutoCommand1 extends CommandGroup {
             case MOAT:
                 distance = 145;
                 break;
-            case RAMPARTS:
-                distance = 100;
-                break;
             case ROUGH_TERRAIN:
                 distance = 180;
                 break;
@@ -183,6 +158,31 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 25;
         }
         return distance;
+    }
+    
+    public static int getSpeed(Autonomous.Type type) {
+        int speed; //in inches
+        System.out.println(type);
+        switch (type) {
+            case LOWBAR:
+                speed = 30;
+                break;
+            case MOAT:
+                speed = 40;
+                break;
+            case ROUGH_TERRAIN:
+                speed = 40;
+                break;
+            case ROCK_WALL:
+                speed = 40;
+                break;
+            case PORTCULLIS:
+                speed = 30;
+                break;
+            default:
+                speed = 25;
+        }
+        return speed;
     }
 
     // Make this return true when this Command no longer needs to run execute()
