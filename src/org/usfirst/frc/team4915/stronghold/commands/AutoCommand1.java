@@ -7,10 +7,13 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCo
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.VisionAimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToTravelPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class AutoCommand1 extends CommandGroup {
 
@@ -35,9 +38,28 @@ public class AutoCommand1 extends CommandGroup {
 
     	switch (strat) {
 		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
-									// goal.
-			addSequential(new AutoDriveStraight(getDistance(type)));
-			addSequential(new AutoRotateDegrees(getDegrees(position)));
+									// goal
+		    //if it is low bar launcher will go to travelPosition
+		if (getLauncherBeginPosition(type) == true){
+		    addSequential(new LauncherGoToTravelPositionCommand());
+            addParallel(new AimLauncherCommand());
+            addSequential(new WaitCommand(.75));
+            addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+            addSequential(new AutoRotateDegrees( getDegrees(position)));
+            if (ModuleManager.VISION_MODULE_ON) {
+                addSequential(new AutoAimControlCommand(true, true));
+                addParallel(new ArcadeDrive());
+            }
+            break;    
+		}
+		//false: For all other types of barriers
+		//launcher will go to NeutralPosition
+		else{
+		    addSequential(new LauncherGoToNeutralPositionCommand());
+            addParallel(new AimLauncherCommand());
+            addSequential(new WaitCommand(.75));
+			addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+			addSequential(new AutoRotateDegrees( getDegrees(position)));
 			if (ModuleManager.VISION_MODULE_ON) {
 				addSequential(new AutoAimControlCommand(true, true));
 				addParallel(new ArcadeDrive());
@@ -45,26 +67,85 @@ public class AutoCommand1 extends CommandGroup {
                 addSequential(new AutoLaunchCommand());
 			}
 			break;
+		}
+		
 		case DRIVE_SHOOT_NO_VISION:
-			System.out.println("Starting Move Straight");
-			addSequential(new AutoDriveStraight(getDistance(type)));
-			addSequential(new AutoRotateDegrees(getDegrees(position)));
+		    if (getLauncherBeginPosition(type) == true){
+		        addSequential(new LauncherGoToTravelPositionCommand());
+                addParallel(new AimLauncherCommand());
+                addSequential(new WaitCommand(.75));
+		        System.out.println("Starting Move Straight");
+		        addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+		        addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
+		        addSequential(new AutoRotateDegrees(getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addParallel(new AimLauncherCommand());
 				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
 				addSequential(new AutoLaunchCommand());
 			}
 			break;
-		case DRIVE_ACROSS:
-			addSequential(new AutoDriveStraight(getDistance(type)));
+		    }
+            
+            else{   
+                addSequential(new LauncherGoToNeutralPositionCommand());
+                addParallel(new AimLauncherCommand());
+                addSequential(new WaitCommand(.75));
+		        System.out.println("Starting Move Straight");
+	            addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+	            addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
+	            addSequential(new AutoRotateDegrees(getDegrees(position)));
+	            if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+	                addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
+	                addSequential(new AutoLaunchCommand());
+	            break;    
+	            }
+            }
+	    case DRIVE_ACROSS:
+
+            if (getLauncherBeginPosition(type) == true){
+                addSequential(new LauncherGoToTravelPositionCommand());
+                addParallel(new AimLauncherCommand());
+                addSequential(new WaitCommand(.75));
+               addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
 			break;
-        case DRIVE_ACROSS_BACKWARD:
-			addSequential(new AutoDriveStraight(-getDistance(type)));
-			break;
-		default:
-			break;
+
+            }
+            else{
+                addSequential(new LauncherGoToNeutralPositionCommand());
+                addParallel(new AimLauncherCommand());
+                addSequential(new WaitCommand(.75));
+                addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+            }
+            default:
 		}
 	}
+
+
+    public static boolean getLauncherBeginPosition(Autonomous.Type type) {
+        boolean lowBar; // in inches
+        System.out.println(type);
+        switch (type) {
+            case LOWBAR:
+                lowBar = true;
+                break;
+            case MOAT:
+                lowBar = false;
+                break;
+            case ROUGH_TERRAIN:
+                lowBar = false;
+                break;
+            case ROCK_WALL:
+                lowBar = false;
+                break;
+            case PORTCULLIS:
+                lowBar = false;
+                break;
+            default:
+                lowBar = false;
+        }
+        return lowBar;
+    }
+
 
     public static double getAimAngle(Autonomous.Position position) {
         System.out.println(position);
@@ -77,7 +158,7 @@ public class AutoCommand1 extends CommandGroup {
                 angle = 40;
                 break;
             case THREE:
-            	angle = 30;
+                angle = 30;
                 break;
             case FOUR:
                 angle = 40;
@@ -94,8 +175,8 @@ public class AutoCommand1 extends CommandGroup {
     public static double getDegrees(Autonomous.Position position) {
         double degrees;
         switch (position) {
-            case ONE://low bar
-                degrees = 80.4; // turn right
+            case ONE:// low bar
+                degrees = 80.4;
                 break;
             case TWO:
                 degrees = 41.08;
@@ -134,8 +215,35 @@ public class AutoCommand1 extends CommandGroup {
         return vision;
     }
 
+    // getting the distance to go after the barrier for launching
+    // andalucia's math
+    public static double getDistancePastDefense(Autonomous.Position position) {
+        double distance;
+        System.out.println(position);
+        switch (position) {
+            case ONE:// low bar
+                distance = 38;
+                break;
+            case TWO:
+                distance = 101.05;
+                break;
+            case THREE:
+                distance = 74.1;
+                break;
+            case FOUR:
+                distance = 75.09;
+                break;
+            case FIVE:
+                distance = 104.97;
+                break;
+            default:
+                distance = 0;
+        }
+        return distance;
+    }
+
     public static int getDistance(Autonomous.Type type) {
-        int distance; //in inches
+        int distance; // in inches
         System.out.println(type);
         switch (type) {
             case LOWBAR:
@@ -144,14 +252,11 @@ public class AutoCommand1 extends CommandGroup {
             case MOAT:
                 distance = 145;
                 break;
-            case RAMPARTS:
-                distance = 100;
-                break;
             case ROUGH_TERRAIN:
                 distance = 180;
                 break;
             case ROCK_WALL:
-                distance = 150;
+                distance = -150;
                 break;
             case PORTCULLIS:
                 distance = 120;
@@ -160,6 +265,31 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 25;
         }
         return distance;
+    }
+
+    public static int getSpeed(Autonomous.Type type) {
+        int speed; // in inches
+        System.out.println(type);
+        switch (type) {
+            case LOWBAR:
+                speed = 30;
+                break;
+            case MOAT:
+                speed = 40;
+                break;
+            case ROUGH_TERRAIN:
+                speed = 40;
+                break;
+            case ROCK_WALL:
+                speed = 40;
+                break;
+            case PORTCULLIS:
+                speed = 30;
+                break;
+            default:
+                speed = 25;
+        }
+        return speed;
     }
 
     // Make this return true when this Command no longer needs to run execute()

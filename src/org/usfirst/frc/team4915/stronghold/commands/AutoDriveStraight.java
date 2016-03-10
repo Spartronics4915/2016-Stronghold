@@ -10,7 +10,7 @@ public class AutoDriveStraight extends Command {
 
     private StringBuilder _sb = new StringBuilder();
 
-    public final static double AUTOSPEED = 40.0;      // ~3-4 ft/sec
+    public double AUTOSPEED;      // ~3-4 ft/sec
 
     private double desiredDistanceTicks;
 
@@ -19,7 +19,8 @@ public class AutoDriveStraight extends Command {
     private int initializeRetryCount;
     private final static int MAX_RETRIES = 10;
 
-    public AutoDriveStraight(double desiredDistanceInches) {
+    public AutoDriveStraight(double desiredDistanceInches, double speed) {
+        this.AUTOSPEED = speed;
         requires(Robot.driveTrain);
         if (desiredDistanceInches < 0) {
             goBackward = true;
