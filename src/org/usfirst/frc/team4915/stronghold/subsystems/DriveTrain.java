@@ -75,12 +75,12 @@ public class DriveTrain extends Subsystem {
 
     public void turn(boolean left, double speed) {
         if (left) {
-            RobotMap.leftMasterMotor.set(-speed);
-            RobotMap.rightMasterMotor.set(-speed);
+            RobotMap.leftMasterMotor.set(-0.5*speed);
+            RobotMap.rightMasterMotor.set(-0.5*speed);
         } else {
             System.out.println("Turn right: " + speed);
-            RobotMap.leftMasterMotor.set(speed);
-            RobotMap.rightMasterMotor.set(speed);
+            RobotMap.leftMasterMotor.set(0.5*speed);
+            RobotMap.rightMasterMotor.set(0.5*speed);
         }
     }
 
