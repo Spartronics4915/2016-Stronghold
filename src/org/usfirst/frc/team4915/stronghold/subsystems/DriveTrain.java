@@ -1,13 +1,13 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
+import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.utils.IMUPIDSource;
 
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveTrain extends Subsystem {
 
@@ -32,7 +32,6 @@ public class DriveTrain extends Subsystem {
         // TODO: would be nice to migrate stuff from RobotMap here.
 
         // m_turnPID is used to improve accuracy during auto-turn operations.
-        DriveTrain driveTrain = this; // need reference to this within pidWrite
         m_imu = new IMUPIDSource();
         m_turnPID = new PIDController(turnKp, turnKi, turnKd, turnKf,
                                       m_imu,
@@ -40,7 +39,7 @@ public class DriveTrain extends Subsystem {
                     public void pidWrite(double output) {
                         // output is [-1, 1]... we need to
                         // convert this to a speed...
-                        driveTrain.turn(output * MAXIMUM_TURN_SPEED);
+                        Robot.driveTrain.turn(output * MAXIMUM_TURN_SPEED);
                         // robotDrive.tankDrive(-output, output);
                     }
                 });

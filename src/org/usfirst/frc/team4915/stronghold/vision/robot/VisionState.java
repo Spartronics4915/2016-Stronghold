@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
-import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 
 import edu.wpi.first.wpilibj.NamedSendable;
 import edu.wpi.first.wpilibj.tables.ITable;

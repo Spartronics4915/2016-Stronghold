@@ -4,9 +4,9 @@ import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.VisionAimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.VisionAimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 
