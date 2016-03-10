@@ -22,6 +22,7 @@ public class IntakeLauncher extends Subsystem {
     private final double FULL_SPEED_FORWARD = 1;
     private final double ZERO_SPEED = 0.0;
     private final double LAUNCH_SPEED = 11; // in bus volts
+    private final double AIM_DEGREES_SLOP = 2; // TODO: tune this number
 
     private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // in degrees from
                                                              // horizontal
@@ -42,17 +43,20 @@ public class IntakeLauncher extends Subsystem {
     private double launcherTravelHeightTicks = 585.0; // in
                                                       // potentiometer
                                                       // ticks
-    
+
     private final double MAX_POTENTIOMETER_ERROR = 20;
-    
-    
+
+
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
 
+    private final double NO_VISION_TARGET = -1000;
+
     private double setPoint; // in potentiometer ticks
     private boolean autoCalibrate = false;
     private boolean isPotentiometerScrewed = false;
+    private double visionTarget = NO_VISION_TARGET;
 
     // left and right are determined when standing behind the robot
     // These motors control flywheels that collect and shoot the ball
@@ -77,9 +81,9 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public IntakeLauncher() {
-    		readSetPoint();
+        readSetPoint();
     }
-    
+
     public boolean IsAlive() {
     	return this.aimMotor.isAlive();
     }
@@ -115,6 +119,22 @@ public class IntakeLauncher extends Subsystem {
         setPoint = -getPosition();
     }
 
+    public void setElevationDegrees(double deg) {
+        setSetPoint(degreesToTicks(deg));
+    }
+
+    public double getElevationDegrees() {
+        return ticksToDegrees(getPosition());
+    }
+
+    public boolean elevationTargetReached(double targetDegrees) {
+        double currentElevation = getElevationDegrees();
+        if(Math.abs(this.visionTarget - currentElevation) < AIM_DEGREES_SLOP)
+            return true;
+        else
+            return false;
+    }
+
     // changes the set point to a value
     public void setSetPoint(double newSetPoint) {
         setPoint = newSetPoint;
@@ -135,29 +155,31 @@ public class IntakeLauncher extends Subsystem {
 
     // sets the set point with vision and moves to set point
     private void trackVision() {
-    	System.out.println(VisionState.getInstance().TargetY);
-    	if(!VisionState.getInstance().LauncherLockedOnTarget) {
-    		if(Math.abs(ticksToDegrees(getPosition())
-    				- VisionState.getInstance().TargetY) < 6) { 
-    			//TODO (change the 6)
-    			VisionState.getInstance().LauncherLockedOnTarget = true;
-    			System.out.println("Stopping launcher!");
+        VisionState vs = VisionState.getInstance();
+        if(vs == null) return;
+
+    	if(!vs.LauncherLockedOnTarget) {
+            double currentElevation = getElevationDegrees();
+            if(this.visionTarget == NO_VISION_TARGET) {
+                this.visionTarget = vs.getTargetElevation(currentElevation);
+                setSetPoint(degreesToTicks(this.visionTarget)); // TODO: verify sign
+            }
+            if(Math.abs(this.visionTarget - currentElevation) < AIM_DEGREES_SLOP) {
+    			vs.LauncherLockedOnTarget = true;
+                this.visionTarget = NO_VISION_TARGET; // ok since we're locked
+    			System.out.println("Stopping aimer!");
     		}
-    		moveLauncherWithVision();
-    		moveToSetPoint();
+            else {
+                moveToSetPoint();
+            }
     	}
-    	else if (VisionState.getInstance().DriveLockedOnTarget){
+    	else if (vs.DriveLockedOnTarget) {
     		//shoot
     		//Leave AutoAimMode
     	}
     	else {
-    		//Do nothing, wait for driveTrain to get into position
+    		//Do nothing, waiting for driveTrain to get into position
     	}
-    }
-
-    // changes the set point based on vision
-    private void moveLauncherWithVision() {
-        offsetSetPoint(degreesToTicks(-VisionState.getInstance().TargetY));
     }
 
     // changes the set point based on the joystick
@@ -169,12 +191,14 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
+    // aimLauncher is invoked from AimLauncherCommand which is installed
+    // by AutoCommand1 when the associated strategy is chosen.
     // Checks to see if joystick control or vision control is needed and
-    // controls motion
+    // controls motion.
     public void aimLauncher() {
     	//System.out.println("aimLauncher called");
-        System.out.println(getPosition());
-        System.out.println(setPoint);
+        System.out.println("aimLauncher current: " + getPosition() +
+                            ", target: " + setPoint);
         SmartDashboard.putNumber("Launch Angle", (int) ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
         	//System.out.println("Tracking vision!");
@@ -185,7 +209,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // sets the launcher position to the current set point
-    private void moveToSetPoint() {
+    public void moveToSetPoint() {
         keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
@@ -216,11 +240,11 @@ public class IntakeLauncher extends Subsystem {
             setPoint = -launcherMinHeightTicks;
         }
     }
-    
+
     private void dangerTest() {
         if((isLauncherAtBottom() && Math.abs(getPosition() - launcherMinHeightTicks) > MAX_POTENTIOMETER_ERROR) || (isLauncherAtTop() && Math.abs(getPosition() - launcherMaxHeightTicks) > MAX_POTENTIOMETER_ERROR)) {
             isPotentiometerScrewed = true;
-        } 
+        }
     }
 
     private double degreesToTicks(double degrees) {
@@ -253,19 +277,19 @@ public class IntakeLauncher extends Subsystem {
     public boolean isLauncherAtBottom() {
         return aimMotor.isFwdLimitSwitchClosed();
     }
-    
+
     public boolean isBoulderLoaded() {
         return boulderSwitch.get();
     }
-    
+
     public double getPosition() {
         return Math.abs(aimMotor.getPosition());
     }
 
     public double getSetPoint() {
-        return Math.abs(setPoint); 
+        return Math.abs(setPoint);
     }
-    
+
     public boolean getIsPotentiometerScrewed() {
         return isPotentiometerScrewed;
     }

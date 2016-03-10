@@ -9,9 +9,9 @@
 #
 # But with tegra's opencv+python, we can only capture at 640x480
 # so we measured the hfov to be 54 degrees. Which would  give us
-# a dfov of 67.5 
+# a dfov of 67.5
 #       800 = math.sqrt(w*w  + h*h)
-#       1.25 =  800 / 640 
+#       1.25 =  800 / 640
 #       67.5  = 1.25 * 54
 
 import sys
@@ -53,7 +53,7 @@ class TargetState:
     def nearbyPt(self, p0, p1):
         return (p0[0]-3 < p1[0] < p0[0]+3) and \
                (p0[1]-3 < p1[1] < p0[1]+3)
-            
+
     def kpCompareByStability(self, kp1, kp2):
     	kp1Frequency = 0
     	kp2Frequency = 0
@@ -67,17 +67,17 @@ class TargetState:
         elif kp1.size == kp2.size:
             return 0
         else:
-            return 1 
-    
+            return 1
+
     def SetFPS(self, fps):
         self.m_visTab.putInt("FPS", fps)
 
     def NewLines(self, lines):
         return lines
-        
+
     def CompareKeypointToHistory(self):
     	self.m_kpHistory = self.m_kpHistory[-2:]
-        #print("hello: len(%d) %s", (len(self.m_kpHistory), 
+        #print("hello: len(%d) %s", (len(self.m_kpHistory),
         #                            repr(self.m_kpHistory[0])))
     	distBetweenKeypoints =(self.m_kpHistory[0].pt[0]-self.m_kp.pt[0])**2 + \
                               (self.m_kpHistory[0].pt[1] - self.m_kp.pt[1])**2
@@ -88,7 +88,7 @@ class TargetState:
     	distBetweenKeypoints =(kp1.pt[0]-kp2.pt[0])**2 + \
                               (kp1.pt[1] - kp2.pt[1])**2
         return distBetweenKeypoints
-        
+
     def AverageKeypoints(self):
      	avgKeypointX = 0
      	avgKeypointY = 0
@@ -102,7 +102,7 @@ class TargetState:
 
     # NewTarget: we assume that kp is in absolute (not screen-rel) coords
     def NewTarget(self, kp):
-        self.updateVisionTableAbsolute(kp)
+        self.updateVisionTable(kp)
         return [kp]
 
     def NewKeypoints(self, kplist):
@@ -113,7 +113,7 @@ class TargetState:
                     kplist.sort(self.kpcompare)
                     self.m_kp = kplist[0]
             elif 0:
-                #average 5 most recent keypoints (not very useful because 
+                #average 5 most recent keypoints (not very useful because
                 #creating a new keypoint is unsafe)
                 kplist.sort(self.kpcompare)
                 self.m_kp = kplist[0]
@@ -127,7 +127,7 @@ class TargetState:
                 kplist.sort(self.kpcompare)
                 kplist = kplist[:10]
                 self.m_kpHistory = kplist
-            elif 0: 
+            elif 0:
                 nearest = None
                 size = None
                 nearestD = 10000
@@ -155,7 +155,7 @@ class TargetState:
             	self.m_kpHistory = self.m_kpHistory[:50]
             	kplist.sort(self.kpCompareByStability)
                 self.m_kp = kplist[0]
-            	
+
             # append and trucate to fixed length:
             # self.m_kpHistory = self.m_kpHistory.append(self.m_kp)[-5:]
 
@@ -176,23 +176,10 @@ class TargetState:
         return (x,y)
 
     def updateVisionTable(self, kp):
-        self.m_visTab.putInt("RelativeTargetingMode", 1)
         if not kp:
             self.m_visTab.putInt("TargetAcquired", 0)
         else:
             theta = self.pixelToAngle(kp.pt)
             self.m_visTab.putInt("TargetAcquired", 1)
-            self.m_visTab.putInt("TargetX", int(.5+theta[0]))
-            self.m_visTab.putInt("TargetY", int(.5+theta[1]))
-
-    # here we assume that kp.pt has absolute angles, relative to IMU north
-    def updateVisionTableAbsolute(self, kp):
-        self.m_visTab.putInt("RelativeTargetingMode", 0)
-        if not kp:
-            self.m_visTab.putInt("TargetAcquired", 0)
-        else:
-            self.m_visTab.putInt("TargetAcquired", 1)
-            self.m_visTab.putInt("TargetX", int(kp.pt[0]))
-            self.m_visTab.putInt("TargetY", int(kp.pt[1]))
-
-
+            self.m_visTab.putNumber("TargetX", theta[0])
+            self.m_visTab.putNumber("TargetY", theta[1])

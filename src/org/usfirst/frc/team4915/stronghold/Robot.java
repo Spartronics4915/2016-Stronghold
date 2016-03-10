@@ -31,7 +31,7 @@ public class Robot extends IterativeRobot {
     public static OI oi;
     public static GearShift gearShift;
     public static Scaler scaler;
-    
+
     Command autonomousCommand;
     SendableChooser autonomousProgramChooser;
 
@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
         // 2. conditionally create the modules
         if (ModuleManager.PORTCULLIS_MODULE_ON){
             new PortcullisMoveUp().start();
-            
+
         }
         if (ModuleManager.DRIVE_MODULE_ON) {
             driveTrain = new DriveTrain();
@@ -63,7 +63,7 @@ public class Robot extends IterativeRobot {
         }
         else
         	SmartDashboard.putString("Shift Module", "disabled");
-        
+
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
         	/* to prevent module-manager-madness (M-cubed), we
         	 * place try/catch block for exceptions thrown on account of
@@ -88,7 +88,7 @@ public class Robot extends IterativeRobot {
        }
         else
             SmartDashboard.putString("Scaling Module", "disabled");
-        
+
         if (ModuleManager.IMU_MODULE_ON) {
         	// imu is initialized in RobotMap.init()
             SmartDashboard.putString("IMU Module", "initialized");
@@ -109,10 +109,10 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
 
-        // schedule the autonomous command        
+        // schedule the autonomous command
        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
                 (Autonomous.Position) oi.startingFieldPosition.getSelected());
-        
+
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }
@@ -134,10 +134,10 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
       //set speed
-        
+
        // RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
        // RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-        
+
         if (this.autonomousCommand != null) {
             this.autonomousCommand.cancel();
         }
@@ -169,12 +169,12 @@ public class Robot extends IterativeRobot {
         LiveWindow.run();
         periodicStatusUpdate();
      }
-    
+
     public void periodicStatusUpdate() {
         double currentTime = Timer.getFPGATimestamp(); // seconds
-        // only update the smart dashboard 1 per second to prevent
+        // only update the smart dashboard twice per second to prevent
         // network congestion.
-        if(currentTime - this.lastTime > 1.) {
+        if(currentTime - this.lastTime > .5) {
         	updateIMUStatus();
         	updateLauncherStatus();
         	updateDrivetrainStatus();
@@ -187,25 +187,25 @@ public class Robot extends IterativeRobot {
             BNO055.CalData calData = RobotMap.imu.getCalibration();
             SmartDashboard.putNumber("IMU heading", RobotMap.imu.getNormalizedHeading());
             // SmartDashboard.putNumber("IMU dist to origin", RobotMap.imu.getDistFromOrigin());
-            SmartDashboard.putNumber("IMU calibration", 
-                                 (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag)); 
+            SmartDashboard.putNumber("IMU calibration",
+                                 (1000 + (calData.accel * 100) + calData.gyro *10 + calData.mag));
                                  //Calibration values range from 0-3, Right to left: mag, gyro, accel
  	   }
 	}
-	
+
 	public void updateLauncherStatus() {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             SmartDashboard.putNumber("aimMotor Potentiometer: ", intakeLauncher.getPosition());
 	        SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
 	        SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
-	        SmartDashboard.putBoolean("Boulder Limit Switch: ", intakeLauncher.boulderSwitch.get()); 
+	        SmartDashboard.putBoolean("Boulder Limit Switch: ", intakeLauncher.boulderSwitch.get());
 	        SmartDashboard.putBoolean("Potentiometer might be broken", intakeLauncher.getIsPotentiometerScrewed());
         }
 	}
-	
+
 	public void updateDrivetrainStatus() {
         if (ModuleManager.DRIVE_MODULE_ON) {
-        	
+
         }
 	}
 }

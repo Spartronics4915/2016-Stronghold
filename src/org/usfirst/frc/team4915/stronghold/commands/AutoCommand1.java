@@ -4,6 +4,7 @@ import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.VisionAimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
@@ -62,7 +63,8 @@ public class AutoCommand1 extends CommandGroup {
 			if (ModuleManager.VISION_MODULE_ON) {
 				addSequential(new AutoAimControlCommand(true, true));
 				addParallel(new ArcadeDrive());
-				addParallel(new AimLauncherCommand());
+				addParallel(new VisionAimLauncherCommand());
+                addSequential(new AutoLaunchCommand());
 			}
 			break;
 		}
@@ -106,6 +108,7 @@ public class AutoCommand1 extends CommandGroup {
                 addSequential(new WaitCommand(.75));
                addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
 			break;
+
             }
             else{
                 addSequential(new LauncherGoToNeutralPositionCommand());
@@ -114,9 +117,9 @@ public class AutoCommand1 extends CommandGroup {
                 addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
             }
             default:
-                break;
-    	}
-     }
+		}
+	}
+
 
     public static boolean getLauncherBeginPosition(Autonomous.Type type) {
         boolean lowBar; // in inches
@@ -142,6 +145,7 @@ public class AutoCommand1 extends CommandGroup {
         }
         return lowBar;
     }
+
 
     public static double getAimAngle(Autonomous.Position position) {
         System.out.println(position);
@@ -170,7 +174,6 @@ public class AutoCommand1 extends CommandGroup {
 
     public static double getDegrees(Autonomous.Position position) {
         double degrees;
-        System.out.println(position);
         switch (position) {
             case ONE:// low bar
                 degrees = 80.4;
@@ -182,7 +185,7 @@ public class AutoCommand1 extends CommandGroup {
                 degrees = 11.95;
                 break;
             case FOUR:
-                degrees = -13.12;
+                degrees = -13.12; // turn left
                 break;
             case FIVE:
                 degrees = -57.75;
@@ -194,7 +197,6 @@ public class AutoCommand1 extends CommandGroup {
     }
 
     public static boolean getStrategy(Autonomous.Strat strat) {
-        System.out.println(strat);
         boolean vision = true;
         switch (strat) {
             case NONE:
