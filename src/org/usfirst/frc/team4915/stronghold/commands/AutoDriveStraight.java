@@ -15,6 +15,7 @@ public class AutoDriveStraight extends Command {
     private double desiredDistanceTicks;
 
     private boolean isInitialized, goBackward;
+
     private int initializeRetryCount;
     private final static int MAX_RETRIES = 10;
 
@@ -35,9 +36,7 @@ public class AutoDriveStraight extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        // initialize the encoders to 0
-        Robot.driveTrain.setMaxOutput(Robot.driveTrain.getMaxOutput());
-        Robot.driveTrain.resetEncoders();
+        Robot.driveTrain.init();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -73,8 +72,6 @@ public class AutoDriveStraight extends Command {
         _sb.append(RobotMap.rightMasterMotor.getControlMode());
         _sb.append(", speed: ");
         _sb.append(RobotMap.rightMasterMotor.getSpeed());
-
-        _sb.append(", max output " + Robot.driveTrain.getMaxOutput());
 
         _sb.append(", initialized? " + isInitialized);
         _sb.append(", retry count " + initializeRetryCount);

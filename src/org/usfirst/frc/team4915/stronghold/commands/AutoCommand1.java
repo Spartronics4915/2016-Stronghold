@@ -4,6 +4,7 @@ import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.VisionAimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
@@ -36,17 +37,18 @@ public class AutoCommand1 extends CommandGroup {
 		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
 									// goal.
 			addSequential(new AutoDriveStraight(getDistance(type)));
-			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+			addSequential(new AutoRotateDegrees(getDegrees(position)));
 			if (ModuleManager.VISION_MODULE_ON) {
 				addSequential(new AutoAimControlCommand(true, true));
 				addParallel(new ArcadeDrive());
-				addParallel(new AimLauncherCommand());
+				addParallel(new VisionAimLauncherCommand());
+                addSequential(new AutoLaunchCommand());
 			}
 			break;
 		case DRIVE_SHOOT_NO_VISION:
 			System.out.println("Starting Move Straight");
 			addSequential(new AutoDriveStraight(getDistance(type)));
-			addSequential(new AutoRotateDegrees(getLeft(position), getDegrees(position)));
+			addSequential(new AutoRotateDegrees(getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addParallel(new AimLauncherCommand());
 				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
@@ -63,6 +65,7 @@ public class AutoCommand1 extends CommandGroup {
 			break;
 		}
 	}
+
     public static double getAimAngle(Autonomous.Position position) {
         System.out.println(position);
         double angle = 0;
@@ -88,36 +91,11 @@ public class AutoCommand1 extends CommandGroup {
         return angle;
     }
 
-    public static boolean getLeft(Autonomous.Position position) {
-        System.out.println(position);
-        boolean left = true;
-        switch (position) {
-            case ONE:
-                left = false;
-                break;
-            case TWO:
-                left = false;
-                break;
-            case THREE:
-                break;
-            case FOUR:
-                left = false;
-                break;
-            case FIVE:
-                left = true;
-                break;
-            default:
-                left = true;
-        }
-        return left;
-    }
-
     public static double getDegrees(Autonomous.Position position) {
         double degrees;
-        System.out.println(position);
         switch (position) {
             case ONE://low bar
-                degrees = 80.4;
+                degrees = 80.4; // turn right
                 break;
             case TWO:
                 degrees = 41.08;
@@ -126,10 +104,10 @@ public class AutoCommand1 extends CommandGroup {
                 degrees = 11.95;
                 break;
             case FOUR:
-                degrees = 13.12;
+                degrees = -13.12; // turn left
                 break;
             case FIVE:
-                degrees = 57.75;
+                degrees = -57.75;
                 break;
             default:
                 degrees = 0;
@@ -138,7 +116,6 @@ public class AutoCommand1 extends CommandGroup {
     }
 
     public static boolean getStrategy(Autonomous.Strat strat) {
-        System.out.println(strat);
         boolean vision = true;
         switch (strat) {
             case NONE:

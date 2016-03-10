@@ -1,24 +1,66 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
+import org.usfirst.frc.team4915.stronghold.utils.IMUPIDSource;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 
 public class DriveTrain extends Subsystem {
 
-    public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;         // 100.0 == ~13 ft/sec interpolated from observations
-    public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;         // 150.0 == ~20 ft/sec interpolated from observations
+    public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;  // 100.0 == ~13 ft/sec interpolated from observations
+    public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;  // 150.0 == ~20 ft/sec interpolated from observations
+    public final static double MAXIMUM_TURN_SPEED = 40.0;         // ~3-4 ft/sec
 
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);
 
     private double maxSpeed = 0;
+
+    // support for pid-based turning
+    private PIDController m_turnPID;
+    private IMUPIDSource m_imu;
+    private static final double turnKp = 0.1;
+    private static final double turnKi = 0;
+    private static final double turnKd = 0.30;
+    private static final double turnKf = 0.001;
+
+    public DriveTrain() {
+        // TODO: would be nice to migrate stuff from RobotMap here.
+
+        // m_turnPID is used to improve accuracy during auto-turn operations.
+        DriveTrain driveTrain = this; // need reference to this within pidWrite
+        m_imu = new IMUPIDSource();
+        m_turnPID = new PIDController(turnKp, turnKi, turnKd, turnKf,
+                                      m_imu,
+                                      new PIDOutput() {
+                    public void pidWrite(double output) {
+                        // output is [-1, 1]... we need to
+                        // convert this to a speed...
+                        driveTrain.turn(output * MAXIMUM_TURN_SPEED);
+                        // robotDrive.tankDrive(-output, output);
+                    }
+                });
+        m_turnPID.setOutputRange(-1, 1);
+        m_turnPID.setInputRange(-180, 180);
+        m_turnPID.setPercentTolerance(2);
+        // m_turnPID.setContuous?
+    }
+
+    public void init() {
+        this.setMaxOutput(this.getMaxOutput());
+        // reset encoders
+        RobotMap.leftMasterMotor.setEncPosition(0);
+        RobotMap.rightMasterMotor.setEncPosition(0);
+    }
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        System.out.println("ArcadeDrive getControlModes: " +
+        System.out.println("DriveTrain getControlModes: " +
         			RobotMap.leftMasterMotor.getControlMode() + "  " +
         			RobotMap.rightMasterMotor.getControlMode());
         setDefaultCommand(new ArcadeDrive());
@@ -28,21 +70,79 @@ public class DriveTrain extends Subsystem {
     }
 
     public void arcadeDrive(double driveYstick, double driveXstick) {
-        System.out.println("Arcade drive y: " + driveYstick + ", x " + driveXstick);
+        // robotDrive applies maxSpeed, but direct "set" doesn't
         robotDrive.arcadeDrive(driveYstick, driveXstick);
-        System.out.println("Arcade drive get speed = " + RobotMap.leftMasterMotor.getSpeed());
     }
 
-    public void resetEncoders(){
-        RobotMap.leftMasterMotor.setEncPosition(0);
-        RobotMap.rightMasterMotor.setEncPosition(0);
+    public double getCurrentHeading() {
+        return m_imu.getHeading();
+    }
+
+    public void stop() {
+        robotDrive.stopMotor();
+    }
+
+    public void driveStraight(double speed) {
+        // nb: maxspeed isn't applied via set so
+        //  speed is supposedly measured in rpm but this depends on our
+        //  initialization establishing encoding ticks per revolution.
+        //  This is approximate so we rely on the observed values above.
+        //  (DEFAULT_SPEED_MAX_OUTPUT)
+        RobotMap.leftMasterMotor.set(speed);
+        RobotMap.rightMasterMotor.set(-speed);
+    }
+
+    // turn takes a speed, not an angle...
+    // A negative speed is interpretted as turn left.
+    // Note that we bypass application of setMaxOutput Which
+    // only applies to calls to robotDrive.
+    public void turn(double speed) {
+        // In order to turn left, we want the right wheels to go
+        // forward and left wheels to go backward (cf: tankDrive)
+        // Oddly, our right master motor is reversed, so we compensate here.
+        //  speed < 0:  turn left:  rightmotor(negative) (forward),
+        //                          leftmotor(negative)  (backward)
+        //  speed > 0:  turn right: rightmotor(positive) (backward)
+        //                          leftmotor(positive) (forward)
+        RobotMap.leftMasterMotor.set(speed);
+        RobotMap.rightMasterMotor.set(speed);
+    }
+
+    public void startAutoTurn(double degrees) {
+        m_turnPID.reset();
+        m_turnPID.setSetpoint(degrees);
+        m_turnPID.enable();
+        // Timer.delay(.2);
+        System.out.println("start turning from "
+                + roundToHundredths(m_imu.getHeading())
+                + " to setpoint " + degrees);
+    }
+
+    public boolean isAutoTurning() {
+        return m_turnPID.isEnabled();
+    }
+
+    public boolean isAutoTurnFinished() {
+        System.out.println("is turn done: " + m_turnPID.onTarget()
+                + " deg:" + roundToHundredths(m_imu.getHeading())
+                + " out:" + roundToHundredths(m_turnPID.get())
+                + " err:" + roundToHundredths(m_turnPID.getError()));
+        return m_turnPID.onTarget();
+    }
+
+    public void endAutoTurn() {
+        if(m_turnPID.isEnabled())
+            m_turnPID.disable();
     }
 
     /*
-     * Methods to get/set maximum top speed for our robot
+     * Methods to get/set maximum top speed for our robot.
+     * Note that this value is only applied by calls to
+     * robotDrive that assume [-1, 1] like arcadedrive, tankdrive, etc.
+     * When we issue direct set calls (this.driveStraight, etc),
+     * maxSpeed is ignored/bypassed.
      */
-    public double getMaxOutput() {
-
+    private double getMaxOutput() {
         if (maxSpeed == 0) {   /* not initialized, yet */
             return DEFAULT_SPEED_MAX_OUTPUT;
         }
@@ -51,60 +151,22 @@ public class DriveTrain extends Subsystem {
         }
     }
 
-
-    public void setMaxOutput(double maxOutput) {
-
+    private void setMaxOutput(double maxOutput) {
         if (maxOutput > MAXIMUM_SPEED_MAX_OUTPUT) {
             maxSpeed = MAXIMUM_SPEED_MAX_OUTPUT;
         }
         else {
             maxSpeed = maxOutput;
         }
-
         robotDrive.setMaxOutput(maxSpeed);
     }
 
-    public void stop() {
-        robotDrive.stopMotor();
+
+    private double roundToHundredths(double x) {
+        if(x > 0)
+            return Math.floor(x * 100 + .5) / 100.0;
+        else
+            return Math.floor(x * 100 - .5) / 100.0;
     }
 
-    public void driveStraight(double speed) {
-        RobotMap.leftMasterMotor.set(speed);
-        RobotMap.rightMasterMotor.set(-speed);
-    }
-
-    public void turn(boolean left, double speed) {
-        if (left) {
-            RobotMap.leftMasterMotor.set(-0.5*speed);
-            RobotMap.rightMasterMotor.set(-0.5*speed);
-        } else {
-            System.out.println("Turn right: " + speed);
-            RobotMap.leftMasterMotor.set(0.5*speed);
-            RobotMap.rightMasterMotor.set(0.5*speed);
-        }
-    }
-
-    // autoturn is just a gentler version of (joystick) turn.
-    public void autoturn(boolean left) {
-    	//System.out.println("autoturning left: " + left);
-        if (left) {
-            robotDrive.arcadeDrive(0, -.55);
-        } else {
-            robotDrive.arcadeDrive(0, .55);
-        }
-    }
-
-    public void turnToward(double target) {
-        double heading = RobotMap.imu.getNormalizedHeading();
-        double delta =  target - heading;
-        /*System.out.println("target: " + target +
-                           " heading: " + heading +
-                           " delta: " + delta);*/
-        SmartDashboard.putNumber("Vision Delta", delta);
-        if (Math.abs(delta) < 5.0) {
-            this.stop();
-        } else {
-            this.autoturn(delta > 0.0 /*turn left*/ );
-        }
-    }
 }
