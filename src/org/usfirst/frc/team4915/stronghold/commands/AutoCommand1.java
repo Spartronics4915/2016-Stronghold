@@ -12,6 +12,7 @@ import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class AutoCommand1 extends CommandGroup {
 
@@ -37,11 +38,12 @@ public class AutoCommand1 extends CommandGroup {
     	switch (strat) {
 		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
 									// goal
-            addParallel(new AimLauncherCommand());
 		    //if it is low bar launcher will go to travelPosition
 		if (getLauncherBeginPosition(type) == true){
 		    addSequential(new LauncherGoToTravelPositionCommand());
-		    addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+            addParallel(new AimLauncherCommand());
+            addSequential(new WaitCommand(.75));
+            addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
             addSequential(new AutoRotateDegrees( getDegrees(position)));
             if (ModuleManager.VISION_MODULE_ON) {
                 addSequential(new AutoAimControlCommand(true, true));
@@ -53,6 +55,8 @@ public class AutoCommand1 extends CommandGroup {
 		//launcher will go to NeutralPosition
 		else{
 		    addSequential(new LauncherGoToNeutralPositionCommand());
+            addParallel(new AimLauncherCommand());
+            addSequential(new WaitCommand(.75));
 			addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
 			addSequential(new AutoRotateDegrees( getDegrees(position)));
 			if (ModuleManager.VISION_MODULE_ON) {
@@ -64,9 +68,10 @@ public class AutoCommand1 extends CommandGroup {
 		}
 		
 		case DRIVE_SHOOT_NO_VISION:
-		    addParallel(new AimLauncherCommand());
 		    if (getLauncherBeginPosition(type) == true){
 		        addSequential(new LauncherGoToTravelPositionCommand());
+                addParallel(new AimLauncherCommand());
+                addSequential(new WaitCommand(.75));
 		        System.out.println("Starting Move Straight");
 		        addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
 		        addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
@@ -81,6 +86,8 @@ public class AutoCommand1 extends CommandGroup {
             
             else{   
                 addSequential(new LauncherGoToNeutralPositionCommand());
+                addParallel(new AimLauncherCommand());
+                addSequential(new WaitCommand(.75));
 		        System.out.println("Starting Move Straight");
 	            addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
 	            addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
@@ -92,14 +99,18 @@ public class AutoCommand1 extends CommandGroup {
 	            }
             }
 	    case DRIVE_ACROSS:
-            addParallel(new AimLauncherCommand());
+
             if (getLauncherBeginPosition(type) == true){
-               addSequential(new LauncherGoToTravelPositionCommand());
+                addSequential(new LauncherGoToTravelPositionCommand());
+                addParallel(new AimLauncherCommand());
+                addSequential(new WaitCommand(.75));
                addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
 			break;
             }
             else{
                 addSequential(new LauncherGoToNeutralPositionCommand());
+                addParallel(new AimLauncherCommand());
+                addSequential(new WaitCommand(.75));
                 addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
             }
             default:
