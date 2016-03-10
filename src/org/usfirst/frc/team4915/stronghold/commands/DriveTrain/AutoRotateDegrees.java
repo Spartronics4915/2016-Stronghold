@@ -16,6 +16,7 @@ public class AutoRotateDegrees extends Command {
     private BNO055 imu = RobotMap.imu;
 
     // autonomous rotate command
+
     public AutoRotateDegrees(double robotAngle) {
         System.out.println("Auto Rotate degrees "+robotAngle);
         requires(Robot.driveTrain);
