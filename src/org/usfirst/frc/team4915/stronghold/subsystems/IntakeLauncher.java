@@ -23,6 +23,7 @@ public class IntakeLauncher extends Subsystem {
     private final double ZERO_SPEED = 0.0;
     private final double LAUNCH_SPEED = 11; // in bus volts
     private final double AIM_DEGREES_SLOP = 2; // TODO: tune this number
+    private final double AIM_TICKS_SLOP = degreesToTicks(AIM_DEGREES_SLOP);
 
     private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // in degrees from
                                                              // horizontal
@@ -154,7 +155,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // sets the set point with vision and moves to set point
-    private void trackVision() {
+    public void trackVision() {
         VisionState vs = VisionState.getInstance();
         if(vs == null) return;
 
@@ -208,10 +209,12 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
-    // sets the launcher position to the current set point
+    // requests a launcher position according to the current set point.
+    // If aimMototr.safetyEnabled() (defaults is false), aimMotor.set must be
+    // called periodically (even with the same setpoint) to prevent motorsafety timeouts.
     public void moveToSetPoint() {
         keepSetPointInRange();
-        aimMotor.changeControlMode(TalonControlMode.Position);
+        aimMotor.changeControlMode(TalonControlMode.Position); // redundant, but harmless
         aimMotor.set(setPoint);
         if (autoCalibrate) {
             autoCalibratePotentiometer();
@@ -223,8 +226,22 @@ public class IntakeLauncher extends Subsystem {
         setSetPoint(-launcherNeutralHeightTicks);
     }
 
-    public void launcherSetIntakePosition() {
+    public boolean launcherAtNeutralPosition() {
+        if( Math.abs(getPosition() - launcherNeutralHeightTicks) < AIM_TICKS_SLOP)
+            return true;
+        else
+            return false;
+    }
+
+    public void launcherSetTravelPosition() {
         setSetPoint(-launcherTravelHeightTicks);
+    }
+
+    public boolean launcherAtTravelPosition() {
+        if( Math.abs(getPosition() - launcherTravelHeightTicks) < AIM_TICKS_SLOP)
+            return true;
+        else
+            return false;
     }
 
     public void launcherJumpToAngle(double angle) {

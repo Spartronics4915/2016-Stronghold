@@ -2,6 +2,7 @@ package org.usfirst.frc.team4915.stronghold.subsystems;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.utils.IMUPIDSource;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -106,6 +107,24 @@ public class DriveTrain extends Subsystem {
         //                          leftmotor(positive) (forward)
         RobotMap.leftMasterMotor.set(speed);
         RobotMap.rightMasterMotor.set(speed);
+    }
+
+    public void trackVision() {
+        VisionState vs = VisionState.getInstance();
+        if(vs.DriveLockedOnTarget) {
+            // wait for launcher to shoot and exit auto mode or toggle AutoAim
+            this.stop(); // needed to keep driveTrain alive
+        }
+        else {
+            if (!this.isAutoTurning()) {
+                double h = this.getCurrentHeading();
+                double target = vs.getTargetHeading(h);
+                this.startAutoTurn(target);
+            } else if (this.isAutoTurnFinished()) {
+                this.endAutoTurn();
+                vs.DriveLockedOnTarget = true;
+            } // else allow auto-turn to continue
+        }
     }
 
     public void startAutoTurn(double degrees) {

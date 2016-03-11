@@ -4,12 +4,12 @@ import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.VisionAimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToTravelPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
+import org.usfirst.frc.team4915.stronghold.commands.vision.AutoVisionDriveAndAim;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -27,99 +27,42 @@ public class AutoCommand1 extends CommandGroup {
         this.type = type;
         System.out.println("Angle: " + position + "Field Position " + position + "strategy " + strat + "Obstacle " + type);
 
-        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-          //  Robot.intakeLauncher.launcherSetNeutralPosition(); // placeholder
-                                                               // for setting
-                                                               // the launcher
-                                                               // to neutral
-                                                               // driving
-                                                               // position
-        }
+        boolean launcherWantsTravelPosition = getLauncherBeginPosition(type);
+
+        if(launcherWantsTravelPosition)
+            addSequential(new LauncherGoToTravelPositionCommand());
+        else
+            addSequential(new LauncherGoToNeutralPositionCommand());
 
     	switch (strat) {
-		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
-									// goal
-		    //if it is low bar launcher will go to travelPosition
-		if (getLauncherBeginPosition(type) == true){
-		    addSequential(new LauncherGoToTravelPositionCommand());
-            addParallel(new AimLauncherCommand());
-            addSequential(new WaitCommand(.75));
+        case NONE:
+            break;
+
+        case DRIVE_ACROSS:
+            System.out.println("Starting Move Straight");
+            addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+            break;
+
+		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high goal
             addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
             addSequential(new AutoRotateDegrees( getDegrees(position)));
-            if (ModuleManager.VISION_MODULE_ON) {
-                addSequential(new AutoAimControlCommand(true, true));
-                addParallel(new ArcadeDrive());
-            }
-            break;    
-		}
-		//false: For all other types of barriers
-		//launcher will go to NeutralPosition
-		else{
-		    addSequential(new LauncherGoToNeutralPositionCommand());
-            addParallel(new AimLauncherCommand());
-            addSequential(new WaitCommand(.75));
-			addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
-			addSequential(new AutoRotateDegrees( getDegrees(position)));
-			if (ModuleManager.VISION_MODULE_ON) {
-				addSequential(new AutoAimControlCommand(true, true));
-				addParallel(new ArcadeDrive());
-				addParallel(new VisionAimLauncherCommand());
-                addSequential(new AutoLaunchCommand());
-			}
-			break;
-		}
-		
+            addSequential(new AutoAimControlCommand(true, true));
+            addSequential(new AutoVisionDriveAndAim());
+            addSequential(new AutoLaunchCommand());
+            break;
+
 		case DRIVE_SHOOT_NO_VISION:
-		    if (getLauncherBeginPosition(type) == true){
-		        addSequential(new LauncherGoToTravelPositionCommand());
-                addParallel(new AimLauncherCommand());
-                addSequential(new WaitCommand(.75));
-		        System.out.println("Starting Move Straight");
-		        addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
-		        addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
-		        addSequential(new AutoRotateDegrees(getDegrees(position)));
+		    addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+		    addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
+		    addSequential(new AutoRotateDegrees(getDegrees(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addParallel(new AimLauncherCommand());
 				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
 				addSequential(new AutoLaunchCommand());
 			}
 			break;
-		    }
-            
-            else{   
-                addSequential(new LauncherGoToNeutralPositionCommand());
-                addParallel(new AimLauncherCommand());
-                addSequential(new WaitCommand(.75));
-		        System.out.println("Starting Move Straight");
-	            addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
-	            addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
-	            addSequential(new AutoRotateDegrees(getDegrees(position)));
-	            if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-	                addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
-	                addSequential(new AutoLaunchCommand());
-	            break;    
-	            }
-            }
-	    case DRIVE_ACROSS:
-
-            if (getLauncherBeginPosition(type) == true){
-                addSequential(new LauncherGoToTravelPositionCommand());
-                addParallel(new AimLauncherCommand());
-                addSequential(new WaitCommand(.75));
-               addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
-			break;
-
-            }
-            else{
-                addSequential(new LauncherGoToNeutralPositionCommand());
-                addParallel(new AimLauncherCommand());
-                addSequential(new WaitCommand(.75));
-                addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
-            }
-            default:
-		}
+        }
 	}
-
 
     public static boolean getLauncherBeginPosition(Autonomous.Type type) {
         boolean lowBar; // in inches
@@ -145,7 +88,6 @@ public class AutoCommand1 extends CommandGroup {
         }
         return lowBar;
     }
-
 
     public static double getAimAngle(Autonomous.Position position) {
         System.out.println(position);

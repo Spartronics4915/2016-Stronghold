@@ -48,20 +48,7 @@ public class ArcadeDrive extends Command {
                 Robot.driveTrain.arcadeDrive(joystickY * scaledThrottle, joystickX * scaledThrottle);
             }
         } else {
-        	if(vs.DriveLockedOnTarget) {
-        		// wait for launcher to shoot and exit auto mode or toggle AutoAim
-                Robot.driveTrain.stop(); // needed to keep driveTrain alive
-        	}
-            else {
-                if (!Robot.driveTrain.isAutoTurning()) {
-                    double h = Robot.driveTrain.getCurrentHeading();
-                    double target = vs.getTargetHeading(h);
-                    Robot.driveTrain.startAutoTurn(target);
-                } else if (Robot.driveTrain.isAutoTurnFinished()) {
-                    Robot.driveTrain.endAutoTurn();
-                    vs.DriveLockedOnTarget = true;
-                } // else allow auto-turn to continue
-        	}
+            Robot.driveTrain.trackVision();
         }
     }
 

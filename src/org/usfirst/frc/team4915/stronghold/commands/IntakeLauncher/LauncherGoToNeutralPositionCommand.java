@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class LauncherGoToNeutralPositionCommand extends Command {
 
     public LauncherGoToNeutralPositionCommand() {
-
+        requires(Robot.intakeLauncher);
     }
 
     protected void initialize() {
@@ -15,17 +15,16 @@ public class LauncherGoToNeutralPositionCommand extends Command {
     }
 
     protected void execute() {
+        Robot.intakeLauncher.moveToSetPoint();
     }
 
     protected boolean isFinished() {
-        return true;
+        return Robot.intakeLauncher.launcherAtNeutralPosition();
     }
 
     protected void end() {
-
     }
 
     protected void interrupted() {
-
     }
 }
