@@ -112,6 +112,7 @@ public class Robot extends IterativeRobot {
         // schedule the autonomous command
        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
                 (Autonomous.Position) oi.startingFieldPosition.getSelected());
+       System.out.println("Autonomous selection Angle: " + oi.startingFieldPosition.getSelected() + "Field Position " + oi.startingFieldPosition.getSelected() + "strategy " + oi.strategy.getSelected() + "Obstacle " + oi.barrierType.getSelected());
 
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();

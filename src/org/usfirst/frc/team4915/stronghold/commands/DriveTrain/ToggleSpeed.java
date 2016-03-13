@@ -14,11 +14,13 @@ public class ToggleSpeed extends Command {
 
 	@Override
 	protected void execute() {		
-		if(Robot.driveTrain.turnMultiplier < Robot.driveTrain.MEDIUM_TURN)
+		if(Math.abs(Robot.driveTrain.turnMultiplier) < Math.abs(Robot.driveTrain.MEDIUM_TURN)) {
 			Robot.driveTrain.turnMultiplier = Robot.driveTrain.MEDIUM_TURN;
-		else
+		}
+		else {
 			Robot.driveTrain.turnMultiplier = Robot.driveTrain.SLOW_TURN;
-		System.out.println("Turn Multiplier" + Robot.driveTrain.turnMultiplier);
+		}
+		System.out.println("Turn Multiplier " + Robot.driveTrain.turnMultiplier);
 
 	}
 
