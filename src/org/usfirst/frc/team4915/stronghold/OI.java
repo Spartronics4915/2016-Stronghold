@@ -1,31 +1,29 @@
 package org.usfirst.frc.team4915.stronghold;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
-
-import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
-import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToTravelPositionCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinIntakeWheelsOutCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
-import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
-import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
-import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToTravelPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinIntakeWheelsOutCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinIntakeWheelsOutLowCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
+import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
+import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -52,7 +50,7 @@ public class OI {
     public static final int MECH_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
     public static final int SPIN_INTAKE_WHEELS_OUT_BUTTON_NUMBER = 4;
     public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
-    public static final int AUTO_AIM_BUTTON_NUMBER = 7;
+    public static final int SPIN_INTAKE_WHEELS_OUT_LOW_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 6;
     public static final int AUTO_LAUNCH_TEST_BUTTON_NUMBER = 10;
 
@@ -79,7 +77,7 @@ public class OI {
     public JoystickButton mechStopWheelsButton;
     public JoystickButton launcherJumpToAngleButton;
     public JoystickButton spinIntakeWheelsOutButton;
-    public JoystickButton autoAimButton;
+    public JoystickButton spinIntakeWheelsOutLowButton;
     public JoystickButton highLowButton;
     public JoystickButton lightSwitchButton;
     public JoystickButton autoLaunchTestButton;
@@ -154,18 +152,17 @@ public class OI {
             initializeButton(this.kickBallButton, aimStick, KICK_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());
             initializeButton(this.mechStopWheelsButton, aimStick, MECH_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.grabBallButton, driveStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
-            initializeButton(this.launcherJumpToAngleButton, aimStick, 1, new LauncherGoToAngleCommand(10));
             initializeButton(this.spinIntakeWheelsOutButton, aimStick, SPIN_INTAKE_WHEELS_OUT_BUTTON_NUMBER, new SpinIntakeWheelsOutCommand());
+            initializeButton(this.spinIntakeWheelsOutLowButton, aimStick, SPIN_INTAKE_WHEELS_OUT_LOW_BUTTON_NUMBER, new SpinIntakeWheelsOutLowCommand());
             initializeButton(this.driveLauncherJumpToIntakeButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER, new LauncherGoToTravelPositionCommand());
             initializeButton(this.driveLauncherJumpToNeutralButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER, new LauncherGoToNeutralPositionCommand());
             initializeButton(this.driveStopIntakeWheelsButton, driveStick, DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
-            initializeButton(this.autoLaunchTestButton, aimStick, AUTO_LAUNCH_TEST_BUTTON_NUMBER, new AutoLaunchCommand());
             System.out.println("ModuleManager OI: Initialize IntakeLauncher");
         }
 
         if (ModuleManager.VISION_MODULE_ON) {
             SmartDashboard.putData(VisionState.getInstance());
-            initializeButton(this.autoAimButton, aimStick, AUTO_AIM_BUTTON_NUMBER, new AutoAimControlCommand(true, false));
+            
             initializeButton(this.highLowButton, aimStick, HIGH_LOW_BUTTON_NUMBER, new AutoAimControlCommand(false, true));
             System.out.println("ModuleManager OI: Initialize Vision!");
         }
