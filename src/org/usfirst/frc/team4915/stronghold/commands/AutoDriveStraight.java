@@ -17,7 +17,7 @@ public class AutoDriveStraight extends Command {
     private boolean isInitialized, goBackward;
 
     private int initializeRetryCount;
-    private final static int MAX_RETRIES = 10;
+    private final static int MAX_RETRIES = 50;
 
     public AutoDriveStraight(double desiredDistanceInches, double speed) {
         this.AUTOSPEED = speed;

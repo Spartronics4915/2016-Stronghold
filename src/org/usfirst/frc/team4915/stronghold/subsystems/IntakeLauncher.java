@@ -210,7 +210,7 @@ public class IntakeLauncher extends Subsystem {
 
     // sets the launcher position to the current set point
     public void moveToSetPoint() {
-        keepSetPointInRange();
+    //    keepSetPointInRange();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
         if (autoCalibrate) {

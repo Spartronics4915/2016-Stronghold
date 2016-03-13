@@ -6,9 +6,9 @@ import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToAngleCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.VisionAimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToTravelPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.VisionAimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 
@@ -100,21 +100,25 @@ public class AutoCommand1 extends CommandGroup {
 	            break;    
 	            }
             }
+		    
 	    case DRIVE_ACROSS:
-
+	    	
+	    	//if true it is the low bar
             if (getLauncherBeginPosition(type) == true){
                 addSequential(new LauncherGoToTravelPositionCommand());
                 addParallel(new AimLauncherCommand());
-                addSequential(new WaitCommand(.75));
-               addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+                addSequential(new WaitCommand(2.75));
+                addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+                addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
 			break;
 
             }
             else{
                 addSequential(new LauncherGoToNeutralPositionCommand());
                 addParallel(new AimLauncherCommand());
-                addSequential(new WaitCommand(.75));
+                addSequential(new WaitCommand(2.75));
                 addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
+                addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
             }
             default:
 		}
@@ -210,7 +214,7 @@ public class AutoCommand1 extends CommandGroup {
                 vision = false;
                 break;
             default:
-                vision = true;
+                break;
         }
         return vision;
     }
@@ -237,7 +241,7 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 104.97;
                 break;
             default:
-                distance = 0;
+                distance = 70;
         }
         return distance;
     }
@@ -256,13 +260,13 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 180;
                 break;
             case ROCK_WALL:
-                distance = -150;
+                distance = 150;
                 break;
             case PORTCULLIS:
                 distance = 120;
                 break;
             default:
-                distance = 25;
+                distance = 145;
         }
         return distance;
     }
@@ -281,13 +285,13 @@ public class AutoCommand1 extends CommandGroup {
                 speed = 40;
                 break;
             case ROCK_WALL:
-                speed = 40;
+                speed = -75;
                 break;
             case PORTCULLIS:
                 speed = 30;
                 break;
             default:
-                speed = 25;
+                speed = 35;
         }
         return speed;
     }

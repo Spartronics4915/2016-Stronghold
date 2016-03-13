@@ -13,6 +13,7 @@ public class ArcadeDrive extends Command {
     private double joystickY;
     private static final double MIN_THROTTLE_SCALE = 0.5;
 
+
     public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.driveTrain);
@@ -28,7 +29,7 @@ public class ArcadeDrive extends Command {
     @Override
     protected void execute() {
         Joystick joystickDrive= Robot.oi.getJoystickDrive();
-        this.joystickX = joystickDrive.getAxis(Joystick.AxisType.kX) * -0.75;
+        this.joystickX = joystickDrive.getAxis(Joystick.AxisType.kX) * Robot.driveTrain.turnMultiplier;
         this.joystickY = joystickDrive.getAxis(Joystick.AxisType.kY) *-1;
 
         VisionState vs = VisionState.getInstance();
@@ -91,7 +92,9 @@ public class ArcadeDrive extends Command {
             scale = 1.0;
         }
         return scale;
+        
     }
+
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
