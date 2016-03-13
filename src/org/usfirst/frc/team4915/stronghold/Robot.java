@@ -202,6 +202,10 @@ public class Robot extends IterativeRobot {
 	        SmartDashboard.putBoolean("Potentiometer might be broken", intakeLauncher.getIsPotentiometerScrewed());
         }
 	}
+	
+	public void toggleSpeed() {
+		
+	}
 
 	public void updateDrivetrainStatus() {
         if (ModuleManager.DRIVE_MODULE_ON) {
