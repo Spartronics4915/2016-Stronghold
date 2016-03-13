@@ -279,7 +279,7 @@ public class AutoCommand1 extends CommandGroup {
                 speed = 30;
                 break;
             case MOAT:
-                speed = 40;
+                speed = 50;
                 break;
             case ROUGH_TERRAIN:
                 speed = 40;

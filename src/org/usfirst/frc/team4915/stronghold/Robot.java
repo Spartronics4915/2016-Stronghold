@@ -137,7 +137,8 @@ public class Robot extends IterativeRobot {
 
        // RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
        // RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-
+    	System.out.println("entering teleop");
+    	Robot.intakeLauncher.aimMotor.enableControl();
         if (this.autonomousCommand != null) {
             this.autonomousCommand.cancel();
         }

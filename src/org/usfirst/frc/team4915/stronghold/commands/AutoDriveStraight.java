@@ -32,6 +32,7 @@ public class AutoDriveStraight extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.driveTrain.init();
+        Robot.intakeLauncher.aimMotor.disableControl();
     }
 
     // Called repeatedly when this Command is scheduled to run

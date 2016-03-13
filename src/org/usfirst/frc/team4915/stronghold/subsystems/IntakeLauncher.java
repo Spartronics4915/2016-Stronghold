@@ -52,6 +52,8 @@ public class IntakeLauncher extends Subsystem {
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
+    
+    private boolean isJoystickIdle = false;
 
     private final double NO_VISION_TARGET = -1000;
     
@@ -193,9 +195,21 @@ public class IntakeLauncher extends Subsystem {
     private void moveLauncherWithJoystick() {
         double joystickY = Robot.oi.aimStick.getAxis((Joystick.AxisType.kY));
         if (Math.abs(joystickY) > MIN_JOYSTICK_MOTION) {
-            readSetPoint();
+            if(isJoystickIdle) {
+            	aimMotor.enableControl();
+            	isJoystickIdle = false;
+            	System.out.println("Enabling Aim Control");
+            }
+        	readSetPoint();
             offsetSetPoint(joystickY * JOYSTICK_SCALE * POTENTIOMETER_NEGATIVITY);
+        } else {
+        	if(!isJoystickIdle) {
+        		aimMotor.disableControl();
+        		isJoystickIdle = true;
+        		System.out.println("Disabling Aim Control");
+        	}
         }
+        	//aimMotor.disableControl();
     }
 
     // aimLauncher is invoked from AimLauncherCommand which is installed
@@ -204,7 +218,7 @@ public class IntakeLauncher extends Subsystem {
     // controls motion.
     public void aimLauncher() {
     	//System.out.println("aimLauncher called");
-        System.out.println("Potentiometer value: " + getPosition());
+        //System.out.println("Potentiometer value: " + getPosition());
         SmartDashboard.putNumber("Launch Angle", (int) ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
         	//System.out.println("Tracking vision!");
@@ -216,7 +230,7 @@ public class IntakeLauncher extends Subsystem {
 
     // sets the launcher position to the current set point
     public void moveToSetPoint() {
-        keepSetPointInRange();
+        //keepSetPointInRange();
         calibratePotentiometer();
         aimMotor.changeControlMode(TalonControlMode.Position);
         aimMotor.set(setPoint);
