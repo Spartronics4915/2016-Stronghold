@@ -20,7 +20,7 @@ public class IntakeLauncher extends Subsystem {
     // indicate a wheel spinning inwards.
     private final double FULL_SPEED_REVERSE = -.60;
     private final double FULL_SPEED_FORWARD = 1;
-    private final double LAUNCH_SPEED_FORWARD_LOW = 0.5;
+    private final double LAUNCH_SPEED_FORWARD_LOW = 0.5; //TODO
     private final double ZERO_SPEED = 0.0;
     private final double AIM_DEGREES_SLOP = 2; // TODO: tune this number
 
