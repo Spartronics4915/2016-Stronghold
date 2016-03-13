@@ -1,10 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.utils;
 
+import org.usfirst.frc.team4915.stronghold.RobotMap;
+
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
 // IMUPIDSource adapts our pre-existing BMO055 implementation
 // for use in conjunction with PIDController.

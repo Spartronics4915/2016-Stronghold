@@ -8,6 +8,7 @@ import java.util.jar.Manifest;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeed;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
@@ -46,6 +47,7 @@ public class OI {
     public static final int DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 4;
     public static final int PORTCULLIS_BUTTON_NUMBER_UP = 7;
     public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 9;
+    public static final int TURN_SCALER = 8;
 
     // Button numbers for launching related buttons on the mechanism stick
     public static final int KICK_BALL_BUTTON_NUMBER = 3;
@@ -90,6 +92,7 @@ public class OI {
     public JoystickButton scalerReachUpButton;
     public JoystickButton scalerReachDownButton;
     public JoystickButton scalerLiftButton;
+    public JoystickButton speedToggle;
 
     //PORTCULLIS
 
@@ -126,7 +129,7 @@ public class OI {
 
         // SendableChooser for the strategy
         strategy = new SendableChooser();
-        strategy.addDefault("None", Autonomous.Strat.NONE);
+        strategy.addDefault("None", Autonomous.Strat.DRIVE_ACROSS);
         strategy.addObject("Breach Only", Autonomous.Strat.DRIVE_ACROSS);
         strategy.addObject("Breach Only Backward", Autonomous.Strat.DRIVE_ACROSS_BACKWARD);
         strategy.addObject("Breach, Blind Shot", Autonomous.Strat.DRIVE_SHOOT_NO_VISION);
@@ -142,7 +145,7 @@ public class OI {
             initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
         }
         if (ModuleManager.DRIVE_MODULE_ON) {
-
+        	initializeButton(this.speedToggle, driveStick, TURN_SCALER, new ToggleSpeed());
         }
 
         if (ModuleManager.GEARSHIFT_MODULE_ON) {
