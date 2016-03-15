@@ -1,20 +1,24 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
+import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.utils.IMUPIDSource;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveTrain extends Subsystem {
 
     public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;  // 100.0 == ~13 ft/sec interpolated from observations
     public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;  // 150.0 == ~20 ft/sec interpolated from observations
-    public final static double MAXIMUM_TURN_SPEED = 40.0;         // ~3-4 ft/sec
+    public final static double MAXIMUM_TURN_SPEED = 40.0;  //3-4 ft per sec
+    public double turnMultiplier = MEDIUM_TURN; 
+    public static final double FAST_TURN = -1;
+    public static final double MEDIUM_TURN = -.75;
+    public static final double SLOW_TURN = -.4;
 
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);
@@ -33,7 +37,6 @@ public class DriveTrain extends Subsystem {
         // TODO: would be nice to migrate stuff from RobotMap here.
 
         // m_turnPID is used to improve accuracy during auto-turn operations.
-        DriveTrain driveTrain = this; // need reference to this within pidWrite
         m_imu = new IMUPIDSource();
         m_turnPID = new PIDController(turnKp, turnKi, turnKd, turnKf,
                                       m_imu,
@@ -41,7 +44,7 @@ public class DriveTrain extends Subsystem {
                     public void pidWrite(double output) {
                         // output is [-1, 1]... we need to
                         // convert this to a speed...
-                        driveTrain.turn(output * MAXIMUM_TURN_SPEED);
+                        Robot.driveTrain.turn(output * MAXIMUM_TURN_SPEED);
                         // robotDrive.tankDrive(-output, output);
                     }
                 });

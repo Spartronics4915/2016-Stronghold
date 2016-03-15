@@ -112,6 +112,7 @@ public class Robot extends IterativeRobot {
         // schedule the autonomous command
        autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
                 (Autonomous.Position) oi.startingFieldPosition.getSelected());
+       System.out.println("Autonomous selection Angle: " + oi.startingFieldPosition.getSelected() + "Field Position " + oi.startingFieldPosition.getSelected() + "strategy " + oi.strategy.getSelected() + "Obstacle " + oi.barrierType.getSelected());
 
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
@@ -137,7 +138,8 @@ public class Robot extends IterativeRobot {
 
        // RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
        // RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-
+    	System.out.println("entering teleop");
+    	Robot.intakeLauncher.aimMotor.enableControl();
         if (this.autonomousCommand != null) {
             this.autonomousCommand.cancel();
         }
@@ -201,6 +203,10 @@ public class Robot extends IterativeRobot {
 	        SmartDashboard.putBoolean("Boulder Limit Switch: ", intakeLauncher.boulderSwitch.get());
 	        SmartDashboard.putBoolean("Potentiometer might be broken", intakeLauncher.getIsPotentiometerScrewed());
         }
+	}
+	
+	public void toggleSpeed() {
+		
 	}
 
 	public void updateDrivetrainStatus() {

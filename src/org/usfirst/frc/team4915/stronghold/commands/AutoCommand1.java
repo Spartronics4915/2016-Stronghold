@@ -45,7 +45,7 @@ public class AutoCommand1 extends CommandGroup {
 
 		case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high goal
             addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
-            addSequential(new AutoRotateDegrees( getDegrees(position)));
+            addSequential(new AutoRotateDegrees( getTurnAngle(position)));
             addSequential(new AutoAimControlCommand(true, true));
             addSequential(new AutoVisionDriveAndAim());
             addSequential(new AutoLaunchCommand());
@@ -54,7 +54,7 @@ public class AutoCommand1 extends CommandGroup {
 		case DRIVE_SHOOT_NO_VISION:
 		    addSequential(new AutoDriveStraight(getDistance(type), getSpeed(type)));
 		    addSequential(new AutoDriveStraight(getDistancePastDefense(position), getSpeed(type)));
-		    addSequential(new AutoRotateDegrees(getDegrees(position)));
+		    addSequential(new AutoRotateDegrees(getTurnAngle(position)));
 			if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 				addParallel(new AimLauncherCommand());
 				addSequential(new LauncherGoToAngleCommand(getAimAngle(position)));
@@ -114,7 +114,7 @@ public class AutoCommand1 extends CommandGroup {
         return angle;
     }
 
-    public static double getDegrees(Autonomous.Position position) {
+    public static double getTurnAngle(Autonomous.Position position) {
         double degrees;
         switch (position) {
             case ONE:// low bar
@@ -136,25 +136,6 @@ public class AutoCommand1 extends CommandGroup {
                 degrees = 0;
         }
         return degrees;
-    }
-
-    public static boolean getStrategy(Autonomous.Strat strat) {
-        boolean vision = true;
-        switch (strat) {
-            case NONE:
-                break;
-            case DRIVE_ACROSS:
-                break;
-            case DRIVE_SHOOT_VISION:
-                vision = true;
-                break;
-            case DRIVE_SHOOT_NO_VISION:
-                vision = false;
-                break;
-            default:
-                vision = true;
-        }
-        return vision;
     }
 
     // getting the distance to go after the barrier for launching
@@ -179,7 +160,7 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 104.97;
                 break;
             default:
-                distance = 0;
+                distance = 70;
         }
         return distance;
     }
@@ -198,13 +179,13 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 180;
                 break;
             case ROCK_WALL:
-                distance = -150;
+                distance = 150;
                 break;
             case PORTCULLIS:
                 distance = 120;
                 break;
             default:
-                distance = 25;
+                distance = 145;
         }
         return distance;
     }
@@ -217,26 +198,26 @@ public class AutoCommand1 extends CommandGroup {
                 speed = 30;
                 break;
             case MOAT:
-                speed = 40;
+                speed = 50;
                 break;
             case ROUGH_TERRAIN:
                 speed = 40;
                 break;
             case ROCK_WALL:
-                speed = 40;
+                speed = -75; // negative speed: go backward
                 break;
             case PORTCULLIS:
                 speed = 30;
                 break;
             default:
-                speed = 25;
+                speed = 35;
         }
         return speed;
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return super.isFinished(); // returns true if all the commands in this
+                                   // group have been started and have finished
     }
 
     // Called once after isFinished returns true
@@ -246,5 +227,6 @@ public class AutoCommand1 extends CommandGroup {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        end();
     }
 }
