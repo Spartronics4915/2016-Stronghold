@@ -201,7 +201,7 @@ public class Robot extends IterativeRobot {
 	        SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
 	        SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
 	        SmartDashboard.putBoolean("Boulder Limit Switch: ", intakeLauncher.boulderSwitch.get());
-	        SmartDashboard.putBoolean("Potentiometer might be broken", intakeLauncher.getIsPotentiometerScrewed());
+	        SmartDashboard.putString("Goal", intakeLauncher.getDesiredWheelSpeed());
         }
 	}
 	

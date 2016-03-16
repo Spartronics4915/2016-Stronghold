@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -15,7 +15,7 @@ public class StopWheelsCommand extends Command {
 
     @Override
     protected void initialize() {
-        System.out.println("stop wheels command");
+        System.out.println("Stop Intake Command");
         SmartDashboard.putString("Flywheels spinning ", "nowhere");
         Robot.intakeLauncher.stopWheels();
     }

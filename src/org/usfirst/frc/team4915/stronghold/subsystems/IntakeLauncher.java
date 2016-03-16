@@ -2,7 +2,7 @@ package org.usfirst.frc.team4915.stronghold.subsystems;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -18,9 +18,9 @@ public class IntakeLauncher extends Subsystem {
     // Ranges -1 to 1, negative values are reverse direction
     // Negative values indicate a wheel spinning outwards and positive values
     // indicate a wheel spinning inwards.
-    private final double FULL_SPEED_REVERSE = -.60;
-    private final double FULL_SPEED_FORWARD = 1;
-    private final double LAUNCH_SPEED_FORWARD_LOW = 0.5; //TODO
+    private final double INTAKE_SPEED = -.60;
+    private final double LAUNCH_SPEED_HIGH = 1.0;
+    private final double LAUNCH_SPEED_LOW = 0.6; //TODO
     private final double ZERO_SPEED = 0.0;
     private final double AIM_DEGREES_SLOP = 2; // TODO: tune this number
     private final double AIM_TICKS_SLOP = degreesToTicks(AIM_DEGREES_SLOP);
@@ -34,16 +34,22 @@ public class IntakeLauncher extends Subsystem {
     private final double SERVO_LEFT_NEUTRAL_POSITION = .75; // in servo units
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4; // in servo units
 
-    private double launcherMaxHeightTicks = 829.0; // in potentiometer
+    private double launcherMaxHeightTicks = 811.0; // in potentiometer
                                                    // ticks
-    private double launcherMinHeightTicks = 570.0; // in potentiometer
+    private double launcherMinHeightTicks = 557.0; // in potentiometer
                                                    // ticks
-    private double launcherNeutralHeightTicks = 719.0; // in
+    private double launcherTravelHeightRatio = 0.175;
+    
+    private double launcherNeutralHeightRatio = 0.739;
+    
+    private double launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherNeutralHeightRatio; // in
                                                        // potentiometer
                                                        // ticks
-    private double launcherTravelHeightTicks = 585.0; // in
+    private double launcherTravelHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherTravelHeightRatio; // in
                                                       // potentiometer
                                                       // ticks
+    
+    private final double LAUNCHER_HIGH_GOAL_THRESHOLD = .85;
 
     private final double MAX_POTENTIOMETER_ERROR = 20;
 
@@ -53,7 +59,7 @@ public class IntakeLauncher extends Subsystem {
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
-
+    
     private boolean isJoystickIdle = false;
 
     private final double NO_VISION_TARGET = -1000;
@@ -96,18 +102,37 @@ public class IntakeLauncher extends Subsystem {
 
     // Sets the speed on the flywheels to suck in the boulder
     public void setSpeedIntake() {
-        this.intakeLeftMotor.set(FULL_SPEED_REVERSE);
-        this.intakeRightMotor.set(-FULL_SPEED_REVERSE);
+        this.intakeLeftMotor.set(INTAKE_SPEED);
+        this.intakeRightMotor.set(-INTAKE_SPEED);
     }
 
     // Sets the speed on the flywheels to launch the boulder
-    public void setSpeedLaunch() {
-        this.intakeLeftMotor.set(FULL_SPEED_FORWARD);
-        this.intakeRightMotor.set(-FULL_SPEED_FORWARD);
+    public void setSpeedLaunchHigh() {
+        this.intakeLeftMotor.set(LAUNCH_SPEED_HIGH);
+        this.intakeRightMotor.set(-LAUNCH_SPEED_HIGH);
     }
 
     public void setSpeedLaunchLow() {
-        this.intakeLeftMotor.set(LAUNCH_SPEED_FORWARD_LOW);
+        this.intakeLeftMotor.set(LAUNCH_SPEED_LOW);
+        this.intakeRightMotor.set(-LAUNCH_SPEED_LOW);
+    }
+    
+    
+    public void setDesiredWheelSpeed() {
+        if (getPosition() > (launcherMinHeightTicks + ((launcherMaxHeightTicks - launcherMinHeightTicks) * LAUNCHER_HIGH_GOAL_THRESHOLD))) {
+            setSpeedLaunchHigh();
+        } else {
+            setSpeedLaunchLow();
+        }
+    }
+    
+    public String getDesiredWheelSpeed() {
+        if (getPosition() > (launcherMinHeightTicks + ((launcherMaxHeightTicks - launcherMinHeightTicks) * LAUNCHER_HIGH_GOAL_THRESHOLD))) {
+            return "High Goal";
+            
+        } else {
+            return "Low Goal";
+        }
     }
 
     public void stopWheels() {
@@ -118,6 +143,7 @@ public class IntakeLauncher extends Subsystem {
     public void activateLauncherServos() {
         this.launcherServoLeft.set(SERVO_LEFT_LAUNCH_POSITION);
         this.launcherServoRight.set(SERVO_RIGHT_LAUNCH_POSITION);
+        System.out.println("Launched At: " + getPosition());
     }
 
     public void retractLauncherServos() {
@@ -218,8 +244,6 @@ public class IntakeLauncher extends Subsystem {
     // Checks to see if joystick control or vision control is needed and
     // controls motion.
     public void aimLauncher() {
-    	//System.out.println("aimLauncher called");
-        //System.out.println("Potentiometer value: " + getPosition());
         SmartDashboard.putNumber("Launch Angle", (int) ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
         	//System.out.println("Tracking vision!");
@@ -242,6 +266,9 @@ public class IntakeLauncher extends Subsystem {
 
     public void launcherSetNeutralPosition() {
         setSetPoint(launcherNeutralHeightTicks * POTENTIOMETER_NEGATIVITY);
+        System.out.println("Neutral Height: " + launcherNeutralHeightTicks);
+        System.out.println("Current Position: " + getPosition());
+        System.out.println("aimMotor enabled: " + aimMotor.isControlEnabled());
     }
 
     public boolean launcherAtNeutralPosition() {
@@ -287,6 +314,8 @@ public class IntakeLauncher extends Subsystem {
         if(isLauncherAtTop()) {
             launcherMaxHeightTicks = getPosition();
         }
+        launcherTravelHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherTravelHeightRatio;
+        launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherNeutralHeightRatio;
     }
 
     private void dangerTest() {
@@ -311,6 +340,14 @@ public class IntakeLauncher extends Subsystem {
 
     public boolean isLauncherAtBottom() {
         return aimMotor.isFwdLimitSwitchClosed();
+    }
+    
+    public boolean isLauncherAtNeutral() {
+        return Math.abs(getPosition() - launcherNeutralHeightTicks) < MAX_POTENTIOMETER_ERROR;
+    }
+    
+    public boolean isLauncherAtTravel() {
+        return Math.abs(getPosition() - launcherTravelHeightTicks) < MAX_POTENTIOMETER_ERROR;
     }
 
     public boolean isBoulderLoaded() {

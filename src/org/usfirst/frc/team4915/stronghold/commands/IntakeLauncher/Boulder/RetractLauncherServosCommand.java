@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -12,7 +12,7 @@ public class RetractLauncherServosCommand extends Command {
 
     protected void initialize() {
         Robot.intakeLauncher.retractLauncherServos();
-        System.out.println("Retract Launcher Servos");
+        System.out.println("Retract Launcher Servos Command");
     }
 
     protected void execute() {

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -26,7 +26,6 @@ public class AimLauncherCommand extends Command {
     }
 
     protected void interrupted() {
-        System.out.println("Aimer Interrupted");
-
+        System.out.println("AimLauncher Interrupt");
     }
 }
