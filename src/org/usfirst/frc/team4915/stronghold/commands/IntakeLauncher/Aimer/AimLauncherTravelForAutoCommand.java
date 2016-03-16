@@ -5,8 +5,12 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class AimLauncherTravelForAutoCommand extends Command {
 
-    public AimLauncherTravelForAutoCommand() {
+	private boolean m_blocking;
+    public AimLauncherTravelForAutoCommand(boolean blocking) {
+    	m_blocking = blocking;
         requires(Robot.intakeLauncher);
+        if(m_blocking)
+        	requires(Robot.driveTrain); // should interrupt ArcadeDrive
     }
 
     protected void initialize() {
@@ -20,7 +24,10 @@ public class AimLauncherTravelForAutoCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return Robot.intakeLauncher.isLauncherAtTravel();
+    	if(m_blocking)
+    		return Robot.intakeLauncher.isLauncherAtTravel();
+    	else
+    		return true; // rely on timer
     }
 
     protected void end() {

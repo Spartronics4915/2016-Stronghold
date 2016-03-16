@@ -129,7 +129,6 @@ public class OI {
         strategy = new SendableChooser();
         strategy.addDefault("None", Autonomous.Strat.DRIVE_ACROSS);
         strategy.addObject("Breach Only", Autonomous.Strat.DRIVE_ACROSS);
-        strategy.addObject("Breach Only Backward", Autonomous.Strat.DRIVE_ACROSS_BACKWARD);
         strategy.addObject("Breach, Blind Shot", Autonomous.Strat.DRIVE_SHOOT_NO_VISION);
         strategy.addObject("Breach, Vision Shot", Autonomous.Strat.DRIVE_SHOOT_VISION);
         SmartDashboard.putData("AutoStrategy", strategy);

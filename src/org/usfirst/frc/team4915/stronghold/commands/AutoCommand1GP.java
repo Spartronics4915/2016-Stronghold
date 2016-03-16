@@ -1,61 +1,71 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherNeutralForAutoCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherTravelForAutoCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoVisionDriveAndAim;
+
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 
-public class AutoCommand1 extends CommandGroup {
+public class AutoCommand1GP extends CommandGroup {
 
     private final Autonomous.Type type;
     private final Autonomous.Strat strat;
     private final Autonomous.Position position;
 
-    public AutoCommand1(Autonomous.Type type, Autonomous.Strat strat, Autonomous.Position position) {
+    public AutoCommand1GP(Autonomous.Type type, Autonomous.Strat strat, Autonomous.Position position) {
         this.strat = strat;
         this.position = position;
         this.type = type;
     }
     
     public void initialize() {
-        System.out.println("Autonomous1 (new) init, field position: " + position + 
-                "strategy: " + strat + " obstacle: " + type);
+    	// Please NOTE:
+    	//	this file is "deprecated"... It represents the strategy we
+    	//  employed during our first event at Glacier Peak and relies
+    	//  on a timer ensure that the we attain travel or neutral
+    	//  launch position before crossing the barrier.
+        System.out.println("AutonomousGP init, field position: " + position + 
+                           "strategy: " + strat + " obstacle: " + type);
 
         if(ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             boolean launcherWantsTravelPosition = getLauncherBeginPosition(type);
-            boolean blocking = true; // means we rely on launcher positioning
+            boolean blocking = false; // false means we rely on timer 
             if(launcherWantsTravelPosition)
                 addSequential(new AimLauncherTravelForAutoCommand(blocking)); 
             else
                 addSequential(new AimLauncherNeutralForAutoCommand(blocking));
+            addParallel(new AimLauncherCommand());
+            addSequential(new WaitCommand(2.75));
         }
         
         if (ModuleManager.PORTCULLIS_MODULE_ON){
-        	 // portcullis lifter begin position
-        	 boolean portcullisBeginDown = getPortcullisBeginPosition(type);
-        	 if (portcullisBeginDown){
-        		addSequential(new PortcullisMoveDown());
-        	 }
-        	 else{
-        	 	addSequential(new PortcullisMoveUp());
-        	 }
-        }
+       	 // portcullis lifter begin position
+       	 boolean portcullisBeginDown = getPortcullisBeginPosition(type);
+       	 if (portcullisBeginDown){
+       		addSequential(new PortcullisMoveDown());
+       	 }
+       	 else{
+       	 	addSequential(new PortcullisMoveUp());
+       	 }
+       }
         
         double distance = getDistance(type) + getDistancePastDefense(position);
-        
+
         switch (strat) {
         case NONE:
             break;
 
         case DRIVE_ACROSS:
-            System.out.println("Starting Drive Across (New)");
-             addSequential(new AutoDriveStraight(distance, getSpeed(type)));
+            System.out.println("Starting Drive Across (GP)");
+            addSequential(new AutoDriveStraight(distance, getSpeed(type)));
             break;
 
         case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high goal
@@ -72,7 +82,7 @@ public class AutoCommand1 extends CommandGroup {
             addSequential(new AutoDriveStraight(distance, getSpeed(type)));
             addSequential(new AutoRotateDegrees(getTurnAngle(position)));
         }
-	}
+    }
 
     public static boolean getLauncherBeginPosition(Autonomous.Type type) {
         boolean lowBar; // in inches
@@ -98,31 +108,31 @@ public class AutoCommand1 extends CommandGroup {
         }
         return lowBar;
     }
-    
-    public static boolean getPortcullisBeginPosition(Autonomous.Type type){
-    	 boolean liftdown; //tells if portcullis needs to be down
-    	 switch(type) {
-    	 case LOWBAR:
-    		 liftdown = true;
-    		 break;
-    	 case MOAT:
-    		 liftdown = false;
-    		 break;
-    	 case ROUGH_TERRAIN:
-    		 liftdown = false;
-    		 break;
-    	 case ROCK_WALL:
-    		 liftdown = false;
-    		 break;
-    	 case PORTCULLIS:
-    		 liftdown = false;
-    		 break;
-    	 default:
-    		 liftdown = false;
-    	 }
-    	 return liftdown;            
+
+    public static boolean getPortcullisBeginPosition(Autonomous.Type type) {
+    	boolean liftdown; //tells if portcullis needs to be down
+    	switch(type) {
+    	case LOWBAR:
+    		liftdown = true;
+    		break;
+    	case MOAT:
+    		liftdown = false;
+    		break;
+    	case ROUGH_TERRAIN:
+    		liftdown = false;
+    		break;
+    	case ROCK_WALL:
+    		liftdown = false;
+    		break;
+    	case PORTCULLIS:
+    		liftdown = false;
+    		break;
+    	default:
+    		liftdown = false;
+    	}
+    	return liftdown;            
     }
-    
+ 
     public static double getAimAngle(Autonomous.Position position) {
         System.out.println(position);
         double angle = 0;
@@ -282,3 +292,4 @@ public class AutoCommand1 extends CommandGroup {
     protected void interrupted() {
     }
 }
+
