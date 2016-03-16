@@ -16,11 +16,11 @@ public class LauncherGoToNeutralPositionCommand extends Command {
     }
 
     protected void execute() {
-        Robot.intakeLauncher.moveToSetPoint();
+
     }
 
     protected boolean isFinished() {
-        return Robot.intakeLauncher.isLauncherAtNeutral();
+        return true;
     }
 
     protected void end() {

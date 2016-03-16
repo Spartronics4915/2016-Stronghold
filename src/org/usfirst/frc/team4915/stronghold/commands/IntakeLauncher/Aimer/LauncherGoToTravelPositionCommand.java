@@ -16,11 +16,11 @@ public class LauncherGoToTravelPositionCommand extends Command {
     }
 
     protected void execute() {
-        Robot.intakeLauncher.moveToSetPoint();
+
     }
 
     protected boolean isFinished() {
-        return Robot.intakeLauncher.launcherAtTravelPosition();
+        return true;
     }
 
     protected void end() {
