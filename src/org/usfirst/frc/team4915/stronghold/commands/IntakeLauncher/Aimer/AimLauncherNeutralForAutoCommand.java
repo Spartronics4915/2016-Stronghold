@@ -5,8 +5,12 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 
 public class AimLauncherNeutralForAutoCommand extends Command {
 
-    public AimLauncherNeutralForAutoCommand() {
+	private boolean m_blocking;
+    public AimLauncherNeutralForAutoCommand(boolean blocking) {
+    	m_blocking = blocking;
         requires(Robot.intakeLauncher);
+        if(m_blocking)
+        	requires(Robot.driveTrain); // should interrupt arcadedrive
     }
 
     protected void initialize() {
@@ -20,7 +24,10 @@ public class AimLauncherNeutralForAutoCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return Robot.intakeLauncher.isLauncherAtNeutral();
+    	if(m_blocking)
+    		return Robot.intakeLauncher.isLauncherAtNeutral();
+    	else
+    		return true; // rely on timer
     }
 
     protected void end() {

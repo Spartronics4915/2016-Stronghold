@@ -32,7 +32,8 @@ public class DriveTrain extends Subsystem {
     private static final double turnKi = 0;
     private static final double turnKd = 0.30;
     private static final double turnKf = 0.001;
-
+    private static final double MIN_THROTTLE_SCALE = 0.5;
+ 
     public DriveTrain() {
         // TODO: would be nice to migrate stuff from RobotMap here.
 
@@ -76,6 +77,11 @@ public class DriveTrain extends Subsystem {
     public void arcadeDrive(double driveYstick, double driveXstick) {
         // robotDrive applies maxSpeed, but direct "set" doesn't
         robotDrive.arcadeDrive(driveYstick, driveXstick);
+    }
+    
+    // drive is used by the drive-straight command
+    public void drive(double outputmag, double curve) {
+	robotDrive.drive(outputmag, curve);
     }
 
     public double getCurrentHeading() {
@@ -155,6 +161,36 @@ public class DriveTrain extends Subsystem {
     public void endAutoTurn() {
         if(m_turnPID.isEnabled())
             m_turnPID.disable();
+    }
+    
+    /*
+     * Returns a scaled value between MIN_THROTTLE_SCALE and 1.0
+     * MIN_THROTTLE_SCALE must be set to the lowest useful scale value through experimentation
+     * Scale the joystick values by throttle before passing to the driveTrain
+     *     +1=bottom position; -1=top position
+     */
+    public double scaleThrottle(double raw_throttle_value) {
+        /**
+         * Throttle returns a double in the range of -1 to 1. We would like to change that to a range of MIN_THROTTLE_SCALE to 1.
+         * First, multiply the raw throttle value by -1 to reverse it (makes "up" maximum (1), and "down" minimum (-1))
+         * Then, add 1 to make the range 0-2 rather than -1 to +1
+         * Then multiply by ((1-MIN_THROTTLE_SCALE)/2) to change the range to 0-(1-MIN_THROTTLE_SCALE)
+         * Finally add MIN_THROTTLE_SCALE to change the range to MIN_THROTTLE_SCALE to 1
+         *
+         * Check the results are in the range of MIN_THROTTLE_SCALE to 1, and clip it in case the math went horribly wrong.
+         */
+        double scale = ((raw_throttle_value * -1) + 1) * ((1-MIN_THROTTLE_SCALE) / 2) + MIN_THROTTLE_SCALE;
+
+        if (scale < MIN_THROTTLE_SCALE) {
+            // Somehow our math was wrong. Our value was too low, so force it to the minimum
+            scale = MIN_THROTTLE_SCALE;
+        }
+        else if (scale > 1) {
+            // Somehow our math was wrong. Our value was too high, so force it to the maximum
+            scale = 1.0;
+        }
+        return scale;
+        
     }
 
     /*

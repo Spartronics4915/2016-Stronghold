@@ -1,36 +1,45 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherNeutralForAutoCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherTravelForAutoCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoVisionDriveAndAim;
+
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 
-public class AutoCommand1 extends CommandGroup {
+public class AutoCommand1GP extends CommandGroup {
 
     private Autonomous.Type m_type;
     private Autonomous.Strat m_strat;
     private Autonomous.Position m_position;
 
-    public AutoCommand1(Autonomous.Type type, Autonomous.Strat strat, Autonomous.Position position) {
+    // Please NOTE:
+    // this file is "deprecated"... It represents the strategy we
+    // employed during our first event at Glacier Peak and relies
+    // on a timer ensure that the we attain travel or neutral
+    // launch position before crossing the barrier.
+    public AutoCommand1GP(Autonomous.Type type, Autonomous.Strat strat, Autonomous.Position position) {
 	this.m_strat = strat;
 	this.m_position = position;
 	this.m_type = type;
-
-	System.out.println("Autonomous1 construct (strat:" + strat + ")");
+	System.out.println("Autonomous1GP construct (strat:" + strat + ")");
 
 	if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 	    boolean launcherWantsTravelPosition = getLauncherBeginPosition();
-	    boolean blocking = true; // means we rely on launcher positioning
+	    boolean blocking = false; // false means we rely on timer
 	    if (launcherWantsTravelPosition)
 		addSequential(new AimLauncherTravelForAutoCommand(blocking));
 	    else
 		addSequential(new AimLauncherNeutralForAutoCommand(blocking));
+	    addParallel(new AimLauncherCommand());
+	    addSequential(new WaitCommand(2.75));
 	}
 
 	if (ModuleManager.PORTCULLIS_MODULE_ON) {
@@ -45,12 +54,12 @@ public class AutoCommand1 extends CommandGroup {
 
 	double distance = getDistance() + getDistancePastDefense();
 
-	switch (strat) {
+	switch (m_strat) {
 	case NONE:
 	    break;
 
 	case DRIVE_ACROSS:
-	    System.out.println("Starting Drive Across (New)");
+	    System.out.println("Starting Drive Across (GP)");
 	    addSequential(new AutoDriveStraight(distance, getSpeed()));
 	    break;
 
@@ -72,7 +81,7 @@ public class AutoCommand1 extends CommandGroup {
     }
 
     public void initialize() {
-	System.out.println("Autonomous1 initialize (strat:" + m_strat + ")");
+	System.out.println("Autonomous1GP initialize");
     }
 
     protected boolean isFinished() {
@@ -87,7 +96,8 @@ public class AutoCommand1 extends CommandGroup {
 
     // Called once after isFinished returns true
     protected void end() {
-    }
+	System.out.println("Autonomous1GP end");
+   }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
