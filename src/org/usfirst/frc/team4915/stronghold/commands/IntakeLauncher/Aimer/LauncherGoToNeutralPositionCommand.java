@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -12,6 +12,7 @@ public class LauncherGoToNeutralPositionCommand extends Command {
 
     protected void initialize() {
         Robot.intakeLauncher.launcherSetNeutralPosition();
+        System.out.println("Launcher Neutral Teleop Command");
     }
 
     protected void execute() {

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -31,7 +31,7 @@ public class BackUpJoystickControlCommand extends Command {
     }
 
     protected void interrupted() {
-        System.out.println("Interrupted");
+        System.out.println("Back Up Joystick Interrupt");
         end();
     }
 }

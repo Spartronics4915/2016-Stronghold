@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -12,6 +12,7 @@ public class LauncherGoToTravelPositionCommand extends Command {
 
     protected void initialize() {
         Robot.intakeLauncher.launcherSetTravelPosition();
+        System.out.println("Launcher Travel Teleop Command");
     }
 
     protected void execute() {

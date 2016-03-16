@@ -161,7 +161,6 @@ public class RobotMap {
             leftMasterMotor.setPID(0.22, 0, 0);
             rightMasterMotor.setPID(0.22, 0, 0);
 
-
             // Add ramp up rate
             leftMasterMotor.setVoltageRampRate(48.0); // max allowable voltage
                                                       // change /sec: reach to

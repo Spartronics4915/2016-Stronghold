@@ -7,17 +7,16 @@ import java.util.jar.Manifest;
 
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisLeft;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisRight;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.DriveStraightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedDown;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedUp;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToTravelPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinIntakeWheelsOutCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.SpinIntakeWheelsOutLowCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.StopWheelsCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToNeutralPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToTravelPositionCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.IntakeBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.LaunchBallCommandGroup;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.SpinIntakeWheelsOutCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
@@ -39,8 +38,6 @@ public class OI {
     public static final int LAUNCHER_STICK_PORT = 1;
 
     // Button numbers for driveStick buttons
-    public static final int HIGH_SPEED_DRIVE_BUTTON = 11;
-    public static final int LOW_SPEED_DRIVE_BUTTON = 12;
     public static final int INTAKE_BALL_BUTTON_NUMBER = 3;
     public static final int DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
     public static final int DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 6;
@@ -48,6 +45,9 @@ public class OI {
     public static final int PORTCULLIS_BUTTON_NUMBER_UP = 7;
     public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 9;
     public static final int TURN_SCALER = 8;
+    public static final int DRIVE_STRAIGHT_BUTTON_NUMBER = 11; // NB: conflicts with unused shift button
+    public static final int HIGH_SPEED_DRIVE_BUTTON = 11;
+    public static final int LOW_SPEED_DRIVE_BUTTON = 12;
 
     // Button numbers for launching related buttons on the mechanism stick
     public static final int KICK_BALL_BUTTON_NUMBER = 3;
@@ -93,9 +93,9 @@ public class OI {
     public JoystickButton scalerReachDownButton;
     public JoystickButton scalerLiftButton;
     public JoystickButton speedToggle;
+    public JoystickButton driveStraightButton;
 
     //PORTCULLIS
-
     public JoystickButton portcullisButtonUp;
     public JoystickButton portcullisButtonDown;
 
@@ -131,7 +131,6 @@ public class OI {
         strategy = new SendableChooser();
         strategy.addDefault("None", Autonomous.Strat.DRIVE_ACROSS);
         strategy.addObject("Breach Only", Autonomous.Strat.DRIVE_ACROSS);
-        strategy.addObject("Breach Only Backward", Autonomous.Strat.DRIVE_ACROSS_BACKWARD);
         strategy.addObject("Breach, Blind Shot", Autonomous.Strat.DRIVE_SHOOT_NO_VISION);
         strategy.addObject("Breach, Vision Shot", Autonomous.Strat.DRIVE_SHOOT_VISION);
         SmartDashboard.putData("AutoStrategy", strategy);
@@ -144,11 +143,15 @@ public class OI {
             initializeButton (this.portcullisButtonUp, driveStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisRight());
             initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisLeft());
         }
+        
         if (ModuleManager.DRIVE_MODULE_ON) {
-        	speedToggle = new JoystickButton(driveStick, TURN_SCALER); 
-        	speedToggle.whileHeld(new ToggleSpeedUp());
-        	speedToggle.whenReleased(new ToggleSpeedDown());
-        }
+	    this.speedToggle = new JoystickButton(driveStick, TURN_SCALER);
+	    this.speedToggle.whileHeld(new ToggleSpeedUp());
+//	    this.speedToggle.whenReleased(new ToggleSpeedDown());
+	    
+	    this.driveStraightButton = new JoystickButton(driveStick, DRIVE_STRAIGHT_BUTTON_NUMBER);
+	    this.driveStraightButton.whileHeld(new DriveStraightCommand());
+       }
 
         if (ModuleManager.GEARSHIFT_MODULE_ON) {
             initializeButton(this.speedUpButton, driveStick, HIGH_SPEED_DRIVE_BUTTON, new GearShiftCommand(true));
@@ -160,7 +163,6 @@ public class OI {
             initializeButton(this.mechStopWheelsButton, aimStick, MECH_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
             initializeButton(this.grabBallButton, driveStick, INTAKE_BALL_BUTTON_NUMBER, new IntakeBallCommandGroup());
             initializeButton(this.spinIntakeWheelsOutButton, aimStick, SPIN_INTAKE_WHEELS_OUT_BUTTON_NUMBER, new SpinIntakeWheelsOutCommand());
-            initializeButton(this.spinIntakeWheelsOutLowButton, aimStick, SPIN_INTAKE_WHEELS_OUT_LOW_BUTTON_NUMBER, new SpinIntakeWheelsOutLowCommand());
             initializeButton(this.driveLauncherJumpToIntakeButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER, new LauncherGoToTravelPositionCommand());
             initializeButton(this.driveLauncherJumpToNeutralButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER, new LauncherGoToNeutralPositionCommand());
             initializeButton(this.driveStopIntakeWheelsButton, driveStick, DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());

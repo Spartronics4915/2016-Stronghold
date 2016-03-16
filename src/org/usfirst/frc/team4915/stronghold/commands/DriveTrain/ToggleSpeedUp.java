@@ -31,6 +31,8 @@ public class ToggleSpeedUp extends Command {
 
 	@Override
 	protected void interrupted() {
+		Robot.driveTrain.turnMultiplier = Robot.driveTrain.SLOW_TURN;
+
 		// TODO Auto-generated method stub
 
 	}

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 
@@ -32,7 +33,9 @@ public class AutoDriveStraight extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.driveTrain.init();
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON){
         Robot.intakeLauncher.aimMotor.disableControl();
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run

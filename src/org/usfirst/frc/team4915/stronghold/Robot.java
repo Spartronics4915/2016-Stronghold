@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team4915.stronghold;
 import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
+import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1GP;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisRight;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
@@ -108,12 +109,17 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-
-        // schedule the autonomous command
-       autonomousCommand = new AutoCommand1((Autonomous.Type) oi.barrierType.getSelected(), (Autonomous.Strat) oi.strategy.getSelected(),
-                (Autonomous.Position) oi.startingFieldPosition.getSelected());
-       System.out.println("Autonomous selection Angle: " + oi.startingFieldPosition.getSelected() + "Field Position " + oi.startingFieldPosition.getSelected() + "strategy " + oi.strategy.getSelected() + "Obstacle " + oi.barrierType.getSelected());
-
+    	// schedule the autonomous command
+    	System.out.println("autonomousInit...");
+    	boolean useGP = true; // GP: glacier-peak approach, with timers
+    	Autonomous.Type atype = (Autonomous.Type) oi.barrierType.getSelected();
+    	Autonomous.Strat astrat = (Autonomous.Strat) oi.strategy.getSelected();
+    	Autonomous.Position apos = (Autonomous.Position) oi.startingFieldPosition.getSelected();
+    	if(useGP) {
+    		autonomousCommand = new AutoCommand1GP(atype, astrat, apos); 
+    	} else {
+    		autonomousCommand = new AutoCommand1(atype, astrat, apos); 
+    	}
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();
         }
@@ -134,15 +140,15 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-      //set speed
-
-       // RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-       // RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-    	System.out.println("entering teleop");
-    	Robot.intakeLauncher.aimMotor.enableControl();
         if (this.autonomousCommand != null) {
             this.autonomousCommand.cancel();
         }
+
+        // RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+        // RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+        System.out.println("entering teleop");
+    	if(ModuleManager.INTAKELAUNCHER_MODULE_ON)
+    		Robot.intakeLauncher.aimMotor.enableControl();
     }
 
     /**
@@ -201,14 +207,10 @@ public class Robot extends IterativeRobot {
 	        SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
 	        SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
 	        SmartDashboard.putBoolean("Boulder Limit Switch: ", intakeLauncher.boulderSwitch.get());
-	        SmartDashboard.putBoolean("Potentiometer might be broken", intakeLauncher.getIsPotentiometerScrewed());
+	        SmartDashboard.putString("Goal", intakeLauncher.getDesiredWheelSpeed());
         }
 	}
 	
-	public void toggleSpeed() {
-		
-	}
-
 	public void updateDrivetrainStatus() {
         if (ModuleManager.DRIVE_MODULE_ON) {
 

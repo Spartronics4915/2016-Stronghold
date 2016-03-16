@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -11,7 +11,7 @@ public class ActivateLauncherServosCommand extends Command {
     }
 
     protected void initialize() {
-        System.out.println("Aim Launcher Servos");
+        System.out.println("Activate Launcher Servos Command");
         Robot.intakeLauncher.activateLauncherServos();
     }
 
@@ -24,7 +24,7 @@ public class ActivateLauncherServosCommand extends Command {
     }
 
     protected void end() {
-        System.out.println("Ending Activate Launcher Servos");
+        
     }
 
     protected void interrupted() {
