@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeed;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedDown;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedUp;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToNeutralPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToTravelPositionCommand;
@@ -142,7 +143,9 @@ public class OI {
             initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
         }
         if (ModuleManager.DRIVE_MODULE_ON) {
-        	initializeButton(this.speedToggle, driveStick, TURN_SCALER, new ToggleSpeed());
+        	speedToggle = new JoystickButton(driveStick, TURN_SCALER); 
+        	speedToggle.whileHeld(new ToggleSpeedUp());
+        	speedToggle.whenReleased(new ToggleSpeedDown());
         }
 
         if (ModuleManager.GEARSHIFT_MODULE_ON) {

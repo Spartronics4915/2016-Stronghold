@@ -3,6 +3,7 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.utils.IMUPIDSource;
+import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -14,10 +15,10 @@ public class DriveTrain extends Subsystem {
     public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;  // 100.0 == ~13 ft/sec interpolated from observations
     public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;  // 150.0 == ~20 ft/sec interpolated from observations
     public final static double MAXIMUM_TURN_SPEED = 40.0;  //3-4 ft per sec
-    public double turnMultiplier = MEDIUM_TURN; 
+    public double turnMultiplier = SLOW_TURN; 
     public static final double FAST_TURN = -1;
     public static final double MEDIUM_TURN = -.75;
-    public static final double SLOW_TURN = -.4;
+    public static final double SLOW_TURN = -.5;
 
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);
@@ -109,6 +110,24 @@ public class DriveTrain extends Subsystem {
         //                          leftmotor(positive) (forward)
         RobotMap.leftMasterMotor.set(speed);
         RobotMap.rightMasterMotor.set(speed);
+    }
+
+    public void trackVision() {
+        VisionState vs = VisionState.getInstance();
+        if(vs.DriveLockedOnTarget) {
+            // wait for launcher to shoot and exit auto mode or toggle AutoAim
+            this.stop(); // needed to keep driveTrain alive
+        }
+        else {
+            if (!this.isAutoTurning()) {
+                double h = this.getCurrentHeading();
+                double target = vs.getTargetHeading(h);
+                this.startAutoTurn(target);
+            } else if (this.isAutoTurnFinished()) {
+                this.endAutoTurn();
+                vs.DriveLockedOnTarget = true;
+            } // else allow auto-turn to continue
+        }
     }
 
     public void startAutoTurn(double degrees) {
