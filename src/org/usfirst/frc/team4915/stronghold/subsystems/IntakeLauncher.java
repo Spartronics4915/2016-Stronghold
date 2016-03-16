@@ -67,7 +67,6 @@ public class IntakeLauncher extends Subsystem {
     private final int POTENTIOMETER_NEGATIVITY = -1;
 
     private double setPoint; // in potentiometer ticks
-    private boolean isPotentiometerScrewed = false;
     private double visionTarget = NO_VISION_TARGET;
 
     // left and right are determined when standing behind the robot
@@ -254,18 +253,18 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // requests a launcher position according to the current set point.
-    // If aimMototr.safetyEnabled() (defaults is false), aimMotor.set must be
+    // If aimMotor.safetyEnabled() (defaults is false), aimMotor.set must be
     // called periodically (even with the same setpoint) to prevent motorsafety timeouts.
     public void moveToSetPoint() {
-        //keepSetPointInRange();
+        keepSetPointInRange();
         calibratePotentiometer();
         aimMotor.changeControlMode(TalonControlMode.Position); // redundant, but harmless
         aimMotor.set(setPoint);
-        dangerTest();
     }
 
     public void launcherSetNeutralPosition() {
         setSetPoint(launcherNeutralHeightTicks * POTENTIOMETER_NEGATIVITY);
+        moveToSetPoint();
         System.out.println("Neutral Height: " + launcherNeutralHeightTicks);
         System.out.println("Current Position: " + getPosition());
         System.out.println("aimMotor enabled: " + aimMotor.isControlEnabled());
@@ -280,6 +279,7 @@ public class IntakeLauncher extends Subsystem {
 
     public void launcherSetTravelPosition() {
         setSetPoint(launcherTravelHeightTicks * POTENTIOMETER_NEGATIVITY);
+        moveToSetPoint();
     }
 
     public boolean launcherAtTravelPosition() {
@@ -287,10 +287,6 @@ public class IntakeLauncher extends Subsystem {
             return true;
         else
             return false;
-    }
-
-    public void launcherSetIntakePosition() {
-        setSetPoint(launcherTravelHeightTicks * POTENTIOMETER_NEGATIVITY);
     }
 
     public void launcherJumpToAngle(double angle) {
@@ -316,12 +312,6 @@ public class IntakeLauncher extends Subsystem {
         }
         launcherTravelHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherTravelHeightRatio;
         launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherNeutralHeightRatio;
-    }
-
-    private void dangerTest() {
-        if((isLauncherAtBottom() && Math.abs(getPosition() - launcherMinHeightTicks) > MAX_POTENTIOMETER_ERROR) || (isLauncherAtTop() && Math.abs(getPosition() - launcherMaxHeightTicks) > MAX_POTENTIOMETER_ERROR)) {
-            isPotentiometerScrewed = true;
-        }
     }
 
     private double degreesToTicks(double degrees) {
@@ -360,10 +350,6 @@ public class IntakeLauncher extends Subsystem {
 
     public double getSetPoint() {
         return setPoint * POTENTIOMETER_NEGATIVITY;
-    }
-
-    public boolean getIsPotentiometerScrewed() {
-        return isPotentiometerScrewed;
     }
 
     public void backUpJoystickMethod() {

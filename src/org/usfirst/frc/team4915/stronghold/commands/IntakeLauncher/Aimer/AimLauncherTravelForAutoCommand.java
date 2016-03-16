@@ -9,7 +9,7 @@ public class AimLauncherTravelForAutoCommand extends Command {
     public AimLauncherTravelForAutoCommand(boolean blocking) {
     	m_blocking = blocking;
         requires(Robot.intakeLauncher);
-        if(m_blocking)
+        if(m_blocking) 
         	requires(Robot.driveTrain); // should interrupt ArcadeDrive
     }
 

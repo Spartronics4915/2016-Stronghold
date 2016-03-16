@@ -20,7 +20,7 @@ public class LauncherGoToNeutralPositionCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return Robot.intakeLauncher.launcherAtNeutralPosition();
+        return Robot.intakeLauncher.isLauncherAtNeutral();
     }
 
     protected void end() {

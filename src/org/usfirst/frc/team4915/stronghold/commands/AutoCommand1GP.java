@@ -35,7 +35,7 @@ public class AutoCommand1GP extends CommandGroup {
 	    boolean launcherWantsTravelPosition = getLauncherBeginPosition();
 	    boolean blocking = false; // false means we rely on timer
 	    if (launcherWantsTravelPosition)
-		addSequential(new AimLauncherTravelForAutoCommand(blocking));
+	    addSequential(new AimLauncherTravelForAutoCommand(blocking));
 	    else
 		addSequential(new AimLauncherNeutralForAutoCommand(blocking));
 	    addParallel(new AimLauncherCommand());
