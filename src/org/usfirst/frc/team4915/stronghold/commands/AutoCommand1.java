@@ -20,7 +20,6 @@ public class AutoCommand1 extends CommandGroup {
     private final Autonomous.Type type;
     private final Autonomous.Strat strat;
     private final Autonomous.Position position;
-
     public AutoCommand1(Autonomous.Type type, Autonomous.Strat strat, Autonomous.Position position) {
         this.strat = strat;
         this.position = position;
