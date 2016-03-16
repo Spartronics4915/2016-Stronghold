@@ -17,10 +17,8 @@ public class VisionState implements NamedSendable {
     private static VisionState s_instance;
 
     public synchronized static VisionState getInstance() {
-        if (ModuleManager.VISION_MODULE_ON) {
-            if (s_instance == null)
-                s_instance = new VisionState();
-        }
+        if (s_instance == null)
+            s_instance = new VisionState();
         return s_instance;
     }
 
