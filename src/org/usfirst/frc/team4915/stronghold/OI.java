@@ -8,7 +8,8 @@ import java.util.jar.Manifest;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeed;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedDown;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedUp;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.IntakeBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LaunchBallCommandGroup;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LauncherGoToNeutralPositionCommand;
@@ -22,6 +23,7 @@ import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -144,7 +146,9 @@ public class OI {
             initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
         }
         if (ModuleManager.DRIVE_MODULE_ON) {
-        	initializeButton(this.speedToggle, driveStick, TURN_SCALER, new ToggleSpeed());
+        	speedToggle = new JoystickButton(driveStick, TURN_SCALER); 
+        	speedToggle.whileHeld(new ToggleSpeedUp());
+        	speedToggle.whenReleased(new ToggleSpeedDown());
         }
 
         if (ModuleManager.GEARSHIFT_MODULE_ON) {

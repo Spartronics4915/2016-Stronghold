@@ -15,10 +15,10 @@ public class DriveTrain extends Subsystem {
     public final static double DEFAULT_SPEED_MAX_OUTPUT = 100.0;  // 100.0 == ~13 ft/sec interpolated from observations
     public final static double MAXIMUM_SPEED_MAX_OUTPUT = 150.0;  // 150.0 == ~20 ft/sec interpolated from observations
     public final static double MAXIMUM_TURN_SPEED = 40.0;  //3-4 ft per sec
-    public double turnMultiplier = MEDIUM_TURN; 
+    public double turnMultiplier = SLOW_TURN; 
     public static final double FAST_TURN = -1;
     public static final double MEDIUM_TURN = -.75;
-    public static final double SLOW_TURN = -.4;
+    public static final double SLOW_TURN = -.5;
 
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);
