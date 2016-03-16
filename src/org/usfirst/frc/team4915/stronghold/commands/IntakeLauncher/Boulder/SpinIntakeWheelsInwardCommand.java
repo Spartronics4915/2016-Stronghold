@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -17,7 +17,7 @@ public class SpinIntakeWheelsInwardCommand extends Command {
     protected void initialize() {
         setTimeout(10); // TODO finalize time
         SmartDashboard.putString("Flywheels spinning ", "inward");
-        System.out.println("Spin wheels inward command");
+        System.out.println("Spin Intake Inward Command");
     }
 
     @Override
@@ -38,11 +38,10 @@ public class SpinIntakeWheelsInwardCommand extends Command {
     @Override
     protected void end() {
         Robot.intakeLauncher.stopWheels();
-        System.out.println("Spin Wheels in end");
     }
 
     @Override
     protected void interrupted() {
-        
+        System.out.println("Spin Intake Inward Interrupt");
     }
 }

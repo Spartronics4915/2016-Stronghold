@@ -1,20 +1,22 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class LauncherGoToNeutralPositionCommand extends Command {
+public class LauncherGoToTravelPositionCommand extends Command {
 
-    public LauncherGoToNeutralPositionCommand() {
+    public LauncherGoToTravelPositionCommand() {
 
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.launcherSetNeutralPosition();
+        Robot.intakeLauncher.launcherSetTravelPosition();
+        System.out.println("Launcher Travel Teleop Command");
     }
 
     protected void execute() {
+
     }
 
     protected boolean isFinished() {
@@ -22,10 +24,10 @@ public class LauncherGoToNeutralPositionCommand extends Command {
     }
 
     protected void end() {
-
+    
     }
 
     protected void interrupted() {
-
+    
     }
 }

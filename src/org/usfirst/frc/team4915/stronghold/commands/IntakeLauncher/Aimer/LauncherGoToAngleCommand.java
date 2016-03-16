@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -12,6 +12,7 @@ public class LauncherGoToAngleCommand extends Command {
     public LauncherGoToAngleCommand(double angle) {
         this.angle = angle;
         SmartDashboard.putNumber("Aimer angle: ", this.angle);
+        System.out.println("Launcher Custom Teleop Command");
     }
 
     protected void initialize() {
@@ -32,6 +33,6 @@ public class LauncherGoToAngleCommand extends Command {
     }
 
     protected void interrupted() {
-
+        
     }
 }

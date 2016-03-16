@@ -1,25 +1,26 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class AimLauncherCommand extends Command {
+public class ActivateLauncherServosCommand extends Command {
 
-    public AimLauncherCommand() {
+    public ActivateLauncherServosCommand() {
         requires(Robot.intakeLauncher);
     }
-    
+
     protected void initialize() {
-        
+        System.out.println("Activate Launcher Servos Command");
+        Robot.intakeLauncher.activateLauncherServos();
     }
 
     protected void execute() {
-        Robot.intakeLauncher.aimLauncher();
+        
     }
 
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     protected void end() {
@@ -27,7 +28,6 @@ public class AimLauncherCommand extends Command {
     }
 
     protected void interrupted() {
-        System.out.println("Aimer Interrupted");
-        
+        end();
     }
 }

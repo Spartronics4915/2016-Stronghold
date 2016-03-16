@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher;
+package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
@@ -19,7 +19,7 @@ public class SpinIntakeWheelsOutForAutoCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.intakeLauncher.setSpeedLaunch();
+        Robot.intakeLauncher.setSpeedLaunchHigh();
     }
 
     // Make this return true when this Command no longer needs to run execute()
