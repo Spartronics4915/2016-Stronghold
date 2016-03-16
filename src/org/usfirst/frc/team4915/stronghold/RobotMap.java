@@ -21,10 +21,6 @@ public class RobotMap {
     private static final int DRIVE_TRAIN_LEFT_FOLLOWER = 11;
     private static final int DRIVE_TRAIN_LEFT_MASTER = 10;
 
-    // Define channels for two speed gear system for the drive train
-    private static final int SOLENOID_CHANNEL_PRIMARY = 0;
-    private static final int SOLENOID_CHANNEL_SECONDARY = 1;
-
     // Define channels for IntakeLauncher motors
     private static final int INTAKE_LEFT_MOTOR_ID = 15;
     private static final int INTAKE_RIGHT_MOTOR_ID = 14;
@@ -60,6 +56,7 @@ public class RobotMap {
     public static final int PORTCULLIS_LEFT_MOTOR = 0;
     public static final int PORTCULLIS_RIGHT_MOTOR = 1;
 
+    public static final double PORTCULLIS_SPEED = .6;
     public static int PORTCULLIS_TOP = 100;
     public static int PORTCULLIS_BOT = 0;
 
@@ -174,10 +171,6 @@ public class RobotMap {
 
             System.out.println("ModuleManager RobotMap Initialized: DriveTrain!");
 
-        }
-
-        if (ModuleManager.GEARSHIFT_MODULE_ON) {
-            doubleSolenoid = new DoubleSolenoid(SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {

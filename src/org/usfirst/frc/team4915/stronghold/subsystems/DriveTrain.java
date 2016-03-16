@@ -4,7 +4,6 @@ import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ArcadeDrive;
 import org.usfirst.frc.team4915.stronghold.utils.IMUPIDSource;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
-
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -18,7 +17,7 @@ public class DriveTrain extends Subsystem {
     public double turnMultiplier = SLOW_TURN; 
     public static final double FAST_TURN = -1;
     public static final double MEDIUM_TURN = -.75;
-    public static final double SLOW_TURN = -.4; // actually -.5
+    public static final double SLOW_TURN = -.5; // actually -.5
 
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);

@@ -8,7 +8,7 @@ import java.util.jar.Manifest;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisLeft;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisRight;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.DriveStraightCommand;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
+import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedDown;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedUp;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToNeutralPositionCommand;
@@ -46,8 +46,7 @@ public class OI {
     public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 9;
     public static final int TURN_SCALER = 8;
     public static final int DRIVE_STRAIGHT_BUTTON_NUMBER = 11; // NB: conflicts with unused shift button
-    public static final int HIGH_SPEED_DRIVE_BUTTON = 11;
-    public static final int LOW_SPEED_DRIVE_BUTTON = 12;
+
 
     // Button numbers for launching related buttons on the mechanism stick
     public static final int KICK_BALL_BUTTON_NUMBER = 3;
@@ -147,16 +146,11 @@ public class OI {
         if (ModuleManager.DRIVE_MODULE_ON) {
 	    this.speedToggle = new JoystickButton(driveStick, TURN_SCALER);
 	    this.speedToggle.whileHeld(new ToggleSpeedUp());
-//	    this.speedToggle.whenReleased(new ToggleSpeedDown());
+	    this.speedToggle.whenReleased(new ToggleSpeedDown());
 	    
 	    this.driveStraightButton = new JoystickButton(driveStick, DRIVE_STRAIGHT_BUTTON_NUMBER);
 	    this.driveStraightButton.whileHeld(new DriveStraightCommand());
        }
-
-        if (ModuleManager.GEARSHIFT_MODULE_ON) {
-            initializeButton(this.speedUpButton, driveStick, HIGH_SPEED_DRIVE_BUTTON, new GearShiftCommand(true));
-            initializeButton(this.speedUpButton, driveStick, LOW_SPEED_DRIVE_BUTTON, new GearShiftCommand(false));
-        }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             initializeButton(this.kickBallButton, aimStick, KICK_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());

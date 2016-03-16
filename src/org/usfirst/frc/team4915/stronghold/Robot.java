@@ -5,7 +5,6 @@ import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1GP;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisRight;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
@@ -30,7 +29,6 @@ public class Robot extends IterativeRobot {
     public static DriveTrain driveTrain;
     public static IntakeLauncher intakeLauncher;
     public static OI oi;
-    public static GearShift gearShift;
     public static Scaler scaler;
 
     Command autonomousCommand;
@@ -58,12 +56,6 @@ public class Robot extends IterativeRobot {
         else
             SmartDashboard.putString("Drivetrain Module", "disabled");
 
-        if (ModuleManager.GEARSHIFT_MODULE_ON) {
-            gearShift = new GearShift();
-            SmartDashboard.putString("Shift Module", "initialized");
-        }
-        else
-        	SmartDashboard.putString("Shift Module", "disabled");
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
         	/* to prevent module-manager-madness (M-cubed), we

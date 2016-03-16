@@ -27,12 +27,12 @@ public class PortcullisLifter extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
         while (!RobotMap.portcullisSwitchBottom.get()){
-            RobotMap.portcullisRightMotor.set(.6); 
-            RobotMap.portcullisLeftMotor.set(.6);
+            RobotMap.portcullisRightMotor.set(RobotMap.PORTCULLIS_SPEED); 
+            RobotMap.portcullisLeftMotor.set(RobotMap.PORTCULLIS_SPEED);
     } 
         while (!RobotMap.portcullisSwitchTop.get()){
-            RobotMap.portcullisRightMotor.set(-.6);
-            RobotMap.portcullisLeftMotor.set(-.6);
+            RobotMap.portcullisRightMotor.set(-1*RobotMap.PORTCULLIS_SPEED);
+            RobotMap.portcullisLeftMotor.set(-1*RobotMap.PORTCULLIS_SPEED);
         }
 }
 }

@@ -18,7 +18,7 @@ public class PortcullisRight extends Command {
     protected void initialize() {
         //have arms initialize up 
         while (!RobotMap.portcullisSwitchTop.get()){
-            RobotMap.portcullisRightMotor.set(.6);
+            RobotMap.portcullisRightMotor.set(RobotMap.PORTCULLIS_SPEED);
         }
         RobotMap.portcullisRightMotor.set(0);
     }
