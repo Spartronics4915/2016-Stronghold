@@ -23,6 +23,7 @@ public class IntakeLauncher extends Subsystem {
     private final double LAUNCH_SPEED_FORWARD_LOW = 0.5; //TODO
     private final double ZERO_SPEED = 0.0;
     private final double AIM_DEGREES_SLOP = 2; // TODO: tune this number
+    private final double AIM_TICKS_SLOP = degreesToTicks(AIM_DEGREES_SLOP);
 
     private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // in degrees from
                                                              // horizontal
@@ -45,18 +46,18 @@ public class IntakeLauncher extends Subsystem {
                                                       // ticks
 
     private final double MAX_POTENTIOMETER_ERROR = 20;
-    
+
     private final double APPROXIMATE_DANGER = 50;
 
 
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
     private final double MIN_JOYSTICK_MOTION = 0.1;
-    
+
     private boolean isJoystickIdle = false;
 
     private final double NO_VISION_TARGET = -1000;
-    
+
     private final int POTENTIOMETER_NEGATIVITY = -1;
 
     private double setPoint; // in potentiometer ticks
@@ -104,7 +105,7 @@ public class IntakeLauncher extends Subsystem {
         this.intakeLeftMotor.set(FULL_SPEED_FORWARD);
         this.intakeRightMotor.set(-FULL_SPEED_FORWARD);
     }
-    
+
     public void setSpeedLaunchLow() {
         this.intakeLeftMotor.set(LAUNCH_SPEED_FORWARD_LOW);
     }
@@ -163,7 +164,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     // sets the set point with vision and moves to set point
-    private void trackVision() {
+    public void trackVision() {
         VisionState vs = VisionState.getInstance();
         if(vs == null) return;
 
@@ -228,17 +229,37 @@ public class IntakeLauncher extends Subsystem {
         }
     }
 
-    // sets the launcher position to the current set point
+    // requests a launcher position according to the current set point.
+    // If aimMototr.safetyEnabled() (defaults is false), aimMotor.set must be
+    // called periodically (even with the same setpoint) to prevent motorsafety timeouts.
     public void moveToSetPoint() {
         //keepSetPointInRange();
         calibratePotentiometer();
-        aimMotor.changeControlMode(TalonControlMode.Position);
+        aimMotor.changeControlMode(TalonControlMode.Position); // redundant, but harmless
         aimMotor.set(setPoint);
         dangerTest();
     }
 
     public void launcherSetNeutralPosition() {
         setSetPoint(launcherNeutralHeightTicks * POTENTIOMETER_NEGATIVITY);
+    }
+
+    public boolean launcherAtNeutralPosition() {
+        if( Math.abs(getPosition() - launcherNeutralHeightTicks) < AIM_TICKS_SLOP)
+            return true;
+        else
+            return false;
+    }
+
+    public void launcherSetTravelPosition() {
+        setSetPoint(launcherTravelHeightTicks * POTENTIOMETER_NEGATIVITY);
+    }
+
+    public boolean launcherAtTravelPosition() {
+        if( Math.abs(getPosition() - launcherTravelHeightTicks) < AIM_TICKS_SLOP)
+            return true;
+        else
+            return false;
     }
 
     public void launcherSetIntakePosition() {
@@ -258,7 +279,7 @@ public class IntakeLauncher extends Subsystem {
             setPoint = launcherMaxHeightTicks * POTENTIOMETER_NEGATIVITY;
         }
     }
-    
+
     private void calibratePotentiometer() {
         if(isLauncherAtBottom()) {
             launcherMinHeightTicks = getPosition();

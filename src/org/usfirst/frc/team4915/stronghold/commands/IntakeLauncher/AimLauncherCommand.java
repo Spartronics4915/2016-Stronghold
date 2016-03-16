@@ -9,9 +9,9 @@ public class AimLauncherCommand extends Command {
     public AimLauncherCommand() {
         requires(Robot.intakeLauncher);
     }
-    
+
     protected void initialize() {
-        
+
     }
 
     protected void execute() {
@@ -23,11 +23,10 @@ public class AimLauncherCommand extends Command {
     }
 
     protected void end() {
-        
     }
 
     protected void interrupted() {
         System.out.println("Aimer Interrupted");
-        
+
     }
 }
