@@ -54,11 +54,11 @@ public class RobotMap {
     public static CANTalon rightFollowerMotor;
 
     //motors for portcullis
-    public static CANTalon portcullisLeftMasterMotor;
-    public static CANTalon portcullisRightFollowerMotor;
+    public static CANTalon portcullisLeftMotor;
+    public static CANTalon portcullisRightMotor;
 
-    public static final int PORTCULLIS_MASTER_MOTOR = 0;
-    public static final int PORTCULLIS_FOLLOWER_MOTOR = 1;
+    public static final int PORTCULLIS_LEFT_MOTOR = 0;
+    public static final int PORTCULLIS_RIGHT_MOTOR = 1;
 
     public static int PORTCULLIS_TOP = 100;
     public static int PORTCULLIS_BOT = 0;
@@ -117,21 +117,16 @@ public class RobotMap {
 
         if (ModuleManager.PORTCULLIS_MODULE_ON){
             //instantiate the motor controllers
-            portcullisLeftMasterMotor = new CANTalon (PORTCULLIS_MASTER_MOTOR);
-            portcullisRightFollowerMotor = new CANTalon (PORTCULLIS_FOLLOWER_MOTOR);
-
-            //master and follower
-            portcullisRightFollowerMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            portcullisRightFollowerMotor.set(portcullisLeftMasterMotor.getDeviceID());
-
+            portcullisLeftMotor = new CANTalon (PORTCULLIS_LEFT_MOTOR);
+            portcullisRightMotor = new CANTalon (PORTCULLIS_RIGHT_MOTOR);
             //set up speed control mode
-            portcullisRightFollowerMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-            portcullisLeftMasterMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+            portcullisRightMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+            portcullisLeftMotor.changeControlMode(CANTalon.TalonControlMode.Position);
 
-            portcullisLeftMasterMotor.setForwardSoftLimit(PORTCULLIS_TOP);
-            portcullisLeftMasterMotor.setReverseSoftLimit(PORTCULLIS_BOT);
-            portcullisLeftMasterMotor.enableForwardSoftLimit(true);
-            portcullisLeftMasterMotor.enableReverseSoftLimit(true);
+            portcullisLeftMotor.setForwardSoftLimit(PORTCULLIS_TOP);
+            portcullisLeftMotor.setReverseSoftLimit(PORTCULLIS_BOT);
+            portcullisLeftMotor.enableForwardSoftLimit(true);
+            portcullisLeftMotor.enableReverseSoftLimit(true);
 
         }
         // conditionally initialize the modules

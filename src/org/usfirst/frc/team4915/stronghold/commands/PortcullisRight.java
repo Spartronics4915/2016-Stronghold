@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class PortcullisMoveUp extends Command {
+public class PortcullisRight extends Command {
 
-    public PortcullisMoveUp() {
+    public PortcullisRight() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -18,9 +18,9 @@ public class PortcullisMoveUp extends Command {
     protected void initialize() {
         //have arms initialize up 
         while (!RobotMap.portcullisSwitchTop.get()){
-            RobotMap.portcullisLeftMasterMotor.set(.6);
+            RobotMap.portcullisRightMotor.set(.6);
         }
-        RobotMap.portcullisLeftMasterMotor.set(0);
+        RobotMap.portcullisRightMotor.set(0);
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
-import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisLeft;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisRight;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedDown;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedUp;
@@ -23,7 +23,6 @@ import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -142,8 +141,8 @@ public class OI {
 
         // Bind module commands to buttons
         if (ModuleManager.PORTCULLIS_MODULE_ON){
-            initializeButton (this.portcullisButtonUp, driveStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisMoveUp());
-            initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
+            initializeButton (this.portcullisButtonUp, driveStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisRight());
+            initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisLeft());
         }
         if (ModuleManager.DRIVE_MODULE_ON) {
         	speedToggle = new JoystickButton(driveStick, TURN_SCALER); 

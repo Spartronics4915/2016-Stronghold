@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4915.stronghold.commands.DriveTrain;
 import org.usfirst.frc.team4915.stronghold.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ToggleSpeedUp extends Command {
@@ -33,6 +34,7 @@ public class ToggleSpeedUp extends Command {
 		// TODO Auto-generated method stub
 
 	}
+
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
