@@ -16,27 +16,23 @@ import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 
 public class AutoCommand1GP extends CommandGroup {
 
-    private final Autonomous.Type type;
-    private final Autonomous.Strat strat;
-    private final Autonomous.Position position;
+    private Autonomous.Type m_type;
+    private Autonomous.Strat m_strat;
+    private Autonomous.Position m_position;
 
+    // Please NOTE:
+    // this file is "deprecated"... It represents the strategy we
+    // employed during our first event at Glacier Peak and relies
+    // on a timer ensure that the we attain travel or neutral
+    // launch position before crossing the barrier.
     public AutoCommand1GP(Autonomous.Type type, Autonomous.Strat strat, Autonomous.Position position) {
-	this.strat = strat;
-	this.position = position;
-	this.type = type;
-    }
-
-    public void initialize() {
-	// Please NOTE:
-	// this file is "deprecated"... It represents the strategy we
-	// employed during our first event at Glacier Peak and relies
-	// on a timer ensure that the we attain travel or neutral
-	// launch position before crossing the barrier.
-	System.out.println(
-		"AutonomousGP init, field position: " + position + "strategy: " + strat + " obstacle: " + type);
+	this.m_strat = strat;
+	this.m_position = position;
+	this.m_type = type;
+	System.out.println("Autonomous1GP construct (strat:" + strat + ")");
 
 	if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-	    boolean launcherWantsTravelPosition = getLauncherBeginPosition(type);
+	    boolean launcherWantsTravelPosition = getLauncherBeginPosition();
 	    boolean blocking = false; // false means we rely on timer
 	    if (launcherWantsTravelPosition)
 		addSequential(new AimLauncherTravelForAutoCommand(blocking));
@@ -48,7 +44,7 @@ public class AutoCommand1GP extends CommandGroup {
 
 	if (ModuleManager.PORTCULLIS_MODULE_ON) {
 	    // portcullis lifter begin position
-	    boolean portcullisBeginDown = getPortcullisBeginPosition(type);
+	    boolean portcullisBeginDown = getPortcullisBeginPosition();
 	    if (portcullisBeginDown) {
 		addSequential(new PortcullisMoveDown());
 	    } else {
@@ -56,22 +52,22 @@ public class AutoCommand1GP extends CommandGroup {
 	    }
 	}
 
-	double distance = getDistance(type) + getDistancePastDefense(position);
+	double distance = getDistance() + getDistancePastDefense();
 
-	switch (strat) {
+	switch (m_strat) {
 	case NONE:
 	    break;
 
 	case DRIVE_ACROSS:
 	    System.out.println("Starting Drive Across (GP)");
-	    addSequential(new AutoDriveStraight(distance, getSpeed(type)));
+	    addSequential(new AutoDriveStraight(distance, getSpeed()));
 	    break;
 
 	case DRIVE_SHOOT_VISION: // sets us up to use vision to shoot a high
 				 // goal
 	    System.out.println("Starting Drive Shoot Vision (untested)");
-	    addSequential(new AutoDriveStraight(distance, getSpeed(type)));
-	    addSequential(new AutoRotateDegrees(getTurnAngle(position)));
+	    addSequential(new AutoDriveStraight(distance, getSpeed()));
+	    addSequential(new AutoRotateDegrees(getTurnAngle()));
 	    addSequential(new AutoAimControlCommand(true, true));
 	    addSequential(new AutoVisionDriveAndAim());
 	    addSequential(new AutoLaunchCommand());
@@ -79,9 +75,13 @@ public class AutoCommand1GP extends CommandGroup {
 
 	case DRIVE_SHOOT_NO_VISION:
 	    System.out.println("Starting Drive Shoot No Vision (untested)");
-	    addSequential(new AutoDriveStraight(distance, getSpeed(type)));
-	    addSequential(new AutoRotateDegrees(getTurnAngle(position)));
+	    addSequential(new AutoDriveStraight(distance, getSpeed()));
+	    addSequential(new AutoRotateDegrees(getTurnAngle()));
 	}
+    }
+
+    public void initialize() {
+	System.out.println("Autonomous1GP initialize");
     }
 
     protected boolean isFinished() {
@@ -96,7 +96,8 @@ public class AutoCommand1GP extends CommandGroup {
 
     // Called once after isFinished returns true
     protected void end() {
-    }
+	System.out.println("Autonomous1GP end");
+   }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
@@ -104,10 +105,9 @@ public class AutoCommand1GP extends CommandGroup {
 	end();
     }
 
-    public static boolean getLauncherBeginPosition(Autonomous.Type type) {
+    public boolean getLauncherBeginPosition() {
 	boolean lowBar; // in inches
-	System.out.println(type);
-	switch (type) {
+	switch (m_type) {
 	case LOWBAR:
 	    lowBar = true;
 	    break;
@@ -129,9 +129,9 @@ public class AutoCommand1GP extends CommandGroup {
 	return lowBar;
     }
 
-    public static boolean getPortcullisBeginPosition(Autonomous.Type type) {
+    public boolean getPortcullisBeginPosition() {
 	boolean liftdown; // tells if portcullis needs to be down
-	switch (type) {
+	switch (m_type) {
 	case LOWBAR:
 	    liftdown = true;
 	    break;
@@ -153,10 +153,9 @@ public class AutoCommand1GP extends CommandGroup {
 	return liftdown;
     }
 
-    public static double getAimAngle(Autonomous.Position position) {
-	System.out.println(position);
+    public double getAimAngle() {
 	double angle = 0;
-	switch (position) {
+	switch (m_position) {
 	case ONE:
 	    angle = 40;
 	    break;
@@ -178,9 +177,9 @@ public class AutoCommand1GP extends CommandGroup {
 	return angle;
     }
 
-    public static double getTurnAngle(Autonomous.Position position) {
+    public double getTurnAngle() {
 	double degrees;
-	switch (position) {
+	switch (m_position) {
 	case ONE:// low bar
 	    degrees = 80.4;
 	    break;
@@ -202,9 +201,9 @@ public class AutoCommand1GP extends CommandGroup {
 	return degrees;
     }
 
-    public static boolean getStrategy(Autonomous.Strat strat) {
+    public boolean getStrategy() {
 	boolean vision = true;
-	switch (strat) {
+	switch (m_strat) {
 	case NONE:
 	    break;
 	case DRIVE_ACROSS:
@@ -223,10 +222,9 @@ public class AutoCommand1GP extends CommandGroup {
 
     // getting the distance to go after the barrier for launching
     // andalucia's math
-    public static double getDistancePastDefense(Autonomous.Position position) {
+    public double getDistancePastDefense() {
 	double distance;
-	System.out.println(position);
-	switch (position) {
+	switch (m_position) {
 	case ONE:// low bar
 	    distance = 38;
 	    break;
@@ -248,10 +246,9 @@ public class AutoCommand1GP extends CommandGroup {
 	return distance;
     }
 
-    public static int getDistance(Autonomous.Type type) {
+    public int getDistance() {
 	int distance; // in inches
-	System.out.println(type);
-	switch (type) {
+	switch (m_type) {
 	case LOWBAR:
 	    distance = 130;
 	    break;
@@ -273,10 +270,9 @@ public class AutoCommand1GP extends CommandGroup {
 	return distance;
     }
 
-    public static int getSpeed(Autonomous.Type type) {
+    public int getSpeed() {
 	int speed; // in inches
-	System.out.println(type);
-	switch (type) {
+	switch (m_type) {
 	case LOWBAR:
 	    speed = 30;
 	    break;
