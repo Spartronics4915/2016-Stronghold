@@ -4,9 +4,9 @@ import org.usfirst.frc.team4915.stronghold.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SpinIntakeWheelsOutForAutoCommand extends Command {
+public class LaunchBallForAutoCommand extends Command {
 
-    public SpinIntakeWheelsOutForAutoCommand() {
+    public LaunchBallForAutoCommand() {
         requires(Robot.intakeLauncher);
         setTimeout(2);
         
@@ -30,8 +30,6 @@ public class SpinIntakeWheelsOutForAutoCommand extends Command {
     // Called once after isFinished returns true
     protected void end() {
         Robot.intakeLauncher.activateLauncherServos();
-        
-        
     }
 
     // Called when another command which requires one or more of the same

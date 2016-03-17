@@ -23,7 +23,6 @@ public class IntakeLauncher extends Subsystem {
     private final double LAUNCH_SPEED_LOW = 0.6; //TODO
     private final double ZERO_SPEED = 0.0;
     private final double AIM_DEGREES_SLOP = 2; // TODO: tune this number
-    private final double AIM_TICKS_SLOP = degreesToTicks(AIM_DEGREES_SLOP);
 
     private final double LAUNCHER_MAX_HEIGHT_DEGREES = 45.0; // in degrees from
                                                              // horizontal
@@ -42,12 +41,27 @@ public class IntakeLauncher extends Subsystem {
     
     private double launcherNeutralHeightRatio = 0.739;
     
-    private double launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherNeutralHeightRatio; // in
+    private double launcherMinLaunchHeightRatio = 0.5; //TODO
+    
+    private double launcherNeutralHeightTicks = launcherNeutralHeight(); // in
                                                        // potentiometer
                                                        // ticks
-    private double launcherTravelHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherTravelHeightRatio; // in
+    private double launcherTravelHeightTicks = launcherTravelHeight(); // in
                                                       // potentiometer
                                                       // ticks
+    private double launcherMinLaunchHeightTicks = launcherMinLaunchHeight();
+    
+    public double launcherNeutralHeight() {
+        return launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherNeutralHeightRatio;
+    }
+    
+    public double launcherTravelHeight() {
+        return launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherTravelHeightRatio;
+    }
+    
+    public double launcherMinLaunchHeight() {
+        return launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherMinLaunchHeightRatio;
+    }
     
     private final double LAUNCHER_HIGH_GOAL_THRESHOLD = .85;
 
@@ -127,8 +141,7 @@ public class IntakeLauncher extends Subsystem {
     
     public String getDesiredWheelSpeed() {
         if (getPosition() > (launcherMinHeightTicks + ((launcherMaxHeightTicks - launcherMinHeightTicks) * LAUNCHER_HIGH_GOAL_THRESHOLD))) {
-            return "High Goal";
-            
+            return "High Goal";  
         } else {
             return "Low Goal";
         }
@@ -265,28 +278,25 @@ public class IntakeLauncher extends Subsystem {
     public void launcherSetNeutralPosition() {
         setSetPoint(launcherNeutralHeightTicks * POTENTIOMETER_NEGATIVITY);
         moveToSetPoint();
-        System.out.println("Neutral Height: " + launcherNeutralHeightTicks);
-        System.out.println("Current Position: " + getPosition());
-        System.out.println("aimMotor enabled: " + aimMotor.isControlEnabled());
-    }
-
-    public boolean launcherAtNeutralPosition() {
-        if( Math.abs(getPosition() - launcherNeutralHeightTicks) < AIM_TICKS_SLOP)
-            return true;
-        else
-            return false;
     }
 
     public void launcherSetTravelPosition() {
         setSetPoint(launcherTravelHeightTicks * POTENTIOMETER_NEGATIVITY);
         moveToSetPoint();
     }
-
-    public boolean launcherAtTravelPosition() {
-        if( Math.abs(getPosition() - launcherTravelHeightTicks) < AIM_TICKS_SLOP)
-            return true;
-        else
-            return false;
+    
+    public void launcherSetMinLaunchHeightPosition() {
+        setSetPoint(launcherMinLaunchHeightTicks * POTENTIOMETER_NEGATIVITY);
+    }
+    
+    public void ensureMinLaunchHeight() {
+        if(!canLaunch()) {
+            launcherSetMinLaunchHeightPosition();
+        }
+    }
+    
+    public boolean canLaunch() {
+        return getPosition() > launcherMinLaunchHeight(); 
     }
 
     public void launcherJumpToAngle(double angle) {
@@ -310,8 +320,9 @@ public class IntakeLauncher extends Subsystem {
         if(isLauncherAtTop()) {
             launcherMaxHeightTicks = getPosition();
         }
-        launcherTravelHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherTravelHeightRatio;
-        launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherNeutralHeightRatio;
+        launcherTravelHeightTicks = launcherNeutralHeight();
+        launcherNeutralHeightTicks = launcherTravelHeight();
+        launcherMinLaunchHeightTicks = launcherMinLaunchHeight();
     }
 
     private double degreesToTicks(double degrees) {

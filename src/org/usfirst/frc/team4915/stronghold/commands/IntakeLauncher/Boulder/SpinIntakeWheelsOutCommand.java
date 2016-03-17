@@ -10,14 +10,12 @@ public class SpinIntakeWheelsOutCommand extends Command {
     // this command spins the launch wheels outwards so they will launch the
     // ball
 
-    boolean areLaunchWheelsReady;
     int startTime;
-    final int WAIT_DURATION = 1500;
+    private static final int WAIT_DURATION = 1500;
     
     public SpinIntakeWheelsOutCommand() {
         requires(Robot.intakeLauncher);
         startTime = (int)System.currentTimeMillis();
- 
     }
 
     @Override
