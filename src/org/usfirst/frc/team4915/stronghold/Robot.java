@@ -110,7 +110,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	// schedule the autonomous command
     	System.out.println("autonomousInit...");
-    	boolean useGP = true; // GP: glacier-peak approach, with timers
+    	boolean useGP = false; // GP: glacier-peak approach, with timers
     	Autonomous.Type atype = (Autonomous.Type) oi.barrierType.getSelected();
     	Autonomous.Strat astrat = (Autonomous.Strat) oi.strategy.getSelected();
     	Autonomous.Position apos = (Autonomous.Position) oi.startingFieldPosition.getSelected();

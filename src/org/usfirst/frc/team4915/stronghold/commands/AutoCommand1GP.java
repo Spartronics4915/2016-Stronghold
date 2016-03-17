@@ -35,7 +35,6 @@ public class AutoCommand1GP extends CommandGroup {
                 addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
             else
                 addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
-            addParallel(new AimLauncherCommand());
             addSequential(new WaitCommand(2.75));
         }
 

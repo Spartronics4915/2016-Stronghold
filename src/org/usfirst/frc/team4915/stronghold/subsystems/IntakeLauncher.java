@@ -237,7 +237,7 @@ public class IntakeLauncher extends Subsystem {
     // called periodically (even with the same setpoint) to prevent motorsafety
     // timeouts.
     public void moveToSetPoint() {
-        keepSetPointInRange();
+        //keepSetPointInRange();
         calibratePotentiometer();
         aimMotor.changeControlMode(TalonControlMode.Position); // redundant, but
                                                                // harmless
