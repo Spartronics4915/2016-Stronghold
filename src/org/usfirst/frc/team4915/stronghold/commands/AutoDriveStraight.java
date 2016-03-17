@@ -39,14 +39,14 @@ public class AutoDriveStraight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	updateSB();
+        updateSB();
 
-    	if (!isInitialized){
-    		isInitialized = (RobotMap.leftMasterMotor.getEncPosition() == 0 &&
+        if (!isInitialized){
+            isInitialized = (RobotMap.leftMasterMotor.getEncPosition() == 0 &&
                              RobotMap.rightMasterMotor.getEncPosition() == 0);
-    		initializeRetryCount++;
-    		
-    	} else if (desiredDistanceTicks != 0) {
+            initializeRetryCount++;
+
+        } else if (desiredDistanceTicks != 0) {
             Robot.driveTrain.driveStraight(AUTOSPEED); //speed can be positive or negative
         } else {
             SmartDashboard.putString("AutoDriveStraight: ", "No Ticks");
@@ -54,7 +54,7 @@ public class AutoDriveStraight extends Command {
     }
 
     private void updateSB() {
-    	_sb.setLength(0);
+        _sb.setLength(0);
         _sb.append("Left motor ticks: ");
         _sb.append(RobotMap.leftMasterMotor.getEncPosition());
         _sb.append(", control mode: ");
@@ -81,15 +81,15 @@ public class AutoDriveStraight extends Command {
     // TODO: It may be wise to set a timer to time out in case our encoders are broken or our drivetrain is stuck?
     //       Maybe look for a few seconds of time in which no encoder changes happen? Then return true to stop us...
     protected boolean isFinished() {
-    	if(!isInitialized) {
-    		if(initializeRetryCount >= MAX_RETRIES) {
-    			SmartDashboard.putString("AutoDriveStraight: ", "INITIALIZE FAILED, MAXED OUT RETRIES");
-    			System.out.println("AutoDriveStraight: INITIALIZE FAILED, MAXED OUT RETRIES");
-    			return true;
-    		}
-    		return false;
-    	} else if ((Math.abs(RobotMap.leftMasterMotor.getEncPosition()) >= desiredDistanceTicks) ||
-                (Math.abs(RobotMap.rightMasterMotor.getEncPosition()) >= desiredDistanceTicks)) {
+        if(!isInitialized) {
+            if(initializeRetryCount >= MAX_RETRIES) {
+                SmartDashboard.putString("AutoDriveStraight: ", "INITIALIZE FAILED, MAXED OUT RETRIES");
+                System.out.println("AutoDriveStraight: INITIALIZE FAILED, MAXED OUT RETRIES");
+                return true;
+            }
+            return false;
+        } else if ((Math.abs(RobotMap.leftMasterMotor.getEncPosition()) >= desiredDistanceTicks) ||
+                   (Math.abs(RobotMap.rightMasterMotor.getEncPosition()) >= desiredDistanceTicks)) {
             return true;
         }
         else {
