@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team4915.stronghold;
 import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
 import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1GP;
@@ -103,7 +102,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	// schedule the autonomous command
     	System.out.println("autonomousInit...");
-    	boolean useGP = true; // GP: glacier-peak approach, with timers
+    	boolean useGP = false; // GP: glacier-peak approach, with timers
     	Autonomous.Type atype = (Autonomous.Type) oi.barrierType.getSelected();
     	Autonomous.Strat astrat = (Autonomous.Strat) oi.strategy.getSelected();
     	Autonomous.Position apos = (Autonomous.Position) oi.startingFieldPosition.getSelected();
@@ -201,7 +200,7 @@ public class Robot extends IterativeRobot {
 	        SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
 	        SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
 	        SmartDashboard.putBoolean("Boulder Limit Switch: ", intakeLauncher.boulderSwitch.get());
-	        SmartDashboard.putString("Goal", intakeLauncher.getDesiredWheelSpeed());
+	        SmartDashboard.putString("Goal: ", intakeLauncher.getDesiredWheelSpeed());
         }
 	}
 	

@@ -26,5 +26,6 @@ public class PortcullisMoveDown extends CommandGroup {
         // arm.
         addParallel(new PortcullisMoveDownRight());
         addParallel(new PortcullisMoveDownLeft());
+
     }
 }
