@@ -1,11 +1,9 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherNeutralForAutoCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherTravelForAutoCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToPositionForAutoCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoVisionDriveAndAim;
@@ -26,11 +24,12 @@ public class AutoCommand1 extends CommandGroup {
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             boolean launcherWantsTravelPosition = getLauncherBeginPosition();
-            boolean blocking = true; // means we rely on launcher positioning
-            if (launcherWantsTravelPosition)
-                addSequential(new AimLauncherTravelForAutoCommand(blocking));
-            else
-                addSequential(new AimLauncherNeutralForAutoCommand(blocking));
+            boolean shouldQuit = true; // means we rely on launcher positioning
+            if (launcherWantsTravelPosition) {
+                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
+            } else {
+                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
+            }
         }
 
         if (ModuleManager.PORTCULLIS_MODULE_ON) {
