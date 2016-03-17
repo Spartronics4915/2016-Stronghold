@@ -339,6 +339,10 @@ public class IntakeLauncher extends Subsystem {
     public boolean isLauncherAtTravel() {
         return Math.abs(getPosition() - launcherTravelHeightTicks) < MAX_POTENTIOMETER_ERROR;
     }
+    
+    public boolean isLauncherAtAngle(double angle) {
+        return Math.abs(getPosition() - degreesToTicks(angle)) < MAX_POTENTIOMETER_ERROR;
+    }
 
     public boolean isBoulderLoaded() {
         return boulderSwitch.get();
