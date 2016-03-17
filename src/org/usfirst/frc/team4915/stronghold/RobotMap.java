@@ -117,13 +117,12 @@ public class RobotMap {
             portcullisLeftMotor = new CANTalon (PORTCULLIS_LEFT_MOTOR);
             portcullisRightMotor = new CANTalon (PORTCULLIS_RIGHT_MOTOR);
             //set up speed control mode
-            portcullisRightMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-            portcullisLeftMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-
-            portcullisLeftMotor.setForwardSoftLimit(PORTCULLIS_TOP);
-            portcullisLeftMotor.setReverseSoftLimit(PORTCULLIS_BOT);
-            portcullisLeftMotor.enableForwardSoftLimit(true);
-            portcullisLeftMotor.enableReverseSoftLimit(true);
+            portcullisRightMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+            portcullisLeftMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+   //         portcullisLeftMotor.setForwardSoftLimit(PORTCULLIS_TOP);
+  //          portcullisLeftMotor.setReverseSoftLimit(PORTCULLIS_BOT);
+    //        portcullisLeftMotor.enableForwardSoftLimit(true);
+    //        portcullisLeftMotor.enableReverseSoftLimit(true);
 
         }
         // conditionally initialize the modules

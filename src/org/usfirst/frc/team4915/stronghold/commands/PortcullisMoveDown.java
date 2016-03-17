@@ -1,15 +1,13 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import org.usfirst.frc.team4915.stronghold.RobotMap;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class PortcullisLifter extends CommandGroup {
+public class PortcullisMoveDown extends CommandGroup {
     
-    public  PortcullisLifter() {
+    public  PortcullisMoveDown() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -26,13 +24,7 @@ public class PortcullisLifter extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-        while (!RobotMap.portcullisSwitchBottom.get()){
-            RobotMap.portcullisRightMotor.set(RobotMap.PORTCULLIS_SPEED); 
-            RobotMap.portcullisLeftMotor.set(RobotMap.PORTCULLIS_SPEED);
-    } 
-        while (!RobotMap.portcullisSwitchTop.get()){
-            RobotMap.portcullisRightMotor.set(-1*RobotMap.PORTCULLIS_SPEED);
-            RobotMap.portcullisLeftMotor.set(-1*RobotMap.PORTCULLIS_SPEED);
-        }
-}
+        addParallel(new PortcullisMoveDownRight());
+        addParallel(new PortcullisMoveDownLeft());
+    }
 }

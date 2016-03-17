@@ -37,7 +37,7 @@ public class AutoCommand1 extends CommandGroup {
 	    // portcullis lifter begin position
 	    boolean portcullisBeginDown = getPortcullisBeginPosition();
 	    if (portcullisBeginDown) {
-		addSequential(new PortcullisLifter());
+		addSequential(new PortcullisMoveDown());
 	    }
 	}
 

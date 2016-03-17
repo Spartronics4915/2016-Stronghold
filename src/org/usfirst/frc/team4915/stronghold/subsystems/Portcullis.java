@@ -1,7 +1,8 @@
 package org.usfirst.frc.team4915.stronghold.subsystems;
  
- import edu.wpi.first.wpilibj.command.Subsystem;
  import org.usfirst.frc.team4915.stronghold.RobotMap;
+
+import edu.wpi.first.wpilibj.command.Subsystem;
  
  
  public class Portcullis extends Subsystem {
@@ -14,12 +15,24 @@ package org.usfirst.frc.team4915.stronghold.subsystems;
          //setDefaultCommand(new MySpecialCommand());
      }
      
+     public static boolean isLeftPortcullisAtTop(){
+         return RobotMap.portcullisSwitchTop.get();
+     }
+     public static boolean isLeftPortcullisAtBottom(){
+         return RobotMap.portcullisSwitchBottom.get();
+     }
+     public static boolean isRightPortcullisAtTop(){
+         return RobotMap.portcullisSwitchTop.get();
+     }
+     public static boolean isRightPortcullisAtBottom(){
+         return RobotMap.portcullisSwitchBottom.get();
+     }
+     
      public static void PortcullisMoveUp(){
          System.out.println("Executing move portcullis up"); 
          RobotMap.portcullisLeftMotor.set(PERCENT_POWER);
-         RobotMap.portcullisRightMotor.set(PERCENT_POWER);
-         
-       if (RobotMap.portcullisSwitchTop.get()){
+         RobotMap.portcullisRightMotor.set(PERCENT_POWER);       
+       if (isRightPortcullisAtTop()){
          RobotMap.portcullisLeftMotor.disableControl();
          RobotMap.portcullisRightMotor.disableControl();
          System.out.println("Portcullis reached top");
@@ -31,7 +44,7 @@ package org.usfirst.frc.team4915.stronghold.subsystems;
          System.out.println("Executing move portcullis down"); 
          RobotMap.portcullisLeftMotor.set(-PERCENT_POWER);
          RobotMap.portcullisRightMotor.set(-PERCENT_POWER);
-         if (RobotMap.portcullisSwitchBottom.get()){
+         if (isRightPortcullisAtBottom()){
          RobotMap.portcullisLeftMotor.disableControl();
          RobotMap.portcullisRightMotor.disableControl();
          }

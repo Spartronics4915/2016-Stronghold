@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import org.usfirst.frc.team4915.stronghold.commands.PortcullisLeft;
-import org.usfirst.frc.team4915.stronghold.commands.PortcullisRight;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.DriveStraightCommand;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedDown;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedUp;
@@ -42,8 +42,6 @@ public class OI {
     public static final int DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
     public static final int DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 6;
     public static final int DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 4;
-    public static final int PORTCULLIS_BUTTON_NUMBER_UP = 7;
-    public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 9;
     public static final int TURN_SCALER = 8;
     public static final int DRIVE_STRAIGHT_BUTTON_NUMBER = 11; // NB: conflicts with unused shift button
 
@@ -55,7 +53,8 @@ public class OI {
     public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
     public static final int SPIN_INTAKE_WHEELS_OUT_LOW_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 6;
-    public static final int AUTO_LAUNCH_TEST_BUTTON_NUMBER = 10;
+    public static final int PORTCULLIS_BUTTON_NUMBER_UP = 10;
+    public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 11;
 
     // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
@@ -139,8 +138,8 @@ public class OI {
 
         // Bind module commands to buttons
         if (ModuleManager.PORTCULLIS_MODULE_ON){
-            initializeButton (this.portcullisButtonUp, driveStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisRight());
-            initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisLeft());
+            initializeButton (this.portcullisButtonUp, driveStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisMoveUp());
+            initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
         }
         
         if (ModuleManager.DRIVE_MODULE_ON) {
