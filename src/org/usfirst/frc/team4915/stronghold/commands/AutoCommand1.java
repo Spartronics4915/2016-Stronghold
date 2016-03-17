@@ -25,10 +25,11 @@ public class AutoCommand1 extends CommandGroup {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             boolean launcherWantsTravelPosition = getLauncherBeginPosition();
             boolean shouldQuit = true; // means we rely on launcher positioning
-            if (launcherWantsTravelPosition)
+            if (launcherWantsTravelPosition) {
                 addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
-            else
+            } else {
                 addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
+            }
         }
 
         if (ModuleManager.PORTCULLIS_MODULE_ON) {

@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team4915.stronghold;
 import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
 import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1GP;
@@ -207,7 +206,7 @@ public class Robot extends IterativeRobot {
 	        SmartDashboard.putBoolean("Top Limit Switch: ", intakeLauncher.isLauncherAtTop());
 	        SmartDashboard.putBoolean("Bottom Limit Switch: ", intakeLauncher.isLauncherAtBottom());
 	        SmartDashboard.putBoolean("Boulder Limit Switch: ", intakeLauncher.boulderSwitch.get());
-	        SmartDashboard.putString("Goal", intakeLauncher.getDesiredWheelSpeed());
+	        SmartDashboard.putString("Goal: ", intakeLauncher.getDesiredWheelSpeed());
         }
 	}
 	
