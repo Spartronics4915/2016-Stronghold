@@ -42,33 +42,12 @@ public class IntakeLauncher extends Subsystem {
     private double launcherNeutralHeightRatio = 0.739;
     
     private double launcherMinLaunchHeightRatio = 0.5; //TODO
-    
-    private double launcherNeutralHeightTicks = launcherNeutralHeight(); // in
-                                                       // potentiometer
-                                                       // ticks
-    private double launcherTravelHeightTicks = launcherTravelHeight(); // in
-                                                      // potentiometer
-                                                      // ticks
-    private double launcherMinLaunchHeightTicks = launcherMinLaunchHeight();
-    
-    public double launcherNeutralHeight() {
-        return launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherNeutralHeightRatio;
-    }
-    
-    public double launcherTravelHeight() {
-        return launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherTravelHeightRatio;
-    }
-    
-    public double launcherMinLaunchHeight() {
-        return launcherNeutralHeightTicks = launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherMinLaunchHeightRatio;
-    }
-    
+       
     private final double LAUNCHER_HIGH_GOAL_THRESHOLD = .85;
 
     private final double MAX_POTENTIOMETER_ERROR = 20;
 
     private final double APPROXIMATE_DANGER = 50;
-
 
     private final double JOYSTICK_SCALE = 50.0; // TODO
 
@@ -276,17 +255,21 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void launcherSetNeutralPosition() {
-        setSetPoint(launcherNeutralHeightTicks * POTENTIOMETER_NEGATIVITY);
+        setSetPoint(launcherNeutralHeightTicks() * POTENTIOMETER_NEGATIVITY);
         moveToSetPoint();
     }
 
     public void launcherSetTravelPosition() {
-        setSetPoint(launcherTravelHeightTicks * POTENTIOMETER_NEGATIVITY);
+        setSetPoint(launcherTravelHeightTicks() * POTENTIOMETER_NEGATIVITY);
         moveToSetPoint();
     }
     
     public void launcherSetMinLaunchHeightPosition() {
-        setSetPoint(launcherMinLaunchHeightTicks * POTENTIOMETER_NEGATIVITY);
+        setSetPoint(launcherMinLaunchHeightTicks() * POTENTIOMETER_NEGATIVITY);
+    }
+    
+    public void launcherJumpToAngle(double angle) {
+        setSetPoint(degreesToTicks(angle) * POTENTIOMETER_NEGATIVITY);
     }
     
     public void ensureMinLaunchHeight() {
@@ -296,11 +279,7 @@ public class IntakeLauncher extends Subsystem {
     }
     
     public boolean canLaunch() {
-        return getPosition() > launcherMinLaunchHeight(); 
-    }
-
-    public void launcherJumpToAngle(double angle) {
-        setSetPoint(degreesToTicks(angle) * POTENTIOMETER_NEGATIVITY);
+        return getPosition() > launcherMinLaunchHeightTicks(); 
     }
 
     // makes sure the set point doesn't go outside its max or min range
@@ -320,9 +299,18 @@ public class IntakeLauncher extends Subsystem {
         if(isLauncherAtTop()) {
             launcherMaxHeightTicks = getPosition();
         }
-        launcherTravelHeightTicks = launcherNeutralHeight();
-        launcherNeutralHeightTicks = launcherTravelHeight();
-        launcherMinLaunchHeightTicks = launcherMinLaunchHeight();
+    }
+    
+    public double launcherNeutralHeightTicks() {
+        return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherNeutralHeightRatio;
+    }
+    
+    public double launcherTravelHeightTicks() {
+        return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherTravelHeightRatio;
+    }
+    
+    public double launcherMinLaunchHeightTicks() {
+        return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherMinLaunchHeightRatio;
     }
 
     private double degreesToTicks(double degrees) {
@@ -344,11 +332,11 @@ public class IntakeLauncher extends Subsystem {
     }
     
     public boolean isLauncherAtNeutral() {
-        return Math.abs(getPosition() - launcherNeutralHeightTicks) < MAX_POTENTIOMETER_ERROR;
+        return Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR;
     }
     
     public boolean isLauncherAtTravel() {
-        return Math.abs(getPosition() - launcherTravelHeightTicks) < MAX_POTENTIOMETER_ERROR;
+        return Math.abs(getPosition() - launcherTravelHeightTicks()) < MAX_POTENTIOMETER_ERROR;
     }
     
     public boolean isLauncherAtAngle(double angle) {
