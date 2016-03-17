@@ -2,16 +2,13 @@ package org.usfirst.frc.team4915.stronghold.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
-
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherNeutralForAutoCommand;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherTravelForAutoCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToPositionForAutoCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoVisionDriveAndAim;
-
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 
 public class AutoCommand1GP extends CommandGroup {
@@ -33,11 +30,11 @@ public class AutoCommand1GP extends CommandGroup {
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             boolean launcherWantsTravelPosition = getLauncherBeginPosition();
-            boolean blocking = false; // false means we rely on timer
+            boolean shouldQuit = false; // false means we rely on timer
             if (launcherWantsTravelPosition)
-                addSequential(new AimLauncherTravelForAutoCommand(blocking));
+                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
             else
-                addSequential(new AimLauncherNeutralForAutoCommand(blocking));
+                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
             addParallel(new AimLauncherCommand());
             addSequential(new WaitCommand(2.75));
         }
