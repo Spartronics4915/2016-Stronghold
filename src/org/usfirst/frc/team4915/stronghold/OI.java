@@ -122,6 +122,7 @@ public class OI {
         barrierType.addObject("Rough Terrain", Autonomous.Type.ROUGH_TERRAIN);
         barrierType.addObject("Rock Wall", Autonomous.Type.ROCK_WALL);
         barrierType.addObject("Portcullis ", Autonomous.Type.PORTCULLIS);
+        barrierType.addObject("Ramparts", Autonomous.Type.RAMPARTS);
         SmartDashboard.putData("AutoBarrierType", barrierType);
 
         // SendableChooser for the strategy
@@ -137,8 +138,8 @@ public class OI {
 
         // Bind module commands to buttons
         if (ModuleManager.PORTCULLIS_MODULE_ON){
-            initializeButton (this.portcullisButtonUp, driveStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisMoveUp());
-            initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
+            initializeButton (this.portcullisButtonUp, aimStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisMoveUp());
+            initializeButton(this.portcullisButtonDown, aimStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
         }
         
         if (ModuleManager.DRIVE_MODULE_ON) {

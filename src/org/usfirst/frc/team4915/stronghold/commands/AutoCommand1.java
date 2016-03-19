@@ -115,6 +115,9 @@ public class AutoCommand1 extends CommandGroup {
             case PORTCULLIS:
                 lowBar = false;
                 break;
+            case RAMPARTS:
+                lowBar = false;
+                break;
             default:
                 lowBar = false;
         }
@@ -137,8 +140,10 @@ public class AutoCommand1 extends CommandGroup {
                 liftdown = false;
                 break;
             case PORTCULLIS:
-                liftdown = false;
+                liftdown = true;
                 break;
+            case RAMPARTS:
+                liftdown = false;
             default:
                 liftdown = false;
         }
@@ -256,6 +261,9 @@ public class AutoCommand1 extends CommandGroup {
             case PORTCULLIS:
                 distance = 120;
                 break;
+            case RAMPARTS:
+                distance = 150;
+                break;
             default:
                 distance = 145;
         }
@@ -279,6 +287,9 @@ public class AutoCommand1 extends CommandGroup {
                 break;
             case PORTCULLIS:
                 speed = 30;
+                break;
+            case RAMPARTS:
+                speed = -35;
                 break;
             default:
                 speed = 35;

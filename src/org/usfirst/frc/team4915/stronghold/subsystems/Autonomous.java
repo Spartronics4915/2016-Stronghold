@@ -19,7 +19,8 @@ public class Autonomous extends Subsystem {
         MOAT,
         ROUGH_TERRAIN,
         ROCK_WALL,
-        PORTCULLIS
+        PORTCULLIS,
+        RAMPARTS
 
     }
 

@@ -20,7 +20,8 @@ public class PortcullisMoveDownRight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Portcullis.PortcullisMoveDown();
+        System.out.println("In PortcullisMoveDownRight");
+        Portcullis.PortcullisMoveDown(true); //right is true and left is false
     }
 
     // Make this return true when this Command no longer needs to run execute()

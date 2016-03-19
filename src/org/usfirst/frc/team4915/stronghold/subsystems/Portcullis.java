@@ -28,31 +28,44 @@ import edu.wpi.first.wpilibj.command.Subsystem;
          return RobotMap.portcullisRightMotor.isRevLimitSwitchClosed();
      }
      
-     public static void PortcullisMoveUp(){
-         System.out.println("Executing move portcullis up"); 
-         RobotMap.portcullisLeftMotor.set(PERCENT_POWER);
-         RobotMap.portcullisRightMotor.set(PERCENT_POWER);       
-       if (isRightPortcullisAtTop()){
-         RobotMap.portcullisLeftMotor.disableControl();
-         RobotMap.portcullisRightMotor.disableControl();
-         System.out.println("Portcullis reached top");
+     public static void PortcullisMoveUp(boolean isRight){ //right is true and left is false
+         if (isRight){ 
+             System.out.println("Executing move portcullis up: right"); 
+             RobotMap.portcullisRightMotor.set(PERCENT_POWER);    
+             if (isRightPortcullisAtTop()){
+                 RobotMap.portcullisRightMotor.set(0);
+                 System.out.println("Right Portcullis reached top");
+             }
+         }
+         if (!isRight){
+             System.out.println("Executing move portcullis up: left"); 
+             RobotMap.portcullisLeftMotor.set(PERCENT_POWER);    
+             }
+             if (isLeftPortcullisAtTop()){
+                 RobotMap.portcullisLeftMotor.set(0);
+                 System.out.println("Left Portcullis reached top");
+         }
+       }
+        
+     
+     public static void PortcullisMoveDown(boolean isRight){
+         if (isRight){
+             System.out.println("Executing move portcullis down: right"); 
+             RobotMap.portcullisRightMotor.set(-PERCENT_POWER);    
+             if (isRightPortcullisAtBottom()){
+                 RobotMap.portcullisRightMotor.set(0);
+                 System.out.println("Right Portcullis reached bottom");
+             }
+         }
+         if (!isRight){
+             System.out.println("Executing move portcullis down: left"); 
+             RobotMap.portcullisLeftMotor.set(-PERCENT_POWER);    
+             }
+             if (isLeftPortcullisAtBottom()){
+                 RobotMap.portcullisLeftMotor.set(0);
+                 System.out.println("Left Portcullis reached bottom");
+         }
        }
          
-     }
-     
-     public static void PortcullisMoveDown(){
-         System.out.println("Executing move portcullis down"); 
-         RobotMap.portcullisLeftMotor.set(-PERCENT_POWER);
-         RobotMap.portcullisRightMotor.set(-PERCENT_POWER);
-         if (isRightPortcullisAtBottom()){
-         RobotMap.portcullisLeftMotor.disableControl();
-         RobotMap.portcullisRightMotor.disableControl();
-         }
-         System.out.println("Portcullis reached bottom");
- 
-     }
-         
-    }
-         
- 
+ }
  
