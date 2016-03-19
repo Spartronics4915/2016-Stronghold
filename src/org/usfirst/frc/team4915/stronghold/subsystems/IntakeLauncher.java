@@ -100,11 +100,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void setDesiredWheelSpeed() {
-        if (getPosition() > (launcherMinHeightTicks + ((launcherMaxHeightTicks - launcherMinHeightTicks) * LAUNCHER_HIGH_GOAL_THRESHOLD))) {
-            setSpeedLaunchHigh();
-        } else {
-            setSpeedLaunchLow();
-        }
+        setSpeedLaunchLow();
     }
 
     public String getDesiredWheelSpeed() {
@@ -269,7 +265,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public boolean canLaunch() {
-        return getPosition() > launcherMinLaunchHeightTicks();
+        return isLauncherAtTop();
     }
 
     // makes sure the set point doesn't go outside its max or min range
