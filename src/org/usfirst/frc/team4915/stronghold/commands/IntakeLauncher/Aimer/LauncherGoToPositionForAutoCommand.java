@@ -37,6 +37,7 @@ public class LauncherGoToPositionForAutoCommand extends Command {
 
     protected void initialize() {
         System.out.println("Launcher Neutral Auto Command");
+        Robot.intakeLauncher.aimMotor.enableControl();
         switch(myPosition) {
             case ANGLE:
                 Robot.intakeLauncher.launcherJumpToAngle(myDegrees);
@@ -53,7 +54,7 @@ public class LauncherGoToPositionForAutoCommand extends Command {
     }
 
     protected void execute() {
-
+        Robot.intakeLauncher.aimLauncher();
     }
 
     protected boolean isFinished() {
