@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
+import org.usfirst.frc.team4915.stronghold.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -24,7 +26,7 @@ public class PortcullisMoveUp extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-        System.out.println("In PortcullisMoveUP");
+        requires(Robot.portcullis);
         addParallel(new PortcullisMoveUpRight());
         addParallel(new PortcullisMoveUpLeft());
     }

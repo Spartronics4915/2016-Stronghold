@@ -29,6 +29,7 @@ public class Robot extends IterativeRobot {
     public static IntakeLauncher intakeLauncher;
     public static OI oi;
     public static Scaler scaler;
+    public static Portcullis portcullis;
 
     Command autonomousCommand;
     SendableChooser autonomousProgramChooser;
@@ -45,7 +46,7 @@ public class Robot extends IterativeRobot {
 
         // 2. conditionally create the modules
         if (ModuleManager.PORTCULLIS_MODULE_ON){
-   //         Portcullis.PortcullisMoveUp();
+            portcullis = new Portcullis();
 
         }
         if (ModuleManager.DRIVE_MODULE_ON) {

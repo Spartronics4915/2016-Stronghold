@@ -44,7 +44,6 @@ public class AutoCommand1 extends CommandGroup {
         }
 
         double distance = getDistance() + getDistancePastDefense();
-
         switch (strat) {
             case NONE:
                 break;
@@ -64,11 +63,11 @@ public class AutoCommand1 extends CommandGroup {
                 addSequential(new AutoLaunchCommand());
                 break;
         
-	case DRIVE_SHOOT_NO_VISION:
-	    System.out.println("Starting Drive Shoot No Vision (untested)");
-	    addSequential(new AutoDriveStraight(distance, getSpeed()));
-	    addSequential(new AutoRotateDegrees(getTurnAngle()));
-        break;
+            case DRIVE_SHOOT_NO_VISION:
+                System.out.println("Starting Drive Shoot No Vision (untested)");
+                addSequential(new AutoDriveStraight(distance, getSpeed()));
+                addSequential(new AutoRotateDegrees(getTurnAngle()));
+                break;
     
         }
     }
@@ -97,6 +96,7 @@ public class AutoCommand1 extends CommandGroup {
         end();
     }
 
+    
     public boolean getLauncherBeginPosition() {
         boolean lowBar; // in inches
         switch (m_type) {
@@ -211,8 +211,6 @@ public class AutoCommand1 extends CommandGroup {
             case DRIVE_SHOOT_NO_VISION:
                 vision = false;
                 break;
-            default:
-                break;
         }
         return vision;
     }
@@ -259,7 +257,7 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 150;
                 break;
             case PORTCULLIS:
-                distance = 120;
+                distance = 140;
                 break;
             case RAMPARTS:
                 distance = 150;
@@ -289,7 +287,7 @@ public class AutoCommand1 extends CommandGroup {
                 speed = 30;
                 break;
             case RAMPARTS:
-                speed = -35;
+                speed = -50;
                 break;
             default:
                 speed = 35;
