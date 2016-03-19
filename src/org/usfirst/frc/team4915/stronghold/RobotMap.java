@@ -57,12 +57,9 @@ public class RobotMap {
     public static final int PORTCULLIS_RIGHT_MOTOR = 18;
 
     public static final double PORTCULLIS_SPEED = .6;
-    public static int PORTCULLIS_TOP = 100;
-    public static int PORTCULLIS_BOT = 0;
 
     //portcullis limit switch
-    public static DigitalInput portcullisSwitchTop;
-    public static DigitalInput portcullisSwitchBottom;
+
 
     // Create solenoid for the drivetrain
     public static DoubleSolenoid doubleSolenoid;
@@ -119,6 +116,13 @@ public class RobotMap {
             //set up speed control mode
             portcullisRightMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
             portcullisLeftMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+            
+            portcullisRightMotor.enableLimitSwitch(true, true);
+            portcullisRightMotor.enableBrakeMode(true);
+            portcullisLeftMotor.enableLimitSwitch(true, true);
+            portcullisLeftMotor.enableBrakeMode(true);
+
+
    //         portcullisLeftMotor.setForwardSoftLimit(PORTCULLIS_TOP);
   //          portcullisLeftMotor.setReverseSoftLimit(PORTCULLIS_BOT);
     //        portcullisLeftMotor.enableForwardSoftLimit(true);

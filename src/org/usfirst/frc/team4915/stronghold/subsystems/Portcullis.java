@@ -16,16 +16,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
      }
      
      public static boolean isLeftPortcullisAtTop(){
-         return RobotMap.portcullisSwitchTop.get();
+         return RobotMap.portcullisLeftMotor.isFwdLimitSwitchClosed();
      }
      public static boolean isLeftPortcullisAtBottom(){
-         return RobotMap.portcullisSwitchBottom.get();
+         return RobotMap.portcullisLeftMotor.isRevLimitSwitchClosed();
      }
      public static boolean isRightPortcullisAtTop(){
-         return RobotMap.portcullisSwitchTop.get();
+         return RobotMap.portcullisRightMotor.isFwdLimitSwitchClosed();
      }
      public static boolean isRightPortcullisAtBottom(){
-         return RobotMap.portcullisSwitchBottom.get();
+         return RobotMap.portcullisRightMotor.isRevLimitSwitchClosed();
      }
      
      public static void PortcullisMoveUp(){
