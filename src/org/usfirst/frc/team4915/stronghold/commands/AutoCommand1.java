@@ -24,7 +24,7 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println("Autonomous1 construct (strat:" + strat + ")");
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            boolean shouldQuit = true; // means we rely on launcher positioning
+            boolean shouldQuit = false; // means we rely on launcher positioning
             addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
             
         }
