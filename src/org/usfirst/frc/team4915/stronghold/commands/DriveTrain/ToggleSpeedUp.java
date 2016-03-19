@@ -12,7 +12,6 @@ public class ToggleSpeedUp extends Command {
 	@Override
 	protected void execute() {	
 		Robot.driveTrain.turnMultiplier = Robot.driveTrain.MEDIUM_TURN;
-		System.out.println("setting High TUrn");
 	}
 
 	@Override

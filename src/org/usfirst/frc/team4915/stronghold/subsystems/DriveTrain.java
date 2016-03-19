@@ -18,7 +18,7 @@ public class DriveTrain extends Subsystem {
     public double turnMultiplier = SLOW_TURN; 
     public static final double FAST_TURN = -1;
     public static final double MEDIUM_TURN = -.75;
-    public static final double SLOW_TURN = -.5; // actually -.5
+    public static final double SLOW_TURN = -.55; // actually -.55
 
     public static RobotDrive robotDrive =
             new RobotDrive(RobotMap.leftMasterMotor, RobotMap.rightMasterMotor);

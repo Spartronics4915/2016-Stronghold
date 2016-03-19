@@ -144,8 +144,8 @@ public class OI {
         
         if (ModuleManager.DRIVE_MODULE_ON) {
 	    this.speedToggle = new JoystickButton(driveStick, TURN_SCALER);
-	    this.speedToggle.whileHeld(new ToggleSpeedUp());
-	    this.speedToggle.whenReleased(new ToggleSpeedDown());
+	    this.speedToggle.whileHeld(new ToggleSpeedDown());
+	    this.speedToggle.whenReleased(new ToggleSpeedUp());
 	    
 	    this.driveStraightButton = new JoystickButton(driveStick, DRIVE_STRAIGHT_BUTTON_NUMBER);
 	    this.driveStraightButton.whileHeld(new DriveStraightCommand());

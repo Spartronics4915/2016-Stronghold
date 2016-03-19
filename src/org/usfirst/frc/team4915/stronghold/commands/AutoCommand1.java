@@ -24,13 +24,9 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println("Autonomous1 construct (strat:" + strat + ")");
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            boolean launcherWantsTravelPosition = getLauncherBeginPosition();
             boolean shouldQuit = true; // means we rely on launcher positioning
-            if (launcherWantsTravelPosition) {
-                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
-            } else {
-                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
-            }
+            addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
+            
         }
 
         if (ModuleManager.PORTCULLIS_MODULE_ON) {
@@ -97,33 +93,7 @@ public class AutoCommand1 extends CommandGroup {
     }
 
     
-    public boolean getLauncherBeginPosition() {
-        boolean lowBar; // in inches
-        switch (m_type) {
-            case LOWBAR:
-                lowBar = true;
-                break;
-            case MOAT:
-                lowBar = false;
-                break;
-            case ROUGH_TERRAIN:
-                lowBar = false;
-                break;
-            case ROCK_WALL:
-                lowBar = false;
-                break;
-            case PORTCULLIS:
-                lowBar = false;
-                break;
-            case RAMPARTS:
-                lowBar = false;
-                break;
-            default:
-                lowBar = false;
-        }
-        return lowBar;
-    }
-
+ 
     public boolean getPortcullisBeginPosition() {
         boolean liftdown; // tells if portcullis needs to be down
         switch (m_type) {
