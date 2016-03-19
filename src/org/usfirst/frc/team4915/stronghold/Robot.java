@@ -45,7 +45,7 @@ public class Robot extends IterativeRobot {
 
         // 2. conditionally create the modules
         if (ModuleManager.PORTCULLIS_MODULE_ON){
-            Portcullis.PortcullisMoveUp();
+   //         Portcullis.PortcullisMoveUp();
 
         }
         if (ModuleManager.DRIVE_MODULE_ON) {

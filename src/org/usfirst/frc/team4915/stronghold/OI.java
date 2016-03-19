@@ -52,8 +52,8 @@ public class OI {
     public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
     public static final int SPIN_INTAKE_WHEELS_OUT_LOW_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 6;
-    public static final int PORTCULLIS_BUTTON_NUMBER_UP = 10;
-    public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 11;
+    public static final int PORTCULLIS_BUTTON_NUMBER_UP = 11;
+    public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 10;
 
     // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
