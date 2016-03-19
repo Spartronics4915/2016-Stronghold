@@ -53,8 +53,8 @@ public class RobotMap {
     public static CANTalon portcullisLeftMotor;
     public static CANTalon portcullisRightMotor;
 
-    public static final int PORTCULLIS_LEFT_MOTOR = 0;
-    public static final int PORTCULLIS_RIGHT_MOTOR = 1;
+    public static final int PORTCULLIS_LEFT_MOTOR = 17;
+    public static final int PORTCULLIS_RIGHT_MOTOR = 18;
 
     public static final double PORTCULLIS_SPEED = .6;
     public static int PORTCULLIS_TOP = 100;
