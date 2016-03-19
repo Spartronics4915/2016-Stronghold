@@ -135,7 +135,7 @@ public class Robot extends IterativeRobot {
         if (this.autonomousCommand != null) {
             this.autonomousCommand.cancel();
         }
-
+        Robot.driveTrain.turnMultiplier = Robot.driveTrain.MEDIUM_TURN;
         // RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
         // RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
         System.out.println("entering teleop");
