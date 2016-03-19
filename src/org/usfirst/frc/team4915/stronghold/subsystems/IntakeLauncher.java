@@ -33,11 +33,11 @@ public class IntakeLauncher extends Subsystem {
     private final double SERVO_LEFT_NEUTRAL_POSITION = .75; // in servo units
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4; // in servo units
 
-    private double launcherMaxHeightTicks = 811.0; 
-    private double launcherMinHeightTicks = 557.0; 
+    private double launcherMaxHeightTicks = 832.0; 
+    private double launcherMinHeightTicks = 714.0; 
     
-    private double launcherTravelHeightRatio = 0.175;
-    private double launcherNeutralHeightRatio = 0.739;
+    private double launcherTravelHeightRatio = 0.0;
+    private double launcherNeutralHeightRatio = 1.0;
     private double launcherMinLaunchHeightRatio = 0.2; // TODO
     
     private final double LAUNCHER_HIGH_GOAL_THRESHOLD = .85;
