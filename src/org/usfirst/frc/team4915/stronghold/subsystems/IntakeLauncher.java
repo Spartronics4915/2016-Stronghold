@@ -36,7 +36,7 @@ public class IntakeLauncher extends Subsystem {
     private double launcherMaxHeightTicks = 910.0; 
     private double launcherMinHeightTicks = 739.0; 
     
-    private double launcherTravelHeightRatio = 0.0;
+    private double launcherTravelHeightRatio = 0.696;
     private double launcherNeutralHeightRatio = 1.0;
     private double launcherMinLaunchHeightRatio = 0.2; // TODO
     
@@ -319,6 +319,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public boolean isLauncherAtNeutral() {
+        //comment this out later
         System.out.println("Launcher is at Neutral:  " + (Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR));
         return Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR;
     }
