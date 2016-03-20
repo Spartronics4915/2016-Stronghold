@@ -86,16 +86,13 @@ public class AutoDriveStraight extends Command {
             if(initializeRetryCount >= MAX_RETRIES) {
                 SmartDashboard.putString("AutoDriveStraight: ", "INITIALIZE FAILED, MAXED OUT RETRIES");
                 System.out.println("AutoDriveStraight: INITIALIZE FAILED, MAXED OUT RETRIES");
-                return true;
+                Robot.driveTrain.stop();
             }
-            return false;
         } else if ((Math.abs(RobotMap.leftMasterMotor.getEncPosition()) >= desiredDistanceTicks) ||
                    (Math.abs(RobotMap.rightMasterMotor.getEncPosition()) >= desiredDistanceTicks)) {
-            return true;
+                   Robot.driveTrain.stop();
         }
-        else {
-            return false;
-        }
+        return false; //we are not ending so that we will not get robot drive output not updated enough
     }
 
     // Called once after isFinished returns true

@@ -20,7 +20,7 @@ public class SpinIntakeWheelsOutCommand extends Command {
 
     @Override
     protected void initialize() {
-        System.out.println("Spin Intake Out Command");
+        System.out.println("Spin Wheels Out Command");
         setTimeout(10); // TODO
         SmartDashboard.putString("Flywheels spinning ", "outward");
         SmartDashboard.putBoolean("Launch Ready ", System.currentTimeMillis() - startTime > WAIT_DURATION);
@@ -48,6 +48,6 @@ public class SpinIntakeWheelsOutCommand extends Command {
 
     @Override
     protected void interrupted() {
-        System.out.println("Spin Intake Out Interrupt");
+        System.out.println("Spin Wheels Out Interrupt");
     }
 }
