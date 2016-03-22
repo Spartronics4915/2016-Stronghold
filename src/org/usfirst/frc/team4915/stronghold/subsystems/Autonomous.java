@@ -19,7 +19,8 @@ public class Autonomous extends Subsystem {
         MOAT,
         ROUGH_TERRAIN,
         ROCK_WALL,
-        PORTCULLIS
+        PORTCULLIS,
+        RAMPARTS
 
     }
 
@@ -28,6 +29,7 @@ public class Autonomous extends Subsystem {
         DRIVE_ACROSS,
         DRIVE_SHOOT_VISION,
         DRIVE_SHOOT_NO_VISION
+        
     }
 
     public static enum Position {

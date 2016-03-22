@@ -20,7 +20,7 @@ public class IntakeLauncher extends Subsystem {
     // indicate a wheel spinning inwards.
     private final double INTAKE_SPEED = -.60;
     private final double LAUNCH_SPEED_HIGH = 1.0;
-    private final double LAUNCH_SPEED_LOW = 0.6; // TODO
+    private final double LAUNCH_SPEED_LOW = 0.7; // TODO
     private final double ZERO_SPEED = 0.0;
     private final double AIM_DEGREES_SLOP = 2; // TODO: tune this number
 
@@ -33,11 +33,11 @@ public class IntakeLauncher extends Subsystem {
     private final double SERVO_LEFT_NEUTRAL_POSITION = .75; // in servo units
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4; // in servo units
 
-    private double launcherMaxHeightTicks = 811.0; 
-    private double launcherMinHeightTicks = 557.0; 
+    private double launcherMaxHeightTicks = 910.0; 
+    private double launcherMinHeightTicks = 739.0; 
     
-    private double launcherTravelHeightRatio = 0.175;
-    private double launcherNeutralHeightRatio = 0.739;
+    private double launcherTravelHeightRatio = 0.696;
+    private double launcherNeutralHeightRatio = 1.0;
     private double launcherMinLaunchHeightRatio = 0.2; // TODO
     
     private final double LAUNCHER_HIGH_GOAL_THRESHOLD = .85;
@@ -100,12 +100,10 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void setDesiredWheelSpeed() {
-        if (getPosition() > (launcherMinHeightTicks + ((launcherMaxHeightTicks - launcherMinHeightTicks) * LAUNCHER_HIGH_GOAL_THRESHOLD))) {
-            setSpeedLaunchHigh();
-        } else {
-            setSpeedLaunchLow();
-        }
+
+         setSpeedLaunchLow();
     }
+ 
 
     public String getDesiredWheelSpeed() {
         if (getPosition() > (launcherMinHeightTicks + ((launcherMaxHeightTicks - launcherMinHeightTicks) * LAUNCHER_HIGH_GOAL_THRESHOLD))) {
@@ -237,7 +235,7 @@ public class IntakeLauncher extends Subsystem {
     // called periodically (even with the same setpoint) to prevent motorsafety
     // timeouts.
     public void moveToSetPoint() {
-        //keepSetPointInRange();
+        keepSetPointInRange();
         calibratePotentiometer();
         aimMotor.changeControlMode(TalonControlMode.Position); // redundant, but
                                                                // harmless
@@ -269,7 +267,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public boolean canLaunch() {
-        return getPosition() > launcherMinLaunchHeightTicks();
+        return true;
     }
 
     // makes sure the set point doesn't go outside its max or min range
@@ -322,6 +320,8 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public boolean isLauncherAtNeutral() {
+        //comment this out later
+        System.out.println("Launcher is at Neutral:  " + (Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR));
         return Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR;
     }
 

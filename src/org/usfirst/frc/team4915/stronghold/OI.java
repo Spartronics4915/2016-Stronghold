@@ -1,14 +1,13 @@
 package org.usfirst.frc.team4915.stronghold;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.DriveStraightCommand;
-import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.GearShiftCommand;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedDown;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.ToggleSpeedUp;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.LightSwitchCommand;
@@ -21,10 +20,11 @@ import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class handles the "operator interface", or the interactions between the
@@ -41,12 +41,9 @@ public class OI {
     public static final int DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
     public static final int DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER = 6;
     public static final int DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER = 4;
-    public static final int PORTCULLIS_BUTTON_NUMBER_UP = 7;
-    public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 9;
     public static final int TURN_SCALER = 8;
     public static final int DRIVE_STRAIGHT_BUTTON_NUMBER = 11; // NB: conflicts with unused shift button
-    public static final int HIGH_SPEED_DRIVE_BUTTON = 11;
-    public static final int LOW_SPEED_DRIVE_BUTTON = 12;
+
 
     // Button numbers for launching related buttons on the mechanism stick
     public static final int KICK_BALL_BUTTON_NUMBER = 3;
@@ -55,7 +52,8 @@ public class OI {
     public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
     public static final int SPIN_INTAKE_WHEELS_OUT_LOW_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 6;
-    public static final int AUTO_LAUNCH_TEST_BUTTON_NUMBER = 10;
+    public static final int PORTCULLIS_BUTTON_NUMBER_UP = 11;
+    public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 10;
 
     // Button numbers for scaling related buttons on the mechanism joystick
     public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
@@ -124,6 +122,7 @@ public class OI {
         barrierType.addObject("Rough Terrain", Autonomous.Type.ROUGH_TERRAIN);
         barrierType.addObject("Rock Wall", Autonomous.Type.ROCK_WALL);
         barrierType.addObject("Portcullis ", Autonomous.Type.PORTCULLIS);
+        barrierType.addObject("Ramparts", Autonomous.Type.RAMPARTS);
         SmartDashboard.putData("AutoBarrierType", barrierType);
 
         // SendableChooser for the strategy
@@ -139,23 +138,18 @@ public class OI {
 
         // Bind module commands to buttons
         if (ModuleManager.PORTCULLIS_MODULE_ON){
-            initializeButton (this.portcullisButtonUp, driveStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisMoveUp());
-            initializeButton(this.portcullisButtonDown, driveStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
+            initializeButton (this.portcullisButtonUp, aimStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisMoveUp());
+            initializeButton(this.portcullisButtonDown, aimStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
         }
         
         if (ModuleManager.DRIVE_MODULE_ON) {
 	    this.speedToggle = new JoystickButton(driveStick, TURN_SCALER);
-	    this.speedToggle.whileHeld(new ToggleSpeedUp());
-	    this.speedToggle.whenReleased(new ToggleSpeedDown());
+	    this.speedToggle.whileHeld(new ToggleSpeedDown());
+	    this.speedToggle.whenReleased(new ToggleSpeedUp());
 	    
 	    this.driveStraightButton = new JoystickButton(driveStick, DRIVE_STRAIGHT_BUTTON_NUMBER);
 	    this.driveStraightButton.whileHeld(new DriveStraightCommand());
        }
-
-        if (ModuleManager.GEARSHIFT_MODULE_ON) {
-            initializeButton(this.speedUpButton, driveStick, HIGH_SPEED_DRIVE_BUTTON, new GearShiftCommand(true));
-            initializeButton(this.speedUpButton, driveStick, LOW_SPEED_DRIVE_BUTTON, new GearShiftCommand(false));
-        }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
             initializeButton(this.kickBallButton, aimStick, KICK_BALL_BUTTON_NUMBER, new LaunchBallCommandGroup());

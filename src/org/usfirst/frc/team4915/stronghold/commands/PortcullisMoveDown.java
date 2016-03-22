@@ -1,47 +1,34 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import org.usfirst.frc.team4915.stronghold.RobotMap;
+import org.usfirst.frc.team4915.stronghold.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
-=======
-/*
- * 
->>>>>>> c0cfe573a4258530e4eb860b6da772cfbcbb53fa
  */
-public class PortcullisMoveDown extends Command {
-
-    public PortcullisMoveDown() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-        while (!RobotMap.portcullisSwitchBottom.get()){
-            RobotMap.portcullisLeftMasterMotor.set(-.6);
-        }
-        RobotMap.portcullisLeftMasterMotor.set(0);
-    }
+public class PortcullisMoveDown extends CommandGroup {
     
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-        
-    }
+    public  PortcullisMoveDown() {
+        // Add Commands here:
+        // e.g. addSequential(new Command1());
+        //      addSequential(new Command2());
+        // these will run in order.
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+        // To run multiple commands at the same time,
+        // use addParallel()
+        // e.g. addParallel(new Command1());
+        //      addSequential(new Command2());
+        // Command1 and Command2 will run in parallel.
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+        // A command group will require all of the subsystems that each member
+        // would require.
+        // e.g. if Command1 requires chassis, and Command2 requires arm,
+        // a CommandGroup containing them would require both the chassis and the
+        // arm.
+        requires(Robot.portcullis);
+        addParallel(new PortcullisMoveDownRight(), 3);
+        addParallel(new PortcullisMoveDownLeft(), 3);
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
     }
 }

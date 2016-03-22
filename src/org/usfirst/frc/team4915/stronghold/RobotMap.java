@@ -21,10 +21,6 @@ public class RobotMap {
     private static final int DRIVE_TRAIN_LEFT_FOLLOWER = 11;
     private static final int DRIVE_TRAIN_LEFT_MASTER = 10;
 
-    // Define channels for two speed gear system for the drive train
-    private static final int SOLENOID_CHANNEL_PRIMARY = 0;
-    private static final int SOLENOID_CHANNEL_SECONDARY = 1;
-
     // Define channels for IntakeLauncher motors
     private static final int INTAKE_LEFT_MOTOR_ID = 15;
     private static final int INTAKE_RIGHT_MOTOR_ID = 14;
@@ -54,18 +50,16 @@ public class RobotMap {
     public static CANTalon rightFollowerMotor;
 
     //motors for portcullis
-    public static CANTalon portcullisLeftMasterMotor;
-    public static CANTalon portcullisRightFollowerMotor;
+    public static CANTalon portcullisLeftMotor;
+    public static CANTalon portcullisRightMotor;
 
-    public static final int PORTCULLIS_MASTER_MOTOR = 0;
-    public static final int PORTCULLIS_FOLLOWER_MOTOR = 1;
+    public static final int PORTCULLIS_LEFT_MOTOR = 17;
+    public static final int PORTCULLIS_RIGHT_MOTOR = 18;
 
-    public static int PORTCULLIS_TOP = 100;
-    public static int PORTCULLIS_BOT = 0;
+    public static final double PORTCULLIS_SPEED = .6;
 
     //portcullis limit switch
-    public static DigitalInput portcullisSwitchTop;
-    public static DigitalInput portcullisSwitchBottom;
+
 
     // Create solenoid for the drivetrain
     public static DoubleSolenoid doubleSolenoid;
@@ -117,21 +111,22 @@ public class RobotMap {
 
         if (ModuleManager.PORTCULLIS_MODULE_ON){
             //instantiate the motor controllers
-            portcullisLeftMasterMotor = new CANTalon (PORTCULLIS_MASTER_MOTOR);
-            portcullisRightFollowerMotor = new CANTalon (PORTCULLIS_FOLLOWER_MOTOR);
-
-            //master and follower
-            portcullisRightFollowerMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-            portcullisRightFollowerMotor.set(portcullisLeftMasterMotor.getDeviceID());
-
+            portcullisLeftMotor = new CANTalon (PORTCULLIS_LEFT_MOTOR);
+            portcullisRightMotor = new CANTalon (PORTCULLIS_RIGHT_MOTOR);
             //set up speed control mode
-            portcullisRightFollowerMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-            portcullisLeftMasterMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+            portcullisRightMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+            portcullisLeftMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+            
+            portcullisRightMotor.enableLimitSwitch(true, true);
+            portcullisRightMotor.enableBrakeMode(true);
+            portcullisLeftMotor.enableLimitSwitch(true, true);
+            portcullisLeftMotor.enableBrakeMode(true);
 
-            portcullisLeftMasterMotor.setForwardSoftLimit(PORTCULLIS_TOP);
-            portcullisLeftMasterMotor.setReverseSoftLimit(PORTCULLIS_BOT);
-            portcullisLeftMasterMotor.enableForwardSoftLimit(true);
-            portcullisLeftMasterMotor.enableReverseSoftLimit(true);
+
+   //         portcullisLeftMotor.setForwardSoftLimit(PORTCULLIS_TOP);
+  //          portcullisLeftMotor.setReverseSoftLimit(PORTCULLIS_BOT);
+    //        portcullisLeftMotor.enableForwardSoftLimit(true);
+    //        portcullisLeftMotor.enableReverseSoftLimit(true);
 
         }
         // conditionally initialize the modules
@@ -179,10 +174,6 @@ public class RobotMap {
 
             System.out.println("ModuleManager RobotMap Initialized: DriveTrain!");
 
-        }
-
-        if (ModuleManager.GEARSHIFT_MODULE_ON) {
-            doubleSolenoid = new DoubleSolenoid(SOLENOID_CHANNEL_PRIMARY, SOLENOID_CHANNEL_SECONDARY);
         }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {

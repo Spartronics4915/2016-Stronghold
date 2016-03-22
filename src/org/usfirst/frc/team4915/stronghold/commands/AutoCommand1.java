@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToPositionForAutoCommand;
@@ -8,6 +7,8 @@ import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.AutoL
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoVisionDriveAndAim;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCommand1 extends CommandGroup {
 
@@ -23,9 +24,9 @@ public class AutoCommand1 extends CommandGroup {
         System.out.println("Autonomous1 construct (strat:" + strat + ")");
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-            boolean launcherWantsTravelPosition = getLauncherBeginPosition();
-            boolean shouldQuit = true; // means we rely on launcher positioning
-            if (launcherWantsTravelPosition) {
+
+            boolean shouldQuit = false; // means we rely on launcher positioning
+            if(m_type == Autonomous.Type.LOWBAR) {
                 addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
             } else {
                 addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
@@ -43,7 +44,6 @@ public class AutoCommand1 extends CommandGroup {
         }
 
         double distance = getDistance() + getDistancePastDefense();
-
         switch (strat) {
             case NONE:
                 break;
@@ -62,11 +62,13 @@ public class AutoCommand1 extends CommandGroup {
                 addSequential(new AutoVisionDriveAndAim());
                 addSequential(new AutoLaunchCommand());
                 break;
-
+        
             case DRIVE_SHOOT_NO_VISION:
                 System.out.println("Starting Drive Shoot No Vision (untested)");
                 addSequential(new AutoDriveStraight(distance, getSpeed()));
                 addSequential(new AutoRotateDegrees(getTurnAngle()));
+                break;
+    
         }
     }
 
@@ -94,30 +96,8 @@ public class AutoCommand1 extends CommandGroup {
         end();
     }
 
-    public boolean getLauncherBeginPosition() {
-        boolean lowBar; // in inches
-        switch (m_type) {
-            case LOWBAR:
-                lowBar = true;
-                break;
-            case MOAT:
-                lowBar = false;
-                break;
-            case ROUGH_TERRAIN:
-                lowBar = false;
-                break;
-            case ROCK_WALL:
-                lowBar = false;
-                break;
-            case PORTCULLIS:
-                lowBar = false;
-                break;
-            default:
-                lowBar = false;
-        }
-        return lowBar;
-    }
-
+    
+ 
     public boolean getPortcullisBeginPosition() {
         boolean liftdown; // tells if portcullis needs to be down
         switch (m_type) {
@@ -134,8 +114,10 @@ public class AutoCommand1 extends CommandGroup {
                 liftdown = false;
                 break;
             case PORTCULLIS:
-                liftdown = false;
+                liftdown = true;
                 break;
+            case RAMPARTS:
+                liftdown = false;
             default:
                 liftdown = false;
         }
@@ -203,8 +185,6 @@ public class AutoCommand1 extends CommandGroup {
             case DRIVE_SHOOT_NO_VISION:
                 vision = false;
                 break;
-            default:
-                break;
         }
         return vision;
     }
@@ -251,7 +231,10 @@ public class AutoCommand1 extends CommandGroup {
                 distance = 150;
                 break;
             case PORTCULLIS:
-                distance = 120;
+                distance = 140;
+                break;
+            case RAMPARTS:
+                distance = 150;
                 break;
             default:
                 distance = 145;
@@ -276,6 +259,9 @@ public class AutoCommand1 extends CommandGroup {
                 break;
             case PORTCULLIS:
                 speed = 30;
+                break;
+            case RAMPARTS:
+                speed = -50;
                 break;
             default:
                 speed = 35;
