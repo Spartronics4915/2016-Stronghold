@@ -1,15 +1,15 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToPositionForAutoCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoVisionDriveAndAim;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class AutoCommand1GP extends CommandGroup {
 
@@ -37,6 +37,7 @@ public class AutoCommand1GP extends CommandGroup {
                 addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
             addSequential(new WaitCommand(2.75));
         }
+
 
         if (ModuleManager.PORTCULLIS_MODULE_ON) {
             // portcullis lifter begin position

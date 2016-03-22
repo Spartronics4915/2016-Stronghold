@@ -17,7 +17,7 @@ public class SpinIntakeWheelsInwardCommand extends Command {
     protected void initialize() {
         setTimeout(10); // TODO finalize time
         SmartDashboard.putString("Flywheels spinning ", "inward");
-        System.out.println("Spin Intake Inward Command");
+        System.out.println("Spin Wheels Inward Command");
     }
 
     @Override
@@ -42,6 +42,6 @@ public class SpinIntakeWheelsInwardCommand extends Command {
 
     @Override
     protected void interrupted() {
-        System.out.println("Spin Intake Inward Interrupt");
+        System.out.println("Spin Wheels Inward Interrupt");
     }
 }

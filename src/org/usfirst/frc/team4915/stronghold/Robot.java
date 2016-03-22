@@ -1,11 +1,10 @@
 package org.usfirst.frc.team4915.stronghold;
 import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1;
 import org.usfirst.frc.team4915.stronghold.commands.AutoCommand1GP;
-import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
 import org.usfirst.frc.team4915.stronghold.subsystems.DriveTrain;
-import org.usfirst.frc.team4915.stronghold.subsystems.GearShift;
 import org.usfirst.frc.team4915.stronghold.subsystems.IntakeLauncher;
+import org.usfirst.frc.team4915.stronghold.subsystems.Portcullis;
 import org.usfirst.frc.team4915.stronghold.subsystems.Scaler;
 import org.usfirst.frc.team4915.stronghold.utils.BNO055;
 
@@ -29,8 +28,8 @@ public class Robot extends IterativeRobot {
     public static DriveTrain driveTrain;
     public static IntakeLauncher intakeLauncher;
     public static OI oi;
-    public static GearShift gearShift;
     public static Scaler scaler;
+    public static Portcullis portcullis;
 
     Command autonomousCommand;
     SendableChooser autonomousProgramChooser;
@@ -47,7 +46,7 @@ public class Robot extends IterativeRobot {
 
         // 2. conditionally create the modules
         if (ModuleManager.PORTCULLIS_MODULE_ON){
-            new PortcullisMoveUp().start();
+            portcullis = new Portcullis();
 
         }
         if (ModuleManager.DRIVE_MODULE_ON) {
@@ -57,12 +56,6 @@ public class Robot extends IterativeRobot {
         else
             SmartDashboard.putString("Drivetrain Module", "disabled");
 
-        if (ModuleManager.GEARSHIFT_MODULE_ON) {
-            gearShift = new GearShift();
-            SmartDashboard.putString("Shift Module", "initialized");
-        }
-        else
-        	SmartDashboard.putString("Shift Module", "disabled");
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
         	/* to prevent module-manager-madness (M-cubed), we
@@ -142,7 +135,7 @@ public class Robot extends IterativeRobot {
         if (this.autonomousCommand != null) {
             this.autonomousCommand.cancel();
         }
-
+        Robot.driveTrain.turnMultiplier = Robot.driveTrain.MEDIUM_TURN;
         // RobotMap.rightBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
         // RobotMap.leftBackMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
         System.out.println("entering teleop");
@@ -186,6 +179,10 @@ public class Robot extends IterativeRobot {
         	updateLauncherStatus();
         	updateDrivetrainStatus();
         	this.lastTime = currentTime;
+        	SmartDashboard.putBoolean(" Portcullis Upper Right Limit Switch", RobotMap.portcullisRightMotor.isFwdLimitSwitchClosed());
+            SmartDashboard.putBoolean(" Portcullis Upper Left Limit Switch", RobotMap.portcullisLeftMotor.isFwdLimitSwitchClosed());
+            SmartDashboard.putBoolean(" Portcullis Lower Right Limit Switch", RobotMap.portcullisRightMotor.isRevLimitSwitchClosed());
+            SmartDashboard.putBoolean(" Portcullis Lower Left Limit Switch", RobotMap.portcullisLeftMotor.isRevLimitSwitchClosed());
         }
     }
 

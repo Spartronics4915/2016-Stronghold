@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4915.stronghold.vision.robot;
 
-import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 
 import edu.wpi.first.wpilibj.NamedSendable;
