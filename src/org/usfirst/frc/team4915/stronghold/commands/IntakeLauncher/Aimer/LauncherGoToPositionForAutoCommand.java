@@ -71,7 +71,7 @@ public class LauncherGoToPositionForAutoCommand extends Command {
     }
 
     protected void end() {
-        Robot.intakeLauncher.aimMotor.disableControl();
+        //Robot.intakeLauncher.aimMotor.disableControl();
     }
 
     protected void interrupted() {

@@ -27,9 +27,9 @@ public class AutoCommand1 extends CommandGroup {
 
             boolean shouldQuit = false; // means we rely on launcher positioning
             if(m_type == Autonomous.Type.LOWBAR) {
-                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
+                //addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
             } else {
-                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
+                //addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
             }
         }
 

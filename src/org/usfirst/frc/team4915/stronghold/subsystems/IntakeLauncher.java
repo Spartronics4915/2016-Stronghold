@@ -3,6 +3,7 @@ package org.usfirst.frc.team4915.stronghold.subsystems;
 import org.usfirst.frc.team4915.stronghold.Robot;
 import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.AimLauncherCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.BackUpJoystickControlCommand;
 import org.usfirst.frc.team4915.stronghold.vision.robot.VisionState;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -34,10 +35,10 @@ public class IntakeLauncher extends Subsystem {
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4; // in servo units
 
     private double launcherMaxHeightTicks = 1023.0;
-    private double launcherMinHeightTicks = 730.0;
+    private double launcherMinHeightTicks = 631.0;
 
     private double launcherTravelHeightRatio = 0.688;
-    private double launcherNeutralHeightRatio = 0.446;
+    private double launcherNeutralHeightRatio = 0.1;
     private double launcherMinLaunchHeightRatio = 0.2; // TODO
     private double launcherHighGoalThresholdRatio = .69;
 
@@ -47,7 +48,7 @@ public class IntakeLauncher extends Subsystem {
     private final double JOYSTICK_SCALE = -50.0; // TODO
     private final double MIN_JOYSTICK_MOTION = 0.1;
     private final double NO_VISION_TARGET = -1000;
-    private final int POTENTIOMETER_NEGATIVITY = -1;
+    private final double POTENTIOMETER_NEGATIVITY = -1.0;
 
     private boolean isJoystickIdle = false;
     private double setPoint; // in potentiometer ticks
@@ -71,8 +72,8 @@ public class IntakeLauncher extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new AimLauncherCommand());
-        // setDefaultCommand(new BackUpJoystickControlCommand());
+        //setDefaultCommand(new AimLauncherCommand());
+         setDefaultCommand(new BackUpJoystickControlCommand());
     }
 
     public IntakeLauncher() {
@@ -226,6 +227,7 @@ public class IntakeLauncher extends Subsystem {
     // Checks to see if joystick control or vision control is needed and
     // controls motion.
     public void aimLauncher() {
+        //System.out.println("Aiming Launcher");
         SmartDashboard.putNumber("Launch Angle", (int) ticksToDegrees(getPosition()));
         if (VisionState.getInstance().wantsControl()) {
             // System.out.println("Tracking vision!");
@@ -240,16 +242,17 @@ public class IntakeLauncher extends Subsystem {
     // called periodically (even with the same setpoint) to prevent motorsafety
     // timeouts.
     public void moveToSetPoint() {
-        keepSetPointInRange();
-        calibratePotentiometer();
+        //keepSetPointInRange();
+        //calibratePotentiometer();
         aimMotor.changeControlMode(TalonControlMode.Position); // redundant, but
-                                                               // harmless
+        //System.out.println("Moving to set point" + setPoint);
+        //System.out.println("Currently at " + aimMotor.getPosition());
         aimMotor.set(setPoint);
     }
 
     public void launcherSetNeutralPosition() {
         setSetPoint(launcherNeutralHeightTicks() * POTENTIOMETER_NEGATIVITY);
-        System.out.println("neutral");
+        System.out.println("Moving to neutral height: " + setPoint);
         moveToSetPoint();
     }
 
@@ -296,6 +299,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public double launcherNeutralHeightTicks() {
+        System.out.println();
         return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherNeutralHeightRatio;
     }
 
@@ -331,7 +335,7 @@ public class IntakeLauncher extends Subsystem {
 
     public boolean isLauncherAtNeutral() {
         // comment this out later
-        System.out.println("Launcher is at Neutral:  " + (Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR));
+        //System.out.println("Launcher is at Neutral:  " + (Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR));
         return Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR;
     }
 
@@ -357,6 +361,6 @@ public class IntakeLauncher extends Subsystem {
 
     public void backUpJoystickMethod() {
         aimMotor.changeControlMode(TalonControlMode.PercentVbus);
-        aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)));
+        aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)) * 0.50);
     }
 }

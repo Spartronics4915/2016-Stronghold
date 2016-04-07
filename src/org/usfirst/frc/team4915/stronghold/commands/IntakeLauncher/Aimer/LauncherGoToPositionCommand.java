@@ -25,6 +25,7 @@ public class LauncherGoToPositionCommand extends Command {
     }
 
     protected void initialize() {
+        Robot.intakeLauncher.aimMotor.enableControl();
         System.out.println("Launcher go to " + myPosition + " command");
         switch (myPosition) {
             case ANGLE: 
