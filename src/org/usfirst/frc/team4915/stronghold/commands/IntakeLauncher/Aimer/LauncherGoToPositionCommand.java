@@ -26,15 +26,15 @@ public class LauncherGoToPositionCommand extends Command {
     }
 
     protected void initialize() {
-        Robot.intakeLauncher.aimMotor.enableControl();
+        Robot.intakeLauncher.aimMotor.disableControl();
+        Robot.intakeLauncher.aimMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+        Robot.intakeLauncher.aimMotor.setPID(0.1, 0.1, 0);
         System.out.println("Launcher go to " + myPosition + " command");
         switch (myPosition) {
             case ANGLE: 
-                Robot.intakeLauncher.launcherJumpToAngle(myDegrees);
+                Robot.intakeLauncher.launcherJumpToAngle(myDegrees); //Known to be nonfunctional 
                 break;
             case NEUTRAL:
-                Robot.intakeLauncher.aimMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-                Robot.intakeLauncher.aimMotor.setPID(0.1, 0.1, 0); //TODO
                 Robot.intakeLauncher.launcherSetNeutralPosition();
                 break;
             case TRAVEL:
@@ -43,6 +43,7 @@ public class LauncherGoToPositionCommand extends Command {
             default:
                 break;
         }
+        Robot.intakeLauncher.aimMotor.enableControl();
     }
 
     protected void execute() {
@@ -50,11 +51,22 @@ public class LauncherGoToPositionCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return true;
+        switch(myPosition) {
+            case NEUTRAL:
+               return Robot.intakeLauncher.isLauncherAtNeutral(); 
+            case TRAVEL:
+               return Robot.intakeLauncher.isLauncherAtTravel(); 
+            case ANGLE:
+               return Robot.intakeLauncher.isLauncherAtAngle(myDegrees);
+            default:
+                return true;
+        }
     }
 
     protected void end() {
-        Robot.intakeLauncher.aimMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+        Robot.intakeLauncher.aimMotor.disableControl();
+ //       Robot.intakeLauncher.aimMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+ //       Robot.intakeLauncher.aimMotor.enableControl();
     }
 
     protected void interrupted() {

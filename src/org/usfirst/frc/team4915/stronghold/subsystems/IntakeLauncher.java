@@ -360,7 +360,6 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void backUpJoystickMethod() {
-        aimMotor.changeControlMode(TalonControlMode.PercentVbus);
         aimMotor.set(Robot.oi.aimStick.getAxis((Joystick.AxisType.kY)) * 0.50);
     }
 }
