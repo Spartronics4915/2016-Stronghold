@@ -48,7 +48,6 @@ public class IntakeLauncher extends Subsystem {
     private final double JOYSTICK_SCALE = -50.0; // TODO
     private final double MIN_JOYSTICK_MOTION = 0.1;
     private final double NO_VISION_TARGET = -1000;
-    private final double POTENTIOMETER_NEGATIVITY = -1.0;
 
     private boolean isJoystickIdle = false;
     private double setPoint; // in potentiometer ticks
@@ -136,7 +135,7 @@ public class IntakeLauncher extends Subsystem {
     }
 
     private void readSetPoint() { // TODO rename
-        setPoint = getPosition() * POTENTIOMETER_NEGATIVITY;
+        setPoint = getPosition();
     }
 
     public void setElevationDegrees(double deg) {
@@ -211,7 +210,7 @@ public class IntakeLauncher extends Subsystem {
                 System.out.println("Enabling Aim Control");
             }
             readSetPoint();
-            offsetSetPoint(joystickY * JOYSTICK_SCALE * POTENTIOMETER_NEGATIVITY);
+            offsetSetPoint(joystickY * JOYSTICK_SCALE);
         } else {
             if (!isJoystickIdle) {
                 aimMotor.disableControl();
@@ -251,22 +250,22 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void launcherSetNeutralPosition() {
-        setSetPoint(launcherNeutralHeightTicks() * POTENTIOMETER_NEGATIVITY);
+        setSetPoint(launcherNeutralHeightTicks());
         System.out.println("Moving to neutral height: " + setPoint);
         moveToSetPoint();
     }
 
     public void launcherSetTravelPosition() {
-        setSetPoint(launcherTravelHeightTicks() * POTENTIOMETER_NEGATIVITY);
+        setSetPoint(launcherTravelHeightTicks());
         moveToSetPoint();
     }
 
     public void launcherSetMinLaunchHeightPosition() {
-        setSetPoint(launcherMinLaunchHeightTicks() * POTENTIOMETER_NEGATIVITY);
+        setSetPoint(launcherMinLaunchHeightTicks());
     }
 
     public void launcherJumpToAngle(double angle) {
-        setSetPoint(degreesToTicks(angle) * POTENTIOMETER_NEGATIVITY);
+        setSetPoint(degreesToTicks(angle));
     }
 
     public void ensureMinLaunchHeight() {
@@ -282,10 +281,10 @@ public class IntakeLauncher extends Subsystem {
     // makes sure the set point doesn't go outside its max or min range
     private void keepSetPointInRange() {
         if (getSetPoint() < launcherMinHeightTicks - APPROXIMATE_DANGER) {
-            setPoint = launcherMinHeightTicks * POTENTIOMETER_NEGATIVITY;
+            setPoint = launcherMinHeightTicks;
         }
         if (getSetPoint() > launcherMaxHeightTicks + APPROXIMATE_DANGER) {
-            setPoint = launcherMaxHeightTicks * POTENTIOMETER_NEGATIVITY;
+            setPoint = launcherMaxHeightTicks;
         }
     }
 
@@ -352,11 +351,11 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public double getPosition() {
-        return aimMotor.getPosition() * POTENTIOMETER_NEGATIVITY;
+        return aimMotor.getPosition();
     }
 
     public double getSetPoint() {
-        return setPoint * POTENTIOMETER_NEGATIVITY;
+        return setPoint;
     }
 
     public void backUpJoystickMethod() {
