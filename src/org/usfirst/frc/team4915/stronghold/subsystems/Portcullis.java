@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
          //setDefaultCommand(new MySpecialCommand());
          RobotMap.portcullisLeftMotor.setSafetyEnabled(false);
          RobotMap.portcullisRightMotor.setSafetyEnabled(false);
+         RobotMap.portcullisBarMotor.setSafetyEnabled(false);
 
      }
      
@@ -34,7 +35,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
      
      public static void PortcullisMoveUp(boolean isRight){ //right is true and left is false
          if (isRight){ 
-             System.out.println("Executing move portcullis up: right"); 
              RobotMap.portcullisRightMotor.set(PERCENT_POWER);    
              if (isRightPortcullisAtTop()){
                  RobotMap.portcullisRightMotor.set(0);
@@ -42,7 +42,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
              }
          }
          if (!isRight){
-             System.out.println("Executing move portcullis up: left"); 
              RobotMap.portcullisLeftMotor.set(PERCENT_POWER);    
              }
              if (isLeftPortcullisAtTop()){
@@ -54,7 +53,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
      
      public static void PortcullisMoveDown(boolean isRight){
          if (isRight){
-             System.out.println("Executing move portcullis down: right"); 
              RobotMap.portcullisRightMotor.set(-PERCENT_POWER);    
              if (isRightPortcullisAtBottom()){
                  RobotMap.portcullisRightMotor.set(0);
@@ -62,7 +60,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
              }
          }
          if (!isRight){
-             System.out.println("Executing move portcullis down: left"); 
              RobotMap.portcullisLeftMotor.set(-PERCENT_POWER);    
              }
              if (isLeftPortcullisAtBottom()){
@@ -70,6 +67,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
                  System.out.println("Left Portcullis reached bottom");
          }
        }
+     
+     // may need to be reversed
          
+     public void PortcullisBarIn(){
+         if (Portcullis.isLeftPortcullisAtBottom() && Portcullis.isRightPortcullisAtBottom()){
+             RobotMap.portcullisBarMotor.set(-PERCENT_POWER);
+         }
+         else 
+             RobotMap.portcullisBarMotor.set(0);
+     }
+     public static void PortcullisBarOut(){
+         RobotMap.portcullisBarMotor.set(PERCENT_POWER);
+     }
  }
  

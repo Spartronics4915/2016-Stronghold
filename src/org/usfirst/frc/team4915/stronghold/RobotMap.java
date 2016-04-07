@@ -52,9 +52,14 @@ public class RobotMap {
     //motors for portcullis
     public static CANTalon portcullisLeftMotor;
     public static CANTalon portcullisRightMotor;
+    
+    public static CANTalon portcullisBarMotor;
+
 
     public static final int PORTCULLIS_LEFT_MOTOR = 17;
     public static final int PORTCULLIS_RIGHT_MOTOR = 18;
+    
+    public static final int PORTCULLIS_BAR_MOTOR = 19;
 
     public static final double PORTCULLIS_SPEED = .6;
 
@@ -121,6 +126,11 @@ public class RobotMap {
             portcullisRightMotor.enableBrakeMode(true);
             portcullisLeftMotor.enableLimitSwitch(true, true);
             portcullisLeftMotor.enableBrakeMode(true);
+            
+            portcullisBarMotor = new CANTalon (PORTCULLIS_BAR_MOTOR);
+            portcullisBarMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+            portcullisBarMotor.enableBrakeMode(true);
+
 
 
    //         portcullisLeftMotor.setForwardSoftLimit(PORTCULLIS_TOP);

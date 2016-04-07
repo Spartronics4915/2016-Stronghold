@@ -33,17 +33,18 @@ public class IntakeLauncher extends Subsystem {
     private final double SERVO_LEFT_NEUTRAL_POSITION = .75; // in servo units
     private final double SERVO_RIGHT_NEUTRAL_POSITION = .4; // in servo units
 
-    private double launcherMaxHeightTicks = 910.0; 
-    private double launcherMinHeightTicks = 739.0; 
-    
-    private double launcherTravelHeightRatio = 0.696;
-    private double launcherNeutralHeightRatio = 1.0;
+    private double launcherMaxHeightTicks = 1023.0;
+    private double launcherMinHeightTicks = 730.0;
+
+    private double launcherTravelHeightRatio = 0.688;
+    private double launcherNeutralHeightRatio = 0.446;
     private double launcherMinLaunchHeightRatio = 0.2; // TODO
-    
+    private double launcherHighGoalThresholdRatio = .69;
+
     private final double LAUNCHER_HIGH_GOAL_THRESHOLD = .85;
     private final double MAX_POTENTIOMETER_ERROR = 20;
     private final double APPROXIMATE_DANGER = 50;
-    private final double JOYSTICK_SCALE = 50.0; // TODO
+    private final double JOYSTICK_SCALE = -50.0; // TODO
     private final double MIN_JOYSTICK_MOTION = 0.1;
     private final double NO_VISION_TARGET = -1000;
     private final int POTENTIOMETER_NEGATIVITY = -1;
@@ -100,10 +101,14 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public void setDesiredWheelSpeed() {
-
-         setSpeedLaunchLow();
+        if (isLauncherAtTop()) {
+            setSpeedLaunchHigh();
+            System.out.println("High Speed");
+        } else {
+            setSpeedLaunchLow();
+            System.out.println("Low Speed");
+        }
     }
- 
 
     public String getDesiredWheelSpeed() {
         if (getPosition() > (launcherMinHeightTicks + ((launcherMaxHeightTicks - launcherMinHeightTicks) * LAUNCHER_HIGH_GOAL_THRESHOLD))) {
@@ -244,6 +249,7 @@ public class IntakeLauncher extends Subsystem {
 
     public void launcherSetNeutralPosition() {
         setSetPoint(launcherNeutralHeightTicks() * POTENTIOMETER_NEGATIVITY);
+        System.out.println("neutral");
         moveToSetPoint();
     }
 
@@ -301,6 +307,10 @@ public class IntakeLauncher extends Subsystem {
         return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherMinLaunchHeightRatio;
     }
 
+    public double launcherHighGoalThreshold() {
+        return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherHighGoalThresholdRatio;
+    }
+
     private double degreesToTicks(double degrees) {
         double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
         return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * heightRatio;
@@ -312,15 +322,15 @@ public class IntakeLauncher extends Subsystem {
     }
 
     public boolean isLauncherAtTop() {
-        return aimMotor.isRevLimitSwitchClosed();
-    }
-
-    public boolean isLauncherAtBottom() {
         return aimMotor.isFwdLimitSwitchClosed();
     }
 
+    public boolean isLauncherAtBottom() {
+        return aimMotor.isRevLimitSwitchClosed();
+    }
+
     public boolean isLauncherAtNeutral() {
-        //comment this out later
+        // comment this out later
         System.out.println("Launcher is at Neutral:  " + (Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR));
         return Math.abs(getPosition() - launcherNeutralHeightTicks()) < MAX_POTENTIOMETER_ERROR;
     }

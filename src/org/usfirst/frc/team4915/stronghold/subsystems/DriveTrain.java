@@ -17,7 +17,7 @@ public class DriveTrain extends Subsystem {
     public final static double MAXIMUM_TURN_SPEED = 40.0;  //3-4 ft per sec
     public double turnMultiplier = SLOW_TURN; 
     public static final double FAST_TURN = -1;
-    public static final double MEDIUM_TURN = -.75;
+    public static final double MEDIUM_TURN = -.72;
     public static final double SLOW_TURN = -.55; // actually -.55
 
     public static RobotDrive robotDrive =

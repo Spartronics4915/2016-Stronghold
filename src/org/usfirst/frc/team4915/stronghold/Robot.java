@@ -179,10 +179,11 @@ public class Robot extends IterativeRobot {
         	updateLauncherStatus();
         	updateDrivetrainStatus();
         	this.lastTime = currentTime;
-        	SmartDashboard.putBoolean(" Portcullis Upper Right Limit Switch", RobotMap.portcullisRightMotor.isFwdLimitSwitchClosed());
-            SmartDashboard.putBoolean(" Portcullis Upper Left Limit Switch", RobotMap.portcullisLeftMotor.isFwdLimitSwitchClosed());
-            SmartDashboard.putBoolean(" Portcullis Lower Right Limit Switch", RobotMap.portcullisRightMotor.isRevLimitSwitchClosed());
-            SmartDashboard.putBoolean(" Portcullis Lower Left Limit Switch", RobotMap.portcullisLeftMotor.isRevLimitSwitchClosed());
+        	if (ModuleManager.PORTCULLIS_MODULE_ON)
+        	    SmartDashboard.putBoolean(" Portcullis Upper Right Limit Switch", RobotMap.portcullisRightMotor.isFwdLimitSwitchClosed());
+                SmartDashboard.putBoolean(" Portcullis Upper Left Limit Switch", RobotMap.portcullisLeftMotor.isFwdLimitSwitchClosed());
+                SmartDashboard.putBoolean(" Portcullis Lower Right Limit Switch", RobotMap.portcullisRightMotor.isRevLimitSwitchClosed());
+                SmartDashboard.putBoolean(" Portcullis Lower Left Limit Switch", RobotMap.portcullisLeftMotor.isRevLimitSwitchClosed());
         }
     }
 

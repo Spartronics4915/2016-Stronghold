@@ -39,10 +39,6 @@ public class LauncherGoToPositionCommand extends Command {
             default:
                 break;
         }
-        
-        
-        
-        
     }
 
     protected void execute() {

@@ -18,7 +18,7 @@ public class AutoDriveStraight extends Command {
     private boolean isInitialized;
 
     private int initializeRetryCount;
-    private final static int MAX_RETRIES = 50;
+    private final static int MAX_RETRIES = 100; // was 50 at mt vernon
 
     public AutoDriveStraight(double desiredDistanceInches, double speed) {
         this.AUTOSPEED = speed;
