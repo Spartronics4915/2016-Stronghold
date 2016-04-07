@@ -2,6 +2,7 @@ package org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer;
 
 import org.usfirst.frc.team4915.stronghold.Robot;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class LauncherGoToPositionCommand extends Command {
@@ -32,6 +33,8 @@ public class LauncherGoToPositionCommand extends Command {
                 Robot.intakeLauncher.launcherJumpToAngle(myDegrees);
                 break;
             case NEUTRAL:
+                Robot.intakeLauncher.aimMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+                Robot.intakeLauncher.aimMotor.setPID(0.1, 0.1, 0); //TODO
                 Robot.intakeLauncher.launcherSetNeutralPosition();
                 break;
             case TRAVEL:
@@ -51,7 +54,7 @@ public class LauncherGoToPositionCommand extends Command {
     }
 
     protected void end() {
-    
+        Robot.intakeLauncher.aimMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
     }
 
     protected void interrupted() {

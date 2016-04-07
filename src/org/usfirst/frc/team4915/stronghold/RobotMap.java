@@ -107,6 +107,9 @@ public class RobotMap {
     public static final double wheelDiameterInInches = 14.0;
     public static final double wheelCircumferenceInInches = wheelDiameterInInches * Math.PI;
     public static final double quadTicksPerInch = quadTicksPerWheelRev / wheelCircumferenceInInches;
+    private static final double AIMER_P = .1;
+    private static final double AIMER_I = .1;
+    private static final double AIMER_D = 0;
 
     // Initialize the various robot modules
     public static void init() {
@@ -216,11 +219,11 @@ public class RobotMap {
                     aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
                     aimMotor.enableLimitSwitch(true, true);
                     aimMotor.enableBrakeMode(true);
-                    //aimMotor.reverseSensor(true);
+                    aimMotor.reverseSensor(true);
                     aimMotor.setAllowableClosedLoopErr(15);
                     LiveWindow.addActuator("Launcher", "Motor 16", aimMotor);
                     //aimMotor.configPeakOutputVoltage(+0.6f, -0.6f);
-                    // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO
+                   // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO
                     // uncomment
                 }
                 LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);
