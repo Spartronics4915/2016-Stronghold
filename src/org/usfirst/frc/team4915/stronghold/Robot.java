@@ -110,7 +110,8 @@ public class Robot extends IterativeRobot {
     	if(useGP) {
     		autonomousCommand = new AutoCommand1GP(atype, astrat, apos); 
     	} else {
-    		autonomousCommand = new AutoCommand1(atype, astrat, apos); 
+    		System.out.println("Constructing AutoCommand1");
+    	    autonomousCommand = new AutoCommand1(atype, astrat, apos); 
     	}
         if (this.autonomousCommand != null) {
             this.autonomousCommand.start();

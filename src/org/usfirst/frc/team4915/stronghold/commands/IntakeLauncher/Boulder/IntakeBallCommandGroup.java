@@ -10,7 +10,7 @@ public class IntakeBallCommandGroup extends CommandGroup {
     public  IntakeBallCommandGroup() {
         System.out.println("Intake Command Group");
         addSequential(new RetractLauncherServosCommand());
-        addSequential(new LauncherGoToPositionCommand(LauncherGoToPositionCommand.TRAVEL));
+        addSequential(new LauncherGoToPositionCommand(LauncherGoToPositionCommand.INTAKE));
         addSequential(new SpinIntakeWheelsInwardCommand());
     }
 }

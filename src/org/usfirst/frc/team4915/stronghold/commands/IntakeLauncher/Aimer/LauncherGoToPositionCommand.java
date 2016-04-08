@@ -13,6 +13,7 @@ public class LauncherGoToPositionCommand extends Command {
     public static final String ANGLE = "angle";
     public static final String NEUTRAL = "neutral";
     public static final String TRAVEL = "travel";
+    public static final String INTAKE = "intake";
     
     public LauncherGoToPositionCommand(String position) {
         myPosition = position;
@@ -42,6 +43,9 @@ public class LauncherGoToPositionCommand extends Command {
             case TRAVEL:
                 Robot.intakeLauncher.launcherSetTravelPosition();
                 break;
+            case INTAKE:
+                Robot.intakeLauncher.launcherSetIntakeHeightPosition();
+                break;
             default:
                 break;
         }
@@ -65,6 +69,8 @@ public class LauncherGoToPositionCommand extends Command {
                return Robot.intakeLauncher.isLauncherAtTravel();
             case ANGLE:
                return Robot.intakeLauncher.isLauncherAtAngle(myDegrees);
+            case INTAKE:
+                return Robot.intakeLauncher.isLauncherAtIntake();
             default:
                 System.out.println("Unexpected switch case: " + myPosition);
                 return true;

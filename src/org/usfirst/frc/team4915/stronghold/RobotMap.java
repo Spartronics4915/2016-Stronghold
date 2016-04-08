@@ -208,6 +208,8 @@ public class RobotMap {
                 intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
                 intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
                 intakeLeftMotor.reverseSensor(true);
+                intakeRightMotor.setSafetyEnabled(false);
+                intakeLeftMotor.setSafetyEnabled(false);
                 aimMotor = new CANTalon(AIM_MOTOR_ID);
                 // aimMotor.changeControlMode(TalonControlMode.Position);
                 boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
@@ -216,6 +218,7 @@ public class RobotMap {
 
                 // setup the motor
                 if (aimMotor.isSensorPresent(FeedbackDevice.AnalogPot) != null) {
+                    aimMotor.setSafetyEnabled(false);
                     aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
                     aimMotor.enableLimitSwitch(true, true);
                     aimMotor.enableBrakeMode(true);

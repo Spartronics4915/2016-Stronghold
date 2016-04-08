@@ -39,6 +39,7 @@ public class IntakeLauncher extends Subsystem {
 
     private double launcherTravelHeightRatio = 0.51;
     private double launcherNeutralHeightRatio = 0.51;
+    private double launcherIntakeHeightRatio = 0.0;
     private double launcherMinLaunchHeightRatio = 0.2; // TODO
     private double launcherHighGoalThresholdRatio = .69;
 
@@ -263,6 +264,10 @@ public class IntakeLauncher extends Subsystem {
     public void launcherSetMinLaunchHeightPosition() {
         setSetPoint(launcherMinLaunchHeightTicks());
     }
+    
+    public void launcherSetIntakeHeightPosition() {
+        setSetPoint(launcherIntakeHeight());
+    }
 
     public void launcherJumpToAngle(double angle) {
         setSetPoint(degreesToTicks(angle));
@@ -312,6 +317,10 @@ public class IntakeLauncher extends Subsystem {
     public double launcherHighGoalThreshold() {
         return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherHighGoalThresholdRatio;
     }
+    
+    public double launcherIntakeHeight() {
+        return launcherMinHeightTicks + (launcherMaxHeightTicks - launcherMinHeightTicks) * launcherIntakeHeightRatio;
+    }
 
     private double degreesToTicks(double degrees) {
         double heightRatio = (degrees - LAUNCHER_MIN_HEIGHT_DEGREES) / (LAUNCHER_MAX_HEIGHT_DEGREES - LAUNCHER_MIN_HEIGHT_DEGREES);
@@ -340,6 +349,10 @@ public class IntakeLauncher extends Subsystem {
 
     public boolean isLauncherAtTravel() {
         return Math.abs(getPosition() - launcherTravelHeightTicks()) < MAX_POTENTIOMETER_ERROR;
+    }
+    
+    public boolean isLauncherAtIntake() {
+        return Math.abs(getPosition() - launcherIntakeHeight()) < MAX_POTENTIOMETER_ERROR;
     }
 
     public boolean isLauncherAtAngle(double angle) {

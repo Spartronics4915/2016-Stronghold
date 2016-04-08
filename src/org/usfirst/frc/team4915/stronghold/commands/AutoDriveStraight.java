@@ -41,7 +41,6 @@ public class AutoDriveStraight extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         updateSB();
-
         if (!isInitialized){
             isInitialized = (RobotMap.leftMasterMotor.getEncPosition() == 0 &&
                              RobotMap.rightMasterMotor.getEncPosition() == 0);
