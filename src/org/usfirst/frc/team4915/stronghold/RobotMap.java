@@ -130,6 +130,10 @@ public class RobotMap {
             portcullisLeftMotor.enableLimitSwitch(true, true);
             portcullisLeftMotor.enableBrakeMode(true);
             
+            portcullisRightMotor.configPeakOutputVoltage(+12f, -12f);
+            portcullisLeftMotor.configPeakOutputVoltage(+12f, -12f);
+
+            
             portcullisBarMotor = new CANTalon (PORTCULLIS_BAR_MOTOR);
             portcullisBarMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
             portcullisBarMotor.enableBrakeMode(true);

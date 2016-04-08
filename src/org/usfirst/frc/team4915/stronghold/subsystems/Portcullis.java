@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  
  
  public class Portcullis extends Subsystem {
-     public static final double PERCENT_POWER = 0.6;
+     public static final double PERCENT_POWER_UP = 0.8;
+     public static final double PERCENT_POWER_DOWN = -0.6;
+
 
      // Put methods for controlling this subsystem
      // here. Call these from Commands.
@@ -35,14 +37,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
      
      public static void PortcullisMoveUp(boolean isRight){ //right is true and left is false
          if (isRight){ 
-             RobotMap.portcullisRightMotor.set(PERCENT_POWER);    
+             RobotMap.portcullisRightMotor.set(PERCENT_POWER_UP);    
              if (isRightPortcullisAtTop()){
                  RobotMap.portcullisRightMotor.set(0);
                  System.out.println("Right Portcullis reached top");
              }
          }
          if (!isRight){
-             RobotMap.portcullisLeftMotor.set(PERCENT_POWER);    
+             RobotMap.portcullisLeftMotor.set(PERCENT_POWER_UP);    
              }
              if (isLeftPortcullisAtTop()){
                  RobotMap.portcullisLeftMotor.set(0);
@@ -53,14 +55,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
      
      public void PortcullisMoveDown(boolean isRight){
          if (isRight){
-             RobotMap.portcullisRightMotor.set(-PERCENT_POWER);    
+             RobotMap.portcullisRightMotor.set(PERCENT_POWER_DOWN);    
              if (isRightPortcullisAtBottom()){
                  RobotMap.portcullisRightMotor.set(0);
                  System.out.println("Right Portcullis reached bottom");
              }
          }
          if (!isRight){
-             RobotMap.portcullisLeftMotor.set(-PERCENT_POWER);    
+             RobotMap.portcullisLeftMotor.set(PERCENT_POWER_DOWN);    
              }
              if (isLeftPortcullisAtBottom()){
                  RobotMap.portcullisLeftMotor.set(0);
@@ -72,7 +74,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
          
      public void PortcullisBarIn(){
          if (isLeftPortcullisAtBottom() && isRightPortcullisAtBottom()){
-             RobotMap.portcullisBarMotor.set(-PERCENT_POWER);
+             RobotMap.portcullisBarMotor.set(-PERCENT_POWER_UP);
          }
          else 
              RobotMap.portcullisBarMotor.set(0);
@@ -87,7 +89,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
      }
      
      public static void PortcullisBarOut(){
-         RobotMap.portcullisBarMotor.set(PERCENT_POWER);
+         RobotMap.portcullisBarMotor.set(PERCENT_POWER_UP);
      }
  }
  

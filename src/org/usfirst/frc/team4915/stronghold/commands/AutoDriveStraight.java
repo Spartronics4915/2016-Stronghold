@@ -16,7 +16,7 @@ public class AutoDriveStraight extends Command {
     private double desiredDistanceTicks;
 
     private boolean isInitialized;
-
+    private boolean m_isDone;
     private int initializeRetryCount;
     private final static int MAX_RETRIES = 100; // was 50 at mt vernon
 
@@ -32,6 +32,7 @@ public class AutoDriveStraight extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        m_isDone = false;
         Robot.driveTrain.init();
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON){
         Robot.intakeLauncher.aimMotor.disableControl();
@@ -40,7 +41,10 @@ public class AutoDriveStraight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        updateSB();
+        // updateSB();
+        if (m_isDone){
+            return;
+        }
         if (!isInitialized){
             isInitialized = (RobotMap.leftMasterMotor.getEncPosition() == 0 &&
                              RobotMap.rightMasterMotor.getEncPosition() == 0);
@@ -90,6 +94,7 @@ public class AutoDriveStraight extends Command {
         } else if ((Math.abs(RobotMap.leftMasterMotor.getEncPosition()) >= desiredDistanceTicks) ||
                    (Math.abs(RobotMap.rightMasterMotor.getEncPosition()) >= desiredDistanceTicks)) {
                    Robot.driveTrain.stop();
+                   m_isDone = true;
         }
         return false; //we are not ending so that we will not get robot drive output not updated enough
     }
