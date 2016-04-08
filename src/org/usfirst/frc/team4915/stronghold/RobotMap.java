@@ -209,7 +209,7 @@ public class RobotMap {
                 intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
                 intakeLeftMotor.reverseSensor(true);
                 aimMotor = new CANTalon(AIM_MOTOR_ID);
-                aimMotor.changeControlMode(TalonControlMode.Position);
+                // aimMotor.changeControlMode(TalonControlMode.Position);
                 boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
                 launcherServoLeft = new Servo(LAUNCHER_SERVO_LEFT_PORT);
                 launcherServoRight = new Servo(LAUNCHER_SERVO_RIGHT_PORT);
@@ -219,9 +219,10 @@ public class RobotMap {
                     aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
                     aimMotor.enableLimitSwitch(true, true);
                     aimMotor.enableBrakeMode(true);
-                    aimMotor.setAllowableClosedLoopErr(15);
+                    aimMotor.setAllowableClosedLoopErr(10);
                     LiveWindow.addActuator("Launcher", "Motor 16", aimMotor);
-                    //aimMotor.configPeakOutputVoltage(+0.6f, -0.6f);
+                    aimMotor.configPeakOutputVoltage(+12f, -12f);
+                    aimMotor.setVoltageRampRate(150.0);
                    // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO
                     // uncomment
                 }

@@ -26,9 +26,11 @@ public class LauncherGoToPositionCommand extends Command {
     }
 
     protected void initialize() {
+        setTimeout(5);
         Robot.intakeLauncher.aimMotor.disableControl();
         Robot.intakeLauncher.aimMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-        Robot.intakeLauncher.aimMotor.setPID(0.1, 0.1, 0);
+        Robot.intakeLauncher.aimMotor.setPID(0.1, 0.01, 1);
+     //   Robot.intakeLauncher.aimMotor.config
         System.out.println("Launcher go to " + myPosition + " command");
         switch (myPosition) {
             case ANGLE: 
@@ -44,22 +46,29 @@ public class LauncherGoToPositionCommand extends Command {
                 break;
         }
         Robot.intakeLauncher.aimMotor.enableControl();
+        Robot.intakeLauncher.moveToSetPoint();
     }
 
     protected void execute() {
-
+        // Robot.intakeLauncher.moveToSetPoint();
     }
 
     protected boolean isFinished() {
-        switch(myPosition) {
+        if (isTimedOut()) {
+            return true;
+        }
+        else {
+            switch(myPosition) {
             case NEUTRAL:
-               return Robot.intakeLauncher.isLauncherAtNeutral(); 
+               return Robot.intakeLauncher.isLauncherAtNeutral();
             case TRAVEL:
-               return Robot.intakeLauncher.isLauncherAtTravel(); 
+               return Robot.intakeLauncher.isLauncherAtTravel();
             case ANGLE:
                return Robot.intakeLauncher.isLauncherAtAngle(myDegrees);
             default:
+                System.out.println("Unexpected switch case: " + myPosition);
                 return true;
+            }
         }
     }
 
