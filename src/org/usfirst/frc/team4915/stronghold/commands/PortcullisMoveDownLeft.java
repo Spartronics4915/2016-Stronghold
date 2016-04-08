@@ -22,22 +22,23 @@ public class PortcullisMoveDownLeft extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Portcullis.PortcullisMoveDown(false); //right is true and left is false
+        Robot.portcullis.PortcullisMoveDown(false); //right is true and left is false
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Portcullis.isLeftPortcullisAtBottom();
+        return Robot.portcullis.isLeftPortcullisAtBottom();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    
+        Robot.portcullis.stopLeftMotor();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
         System.out.println("PortcullisMoveDownLeft interrupted");
+        end();
     }
 }

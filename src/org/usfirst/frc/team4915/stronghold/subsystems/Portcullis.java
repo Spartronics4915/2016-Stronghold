@@ -23,13 +23,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
      public static boolean isLeftPortcullisAtTop(){
          return RobotMap.portcullisLeftMotor.isFwdLimitSwitchClosed();
      }
-     public static boolean isLeftPortcullisAtBottom(){
+     public boolean isLeftPortcullisAtBottom(){
          return RobotMap.portcullisLeftMotor.isRevLimitSwitchClosed();
      }
      public static boolean isRightPortcullisAtTop(){
          return RobotMap.portcullisRightMotor.isFwdLimitSwitchClosed();
      }
-     public static boolean isRightPortcullisAtBottom(){
+     public boolean isRightPortcullisAtBottom(){
          return RobotMap.portcullisRightMotor.isRevLimitSwitchClosed();
      }
      
@@ -51,7 +51,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
        }
         
      
-     public static void PortcullisMoveDown(boolean isRight){
+     public void PortcullisMoveDown(boolean isRight){
          if (isRight){
              RobotMap.portcullisRightMotor.set(-PERCENT_POWER);    
              if (isRightPortcullisAtBottom()){
@@ -71,12 +71,21 @@ import edu.wpi.first.wpilibj.command.Subsystem;
      // may need to be reversed
          
      public void PortcullisBarIn(){
-         if (Portcullis.isLeftPortcullisAtBottom() && Portcullis.isRightPortcullisAtBottom()){
+         if (isLeftPortcullisAtBottom() && isRightPortcullisAtBottom()){
              RobotMap.portcullisBarMotor.set(-PERCENT_POWER);
          }
          else 
              RobotMap.portcullisBarMotor.set(0);
      }
+     
+     public void stopLeftMotor() {
+         RobotMap.portcullisLeftMotor.set(0);
+     }
+     
+     public void stopRightMotor() {
+         RobotMap.portcullisRightMotor.set(0);
+     }
+     
      public static void PortcullisBarOut(){
          RobotMap.portcullisBarMotor.set(PERCENT_POWER);
      }

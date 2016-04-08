@@ -2,6 +2,7 @@ package org.usfirst.frc.team4915.stronghold.commands;
 
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToPositionForAutoCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.AutoLaunchCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
@@ -26,20 +27,16 @@ public class AutoCommand1 extends CommandGroup {
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
 
             boolean shouldQuit = false; // means we rely on launcher positioning
-            if(m_type == Autonomous.Type.LOWBAR) {
-                //addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
-            } else {
-                //addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
-            }
+            addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionCommand.NEUTRAL));
         }
 
         if (ModuleManager.PORTCULLIS_MODULE_ON) {
             // portcullis lifter begin position
             boolean portcullisBeginDown = getPortcullisBeginPosition();
             if (portcullisBeginDown) {
-                addSequential(new PortcullisMoveDown());
+                addSequential(new PortcullisMoveDown(), 3);
             } else {
-                addSequential(new PortcullisMoveUp());
+                addSequential(new PortcullisMoveUp(), 3);
             }
         }
 

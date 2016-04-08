@@ -219,7 +219,7 @@ public class RobotMap {
                     aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
                     aimMotor.enableLimitSwitch(true, true);
                     aimMotor.enableBrakeMode(true);
-                    aimMotor.setAllowableClosedLoopErr(10);
+                    aimMotor.setAllowableClosedLoopErr(5);
                     LiveWindow.addActuator("Launcher", "Motor 16", aimMotor);
                     aimMotor.configPeakOutputVoltage(+12f, -12f);
                     aimMotor.setVoltageRampRate(150.0);
