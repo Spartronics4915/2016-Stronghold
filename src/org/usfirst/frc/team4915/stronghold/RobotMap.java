@@ -52,9 +52,14 @@ public class RobotMap {
     //motors for portcullis
     public static CANTalon portcullisLeftMotor;
     public static CANTalon portcullisRightMotor;
+    
+    public static CANTalon portcullisBarMotor;
+
 
     public static final int PORTCULLIS_LEFT_MOTOR = 17;
     public static final int PORTCULLIS_RIGHT_MOTOR = 18;
+    
+    public static final int PORTCULLIS_BAR_MOTOR = 19;
 
     public static final double PORTCULLIS_SPEED = .6;
 
@@ -102,6 +107,9 @@ public class RobotMap {
     public static final double wheelDiameterInInches = 14.0;
     public static final double wheelCircumferenceInInches = wheelDiameterInInches * Math.PI;
     public static final double quadTicksPerInch = quadTicksPerWheelRev / wheelCircumferenceInInches;
+    private static final double AIMER_P = .1;
+    private static final double AIMER_I = .1;
+    private static final double AIMER_D = 0;
 
     // Initialize the various robot modules
     public static void init() {
@@ -121,6 +129,15 @@ public class RobotMap {
             portcullisRightMotor.enableBrakeMode(true);
             portcullisLeftMotor.enableLimitSwitch(true, true);
             portcullisLeftMotor.enableBrakeMode(true);
+            
+            portcullisRightMotor.configPeakOutputVoltage(+12f, -12f);
+            portcullisLeftMotor.configPeakOutputVoltage(+12f, -12f);
+
+            
+            portcullisBarMotor = new CANTalon (PORTCULLIS_BAR_MOTOR);
+            portcullisBarMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+            portcullisBarMotor.enableBrakeMode(true);
+
 
 
    //         portcullisLeftMotor.setForwardSoftLimit(PORTCULLIS_TOP);
@@ -195,20 +212,25 @@ public class RobotMap {
                 intakeLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
                 intakeRightMotor.changeControlMode(TalonControlMode.PercentVbus);
                 intakeLeftMotor.reverseSensor(true);
+                intakeRightMotor.setSafetyEnabled(false);
+                intakeLeftMotor.setSafetyEnabled(false);
                 aimMotor = new CANTalon(AIM_MOTOR_ID);
-                aimMotor.changeControlMode(TalonControlMode.Position);
+                // aimMotor.changeControlMode(TalonControlMode.Position);
                 boulderSwitch = new DigitalInput(BOULDER_SWITCH_PORT);
                 launcherServoLeft = new Servo(LAUNCHER_SERVO_LEFT_PORT);
                 launcherServoRight = new Servo(LAUNCHER_SERVO_RIGHT_PORT);
 
                 // setup the motor
                 if (aimMotor.isSensorPresent(FeedbackDevice.AnalogPot) != null) {
+                    aimMotor.setSafetyEnabled(false);
                     aimMotor.setFeedbackDevice(FeedbackDevice.AnalogPot);
                     aimMotor.enableLimitSwitch(true, true);
                     aimMotor.enableBrakeMode(true);
-                    aimMotor.reverseSensor(true);
-                    aimMotor.setAllowableClosedLoopErr(15);
-                    // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO
+                    aimMotor.setAllowableClosedLoopErr(5);
+                    LiveWindow.addActuator("Launcher", "Motor 16", aimMotor);
+                    aimMotor.configPeakOutputVoltage(+12f, -12f);
+                    aimMotor.setVoltageRampRate(150.0);
+                   // aimMotor.setPID(AIMER_P, AIMER_I, AIMER_D); //TODO
                     // uncomment
                 }
                 LiveWindow.addActuator("IntakeLauncher", "AimMotor", aimMotor);

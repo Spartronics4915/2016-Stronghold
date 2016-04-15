@@ -21,6 +21,7 @@ public class ArcadeDrive extends Command {
     @Override
     protected void initialize() {
         Robot.driveTrain.init();
+        System.out.println("Arcade Drive init");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -62,6 +63,7 @@ public class ArcadeDrive extends Command {
     @Override
     protected void end() {
         Robot.driveTrain.stop();
+        System.out.println("Arcade Drive end");
     }
 
     // Called when another command which requires one or more of the same

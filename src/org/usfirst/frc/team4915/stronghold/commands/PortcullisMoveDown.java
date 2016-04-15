@@ -27,8 +27,8 @@ public class PortcullisMoveDown extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
         requires(Robot.portcullis);
-        addParallel(new PortcullisMoveDownRight(), 3);
-        addParallel(new PortcullisMoveDownLeft(), 3);
+        addParallel(new PortcullisMoveDownRight(), 2);
+        addParallel(new PortcullisMoveDownLeft(), 2);
 
     }
 }

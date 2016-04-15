@@ -31,7 +31,7 @@ public class SpinIntakeWheelsOutCommand extends Command {
         if(Robot.intakeLauncher.canLaunch()) {
             Robot.intakeLauncher.setDesiredWheelSpeed();
         }
-        Robot.intakeLauncher.aimLauncher(); // this command interrupts
+        //Robot.intakeLauncher.aimLauncher(); // this command interrupts
                                             // AimLauncherCommand so we make
                                             // sure the launcher always moves
     }

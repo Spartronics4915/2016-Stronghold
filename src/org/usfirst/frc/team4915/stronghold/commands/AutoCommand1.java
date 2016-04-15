@@ -1,9 +1,11 @@
 package org.usfirst.frc.team4915.stronghold.commands;
 
 import org.usfirst.frc.team4915.stronghold.ModuleManager;
+import org.usfirst.frc.team4915.stronghold.RobotMap;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.AutoRotateDegrees;
-import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToPositionForAutoCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Aimer.LauncherGoToPositionCommand;
 import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.AutoLaunchCommand;
+import org.usfirst.frc.team4915.stronghold.commands.IntakeLauncher.Boulder.StopWheelsCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoAimControlCommand;
 import org.usfirst.frc.team4915.stronghold.commands.vision.AutoVisionDriveAndAim;
 import org.usfirst.frc.team4915.stronghold.subsystems.Autonomous;
@@ -17,29 +19,26 @@ public class AutoCommand1 extends CommandGroup {
     private Autonomous.Position m_position;
 
     public AutoCommand1(Autonomous.Type type, Autonomous.Strat strat, Autonomous.Position position) {
+        System.out.println("Autonomous1 construct (strat:" + strat + ")");
         this.m_strat = strat;
         this.m_position = position;
         this.m_type = type;
-
-        System.out.println("Autonomous1 construct (strat:" + strat + ")");
-
-        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
-
-            boolean shouldQuit = false; // means we rely on launcher positioning
-            if(m_type == Autonomous.Type.LOWBAR) {
-                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.TRAVEL));
-            } else {
-                addSequential(new LauncherGoToPositionForAutoCommand(shouldQuit, LauncherGoToPositionForAutoCommand.NEUTRAL));
-            }
+        if (strat == Autonomous.Strat.NONE){
+            addSequential(new NoDrive(), 3);
+            return;
         }
-
+        if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
+            boolean shouldQuit = false; // means we rely on launcher positioning
+            addSequential(new LauncherGoToPositionCommand(LauncherGoToPositionCommand.NEUTRAL));
+        }
+     //   addParallel(new NoDrive(), 3);
         if (ModuleManager.PORTCULLIS_MODULE_ON) {
             // portcullis lifter begin position
             boolean portcullisBeginDown = getPortcullisBeginPosition();
             if (portcullisBeginDown) {
-                addSequential(new PortcullisMoveDown());
+                addSequential(new PortcullisMoveDown(), 2);
             } else {
-                addSequential(new PortcullisMoveUp());
+                addSequential(new PortcullisMoveUp(), 2);
             }
         }
 

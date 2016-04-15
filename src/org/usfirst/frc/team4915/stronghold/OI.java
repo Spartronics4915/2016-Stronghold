@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisBarIn;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisBarOut;
+import org.usfirst.frc.team4915.stronghold.commands.PortcullisBarStop;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveDown;
 import org.usfirst.frc.team4915.stronghold.commands.PortcullisMoveUp;
 import org.usfirst.frc.team4915.stronghold.commands.DriveTrain.DriveStraightCommand;
@@ -47,19 +50,16 @@ public class OI {
 
     // Button numbers for launching related buttons on the mechanism stick
     public static final int KICK_BALL_BUTTON_NUMBER = 3;
+    public static final int LAUNCHER_NEUTRAL_BUTTON_NUMBER = 8;
     public static final int MECH_STOP_INTAKE_WHEELS_BUTTON_NUMBER = 5;
     public static final int SPIN_INTAKE_WHEELS_OUT_BUTTON_NUMBER = 4;
     public static final int LIGHT_SWITCH_BUTTON_NUMBER = 2;
-    public static final int SPIN_INTAKE_WHEELS_OUT_LOW_BUTTON_NUMBER = 7;
     public static final int HIGH_LOW_BUTTON_NUMBER = 6;
-    public static final int PORTCULLIS_BUTTON_NUMBER_UP = 11;
-    public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 10;
-
-    // Button numbers for scaling related buttons on the mechanism joystick
-    public static final int SCALER_REACH_UP_BUTTON_NUMBER = 3;
-    public static final int SCALER_REACH_DOWN_BUTTON_NUMBER = 10;
-    public static final int SCALER_LIFT_BUTTON_NUMBER = 9;
-
+    public static final int PORTCULLIS_BUTTON_NUMBER_UP = 6;
+    public static final int PORTCULLIS_BUTTON_NUMBER_DOWN = 7;
+    public static final int PORTCULLIS_BAR_OUT = 11;
+    public static final int PORTCULLIS_BAR_IN = 10;
+    public static final int PORTCULLIS_BAR_STOP = 9;
 
     // Create joysticks for driving and aiming the launcher
     public Joystick driveStick;
@@ -82,6 +82,7 @@ public class OI {
     public JoystickButton highLowButton;
     public JoystickButton lightSwitchButton;
     public JoystickButton autoLaunchTestButton;
+    public JoystickButton launcherNeutralButton;
 
     // Create buttons for the scaler on the mechanism stick
     public JoystickButton scalerExtendButton;
@@ -95,7 +96,9 @@ public class OI {
     //PORTCULLIS
     public JoystickButton portcullisButtonUp;
     public JoystickButton portcullisButtonDown;
-
+    public JoystickButton portcullisBarIn;
+    public JoystickButton portcullisBarOut;
+    public JoystickButton portcullisBarStop;
     // variables for the sendable chooser
     public SendableChooser startingFieldPosition;
     public SendableChooser barrierType;
@@ -140,6 +143,9 @@ public class OI {
         if (ModuleManager.PORTCULLIS_MODULE_ON){
             initializeButton (this.portcullisButtonUp, aimStick, PORTCULLIS_BUTTON_NUMBER_UP, new PortcullisMoveUp());
             initializeButton(this.portcullisButtonDown, aimStick, PORTCULLIS_BUTTON_NUMBER_DOWN, new PortcullisMoveDown());
+            initializeButton (this.portcullisBarIn, aimStick, PORTCULLIS_BAR_IN, new PortcullisBarIn());
+            initializeButton (this.portcullisBarOut, aimStick, PORTCULLIS_BAR_OUT, new PortcullisBarOut());
+            initializeButton (this.portcullisBarStop, aimStick, PORTCULLIS_BAR_STOP, new PortcullisBarStop());
         }
         
         if (ModuleManager.DRIVE_MODULE_ON) {
@@ -147,8 +153,8 @@ public class OI {
 	    this.speedToggle.whileHeld(new ToggleSpeedDown());
 	    this.speedToggle.whenReleased(new ToggleSpeedUp());
 	    
-	    this.driveStraightButton = new JoystickButton(driveStick, DRIVE_STRAIGHT_BUTTON_NUMBER);
-	    this.driveStraightButton.whileHeld(new DriveStraightCommand());
+//	    this.driveStraightButton = new JoystickButton(driveStick, DRIVE_STRAIGHT_BUTTON_NUMBER);
+//	    this.driveStraightButton.whileHeld(new DriveStraightCommand());
        }
 
         if (ModuleManager.INTAKELAUNCHER_MODULE_ON) {
@@ -159,6 +165,7 @@ public class OI {
             initializeButton(this.driveLauncherJumpToIntakeButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_INTAKE_BUTTON_NUMBER, new LauncherGoToPositionCommand(LauncherGoToPositionCommand.TRAVEL));
             initializeButton(this.driveLauncherJumpToNeutralButton, driveStick, DRIVE_LAUNCHER_JUMP_TO_NEUTRAL_BUTTON_NUMBER, new LauncherGoToPositionCommand(LauncherGoToPositionCommand.NEUTRAL));
             initializeButton(this.driveStopIntakeWheelsButton, driveStick, DRIVE_STOP_INTAKE_WHEELS_BUTTON_NUMBER, new StopWheelsCommand());
+            initializeButton(this.driveLauncherJumpToNeutralButton, aimStick, LAUNCHER_NEUTRAL_BUTTON_NUMBER, new LauncherGoToPositionCommand(LauncherGoToPositionCommand.NEUTRAL));
             System.out.println("ModuleManager OI: Initialize IntakeLauncher");
         }
 

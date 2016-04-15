@@ -22,10 +22,12 @@ public class SpinIntakeWheelsInwardCommand extends Command {
 
     @Override
     protected void execute() {
+        System.out.println("setting Speed for Intake");
         Robot.intakeLauncher.setSpeedIntake();
-        Robot.intakeLauncher.aimLauncher(); // this command interrupts
+        //Robot.intakeLauncher.aimLauncher(); // this command interrupts
                                             // AimLauncherCommand so we make
                                             // sure the launcher always aims
+        Robot.portcullis.PortcullisBarIn();
     }
 
     @Override
