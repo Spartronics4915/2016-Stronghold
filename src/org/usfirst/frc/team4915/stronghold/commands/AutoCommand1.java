@@ -41,7 +41,7 @@ public class AutoCommand1 extends CommandGroup {
                 addSequential(new PortcullisMoveUp(), 2);
             }
         }
-
+        System.out.println("autoCmd1: completed portcullis move... starting autodrive");
         double distance = getDistance() + getDistancePastDefense();
         switch (strat) {
             case NONE:
@@ -82,17 +82,20 @@ public class AutoCommand1 extends CommandGroup {
         // implementation. Note that graceful shutdown isn't absolutely
         // required, since we cancel the autonomous command when we enter
         // teleop.
-        return super.isFinished();
+        System.out.println("autoCmd1: isFinished");
+    	return super.isFinished();
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        System.out.println("autoCmd1: end");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        end();
+        System.out.println("autoCmd1: interrupted");
+    	end();
     }
 
     
