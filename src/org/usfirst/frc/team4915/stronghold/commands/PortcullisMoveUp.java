@@ -29,5 +29,6 @@ public class PortcullisMoveUp extends CommandGroup {
         requires(Robot.portcullis);
         addParallel(new PortcullisMoveUpRight(), 2);
         addParallel(new PortcullisMoveUpLeft(), 2);
+        System.out.println("ending PortculliusMoveUp commandgroup");
     }
 }
